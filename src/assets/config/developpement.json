@@ -1,0 +1,312 @@
+{
+    "urlGateway": "https://kyrmannpay.com/kpayment",
+    
+    "HOST_API-DEV": "http://ksecent.ddns.net:9252/canaan/",
+    "HOST:API": "https://kms02.net:",
+    "API_ENDPOINTS": {
+      
+      "comment ": "------------ OPERATIONS ADMIN---------------",
+      "ADMIN_ADD": "9701/shipp/v1/crud/web/admin/add",
+      "ADMIN_UPD": "9701/shipp/v1/crud/web/admin/update",
+      "ADMIN_DEL": "9701/shipp/v1/crud/web/admin/delete",
+      "ADMIN_GET": "9701/shipp/v1/crud/web/admin/getall",
+      "ADMIN_UPDPASSWORD": "9701/shipp/v1/crud/web/admin/updatepassword",
+      "ADMIN_AUTH_CHANGEPASSWORD": "9701/shipp/v1/auth/web/admin/changepassword",
+      "ADMIN_AUTH_FORGOTPASSWORD": "9701/shipp/v1/auth/web/admin/forgotpassword",
+      "ADMIN_AUTH_SIGNIN": "9701/shipp/v1/auth/web/admin/signin",
+      "ADMIN_AUTH_REFRESHTOKEN": "9701/shipp/v1/auth/web/admin/refreshtoken",
+      
+  
+      "comment ": "----------- OPERATIONS ATTRIBUER---------------",
+      "ATTRIBUER_ENGINLIVREUR": "9701/shipp/v1/crud/web/attribuer/attribuerenginalivreur",
+      "ATTRIBUER_ZONELIVREUR": "9701/shipp/v1/crud/web/attribuer/attribuerzonealivreur",
+      "ATTRIBUER_GET": "9701/shipp/v1/crud/web/attribuer/getall",
+  
+      "comment ": "------------ OPERATIONS CLIENT---------------",
+      "CLIENT_SIGNUP": "9701/shipp/v1/crud/web/client/signup",
+      "CLIENT_UPD": "9701/shipp/v1/crud/web/client/update",
+      "CLIENT_UPDPASSWORD": "9701/shipp/v1/crud/web/client/updatepassword",
+      "CLIENT_GET": "9701/shipp/v1/crud/web/client/getall",
+      "CLIENT_AUTH_CHANGEPASSWORD": "9701/shipp/v1/auth/web/client/changepassword",
+      "CLIENT_AUTH_FORGOTPASSWORD": "9701/shipp/v1/auth/web/client/forgotpassword",
+      "CLIENT_AUTH_SIGNIN": "9701/shipp/v1/auth/web/client/signin",
+      "CLIENT_AUTH_VERIFOTP": "9701/shipp/v1/auth/web/admin/verificationotp",
+  
+      "comment ": "------------ OPERATIONS ENGIN---------------",
+      "ENGIN_ADD": "9701/shipp/v1/crud/web/engin/add",
+      "ENGIN_UPD": "9701/shipp/v1/crud/web/engin/update",
+      "ENGIN_DEL": "9701/shipp/v1/crud/web/engin/delete",
+      "ENGIN_GET": "9701/shipp/v1/crud/web/engin/getall",
+  
+      "comment ": "------------ OPERATIONS ETABLISSEMENT---------------",
+      "ETABLISSEMENT_ADD": "9701/shipp/v1/crud/web/etablissement/add",
+      "ETABLISSEMENT_UPD": "9701/shipp/v1/crud/web/etablissement/update",
+      "ETABLISSEMENT_DEL": "9701/shipp/v1/crud/web/etablissement/delete",
+      "ETABLISSEMENT_GET": "9701/shipp/v1/crud/web/etablissement/getall",
+      "ETABLISSEMENT_AUTH_CHANGEPASSWORD": "9701/shipp/v1/auth/web/etablissement/changepassword",
+      "ETABLISSEMENT_AUTH_FORGOTPASSWORD": "9701/shipp/v1/auth/web/etablissement/forgotpassword",
+      "ETABLISSEMENT_AUTH_SIGNIN": "9701/shipp/v1/auth/web/etablissement/signin",
+      "ETABLISSEMENT_AUTH_REFRESHTOKEN": "9701/shipp/v1/auth/web/etablissement/refreshtoken",
+  
+      "comment ": "------------ OPERATIONS GROUPESANGUIN---------------",
+      "GROUPESANGUIN_GET": "9701/shipp/v1/crud/web/groupesanguin/getall",
+      
+  
+      "comment ": "------------ OPERATIONS JOUR---------------",
+      "JOUR_GET": "9701/shipp/v1/crud/web/jour/getall",
+  
+      "comment ": "------------ OPERATIONS LIEU---------------",
+      "LIEU_ADD": "9701/shipp/v1/crud/web/lieu/add",
+      "LIEU_GETBYTYPELIEU": "9701/shipp/v1/crud/web/lieu/getallbytypelieuid",
+      "LIEU_GETBYCOURSEUR": "9701/shipp/v1/crud/web/lieu/getallbycourseurbaineid",
+      "LIEU_GET": "9701/shipp/v1/crud/web/lieu/getall",
+  
+      "comment ": "------------ OPERATIONS LIVRAISONSTATUT---------------",
+      "LIVRAISONSTATUT_GET": "9701/shipp/v1/crud/web/livraisonstatut/getall",
+
+      "comment ": "------------ OPERATIONS TRANSACTION---------------",
+      "TRANSACTION_GET":"9701/shipp/v1/transaction/getall",
+  
+      "comment ": "------------ OPERATIONS LIVREUR---------------",
+      "LIVREUR_ADD": "9701/shipp/v1/crud/web/livreur/add",
+      "LIVREUR_ASSIGNZONE": "9701/shipp/v1/crud/web/livreur/assignzonetolivreur",
+      "LIVREUR_ATEN": "9701/shipp/v1/crud/web/livreur/attribuerengintolivreur",
+      "LIVREUR_UPD": "9701/shipp/v1/crud/web/livreur/update",
+      "LIVREUR_UPDPASSWORD": "9701/shipp/v1/crud/web/livreur/updatepassword",
+      "LIVREUR_DEL": "9701/shipp/v1/crud/web/livreur/delete",
+      "LIVREUR_GET": "9701/shipp/v1/crud/web/livreur/getall",
+      "LIVREUR_AUTH_CHANGEPASSWORD": "9701/shipp/v1/auth/web/livreur/changepassword",
+      "LIVREUR_AUTH_FORGOTPASSWORD": "9701/shipp/v1/auth/web/livreur/forgotpassword",
+      "LIVREUR_AUTH_SIGNIN": "9701/shipp/v1/auth/web/livreur/signin",
+      "LIVREUR_AUTH_VERIFOTP": "9701/shipp/v1/auth/web/livreur/verificationotp",
+      "LIVREUR_AFFECTER_COURSE": "9701/shipp/v1/livraisonurbaine/web/livreur/affectercourseurbaine",
+  
+  
+      "comment ": "------------ OPERATIONS MEDIATHEQUE---------------",
+      "MEDIATHEQUE_ADD": "9701/shipp/v1/crud/web/mediatheque/add",
+      "MEDIATHEQUE_UPD": "9701/shipp/v1/crud/web/mediatheque/update",
+      "MEDIATHEQUE_DEL": "9701/shipp/v1/crud/web/mediatheque/delete",
+      "MEDIATHEQUE_GET": "9701/shipp/v1/crud/web/mediatheque/getall",
+  
+      "comment ": "------------ OPERATIONS MEDICAMENT---------------",
+      "MEDICAMENT_ADD": "9701/shipp/v1/crud/web/medicament/add",
+      "MEDICAMENT_UPD": "9701/shipp/v1/crud/web/medicament/update",
+      "MEDICAMENT_DEL": "9701/shipp/v1/crud/web/medicament/delete",
+      "MEDICAMENT_GET": "9701/shipp/v1/crud/web/medicament/getall",
+  
+      "comment ": "------------ OPERATIONS MODETRANSACTION---------------",
+      "MODETRANSACTION_GET": "9701/shipp/v1/crud/web/modetransaction/getall",
+  
+      "comment ": "------------ OPERATIONS MOTIFREFUSLIVREUR---------------",
+      "MOTIFREFUSLIVREUR_ADD": "9701/shipp/v1/crud/web/motifrefuslivreur/add",
+      "MOTIFREFUSLIVREUR_UPD": "9701/shipp/v1/crud/web/motifrefuslivreur/update",
+      "MOTIFREFUSLIVREUR_DEL": "9701/shipp/v1/crud/web/motifrefuslivreur/delete",
+      "MOTIFREFUSLIVREUR_GET": "9701/shipp/v1/crud/web/motifrefuslivreur/getall",
+  
+      "comment ": "------------ OPERATIONS MOTIFREFUSPOINTRELAIS---------------",
+      "MOTIFREFUSPOINTRELAIS_ADD": "9701/shipp/v1/crud/web/motifrefuspointrelais/add",
+      "MOTIFREFUSPOINTRELAIS_UPD": "9701/shipp/v1/crud/web/motifrefuspointrelais/update",
+      "MOTIFREFUSPOINTRELAIS_DEL": "9701/shipp/v1/crud/web/motifrefuspointrelais/delete",
+      "MOTIFREFUSPOINTRELAIS_GET": "9701/shipp/v1/crud/web/motifrefuspointrelais/getall",
+  
+      "comment ": "------------ OPERATIONS NOTER---------------",
+      "NOTER_CLIENT": "9701/shipp/v1/crud/web/noter/noterclient",
+    
+  
+      "comment ": "------------ OPERATIONS POIDS---------------",
+      "POIDS_ADD": "9701/shipp/v1/crud/web/poids/add",
+      "POIDS_UPD": "9701/shipp/v1/crud/web/poids/update",
+      "POIDS_DEL": "9701/shipp/v1/crud/web/poids/delete",
+      "POIDS_GET": "9701/shipp/v1/crud/web/poids/getall",
+  
+      "comment ": "------------ OPERATIONS POINTRELAIS---------------",
+      "POINTRELAIS_ADD": "9701/shipp/v1/crud/web/pointrelais/add",
+      "POINTRELAIS_UPD": "9701/shipp/v1/crud/web/pointrelais/update",
+      "POINTRELAIS_DEL": "9701/shipp/v1/crud/web/pointrelais/delete",
+      "POINTRELAIS_GET": "9701/shipp/v1/crud/web/pointrelais/getall",
+      "POINTRELAIS_UPDPASSWORD": "9701/shipp/v1/crud/web/pointrelais/updatepassword",
+      "POINTRELAIS_AUTH_CHANGEPASSWORD": "9701/shipp/v1/auth/web/pointrelais/changepassword",
+      "POINTRELAIS_AUTH_FORGOTPASSWORD": "9701/shipp/v1/auth/web/pointrelais/forgotpassword",
+      "POINTRELAIS_AUTH_SIGNIN": "9701/shipp/v1/auth/web/pointrelais/signin",
+      "POINTRELAIS_AUTH_REFRESHTOKEN": "9701/shipp/v1/auth/web/pointrelais/refreshtoken",
+      "POINTRELAIS_VALIDER":"/shipp/v1/livraisonurbaine/web/pointrelais/validercolis",
+  
+      "comment ": "------------ OPERATIONS ROLE---------------",
+      "ROLE_ADD": "9701/shipp/v1/crud/web/role/add",
+      "ROLE_UPD": "9701/shipp/v1/crud/web/role/update",
+      "ROLE_DEL": "9701/shipp/v1/crud/web/role/delete",
+      "ROLE_GET": "9701/shipp/v1/crud/web/role/getall",
+  
+      "comment ": "------------ OPERATIONS SITUATIONMATRIMONIALE---------------",
+      "SITUATIONMATRIMONIALE_GET": "9701/shipp/v1/crud/web/situationmatrimoniale/getall",
+  
+      "comment ": "------------ OPERATIONS TEMPERATURE---------------",
+      "TEMPERATURE_ADD": "9701/shipp/v1/crud/web/temperature/add",
+      "TEMPERATURE_UPD": "9701/shipp/v1/crud/web/temperature/update",
+      "TEMPERATURE_DEL": "9701/shipp/v1/crud/web/temperature/delete",
+      "TEMPERATURE_GET": "9701/shipp/v1/crud/web/temperature/getall",
+  
+      "comment ": "------------ OPERATIONS TYPEANALYSE---------------",
+      "TYPEANALYSE_ADD": "9701/shipp/v1/crud/web/typeanalyse/add",
+      "TYPEANALYSE_UPD": "9701/shipp/v1/crud/web/typeanalyse/update",
+      "TYPEANALYSE_DEL": "9701/shipp/v1/crud/web/typeanalyse/delete",
+      "TYPEANALYSE_GET": "9701/shipp/v1/crud/web/typeanalyse/getall",
+  
+      "comment ": "------------ OPERATIONS TYPECOLIS---------------",
+      "TYPECOLIS_ADD": "9701/shipp/v1/crud/web/typecolis/add",
+      "TYPECOLIS_UPD": "9701/shipp/v1/crud/web/typecolis/update",
+      "TYPECOLIS_DEL": "9701/shipp/v1/crud/web/typecolis/delete",
+      "TYPECOLIS_GET": "9701/shipp/v1/crud/web/typecolis/getall",
+  
+      "comment ": "------------ OPERATIONS TYPECOMMANDE---------------",
+      "TYPECOMMANDE_GET": "9701/shipp/v1/crud/web/typecommande/getall",
+  
+      "comment ": "------------ OPERATIONS TYPECONTRAT---------------",
+      "TYPECONTRAT_GET": "9701/shipp/v1/crud/web/typecontrat/getall",
+  
+      "comment ": "------------ OPERATIONS TYPEENGIN---------------",
+      "TYPEENGIN_ADD": "9701/shipp/v1/crud/web/typeengin/add",
+      "TYPEENGIN_UPD": "9701/shipp/v1/crud/web/typeengin/update",
+      "TYPEENGIN_DEL": "9701/shipp/v1/crud/web/typeengin/delete",
+      "TYPEENGIN_GET": "9701/shipp/v1/crud/web/typeengin/getall",
+  
+      "comment ": "------------ OPERATIONS TYPEETABLISSEMENT---------------",
+      "TYPEETABLISSEMENT_ADD": "9701/shipp/v1/crud/web/typeetablissement/add",
+      "TYPEETABLISSEMENT_UPD": "9701/shipp/v1/crud/web/typeetablissement/update",
+      "TYPEETABLISSEMENT_DEL": "9701/shipp/v1/crud/web/typeetablissement/delete",
+      "TYPEETABLISSEMENT_GET": "9701/shipp/v1/crud/web/typeetablissement/getall",
+  
+      "comment ": "------------ OPERATIONS TYPEINTERRUPTION---------------",
+      "TYPEINTERRUPTION_ADD": "9701/shipp/v1/crud/web/typeinterruption/add",
+      "TYPEINTERRUPTION_UPD": "9701/shipp/v1/crud/web/typeinterruption/update",
+      "TYPEINTERRUPTION_DEL": "9701/shipp/v1/crud/web/typeinterruption/delete",
+      "TYPEINTERRUPTION_GET": "9701/shipp/v1/crud/web/typeinterruption/getall",
+  
+      "comment ": "------------ OPERATIONS TYPELIEU---------------",
+      "TYPELIEU_GET": "9701/shipp/v1/crud/web/typelieu/getall",
+  
+      "comment ": "------------ OPERATIONS TYPELIVRAISON---------------",
+      "TYPELIVRAISON_ADD": "9701/shipp/v1/crud/web/typelivraison/add",
+      "TYPELIVRAISON_UPD": "9701/shipp/v1/crud/web/typelivraison/update",
+      "TYPELIVRAISON_DEL": "9701/shipp/v1/crud/web/typelivraison/delete",
+      "TYPELIVRAISON_GET": "9701/shipp/v1/crud/web/typelivraison/getall",
+  
+      "comment ": "------------ OPERATIONS TYPELIVREUR---------------",
+      "TYPELIVREUR_GET": "9701/shipp/v1/crud/web/typelivreur/getall",
+  
+      "comment ": "------------ OPERATIONS TYPEMEDIATHEQUE---------------",
+      "TYPEMEDIATHEQUE_ADD": "9701/shipp/v1/crud/web/typemediatheque/add",
+      "TYPEMEDIATHEQUE_UPD": "9701/shipp/v1/crud/web/typemediatheque/update",
+      "TYPEMEDIATHEQUE_DEL": "9701/shipp/v1/crud/web/typemediatheque/delete",
+      "TYPEMEDIATHEQUE_GET": "9701/shipp/v1/crud/web/typemediatheque/getall",
+  
+      "comment ": "------------ OPERATIONS TYPEMEDICAMENT---------------",
+      "TYPEMEDICAMENT_ADD": "9701/shipp/v1/crud/web/typemedicament/add",
+      "TYPEMEDICAMENT_UPD": "9701/shipp/v1/crud/web/typemedicament/update",
+      "TYPEMEDICAMENT_DEL": "9701/shipp/v1/crud/web/typemedicament/delete",
+      "TYPEMEDICAMENT_GET": "9701/shipp/v1/crud/web/typemedicament/getall",
+  
+      "comment ": "------------ OPERATIONS TYPERECIPIENDAIRE---------------",
+      "TYPERECIPIENDAIRE_GET": "9701/shipp/v1/crud/web/typerecipiendaire/getall",
+  
+      "comment ": "------------ OPERATIONS TYPEZONE---------------",
+      "TYPEZONE_GET": "9701/shipp/v1/crud/web/typezone/getall",
+  
+      "comment ": "------------ OPERATIONS ZONE---------------",
+      "ZONE_GET": "9701/shipp/v1/crud/web/zone/getall",
+  
+  
+  
+      "comment ": "------------ OPERATIONS MARGE---------------",
+      "MARGE_GET": "9701/shipp/v1/crud/web/marge/get",
+      "MARGE_UPD": "9701/shipp/v1/crud/web/marge/update",
+
+      "comment ": "------------ OPERATIONS LIVRAISONURBAINE---------------",
+      "LIVRAISONURBAINE_ACCEPTER_COMMANDE":"",
+      "LIVRAISONURBAINE_EXPRESS_EFFECTUER_COMMANDE":"9701/shipp/v1/commandeurbaine/express/effectuercommande",
+      "LIVRAISONURBAINE_STANDARD_EFFECTUER_COMMANDE":"9701/shipp/v1/commandeurbaine/standard/effectuercommande",
+      "LIVRAISONURBAINE_GET":"9701/shipp/v1/livraisonurbaine/web/commandeurbaine/getall",
+      "COURSEURBAINE_GET":"9701/shipp/v1/livraisonurbaine/web/courseurbaine/getall",
+
+      "comment ": "------------ OPERATIONS LIVRAISONMEDICALE---------------",
+      "LIVRAISONMEDICALE_ACCEPTER_COMMANDE":"",
+      "LIVRAISONMEDICALE_EFFECTUER_COMMANDE":"9701/shipp/v1/livraisonmedicale/web/medicament/effectuercommande",
+      "LIVRAISONMEDICALE_GET":"9701/shipp/v1/livraisonmedicale/web/getall",
+
+
+      "comment ": "------------ OPERATIONS STATISTIQUES---------------",
+    "LIVREUR_GETNOTEMOYENNE":"9701/shipp/v1/statistique/livreur/getnotemoyenne",
+    "LIVREUR_GETTAUXSERVICE":"9701/shipp/v1/statistique/livreur/gettauxservice",
+    "POINTRELAIS_GETNBRECOURSEURBAINEBYSTATUT":"9701/shipp/v1/statistique/pointrelais/getnbrecoursesurbainesbystatus",
+
+    "comment ": "------------ OPERATIONS NOTIFICATION---------------",
+    "NOTIFICATION_GET":"9701/shipp/v1/notification/web/getall",
+
+    "comment ": "------------ OPERATIONS INTERRUPTION---------------",
+    "INTERRUPTION_GET":"9701/shipp/v1/livraisonurbaine/web/interruption/getall",
+    "INTERRUPTION_RESOLVE":"9701/shipp/v1/livraisonurbaine/web/interruption/resolve",
+    "INTERRUPTION_MEDICALE_GET":"9701/shipp/v1/livraisonmedicale/web/interruption/getall",
+    "INTERRUPTION_MEDICALE_RESOLVE":"9701/shipp/v1/livraisonmedicale/web/interruption/resolve",
+
+    "comment ": "------------ OPERATIONS SOS---------------",
+    "SOS_GET":"9701/shipp/v1/crud/web/sos/getall",
+    "SOS_RESOLVE":"9701/shipp/v1/crud/web/sos/resolve",
+
+    "comment ": "------------ OPERATIONS STATISTIQUES---------------",
+    "AVG_CONSOCARBURANT":"9701/shipp/v1/statistique/courseurbaine/avgconsocarburant",
+    "AVG_CARTTEMPSLIVRAISON":"9701/shipp/v1/statistique/courseurbaine/avgecarttempslivraison",
+    "AVG_TEMPSLIVRAISON":"9701/shipp/v1/statistique/courseurbaine/avgtempslivraison",
+    "AVG_TEMPSREACTIONPOINTRELAIS":"9701/shipp/v1/statistique/courseurbaine/avgtempsreactionpointrelais",
+    "CONSOCARBURANT":"9701/shipp/v1/statistique/courseurbaine/consocarburant",
+    "COUTMOYEN":"9701/shipp/v1/statistique/courseurbaine/coutmoyen",
+    "DUREEMOYENNELIVRAISON":"9701/shipp/v1/statistique/courseurbaine/dureemoyennelivraison",
+    "TAUXLITIGESPARCLIENT":"9701/shipp/v1/statistique/courseurbaine/tauxlitiguesparclient",
+    "TAUXLITIGESPARLIVREUR":"9701/shipp/v1/statistique/courseurbaine/tauxlitiguesparlivreur",
+    "TAUXLIVRAISONPARJOUR":"9701/shipp/v1/statistique/courseurbaine/tauxlivraisonparjour",
+    "DISTANCEMOYENNE":"9701/shipp/v1/statistique/engin/distancemoyenne",
+    "DISTANCEMOYENNE_MEDICAL":"9701/shipp/v1/statistiquemedicale/engin/distancemoyenne",
+    "KILOMETREEFFECTIF":"9701/shipp/v1/statistique/livreur/kilometreseffectifsrealises",
+    "KILOMETREEFFECTIF_MEDICAL":"9701/shipp/v1/statistiquemedicale/livreur/kilometreseffectifsrealises",
+    "NOTEMOYENNE_LIVREUR":"9701/shipp/v1/statistique/livreur/notemoyenne",
+    "TAUXACCIDENT":"9701/shipp/v1/statistique/livreur/tauxaccident",
+    "TAUXSERVICE":"9701/shipp/v1/statistique/livreur/tauxservice",
+    "TEMPSEFFECTIF":"9701/shipp/v1/statistique/livreur/tempseffectifrealise",
+    "TAUXACCIDENT_MEDICAL":"9701/shipp/v1/statistiquemedicale/livreur/tauxaccident",
+    "TAUXSERVICE_MEDICAL":"9701/shipp/v1/statistiquemedicale/livreur/tauxservice",
+    "TEMPSEFFECTIF_MEDICAL":"9701/shipp/v1/statistiquemedicale/livreur/tempseffectifrealise",
+    "COUTREPARATION":"9701/shipp/v1/statistique/panne/coutreparation",
+    "NBRETOTAL":"9701/shipp/v1/statistique/panne/nbretotal",
+    "TEMPSREPARATION":"9701/shipp/v1/statistique/panne/tempsmoyenreparation",
+    "NBRECOURSEURBAINE":"9701/shipp/v1/statistique/pointrelais/nbrecoursesurbainesbystatus",
+    "NOTEMOYENNE_POINTRELAIS":"9701/shipp/v1/statistique/pointrelais/notemoyenne",
+    "CHIFFREAFFAIRES":"9701/shipp/v1/statistique/courseurbaine/chiffreaffaires",
+
+    "AVG_CONSOCARBURANT_MEDICAL":"9701/shipp/v1/statistiquemedicale/commandemedicale/avgconsocarburant",
+    "AVG_CARTTEMPSLIVRAISON_MEDICAL":"9701/shipp/v1/statistiquemedicale/commandemedicale/avgecarttempslivraison",
+    "AVG_TEMPSLIVRAISON_MEDICAL":"9701/shipp/v1/statistiquemedicale/commandemedicale/avgtempslivraison",
+    "CONSOCARBURANT_MEDICAL":"9701/shipp/v1/statistiquemedicale/commandemedicale/consocarburant",
+    "COUTMOYEN_MEDICAL":"9701/shipp/v1/statistiquemedicale/commandemedicale/coutmoyen",
+    "DUREEMOYENNELIVRAISON_MEDICAL":"9701/shipp/v1/statistiquemedicale/commandemedicale/dureemoyennelivraison",
+    "TAUXLIVRAISONPARJOUR_MEDICAL":"9701/shipp/v1/statistiquemedicale/commandemedicale/tauxlivraisonparjour",
+   
+
+    "comment ": "------------ OPERATIONS COUT---------------",
+    "COUT_GET":"9701/shipp/v1/crud/web/cout/get",
+    "COUT_UPD":"9701/shipp/v1/crud/web/cout/update",
+
+
+    "comment ": "------------ OPERATIONS NOTIFICATIONS---------------",
+    "NOTIFICATIONS_GET":"9701/shipp/v1/notification/web/getall",
+    "NOTIFICATIONS_READ":"9701/shipp/v1/notification/web/read"
+   
+
+    },
+
+    
+
+    "imgVar": "/var/www/html/",
+    "imgHttp": "https://kms02.net/"
+    
+
+    
+  }

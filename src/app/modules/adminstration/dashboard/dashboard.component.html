@@ -1,0 +1,527 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <!-- Card stats -->
+      <div class="row">
+        <div class="col-xl-3 col-lg-6">
+          <div class="card card-stats mb-4 mb-xl-0">
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <h5 class="card-title text-uppercase text-muted mb-0">
+                    CHIFFRE D'AFFAIRE
+                  </h5>
+                  <span class="h2 font-weight-bold mb-0"
+                    >{{ chiffreAffaireTotal | number }} FCFA</span
+                  >
+                </div>
+                <div class="col-auto">
+                  <div
+                    class="icon icon-shape bg-danger text-white rounded-circle shadow"
+                  >
+                    <i class="fas fa-chart-bar"></i>
+                  </div>
+                </div>
+              </div>
+              <p class="mt-3 mb-0 text-muted text-sm">
+                <span class="text-success mr-2" *ngIf="tauxCroissanceCA >= 0"
+                  ><i class="fa fa-arrow-up"></i>{{ tauxCroissanceCA }}%</span
+                >
+                <span class="text-danger mr-2" *ngIf="tauxCroissanceCA < 0"
+                  ><i class="fa fa-arrow-down"></i>{{ tauxCroissanceCA }}%</span
+                >
+                <span class="text-nowrap">Depuis le mois dernier</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-6">
+          <div class="card card-stats mb-4 mb-xl-0">
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <h5 class="card-title text-uppercase text-muted mb-0">
+                    NOUVEAUX CLIENTS
+                  </h5>
+                  <span class="h2 font-weight-bold mb-0"
+                    >{{ totalNewUser | number }} FCFA</span
+                  >
+                </div>
+                <div class="col-auto">
+                  <div
+                    class="icon icon-shape bg-warning text-white rounded-circle shadow"
+                  >
+                    <i class="fas fa-users"></i>
+                  </div>
+                </div>
+              </div>
+              <p class="mt-3 mb-0 text-muted text-sm">
+                <span
+                  class="text-success mr-2"
+                  *ngIf="tauxCroissancetotalNewUser >= 0"
+                  ><i class="fa fa-arrow-up"></i
+                  >{{ tauxCroissancetotalNewUser }}%</span
+                >
+                <span
+                  class="text-danger mr-2"
+                  *ngIf="tauxCroissancetotalNewUser < 0"
+                  ><i class="fa fa-arrow-down"></i
+                  >{{ tauxCroissancetotalNewUser }}%</span
+                >
+                <span class="text-nowrap">Depuis la semaine dernière</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-6">
+          <div class="card card-stats mb-4 mb-xl-0">
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <h5 class="card-title text-uppercase text-muted mb-0">
+                    VENTES
+                  </h5>
+                  <span class="h2 font-weight-bold mb-0"
+                    >{{ totalVentes | number }} FCFA</span
+                  >
+                </div>
+                <div class="col-auto">
+                  <div
+                    class="icon icon-shape bg-yellow text-white rounded-circle shadow"
+                  >
+                    <i class="fas fa-chart-pie"></i>
+                  </div>
+                </div>
+              </div>
+              <p class="mt-3 mb-0 text-muted text-sm">
+                <span
+                  class="text-success mr-2"
+                  *ngIf="tauxCroissancetotalVentes >= 0"
+                  ><i class="fa fa-arrow-up"></i
+                  >{{ tauxCroissancetotalVentes }}%</span
+                >
+                <span
+                  class="text-danger mr-2"
+                  *ngIf="tauxCroissancetotalVentes < 0"
+                  ><i class="fa fa-arrow-down"></i
+                  >{{ tauxCroissancetotalVentes }}%</span
+                >
+
+                <span class="text-nowrap">Depuis hier</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-6">
+          <div class="card card-stats mb-4 mb-xl-0">
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <h5 class="card-title text-uppercase text-muted mb-0">
+                    TOTAL PRODUITS
+                  </h5>
+                  <span class="h2 font-weight-bold mb-0"
+                    >{{ totalNombreProduit | number }} FCFA</span
+                  >
+                </div>
+                <div class="col-auto">
+                  <div
+                    class="icon icon-shape bg-info text-white rounded-circle shadow"
+                  >
+                    <i class="fas fa-percent"></i>
+                  </div>
+                </div>
+              </div>
+              <p class="mt-3 mb-0 text-muted text-sm">
+                <span
+                  class="text-success mr-2"
+                  *ngIf="tauxCroissancetotalNombreProduit >= 0"
+                  ><i class="fa fa-arrow-up"></i
+                  >{{ tauxCroissancetotalNombreProduit }}%</span
+                >
+                <span
+                  class="text-danger mr-2"
+                  *ngIf="tauxCroissancetotalNombreProduit < 0"
+                  ><i class="fa fa-arrow-down"></i
+                  >{{ tauxCroissancetotalNombreProduit }}%</span
+                >
+
+                <span class="text-nowrap">Depuis le mois dernier</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--7">
+
+  <div class="row">
+    <div class="col-xl-8 mb-5 mb-xl-0">
+      <div class="card bg-gradient-default shadow">
+        <div class="card-header bg-transparent">
+          <div class="row align-items-center">
+            <div class="col">
+              <h6 class="text-uppercase text-light ls-1 mb-1">apperçu</h6>
+              <h2 class="text-white mb-0">Valeur des ventes</h2>
+            </div>
+            <div class="col">
+              <ul class="nav nav-pills justify-content-end">
+                <li
+                  class="nav-item"
+                  data-toggle="chart"
+                  data-target="#chart-sales"
+                  (click)="data = datasets[2]; updateOptions(2)"
+                >
+                  <a
+                    href="javascript:void(0)"
+                    class="nav-link py-2 px-3"
+                    [ngClass]="{ active: clicked2 === true }"
+                    data-toggle="tab"
+                    (click)="clicked1 = false; clicked = false; clicked2 = true"
+                  >
+                    <span class="d-none d-md-block">Année</span>
+                    <span class="d-md-none">A</span>
+                  </a>
+                </li>
+                <li
+                  class="nav-item mr-2 mr-md-0"
+                  data-toggle="chart"
+                  data-target="#chart-sales"
+                  (click)="data = datasets[0]; updateOptions(0)"
+                >
+                  <a
+                    href="javascript:void(0)"
+                    class="nav-link py-2 px-3"
+                    [ngClass]="{ active: clicked === true }"
+                    data-toggle="tab"
+                    (click)="clicked = true; clicked1 = false; clicked2 = false"
+                  >
+                    <span class="d-none d-md-block">Mois</span>
+                    <span class="d-md-none">M</span>
+                  </a>
+                </li>
+                <li
+                  class="nav-item"
+                  data-toggle="chart"
+                  data-target="#chart-sales"
+                  (click)="data = datasets[1]; updateOptions(1)"
+                >
+                  <a
+                    href="javascript:void(0)"
+                    class="nav-link py-2 px-3"
+                    [ngClass]="{ active: clicked1 === true }"
+                    data-toggle="tab"
+                    (click)="clicked = false; clicked2 = false; clicked1 = true"
+                  >
+                    <span class="d-none d-md-block">Semaine</span>
+                    <span class="d-md-none">S</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <!-- Chart -->
+          <div class="chart">
+            <!-- Chart wrapper -->
+            <canvas id="chart-sales" class="chart-canvas"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4">
+      <div class="card shadow">
+        <div class="card-header bg-transparent">
+          <div class="row align-items-center">
+            <div class="col">
+              <h6 class="text-uppercase text-muted ls-1 mb-1">Performance</h6>
+              <h2 class="mb-0">Total Commandes</h2>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <!-- Chart -->
+          <div class="chart">
+            <canvas id="chart-orders" class="chart-canvas"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-5">
+    <div class="col-xl-4 mb-5 mb-xl-0">
+      <div class="card shadow" style="min-height: 100%;">
+        <div class="card-header border-0">
+          <div class="row align-items-center">
+            <div class="col">
+              <h3 class="mb-0">Avis produits réçent</h3>
+            </div>
+            <div class="col text-right">
+              <a
+                [routerLink]="['/administration/catalogue/produits']"
+                class="btn btn-sm btn-primary"
+                >Voir tous</a
+              >
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <!-- Projects table -->
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">PRODUITS</th>
+                <th scope="col">NOTES</th>
+                <th scope="col">NOMBRE D'AVIS</th>
+                <th scope="col">DETAILS</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let avi of avis">
+                <th scope="row">{{ avi.produitName }}</th>
+                <td>
+                  <app-star-rating [note]="avi.note"></app-star-rating>
+                </td>
+                <td>{{ avi.commentaire }}</td>
+                <td>
+                  <i class="ni ni-zoom-split-in"></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 mb-5 mb-xl-0">
+      <div class="card shadow" style="min-height: 100%;">
+        <div class="card-header border-0">
+          <div class="row align-items-center">
+            <div class="col">
+              <h3 class="mb-0">Commandes par zone</h3>
+            </div>
+
+            <!-- <a class="btn btn-sm btn-primary">Jour</a> -->
+            <select
+              class="btn btn-sm col form-control selectr-visible me-1"
+              data-toggle="select"
+              tabindex="-1"
+              aria-hidden="true"
+              data-gtm-form-interact-field-id="4"
+            >
+              <option value="jours">Jours</option>
+              <option value="semaine">Semaine</option>
+              <option value="mois">Mois</option>
+              <option value="Année">Année</option>
+            </select>
+
+            <select
+              class="btn btn-sm col form-control selectr-visible"
+              data-toggle="select"
+              tabindex="-1"
+              aria-hidden="true"
+              data-gtm-form-interact-field-id="4"
+            >
+              <option value="jours">Cocody</option>
+              <option value="semaine">Yopougon</option>
+              <option value="mois">Anyama</option>
+              <option value="Année">Port-bouet</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <!-- Projects table -->
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">PERIODE</th>
+                <th scope="col">NOMBRE DE VENTE</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let commandeByZones of commandeByZone">
+                <th scope="row">{{ commandeByZones.periode }}</th>
+                <td>
+                  {{ commandeByZones.nombreDeVente }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 mb-5 mb-xl-0">
+      <div class="card shadow" style="min-height: 100%;">
+        <div class="card-header border-0">
+          <div class="row align-items-center">
+            <div class="col">
+              <h3 class="mb-0">Meilleurs produits</h3>
+            </div>
+
+            <!-- <a class="btn btn-sm btn-primary">Jour</a> -->
+            <select
+              class="btn btn-sm col form-control selectr-visible me-1"
+              data-toggle="select"
+              tabindex="-1"
+              aria-hidden="true"
+              data-gtm-form-interact-field-id="4"
+            >
+              <option value="jours">Global</option>
+              <option value="semaine">Aujourd'hui</option>
+              <option value="mois">Mois</option>
+              <option value="Année">3 dernier mois</option>
+              <option value="Année">Année</option>
+            </select>
+
+            <select
+              class="btn btn-sm col form-control selectr-visible"
+              data-toggle="select"
+              tabindex="-1"
+              aria-hidden="true"
+              data-gtm-form-interact-field-id="4"
+            >
+              <option value="jours">Cocody</option>
+              <option value="semaine">Yopougon</option>
+              <option value="mois">Anyama</option>
+              <option value="Année">Port-bouet</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <!-- Projects table -->
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">PRODUIT</th>
+                <th scope="col">NOMBRE DE VENTE</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let avi of avis">
+                <th scope="row">{{ avi.produitName }}</th>
+                <td>
+                  {{ avi.commentaire }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row mt-5">
+
+    <div class="col-xl-4 mb-5 mb-xl-0">
+      <div class="card shadow" style="min-height: 100%;">
+        <div class="card-header border-0">
+          <div class="row align-items-center">
+            <div class="col">
+              <h3 class="mb-0">Panier moyen</h3>
+            </div>
+
+            <!-- <a class="btn btn-sm btn-primary">Jour</a> -->
+            <select
+              class="btn btn-sm col form-control selectr-visible me-1"
+              data-toggle="select"
+              tabindex="-1"
+              aria-hidden="true"
+              data-gtm-form-interact-field-id="4"
+            >
+              <option value="jours">Jours</option>
+              <option value="semaine">Semaine</option>
+              <option value="mois">Mois</option>
+              <option value="Année">Année</option>
+            </select>
+
+            <select
+              class="btn btn-sm col form-control selectr-visible"
+              data-toggle="select"
+              tabindex="-1"
+              aria-hidden="true"
+              data-gtm-form-interact-field-id="4"
+            >
+              <option value="jours">Cocody</option>
+              <option value="semaine">Yopougon</option>
+              <option value="mois">Anyama</option>
+              <option value="Année">Port-bouet</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <!-- Projects table -->
+          <table class="table align-items-center table-flush" style="height: 100%;">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">PERIODE</th>
+                <th scope="col">NOMBRE DE VENTE</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let commandeByZones of commandeByZone">
+                <th scope="row">{{ commandeByZones.periode }}</th>
+                <td>
+                  {{ commandeByZones.nombreDeVente }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-8">
+      <div class="card shadow">
+        <div class="card-header bg-transparent">
+          <div class="row align-items-center">
+            <div class="col">
+              <h2 class="mb-0">Quantité vendue par produit</h2>
+              <div class="col text-right">
+                <a
+                  class="btn btn-sm btn-primary"
+                  >Sélectionner période</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <!-- Chart -->
+          <div class="chart">
+            <canvas id="chart-produit" class="chart-canvas"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row mt-5">
+    <div class="col-xl-12 align-items-center justify-content-center">
+      <div class="card shadow">
+        <div class="card-header bg-transparent">
+          <div class="row align-items-center">
+            <div class="col">
+              <h2 class="mb-0">Valeur des ventes par produit</h2>
+              <div class="col text-right">
+                <a
+                  class="btn btn-sm btn-primary"
+                  >Sélectionner période</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <!-- Chart -->
+          <div class="chart">
+            <canvas id="chart-revenuProduit" class="chart-canvas"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

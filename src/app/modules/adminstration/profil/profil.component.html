@@ -1,0 +1,211 @@
+<div
+  class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+  style="min-height: 600px"
+>
+  <!-- Mask -->
+  <span class="mask bg-gradient-danger opacity-8"></span>
+  <!-- Header container -->
+  <div class="container-fluid d-flex align-items-center">
+    <div class="row">
+      <div class="col-lg-7 col-md-10">
+        <h1 class="display-2 text-white">Hello {{ nameAdmin }}</h1>
+        <p class="text-white mt-0 mb-5">
+          Ceci est votre page de profil. Vous pouvez voir gérer toutes vos
+          informations personnelles ici
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
+      <div class="card card-profile shadow">
+        <div class="card-body pt-0 pt-md-4">
+          <div class="row"></div>
+          <div class="text-center">
+            <h3>Jessica Jones</h3>
+            <div class="h5 font-weight-300">
+              <i class="ni location_pin mr-2"></i>Cocody, Abidjan
+            </div>
+            <div class="h5 mt-4">Manager I</div>
+            <div>KLAMAM</div>
+            <hr class="my-4" />
+            <a href="javascript:void(0)">Show more</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-8 order-xl-1">
+      <div class="card bg-secondary shadow">
+        <div class="card-header bg-white border-0">
+          <div class="row align-items-center">
+            <div class="col-12">
+              <h3 class="mb-0">Information Profile</h3>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <!-- Edit Information personnel -->
+          <h6 class="heading-small text-muted mb-4">Information personnel</h6>
+          <form class="pl-lg-4" [formGroup]="formEditProfile">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-username"
+                    >Nom et Prénoms</label
+                  >
+                  <input
+                    type="text"
+                    id="input-username"
+                    class="form-control form-control-alternative"
+                    placeholder="Nom et prénoms"
+                    formControlName="username"
+                  />
+                  <div  *ngIf="formEditProfile.controls['username'].status  ==  'INVALID' &&formEditProfile.controls['username'].touched">
+                    <small class="text-danger">Renseigner votre nom et prénom</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-email"
+                    >Adresse mail</label
+                  >
+                  <input
+                    type="email"
+                    id="input-email"
+                    class="form-control form-control-alternative"
+                    placeholder="jesse@example.com"
+                    formControlName="email"
+
+                  />
+                  <div  *ngIf="formEditProfile.controls['email'].status=='INVALID' &&formEditProfile.controls['email'].touched">
+                    <small class="text-danger">Entrer un email valide</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-5">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-contact"
+                    >Contact</label
+                  >
+                  <input
+                    type="text"
+                    id="input-contact"
+                    class="form-control form-control-alternative"
+                    placeholder="+225 0101010101"
+                    formControlName="contact"
+                  />
+                  <div  *ngIf="formEditProfile.controls['contact'].status=='INVALID' &&formEditProfile.controls['contact'].touched">
+                    <small class="text-danger">Entrer un numéro à 10 chiffres</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-role"
+                    >Rôle</label
+                  >
+                  <input
+                    type="text"
+                    id="input-role"
+                    class="form-control form-control-alternative"
+                    placeholder="MANAGER"
+                    value="MANAGER"
+                    disabled
+                  />
+                </div>
+              </div>
+              <div class="col-lg-5">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-boutique"
+                    >Boutique</label
+                  >
+                  <input
+                    type="text"
+                    id="input-boutique"
+                    class="form-control form-control-alternative"
+                    placeholder="KLAMAN"
+                    value="KLAMAN"
+                    disabled
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-4">
+                <button class="btn btn-info" (click)="handleOk1()">Enregistrer</button>
+              </div>
+            </div>
+          </form>
+
+          <hr class="my-4" />
+
+          <!-- Edit mot de passe -->
+          <h6 class="heading-small text-muted mb-4">Mot de passe</h6>
+          <form class="pl-lg-4" [formGroup]="formEditPassword">
+            <div class="row">
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-ancien-password"
+                    >Ancien mot de passe</label
+                  >
+                  <input
+                    type="password"
+                    id="input-ancien-password"
+                    class="form-control form-control-alternative"
+                    formControlName="currentpassword"
+                  />
+                  <div  *ngIf="formEditPassword.controls['currentpassword'].status=='INVALID' &&formEditPassword.controls['currentpassword'].touched  && true">
+                    <small class="text-danger">Mot de passe éronner</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-new-password"
+                    >Nouveau mot de passe</label
+                  >
+                  <input
+                    type="text"
+                    id="input-new-password"
+                    class="form-control form-control-alternative"
+                    formControlName="newpassord"
+                  />
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label
+                    class="form-control-label"
+                    for="input-confirm-new-password"
+                    >Confirmer mot de passe</label
+                  >
+                  <input
+                    type="number"
+                    id="input-confirm-new-password"
+                    class="form-control form-control-alternative"
+                    formControlName="confirmpassword"
+
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-4">
+                <button class="btn btn-info" (click)="handleOk2()">
+                  Enregistrer
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
