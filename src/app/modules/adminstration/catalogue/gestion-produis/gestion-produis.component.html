@@ -1,1 +1,46 @@
-<p>gestion-produis works!</p>
+<app-navbar></app-navbar>
+<div class="header bg-gradient-danger pb-2 pt-0 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <div class="row align-items-center py-3 px-0 justify-content-between">
+        <div class="col-lg-6 col-xl-5 col-md-4">
+          <div class="row align-items-center">
+            <div class="col-lg-3 col-md-7">
+              <h6 class="h2 text-white d-inline-block mb-0 me-1">Produits</h6>
+            </div>
+            <div class="col-lg-3 col-md-2 text-left">
+              <button class="btn btn-primary btn-md" (click)="onAddProduit()">
+                <i class="ni ni-fat-add text-white"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-xl-5 col-md-6 row justify-content-end px-0">
+          <form
+            class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto"
+          >
+            <div
+              class="form-group mb-0"
+              [ngClass]="{ focused: focus === true }"
+            >
+              <div class="input-group input-group-alternative">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    ><i class="fas fa-search"></i
+                  ></span>
+                </div>
+                <input
+                  class="form-control w-auto"
+                  placeholder="Search"
+                  type="text"
+                  (focus)="focus = true"
+                  (blur)="focus = false"
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
