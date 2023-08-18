@@ -5,6 +5,7 @@ import { GestionDispositionComponent } from "./gestion-disposition/gestion-dispo
 import { GestionAstuceConseilComponent } from "./gestion-astuce-conseil/gestion-astuce-conseil.component";
 import { GestionTypeAstuceConseilComponent } from "./gestion-type-astuce-conseil/gestion-type-astuce-conseil.component";
 import { BoutiqueRoutingModule } from "./boutique-routing.module";
+import { ComponentsModule } from "src/app/components/components.module";
 
 @NgModule({
   declarations: [
@@ -13,6 +14,6 @@ import { BoutiqueRoutingModule } from "./boutique-routing.module";
     GestionAstuceConseilComponent,
     GestionTypeAstuceConseilComponent,
   ],
-  imports: [CommonModule, BoutiqueRoutingModule],
+  imports: [CommonModule, BoutiqueRoutingModule,ComponentsModule],
 })
 export class BoutiqueModule {}

@@ -6,6 +6,7 @@ import { GestionAdministrateursComponent } from './gestion-administrateurs/gesti
 import { RessourceHumaineRoutingModule } from './ressource-humaine-routing.module';
 import { GestionRolePermissionComponent } from './gestion-role-permission/gestion-role-permission.component';
 import { GestionTypeUtilisateurComponent } from './gestion-type-utilisateur/gestion-type-utilisateur.component';
+import { ComponentsModule } from 'src/app/components/components.module';
 
 
 
@@ -19,7 +20,8 @@ import { GestionTypeUtilisateurComponent } from './gestion-type-utilisateur/gest
   ],
   imports: [
     CommonModule,
-    RessourceHumaineRoutingModule
+    RessourceHumaineRoutingModule,
+    ComponentsModule
   ]
 })
 export class RessourceHumaineModule { }

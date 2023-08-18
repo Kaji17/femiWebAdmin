@@ -6,6 +6,8 @@ import { GestionPromotionComponent } from './gestion-promotion/gestion-promotion
 import { CatalogueRoutingModule } from './catalogue-routing.module';
 import { GestionCategorieComponent } from './gestion-categorie/gestion-categorie.component';
 import { GestionTypePackComponent } from './gestion-type-pack/gestion-type-pack.component';
+import { CreateProduitComponent } from './gestion-produis/create-produit/create-produit.component';
+import { ComponentsModule } from 'src/app/components/components.module';
 
 
 
@@ -15,11 +17,13 @@ import { GestionTypePackComponent } from './gestion-type-pack/gestion-type-pack.
     GestionPacksComponent,
     GestionProduisComponent,
     GestionCategorieComponent,
-    GestionTypePackComponent
+    GestionTypePackComponent,
+    CreateProduitComponent
   ],
   imports: [
     CommonModule,
-    CatalogueRoutingModule
+    CatalogueRoutingModule,
+    ComponentsModule
   ]
 })
 export class CatalogueModule { }

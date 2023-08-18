@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { PrixLivraisonComponent } from './prix-livraison/prix-livraison.component';
 import { GestionZoneComponent } from './gestion-zone/gestion-zone.component';
 import { ParametreRoutingModule } from './parametre-routing.module';
+import { ComponentsModule } from 'src/app/components/components.module';
 
 
 @NgModule({
@@ -12,7 +13,8 @@ import { ParametreRoutingModule } from './parametre-routing.module';
   ],
   imports: [
     CommonModule,
-    ParametreRoutingModule
+    ParametreRoutingModule,
+    ComponentsModule
     ]
 })
 export class ParametreModule { }

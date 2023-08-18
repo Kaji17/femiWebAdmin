@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GestionProduisComponent implements OnInit {
 
+  public focus;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  onAddProduit(){
+
   }
 
 }
