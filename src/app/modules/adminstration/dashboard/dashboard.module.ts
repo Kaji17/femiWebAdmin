@@ -22,7 +22,8 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     FormsModule,
     ReactiveFormsModule,
     BrowserModule,
-    NgxDatatableModule
+    NgxDatatableModule,
+    RouterModule,
   ],
   exports:[
     DashboardComponent

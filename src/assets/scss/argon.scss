@@ -22,6 +22,7 @@
 @import "custom/variables";
 @import "custom/mixins";
 
+
 // Bootstrap (4.3.0) components
 
 // @import "~bootstrap/scss/bootstrap";
@@ -69,4 +70,9 @@
 @import "custom/vendors";
 
 // Angular Differences
-@import "angular-differences/angular-differences"
+@import "angular-differences/angular-differences";
+//
+@import "../../../node_modules/@swimlane/ngx-datatable/themes/bootstrap.scss";
+@import "../../../node_modules/@swimlane/ngx-datatable/index.css";
+@import '../../../node_modules/@swimlane/ngx-datatable/assets/icons.css';
+

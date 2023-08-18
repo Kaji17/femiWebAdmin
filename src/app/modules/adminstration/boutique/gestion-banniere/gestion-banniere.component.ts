@@ -7,9 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GestionBanniereComponent implements OnInit {
 
+  public itemsbreadcrumb: any[]
+  public tittelbreadcrumb:string ='Bannière'
   constructor() { }
 
   ngOnInit(): void {
+    this.itemsbreadcrumb = [
+      { name: "Accueil", path: "/administration/dasboard" },
+      { name: "Boutique", path: "/administration/dasboard" },
+      { name: "Bannière", path: "/administration/dasboard" },
+    ];
   }
 
 }

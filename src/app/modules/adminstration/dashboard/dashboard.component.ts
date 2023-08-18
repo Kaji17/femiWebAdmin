@@ -8,6 +8,7 @@ import {
   chartExample3,
 } from "src/app/variables/charts";
 import Chart from "chart.js";
+import { BreadcrumbService } from "src/app/shared/services/breadcrumb.service";
 
 @Component({
   selector: "app-dashboard",
@@ -43,8 +44,12 @@ export class DashboardComponent implements OnInit {
   public noteProduit: number;
   public avis: any[];
   public commandeByZone: any[]
+  public itemsbreadcrumb: any[]
+  public tittelbreadcrumb:string ='Dasboard'
 
-  constructor(){
+  constructor(
+    private breadcrumbService : BreadcrumbService
+  ){
   }
   ngOnInit() {
     this.chiffreAffaireTotal = 0;
@@ -56,6 +61,13 @@ export class DashboardComponent implements OnInit {
     this.tauxCroissancetotalVentes = 0;
     this.tauxCroissancetotalNombreProduit = 0;
     this.noteProduit = 5;
+
+    this.itemsbreadcrumb = [
+      { name: "Accueil", path: "/administration/dasboard" },
+      { name: "Dasboard", path: "/administration/dasboard" },
+    ];
+
+    this.updatebBreadcrumb(this.itemsbreadcrumb, this.tittelbreadcrumb)
 
     this.avis = [
       {
@@ -186,5 +198,9 @@ export class DashboardComponent implements OnInit {
       default:
         break;
     }
+  }
+
+  updatebBreadcrumb(data: any[], title:string){
+    this.breadcrumbService.setData(data, title)
   }
 }

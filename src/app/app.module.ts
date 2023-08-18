@@ -25,7 +25,7 @@ import * as fr from '@angular/common/locales/fr';
     NgbModule,
     RouterModule,
     AppRoutingModule,
-    DashboardModule
+    DashboardModule,
   ],
   declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent],
   providers: [{provide: LOCALE_ID, useValue: 'fr-FR'}],

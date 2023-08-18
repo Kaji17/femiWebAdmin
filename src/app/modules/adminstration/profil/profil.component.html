@@ -79,6 +79,7 @@
                     class="form-control form-control-alternative"
                     placeholder="jesse@example.com"
                     formControlName="email"
+                    disabled
 
                   />
                   <div  *ngIf="formEditProfile.controls['email'].status=='INVALID' &&formEditProfile.controls['email'].touched">
@@ -162,7 +163,7 @@
                     formControlName="currentpassword"
                   />
                   <div  *ngIf="formEditPassword.controls['currentpassword'].status=='INVALID' &&formEditPassword.controls['currentpassword'].touched  && true">
-                    <small class="text-danger">Mot de passe éronner</small>
+                    <small class="text-danger">Mot de passe éronné</small>
                   </div>
                 </div>
               </div>

@@ -7,9 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GestionAstuceConseilComponent implements OnInit {
 
+  public itemsbreadcrumb: any[]
+  public tittelbreadcrumb:string ='Astuce & Conseil'
   constructor() { }
 
   ngOnInit(): void {
+    this.itemsbreadcrumb = [
+      { name: "Accueil", path: "/administration/dasboard" },
+      { name: "Boutique", path: "/administration/dasboard" },
+      { name: "Astuce & Conseil", path: "/administration/dasboard" },
+    ];
   }
 
 }

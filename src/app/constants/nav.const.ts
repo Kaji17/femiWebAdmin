@@ -16,7 +16,7 @@ export const NavConstants = [
     title: "Achat",
     items: [
       {
-        label: "Commande",
+        label: "Commandes",
         path: "/administration/achat/commandes",
         display: true,
       },
