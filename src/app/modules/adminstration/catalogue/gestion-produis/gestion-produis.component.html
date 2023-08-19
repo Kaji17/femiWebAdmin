@@ -53,7 +53,7 @@
       <div class="col-sm-12 col-md-6">
         <div class="dataTables_length" id="datatable_length">
           <label>
-            Show
+            Voir
             <select
               name="datatable_length"
               aria-controls="datatable"
@@ -63,9 +63,9 @@
               <option value="10" [selected]="entries == 10">10</option>
               <option value="25" [selected]="entries == 25">25</option>
               <option value="50" [selected]="entries == 50">50</option>
-              <option value="-1" [selected]="entries == -1">All</option>
+              <option value="-1" [selected]="entries == -1">Tout</option>
             </select>
-            entries
+            entrées
           </label>
         </div>
       </div>
@@ -101,11 +101,32 @@
       [limit]="page.size"
       [externalPaging]="'false'"
       (page)="setPage($event)"
+      [selected]="selected"
+      [selectionType]="SelectionType.checkbox"
+      [selectAllRowsOnPage]="false"
+      [displayCheck]="displayCheck"
+      (select)="onSelect($event)"
+
     >
+    <ngx-datatable-column
+    [width]="30"
+    [sortable]="false"
+    [canAutoResize]="false"
+    [draggable]="false"
+    [resizeable]="false"
+    [headerCheckboxable]="true"
+    [checkboxable]="true"
+  >
+  </ngx-datatable-column>
       <ngx-datatable-column name="Code"></ngx-datatable-column>
       <ngx-datatable-column name="Image">
-        <ng-template  let-row="row" ngx-datatable-cell-template>
-            <img *ngIf="row.homeworld" [src]="row.homeworld" alt="Image" style="max-height: 100px; max-width: 100px;">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <img
+            *ngIf="row.homeworld"
+            [src]="row.homeworld"
+            alt="Image"
+            style="max-height: 100px; max-width: 100px"
+          />
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column name="Produit"></ngx-datatable-column>
@@ -114,14 +135,23 @@
       <ngx-datatable-column name="Prix unitaire"></ngx-datatable-column>
       <ngx-datatable-column name="Dexcription"></ngx-datatable-column>
       <ngx-datatable-column name="Note">
-        <ng-template  let-row="row" ngx-datatable-cell-template>
-            <app-star-rating ></app-star-rating>
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <app-star-rating [note]="5"></app-star-rating>
         </ng-template>
       </ngx-datatable-column>
-
-
+      <ngx-datatable-column name="Création"></ngx-datatable-column>
+      <ngx-datatable-column name="Actions">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <div>
+            <a role="button">
+              <i class="ni ni-bullet-list-67 mr-2" style="font-size: 14px"></i>
+            </a>
+            <a role="button">
+              <i class="ni ni-fat-remove mr-2" style="font-size: 14px"></i>
+            </a>
+          </div>
+        </ng-template>
+      </ngx-datatable-column>
     </ngx-datatable>
-
-
   </div>
 </div>

@@ -228,11 +228,23 @@ export class GestionProduisComponent implements OnInit {
       return {
         ...prop,
         id: key,
-        homeworld: prop.homeworld // Remplacez par l'URL réelle de l'image pour chaque élément
+        homeworld: prop.homeworld, // Remplacez par l'URL réelle de l'image pour chaque élément
       };
     });
   }
-  getImage():string[]{
-return this.rows.map(row => row.films)
+  getImage(): string[] {
+    return this.rows.map((row) => row.films);
+  }
+
+  onSelect({ selected }) {
+    console.log("Select Event", selected, this.selected);
+
+    this.selected.splice(0, this.selected.length);
+    this.selected.push(...selected);
+    console.log("hhh",this.selected)
+  }
+
+  displayCheck(row) {
+    return row.name !== 'Ethel Price';
   }
 }
