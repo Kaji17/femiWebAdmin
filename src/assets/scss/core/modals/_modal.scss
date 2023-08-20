@@ -15,6 +15,10 @@
     }
 }
 
+.modal-backdrop {
+    z-index: $zindex-modal-backdrop!important;
+  }
+
 
 // Background color variations
 
@@ -23,3 +27,5 @@
         @include modal-variant($value);
     }
 }
+
+

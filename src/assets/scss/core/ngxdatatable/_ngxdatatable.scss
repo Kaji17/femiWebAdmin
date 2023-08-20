@@ -1,0 +1,57 @@
+/*
+bootstrap table theme
+*/
+
+.ngx-datatable.bootstrap {
+  .datatable-footer {
+    background: #fff;
+    color: #2c2c2c!important;
+    margin-top: -1px;
+    .datatable-pager {
+      ul {
+        li {
+          &:not(.disabled) {
+            &.active,
+            &:hover {
+              a {
+                background-color: #f5365c!important;
+                color: #fff!important;
+                font-weight: inherit;
+                border-radius: 100%;
+              }
+            }
+          }
+        }
+      }
+      a {
+        height: 22px;
+        min-width: 24px;
+        line-height: 22px;
+        padding: 0;
+        border-radius: 3px;
+        margin: 0 3px;
+        text-align: center;
+        vertical-align: top;
+        text-decoration: none;
+        vertical-align: bottom;
+        color: #2c2c2c!important;
+      }
+      .datatable-icon-left,
+      .datatable-icon-skip,
+      .datatable-icon-right,
+      .datatable-icon-prev {
+        font-size: 18px;
+        line-height: 27px;
+        padding: 0 3px;
+      }
+    }
+  }
+  // Summary row styles
+  .datatable-summary-row {
+    .datatable-body-row {
+      .datatable-body-cell {
+        font-weight: bold;
+      }
+    }
+  }
+}
