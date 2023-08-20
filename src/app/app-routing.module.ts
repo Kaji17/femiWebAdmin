@@ -18,11 +18,6 @@ const routes: Routes =[
     pathMatch: 'full',
     redirectTo: 'session',
   },
-  {
-    path: '**',
-    pathMatch: 'full',
-    redirectTo: 'session',
-  }
 ];
 
 @NgModule({

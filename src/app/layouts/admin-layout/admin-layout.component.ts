@@ -6,18 +6,13 @@ import { BreadcrumbService } from 'src/app/shared/services/breadcrumb.service';
   templateUrl: './admin-layout.component.html',
   styleUrls: ['./admin-layout.component.scss']
 })
-export class AdminLayoutComponent implements OnInit, DoCheck {
+export class AdminLayoutComponent implements OnInit {
 
   public itemsbreadcrumb: any[]
   public tittelbreadcrumb:string ='Dasboard'
   constructor(
     private breadcrumbService: BreadcrumbService
   ) { }
-  ngDoCheck(): void {
-    this.itemsbreadcrumb = this.breadcrumbService.getData()
-    this.tittelbreadcrumb = this.breadcrumbService.getDataTitle()
-    console.log('LLLL',this.itemsbreadcrumb)
-  }
 
   ngOnInit() {
     this.itemsbreadcrumb = this.breadcrumbService.getData()

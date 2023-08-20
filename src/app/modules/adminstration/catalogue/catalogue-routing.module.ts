@@ -8,6 +8,7 @@ import { GestionTypePackComponent } from './gestion-type-pack/gestion-type-pack.
 import { CreateProduitComponent } from './gestion-produis/create-produit/create-produit.component';
 
 const routes: Routes = [
+  { path: '', component: GestionProduisComponent },
   { path: 'categorie-produit', component: GestionCategorieComponent },
   { path: 'packs', component: GestionPacksComponent },
   { path: 'produits', component: GestionProduisComponent },

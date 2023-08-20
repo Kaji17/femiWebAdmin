@@ -11,9 +11,12 @@
               <h6 class="h2 text-white d-inline-block mb-0 me-1">Produits</h6>
             </div>
             <div class="col-lg-3 col-md-2 col-sm-1 col-xs-1 text-left">
-              <button class="btn btn-primary btn-md" (click)="onAddProduit()">
+              <a role="button " class="btn btn-primary btn-md">
                 <i class="ni ni-fat-add text-white"></i>
-              </button>
+              </a>
+              <!-- <button class="btn btn-primary btn-md" (click)="onAddProduit()">
+                
+              </button> -->
             </div>
           </div>
         </div>
@@ -49,43 +52,6 @@
 
 <div class="container-fluid mt-5">
   <div class="dataTables_wrapper py-4 card px-4">
-    <!-- <div class="row">
-      <div class="col-sm-12 col-md-6">
-        <div class="dataTables_length" id="datatable_length">
-          <label class="row">
-            <div class="col-sm-3">
-              <span>Voir</span>
-            </div>
-            <select
-              name="datatable_length"
-              aria-controls="datatable"
-              class="form-control form-control-sm col-sm-2"
-              (change)="entriesChange($event)"
-            >
-              <option value="10" [selected]="entries == 10">10</option>
-              <option value="25" [selected]="entries == 25">25</option>
-              <option value="50" [selected]="entries == 50">50</option>
-              <option value="-1" [selected]="entries == -1">Tout</option>
-            </select>
-            <span class="col-sm-3">entrées</span>
-          </label>
-        </div>
-      </div>
-      <div class="col-sm-12 col-md-6">
-        <div id="datatable_filter" class="dataTables_filter" style="display: flex; justify-content: end;">
-          <label>
-            <input
-              type="search"
-              class="form-control form-control-sm"
-              placeholder="Search records"
-              aria-controls="datatable"
-              (keyup)="filterTable($event)"
-            />
-          </label>
-        </div>
-      </div>
-    </div> -->
-
     <ngx-datatable
       class="bootstrap selection-cell"
       [columnMode]="'force'"
@@ -144,10 +110,18 @@
       <ngx-datatable-column name="Actions">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <div>
-            <a role="button" (click)="open(classic1, 'modal_mini', 'sm')" data-target="#modal-form" data-toggle="modal">
+            <a
+              role="button"
+              (click)="open(classic1, '', 'sm')"
+              data-target="#modal-form"
+              data-toggle="modal"
+            >
               <i class="ni ni-bullet-list-67 mr-2" style="font-size: 14px"></i>
             </a>
-            <a role="button">
+            <a  role="button"
+            (click)="open(classic2, 'Notification', '')"
+            data-target="#modal-form"
+            data-toggle="modal">
               <i class="ni ni-fat-remove mr-2" style="font-size: 14px"></i>
             </a>
           </div>
@@ -157,24 +131,175 @@
   </div>
 </div>
 
-
 <!-- MODAL MODIFICATION -->
 
 <ng-template #classic1 let-c="close" let-d="dismiss">
   <div class="modal-content">
     <div class="modal-header">
-      <h6 class="modal-title" id="modal-title-default">Type your modal title</h6>
+      <h4 class="modal-title" id="modal-title-default">Modifier produit</h4>
+      <hr class="my-4" />
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+        (click)="d('Cross click')"
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form class="row">
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="name-produit" class="form-control-label col-md-4"
+            >Nom</label
+          >
+          <input
+            class="form-control col-md-8"
+            type="text"
+            value="Savon tétrapleura"
+            id="name-produit"
+          />
+        </div>
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="catégorie-produit" class="form-control-label col-md-4"
+            >Catégorie</label
+          >
+          <select
+            class="btn btn-sm col form-control selectr-visible me-1 col-md-8"
+            data-toggle="select"
+            tabindex="-1"
+            aria-hidden="true"
+            data-gtm-form-interact-field-id="4"
+          >
+            <option value="jours">Savon</option>
+            <option value="semaine">Cheveux</option>
+            <option value="mois">Lotion</option>
+            <option value="Année">Crème</option>
+          </select>
+        </div>
+
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="images" class="form-control-label col-md-4">Images</label>
+          <input class="form-control col-md-8" type="file" id="imagest" />
+        </div>
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="prix-produit" class="form-control-label col-md-4"
+            >Prix</label
+          >
+          <input
+            class="form-control col-md-8"
+            type="text"
+            value="2700FCFA"
+            id="prix-produit"
+          />
+        </div>
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="prix-promotion" class="form-control-label col-md-4"
+            >Taux promotion</label
+          >
+          <input
+            class="form-control col-md-8"
+            type="text"
+            value="30%"
+            id="prix-promotion"
+          />
+        </div>
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="position-produit" class="form-control-label col-md-4"
+            >Position affichage</label
+          >
+          <select
+            class="btn btn-sm col form-control selectr-visible me-1 col-md-8"
+            data-toggle="select"
+            tabindex="-1"
+            aria-hidden="true"
+            data-gtm-form-interact-field-id="4"
+          >
+            <option value="jours">1</option>
+            <option value="semaine">2</option>
+            <option value="mois">3</option>
+            <option value="Année">4</option>
+          </select>
+        </div>
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="description" class="form-control-label col-md-4"
+            >Description</label
+          >
+          <textarea
+            class="form-control col-md-8"
+            id="description"
+            rows="3"
+          ></textarea>
+        </div>
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="caratéristiques" class="form-control-label col-md-4"
+            >Caractéristique</label
+          >
+          <textarea
+            class="form-control col-md-8"
+            id="caratéristiques"
+            rows="3"
+          ></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary">Modifier</button>
+      <button
+        type="button"
+        class="btn btn-link ml-auto"
+        data-dismiss="modal"
+        (click)="c('Close click')"
+      >
+        Annuler
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- MODAL SUPPRIMER PRODUIT -->
+<ng-template #classic2 let-c="close" let-d="dismiss">
+  <div class="modal-content bg-gradient-danger">
+    <div class="modal-header">
+      <h6 class="modal-title" id="modal-title-notification">Votre attention est réquise</h6>
       <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="d('Cross click')">
         <span aria-hidden="true">×</span>
       </button>
     </div>
     <div class="modal-body">
-      <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-      <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+      <div class="py-3 text-center">
+        <i class="ni ni-bell-55 ni-3x"></i>
+        <h4 class="heading mt-4">Voulez-vous supprimer produit <strong>#20</strong></h4>
+      </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-primary">Save changes</button>
-      <button type="button" class="btn btn-link  ml-auto" data-dismiss="modal" (click)="c('Close click')">Close</button>
+      <button type="button" class="btn btn-white" (click)="onDeleteProduit(2); c('Close click')">Oui, supprimer</button>
+      <button type="button" class="btn btn-link text-white ml-auto" data-dismiss="modal" (click)="c('Close click')">Annuler</button>
     </div>
   </div>
 </ng-template>

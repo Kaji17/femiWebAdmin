@@ -9,6 +9,9 @@ import { GestionTypePackComponent } from './gestion-type-pack/gestion-type-pack.
 import { CreateProduitComponent } from './gestion-produis/create-produit/create-produit.component';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { RouterModule } from '@angular/router';
+import { AppRoutingModule } from 'src/app/app-routing.module';
+
 
 
 
@@ -26,7 +29,9 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     CommonModule,
     CatalogueRoutingModule,
     ComponentsModule,
-    NgxDatatableModule
+    NgxDatatableModule,
+    RouterModule,
+    AppRoutingModule
   ]
 })
 export class CatalogueModule { }

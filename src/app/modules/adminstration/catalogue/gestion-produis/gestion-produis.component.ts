@@ -1,5 +1,9 @@
 import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
-import { NgbModal,ModalDismissReasons, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
+import {
+  NgbModal,
+  ModalDismissReasons,
+  NgbModalRef,
+} from "@ng-bootstrap/ng-bootstrap";
 import { SelectionType } from "@swimlane/ngx-datatable";
 import { Page } from "src/app/shared/model/page";
 import { BreadcrumbService } from "src/app/shared/services/breadcrumb.service";
@@ -184,7 +188,7 @@ export class GestionProduisComponent implements OnInit {
   constructor(
     private service: BreadcrumbService,
     private modalService: NgbModal
-    ) {
+  ) {
     this.page.pageNumber = 0;
     this.page.size = 10;
   }
@@ -247,62 +251,83 @@ export class GestionProduisComponent implements OnInit {
 
     this.selected.splice(0, this.selected.length);
     this.selected.push(...selected);
-    console.log("hhh",this.selected)
+    console.log("hhh", this.selected);
   }
 
   displayCheck(row) {
-    return row.name !== 'Ethel Price';
+    return row.name !== "Ethel Price";
   }
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
-        return 'by pressing ESC';
+      return "by pressing ESC";
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-        return 'by clicking on a backdrop';
+      return "by clicking on a backdrop";
     } else {
-        return  'with: $reason';
+      return "with: $reason";
     }
-}
-
-open(content, type, modalDimension) {
-  if (modalDimension === 'sm' && type === 'modal_mini') {
-    this.modalService.open(content, { windowClass: 'modal-mini', size: 'sm', centered: true }).result.then((result) => {
-        this.closeResult = 'Closed with: ' + result;
-    }, (reason) => {
-        this.closeResult = 'Dismissed ' + this.getDismissReason(reason);
-    });
-} else if (modalDimension === '' && type === 'Notification') {
-    this.modalService.open(content, { windowClass: 'modal-danger', centered: true }).result.then((result) => {
-        this.closeResult = 'Closed with: ' + result;
-    }, (reason) => {
-        this.closeResult = 'Dismissed ' + this.getDismissReason(reason);
-    });
-} else {
-    this.modalService.open(content, { centered: true }).result.then((result) => {
-        this.closeResult = 'Closed with: ' + result;
-    }, (reason) => {
-        this.closeResult = 'Dismissed ' + this.getDismissReason(reason);
-    });
-}
-}
-
-close(){
-  this.modalService.dismissAll(this.closeResult)
-}
-
-ontet(){
-  console.log("vilain  ca marche pas")
-}
-@ViewChild('content', { static: true }) modalContent: TemplateRef<any>;
-private modalRef: NgbModalRef;
-
-openModal() {
-  this.modalRef = this.modalService.open(this.modalContent);
-}
-
-closeModal() {
-  if (this.modalRef) {
-    this.modalRef.close();
   }
-}
+
+  open(content, type, modalDimension) {
+    if (modalDimension === "sm" && type === "modal_mini") {
+      this.modalService
+        .open(content, {
+          windowClass: "modal-mini",
+          size: "sm",
+          centered: true,
+        })
+        .result.then(
+          (result) => {
+            this.closeResult = "Closed with: " + result;
+          },
+          (reason) => {
+            this.closeResult = "Dismissed " + this.getDismissReason(reason);
+          }
+        );
+    } else if (modalDimension === "" && type === "Notification") {
+      this.modalService
+        .open(content, { windowClass: "modal-danger", centered: true })
+        .result.then(
+          (result) => {
+            this.closeResult = "Closed with: " + result;
+          },
+          (reason) => {
+            this.closeResult = "Dismissed " + this.getDismissReason(reason);
+          }
+        );
+    } else {
+      this.modalService.open(content, { centered: true }).result.then(
+        (result) => {
+          this.closeResult = "Closed with: " + result;
+        },
+        (reason) => {
+          this.closeResult = "Dismissed " + this.getDismissReason(reason);
+        }
+      );
+    }
+  }
+
+  close() {
+    this.modalService.dismissAll(this.closeResult);
+  }
+
+  ontet() {
+    console.log("vilain  ca marche pas");
+  }
+  @ViewChild("content", { static: true }) modalContent: TemplateRef<any>;
+  private modalRef: NgbModalRef;
+
+  openModal() {
+    this.modalRef = this.modalService.open(this.modalContent);
+  }
+
+  closeModal() {
+    if (this.modalRef) {
+      this.modalRef.close();
+    }
+  }
+
+  onDeleteProduit(id: number) {
+    console.log("produits supprimer");
+  }
 }
