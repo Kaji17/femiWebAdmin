@@ -47,11 +47,11 @@ export class GestionTypePackComponent implements OnInit,OnDestroy {
     // multiple dropzone file - accepts any type of file
   }
 
-  onAddProduit() {
-    console.log("Ajout effectuer");
+  onAddTypepack() {
+    console.log("Ajout type pack effectuer");
   }
-  onUpdateProduit() {
-    console.log("modification effectuer");
+  onUpdateTypePack() {
+    console.log("modification type pack effectuer");
   }
   entriesChange($event) {
     this.entries = $event.target.value;
@@ -179,8 +179,8 @@ export class GestionTypePackComponent implements OnInit,OnDestroy {
     }
   }
 
-  onDeleteProduit(id: number) {
-    console.log("produits supprimer");
+  onDeleteTypePack(id: number) {
+    console.log("type pack supprimer");
   }
 
 }

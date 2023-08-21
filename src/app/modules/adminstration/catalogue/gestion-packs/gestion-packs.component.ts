@@ -79,52 +79,16 @@ export class GestionPacksComponent implements OnInit, OnDestroy {
 
   // Méthode d'ajout d'élément dans le tableau
   setPage(pageInfo) {
-    // this.SuscribeAllData=this.service.getApi({ page: pageInfo.offset + 1 }).subscribe({
-    //   next: (value) => {
-    //     this.page.pageNumber = pageInfo.offset;
-    //     this.page.size = 20;
-    //     this.page.totalElements = value.count;
-    //     this.page.totalPages = 9;
-    //     console.log("Appel Api", value.results);
-    //     this.temp = [{name: 'gilbert', prenom: 'fils'}];
-    //   },
-    // });
-    this.page.pageNumber = pageInfo.offset;
-    this.page.size = 10;
-    this.page.totalElements = 30;
-    this.page.totalPages = 3;
-    console.log("Appel Api");
-    this.temp = [
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-      { name: "gilbert", prenom: "fils" },
-    ];
+    this.SuscribeAllData=this.service.getApi({ page: pageInfo.offset + 1 }).subscribe({
+      next: (value) => {
+        this.page.pageNumber = pageInfo.offset;
+        this.page.size = 20;
+        this.page.totalElements = value.count;
+        this.page.totalPages = 9;
+        console.log("Appel Api", value.results);
+        this.temp = value.results;
+      },
+    });
   }
 
   // Méthode d'ajout a la liste d'élément selectionner
