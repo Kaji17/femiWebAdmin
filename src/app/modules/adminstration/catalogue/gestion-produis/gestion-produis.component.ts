@@ -1,4 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
 import {
   NgbModal,
   ModalDismissReasons,
@@ -187,7 +188,10 @@ export class GestionProduisComponent implements OnInit {
   SelectionType = SelectionType;
   constructor(
     private service: BreadcrumbService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private router: Router,
+    private route: ActivatedRoute
+
   ) {
     this.page.pageNumber = 0;
     this.page.size = 10;
@@ -199,7 +203,15 @@ export class GestionProduisComponent implements OnInit {
     this.setPage({ offset: 0 });
   }
 
-  onAddProduit() {}
+  onAddProduit(){
+    console.log('Ajout effectuer')
+  }
+  onUpdateProduit(){
+    console.log("modification effectuer")
+  }
+  onNavAvisNote(){
+    this.router.navigate(['administration/catalogue/produits/avisNote'], {replaceUrl: true})
+  }
 
   entriesChange($event) {
     this.entries = $event.target.value;

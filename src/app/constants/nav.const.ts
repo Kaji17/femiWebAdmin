@@ -125,7 +125,7 @@ export const NavConstants = [
         display: true,
       },
       {
-        label: "Gestion produits",
+        label: "Gestion prix produits",
         path: "/administration/parametre/prix-livraison",
         display: true,
       },

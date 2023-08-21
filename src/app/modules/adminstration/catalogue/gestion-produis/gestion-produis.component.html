@@ -1,4 +1,3 @@
-<app-navbar></app-navbar>
 <div class="header bg-gradient-danger pb-2 pt-0 pt-md-8">
   <div class="container-fluid">
     <div class="header-body">
@@ -11,12 +10,12 @@
               <h6 class="h2 text-white d-inline-block mb-0 me-1">Produits</h6>
             </div>
             <div class="col-lg-3 col-md-2 col-sm-1 col-xs-1 text-left">
-              <a role="button " class="btn btn-primary btn-md">
+              <button
+                class="btn btn-primary btn-md"
+                (click)="open(classic3, '', 'sm')"
+              >
                 <i class="ni ni-fat-add text-white"></i>
-              </a>
-              <!-- <button class="btn btn-primary btn-md" (click)="onAddProduit()">
-                
-              </button> -->
+              </button>
             </div>
           </div>
         </div>
@@ -50,6 +49,7 @@
   </div>
 </div>
 
+<!-- TABLEAU -->
 <div class="container-fluid mt-5">
   <div class="dataTables_wrapper py-4 card px-4">
     <ngx-datatable
@@ -118,19 +118,29 @@
             >
               <i class="ni ni-bullet-list-67 mr-2" style="font-size: 14px"></i>
             </a>
-            <a  role="button"
-            (click)="open(classic2, 'Notification', '')"
-            data-target="#modal-form"
-            data-toggle="modal">
+            <a
+              role="button"
+              data-target="#modal-form"
+              data-toggle="modal"
+              (click)="onNavAvisNote()"
+            >
+              <i class="ni ni-like-2 mr-2" style="font-size: 14px"></i>
+            </a>
+            <a
+              role="button"
+              (click)="open(classic2, 'Notification', '')"
+              data-target="#modal-form"
+              data-toggle="modal"
+            >
               <i class="ni ni-fat-remove mr-2" style="font-size: 14px"></i>
             </a>
+            
           </div>
         </ng-template>
       </ngx-datatable-column>
     </ngx-datatable>
   </div>
 </div>
-
 <!-- MODAL MODIFICATION -->
 
 <ng-template #classic1 let-c="close" let-d="dismiss">
@@ -269,7 +279,13 @@
       </form>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-primary">Modifier</button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="onUpdateProduit();c('Close click')"
+      >
+        Modifier
+      </button>
       <button
         type="button"
         class="btn btn-link ml-auto"
@@ -286,20 +302,200 @@
 <ng-template #classic2 let-c="close" let-d="dismiss">
   <div class="modal-content bg-gradient-danger">
     <div class="modal-header">
-      <h6 class="modal-title" id="modal-title-notification">Votre attention est réquise</h6>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="d('Cross click')">
+      <h6 class="modal-title" id="modal-title-notification">
+        Votre attention est réquise
+      </h6>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+        (click)="d('Cross click')"
+      >
         <span aria-hidden="true">×</span>
       </button>
     </div>
     <div class="modal-body">
       <div class="py-3 text-center">
         <i class="ni ni-bell-55 ni-3x"></i>
-        <h4 class="heading mt-4">Voulez-vous supprimer produit <strong>#20</strong></h4>
+        <h4 class="heading mt-4">
+          Voulez-vous supprimer produit <strong>#20</strong>
+        </h4>
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-white" (click)="onDeleteProduit(2); c('Close click')">Oui, supprimer</button>
-      <button type="button" class="btn btn-link text-white ml-auto" data-dismiss="modal" (click)="c('Close click')">Annuler</button>
+      <button
+        type="button"
+        class="btn btn-white"
+        (click)="onDeleteProduit(2); c('Close click')"
+      >
+        Oui, supprimer
+      </button>
+      <button
+        type="button"
+        class="btn btn-link text-white ml-auto"
+        data-dismiss="modal"
+        (click)="c('Close click')"
+      >
+        Annuler
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- MODAL ADD PRODUIT -->
+<ng-template #classic3 let-c="close" let-d="dismiss">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-title-default">Ajouter produit</h4>
+      <hr class="my-4" />
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+        (click)="d('Cross click')"
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form class="row">
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="name-produit" class="form-control-label col-md-4"
+            >Nom</label
+          >
+          <input
+            class="form-control col-md-8"
+            type="text"
+            value="Savon tétrapleura"
+            id="name-produit"
+          />
+        </div>
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="catégorie-produit" class="form-control-label col-md-4"
+            >Catégorie</label
+          >
+          <select
+            class="btn btn-sm col form-control selectr-visible me-1 col-md-8"
+            data-toggle="select"
+            tabindex="-1"
+            aria-hidden="true"
+            data-gtm-form-interact-field-id="4"
+          >
+            <option value="jours">Savon</option>
+            <option value="semaine">Cheveux</option>
+            <option value="mois">Lotion</option>
+            <option value="Année">Crème</option>
+          </select>
+        </div>
+
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="images" class="form-control-label col-md-4">Images</label>
+          <input class="form-control col-md-8" type="file" id="imagest" />
+        </div>
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="prix-produit" class="form-control-label col-md-4"
+            >Prix</label
+          >
+          <input
+            class="form-control col-md-8"
+            type="text"
+            value="2700FCFA"
+            id="prix-produit"
+          />
+        </div>
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="prix-promotion" class="form-control-label col-md-4"
+            >Taux promotion</label
+          >
+          <input
+            class="form-control col-md-8"
+            type="text"
+            value="30%"
+            id="prix-promotion"
+          />
+        </div>
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="position-produit" class="form-control-label col-md-4"
+            >Position affichage</label
+          >
+          <select
+            class="btn btn-sm col form-control selectr-visible me-1 col-md-8"
+            data-toggle="select"
+            tabindex="-1"
+            aria-hidden="true"
+            data-gtm-form-interact-field-id="4"
+          >
+            <option value="jours">1</option>
+            <option value="semaine">2</option>
+            <option value="mois">3</option>
+            <option value="Année">4</option>
+          </select>
+        </div>
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="description" class="form-control-label col-md-4"
+            >Description</label
+          >
+          <textarea
+            class="form-control col-md-8"
+            id="description"
+            rows="3"
+          ></textarea>
+        </div>
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="caratéristiques" class="form-control-label col-md-4"
+            >Caractéristique</label
+          >
+          <textarea
+            class="form-control col-md-8"
+            id="caratéristiques"
+            rows="3"
+          ></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        (click)="onAddProduit();c('Close click')"
+        class="btn btn-primary"
+        data-dismiss="modal"
+      >
+        Ajouter
+      </button>
+      <button
+        type="button"
+        class="btn btn-link ml-auto"
+        data-dismiss="modal"
+        (click)="c('Close click')"
+      >
+        Annuler
+      </button>
     </div>
   </div>
 </ng-template>
