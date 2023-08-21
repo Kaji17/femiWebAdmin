@@ -22,6 +22,7 @@ export class GestionClientsComponent implements OnInit, OnDestroy {
   page = new Page();
 
   itemselected: number;
+  public listProduitSelect = ['bonjour'];
 
   SelectionType = SelectionType;
   constructor(

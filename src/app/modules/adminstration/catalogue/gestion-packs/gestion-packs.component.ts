@@ -21,7 +21,7 @@ export class GestionPacksComponent implements OnInit, OnDestroy {
   bsValue;
   public dateDebut: string;
   public dateFin: string;
-  public listProduitSelect = [];
+  public listProduitSelect = ['bonjour'];
   public itemtag;
 
   closeResult: string;

@@ -6,6 +6,7 @@ import { ProfilComponent } from './profil/profil.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ComponentsModule } from 'src/app/components/components.module';
 
+
 @NgModule({
   declarations: [  
     ProfilComponent

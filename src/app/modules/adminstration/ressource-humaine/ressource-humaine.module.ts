@@ -8,7 +8,8 @@ import { GestionRolePermissionComponent } from './gestion-role-permission/gestio
 import { GestionTypeUtilisateurComponent } from './gestion-type-utilisateur/gestion-type-utilisateur.component';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-
+import { TagInputModule } from "ngx-chips";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -24,7 +25,9 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     RessourceHumaineRoutingModule,
     ComponentsModule,
     NgxDatatableModule,
-
+    TagInputModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class RessourceHumaineModule { }
