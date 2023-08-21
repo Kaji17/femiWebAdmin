@@ -1,1 +1,348 @@
-<p>gestion-clients works!</p>
+<div class="header bg-gradient-danger pb-2 pt-0 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <div
+        class="row align-items-center py-md-3 py-sm-5 px-0 justify-content-between"
+      >
+        <div class="col-lg-6 col-xl-5 col-md-4">
+          <div class="row align-items-center">
+            <div class="col-lg-3 col-md-7 col-sm-2 col-xs-2">
+              <h6 class="h2 text-white d-inline-block mb-0 me-1">Clients</h6>
+            </div>
+            <div class="col-lg-3 col-md-7 col-sm-2 col-xs-2">
+              <button
+                class="btn btn-primary btn-sm"
+                (click)="exportExcel()"
+                type="button"
+              >
+              <i class="fa fa-file-excel text-white"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-xl-5 col-md-6 row justify-content-end px-0">
+          <form
+            class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto"
+          >
+            <div
+              class="form-group mb-0"
+              [ngClass]="{ focused: focus === true }"
+            >
+              <div class="input-group input-group-alternative">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    ><i class="fas fa-search"></i
+                  ></span>
+                </div>
+                <input
+                  class="form-control w-auto"
+                  placeholder="Search"
+                  type="text"
+                  (focus)="focus = true"
+                  (blur)="focus = false"
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TABLEAU -->
+<div class="container-fluid mt-5">
+  <div class="dataTables_wrapper py-4 card px-4">
+    <div class="row">
+      <div class="col-md-4" *ngIf="selected.length">
+        <button
+          class="btn btn-danger btn-sm"
+          (click)="onAddNewPromotionShow(2); open(classic1, '', 'sm')"
+          type="button"
+        >
+          Attribuer promotions
+        </button>
+      </div>
+    </div>
+    <ngx-datatable
+      class="bootstrap selection-cell"
+      [columnMode]="'force'"
+      [headerHeight]="50"
+      [footerHeight]="60"
+      [rowHeight]="'auto'"
+      [rows]="temp"
+      [summaryPosition]="'bottom'"
+      [scrollbarH]="'true'"
+      (activate)="onActivate($event)"
+      [loadingIndicator]="'true'"
+      [virtualization]="'false'"
+      [count]="page.totalElements"
+      [offset]="page.pageNumber"
+      [limit]="page.size"
+      [externalPaging]="'false'"
+      (page)="setPage($event)"
+      [selected]="selected"
+      [selectionType]="SelectionType.checkbox"
+      [selectAllRowsOnPage]="false"
+      [displayCheck]="displayCheck"
+      (select)="onSelect($event)"
+    >
+      <ngx-datatable-column
+        [width]="30"
+        [sortable]="false"
+        [canAutoResize]="false"
+        [draggable]="false"
+        [resizeable]="false"
+        [headerCheckboxable]="true"
+        [checkboxable]="true"
+      >
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Nom" prop="nom"></ngx-datatable-column>
+      <ngx-datatable-column name="Genre"> </ngx-datatable-column>
+      <ngx-datatable-column name="Email"></ngx-datatable-column>
+      <ngx-datatable-column name="Contact"></ngx-datatable-column>
+      <ngx-datatable-column name="Promotion"></ngx-datatable-column>
+      <ngx-datatable-column name="Statut"></ngx-datatable-column>
+      <ngx-datatable-column name="Zone de livraison"></ngx-datatable-column>
+      <ngx-datatable-column name="Date de naissance"></ngx-datatable-column>
+      <ngx-datatable-column name="Actions">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <div>
+            <a
+              role="button"
+              (click)="open(classic1, '', 'sm')"
+              data-target="#modal-form"
+              data-toggle="modal"
+            >
+              <i class="ni ni-bullet-list-67 mr-2" style="font-size: 14px"></i>
+            </a>
+            <a
+              role="button"
+              (click)="open(classic2, 'Notification', '')"
+              data-target="#modal-form"
+              data-toggle="modal"
+            >
+              <i class="ni ni-fat-remove mr-2" style="font-size: 14px"></i>
+            </a>
+          </div>
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable>
+  </div>
+</div>
+<!-- MODAL MODIFICATION -->
+
+<ng-template #classic1 let-c="close" let-d="dismiss">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-title-default">Attribuer promotion</h4>
+      <hr class="my-4" />
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+        (click)="d('Cross click')"
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form class="row">
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <button
+            class="col-md-5 btn"
+            (click)="onAddNewPromotionShow(1)"
+            type="button"
+            [ngClass]="itemselected == 1 ? 'btn-primary' : 'btn-secondary'"
+          >
+            Nouvelle Promotion
+          </button>
+          <button
+            class="col-md-5 btn"
+            (click)="onAddNewPromotionShow(2)"
+            type="button"
+            [ngClass]="itemselected == 1 ? 'btn-secondary' : 'btn-primary'"
+          >
+            Promotion existante
+          </button>
+        </div>
+        <div
+          class="form-group row m-0 justify-content-between align-items-center"
+          style="width: 100%"
+          *ngIf="itemselected == 1"
+        >
+          <div
+            class="form-group row m-0 justify-content-between align-items-center"
+            style="width: 100%"
+          >
+            <label for="name-promotion-user" class="form-control-label col-md-4"
+              >Libelle promotion<span class="text-danger">*</span></label
+            >
+            <input
+              class="form-control col-md-8"
+              type="text"
+              value="Black Friday"
+              id="name-promotion-user"
+            />
+          </div>
+          <div
+            class="form-group row m-0 justify-content-between align-items-center mb-3"
+            style="width: 100%"
+          >
+            <label for="taux-promotion-user" class="form-control-label col-md-4"
+              >Taux réduction<span class="text-danger">*</span></label
+            >
+            <input
+              class="form-control col-md-8"
+              type="number"
+              value="Black Friday"
+              id="taux-promotion-user"
+            />
+          </div>
+          <div
+            class="form-group row m-0 justify-content-between align-items-center mb-3"
+            style="width: 100%"
+          >
+            <label
+              for="datedebut-promotion-user"
+              class="form-control-label col-md-4"
+              >Date de début<span class="text-danger">*</span></label
+            >
+            <input
+              type="date"
+              class="form-control col-md-8"
+              bsDatepicker
+              [(ngModel)]="dateDebut"
+            />
+          </div>
+          <div
+            class="form-group row m-0 justify-content-between align-items-center mb-3"
+            style="width: 100%"
+          >
+            <label
+              for="datefin-promotion-user"
+              class="form-control-label col-md-4"
+              >Date de fin<span class="text-danger">*</span></label
+            >
+            <input
+              type="date"
+              class="form-control col-md-8"
+              bsDatepicker
+              [(ngModel)]="dateFin"
+            />
+          </div>
+          <div class="modal-footer form-group row m-0 justify-content-between align-items-center"
+          >
+            <button
+              type="button"
+              class="btn btn-link ml-auto"
+              (click)="onAddNewPromotion(); onAddNewPromotionShow(2)"
+            >
+              Ajouter promotion
+            </button>
+            <button
+              type="button"
+              class="btn btn-link ml-auto text-danger"
+              data-dismiss="modal"
+              (click)="c('Close click')"
+            >
+              Annuler
+            </button>
+          </div>
+        </div>
+
+        <!-- PROMOTION EXISTANTE -->
+        <div
+          *ngIf="itemselected == 2"
+          class="form-group row m-0 justify-content-between align-items-center"
+        >
+          <div
+            class="form-group row m-0 justify-content-between align-items-center"
+            style="width: 100%"
+          >
+            <label for="position-produit" class="form-control-label col-md-4"
+              >Sélectionner promotion</label
+            >
+            <select
+              class="btn btn-sm col form-control selectr-visible me-1 col-md-8"
+              data-toggle="select"
+              tabindex="-1"
+              aria-hidden="true"
+              data-gtm-form-interact-field-id="4"
+            >
+              <option value="jours">Anniverssairer Juin</option>
+              <option value="semaine">Jouyeuse paque</option>
+            </select>
+          </div>
+          <div class="modal-footer form-group row m-0 justify-content-between align-items-center"
+          >
+            <button
+              type="button"
+              class="btn btn-link ml-auto"
+              (click)="onAddNewPromotion(); onAddNewPromotionShow(2)"
+            >
+              Ajouter promotion
+            </button>
+            <button
+              type="button"
+              class="btn btn-link ml-auto text-danger"
+              data-dismiss="modal"
+              (click)="c('Close click')"
+            >
+              Annuler
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+<!-- MODAL SUPPRIMER PRODUIT -->
+<ng-template #classic2 let-c="close" let-d="dismiss">
+  <div class="modal-content bg-gradient-danger">
+    <div class="modal-header">
+      <h6 class="modal-title" id="modal-title-notification">
+        Votre attention est réquise
+      </h6>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+        (click)="d('Cross click')"
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="py-3 text-center">
+        <i class="ni ni-bell-55 ni-3x"></i>
+        <h4 class="heading mt-4">
+          Voulez-vous supprimer produit <strong>#20</strong>
+        </h4>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-white"
+        (click)="onDeleteProduit(2); c('Close click')"
+      >
+        Oui, supprimer
+      </button>
+      <button
+        type="button"
+        class="btn btn-link text-white ml-auto"
+        data-dismiss="modal"
+        (click)="c('Close click')"
+      >
+        Annuler
+      </button>
+    </div>
+  </div>
+</ng-template>

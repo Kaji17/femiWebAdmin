@@ -34,6 +34,8 @@
     "datatables.net": "^1.13.6",
     "datatables.net-responsive": "^2.5.0",
     "dropzone": "^6.0.0-beta.2",
+    "file-saver": "^2.0.5",
+    "filesaver": "^0.0.13",
     "ng-zorro-antd": "^16.1.0",
     "ng2-tag-input": "^1.4.1",
     "ng2-tag-input-padconf": "^1.0.0",
@@ -46,6 +48,7 @@
     "rxjs": "~7.5.0",
     "rxjs-compat": "^6.6.7",
     "web-animations-js": "2.3.2",
+    "xlsx": "^0.18.5",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

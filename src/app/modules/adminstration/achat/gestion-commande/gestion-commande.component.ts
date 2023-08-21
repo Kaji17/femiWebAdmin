@@ -11,6 +11,7 @@ export class GestionCommandeComponent implements OnInit {
   public currentRoute: string;
   public itemsbreadcrumb: any[]
   public tittelbreadcrumb:string ='Commandes'
+  public focus;
 
   constructor(private route : ActivatedRoute) { }
 

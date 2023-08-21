@@ -7,6 +7,7 @@ import { RessourceHumaineRoutingModule } from './ressource-humaine-routing.modul
 import { GestionRolePermissionComponent } from './gestion-role-permission/gestion-role-permission.component';
 import { GestionTypeUtilisateurComponent } from './gestion-type-utilisateur/gestion-type-utilisateur.component';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 
 
@@ -21,7 +22,9 @@ import { ComponentsModule } from 'src/app/components/components.module';
   imports: [
     CommonModule,
     RessourceHumaineRoutingModule,
-    ComponentsModule
+    ComponentsModule,
+    NgxDatatableModule,
+
   ]
 })
 export class RessourceHumaineModule { }
