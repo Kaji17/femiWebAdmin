@@ -59,6 +59,9 @@
 @import "bootstrap/scss/utilities";
 @import "bootstrap/scss/print";
 
+// 
+@import "../../../node_modules/ng2-material-dropdown/dist/src/modules/components/menu/style.scss";
+
 // Argon utilities and components
 
 @import "custom/reboot";
@@ -75,4 +78,3 @@
 @import "../../../node_modules/@swimlane/ngx-datatable/themes/bootstrap.scss";
 @import "../../../node_modules/@swimlane/ngx-datatable/index.css";
 @import '../../../node_modules/@swimlane/ngx-datatable/assets/icons.css';
-

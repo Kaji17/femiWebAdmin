@@ -1,0 +1,23 @@
+.ng2-dropdown-menu.ng2-dropdown-menu--inside-element {
+    position: fixed;
+    z-index: 2000;
+}
+
+.ng2-dropdown-menu.ng2-dropdown-menu--width--2 {
+    width: 200px;
+    z-index: 2000;
+}
+
+.ng2-dropdown-menu.ng2-dropdown-menu--width--4 {
+    width: 260px;
+    z-index: 2000!important;
+}
+
+.ng2-dropdown-menu.ng2-dropdown-menu--width--6 {
+    width: 320px;
+   
+}
+
+.ng2-dropdown-menu {
+    z-index: 2000!important;
+}
