@@ -1,4 +1,11 @@
-import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+} from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import {
   NgbModal,
@@ -8,211 +15,53 @@ import {
 import { SelectionType } from "@swimlane/ngx-datatable";
 import { Page } from "src/app/shared/model/page";
 import { BreadcrumbService } from "src/app/shared/services/breadcrumb.service";
+import Dropzone from "dropzone";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-gestion-produis",
   templateUrl: "./gestion-produis.component.html",
   styleUrls: ["./gestion-produis.component.scss"],
 })
-export class GestionProduisComponent implements OnInit {
+export class GestionProduisComponent implements OnInit, OnDestroy {
   public focus;
   entries: number = 10;
   selected: any[] = [];
   temp = [];
   activeRow: any;
-  rows: any = [
-    {
-      name: "Tiger Nixon",
-      position: "System Architect",
-      office: "Edinburgh",
-      age: "61",
-      start: "2011/04/25",
-      salary: "$320,800",
-    },
-    {
-      name: "Garrett Winters",
-      position: "Accountant",
-      office: "Tokyo",
-      age: "63",
-      start: "2011/07/25",
-      salary: "$170,750",
-    },
-    {
-      name: "Tiger Nixon",
-      position: "System Architect",
-      office: "Edinburgh",
-      age: "61",
-      start: "2011/04/25",
-      salary: "$320,800",
-    },
-    {
-      name: "Garrett Winters",
-      position: "Accountant",
-      office: "Tokyo",
-      age: "63",
-      start: "2011/07/25",
-      salary: "$170,750",
-    },
-    {
-      name: "Tiger Nixon",
-      position: "System Architect",
-      office: "Edinburgh",
-      age: "61",
-      start: "2011/04/25",
-      salary: "$320,800",
-    },
-    {
-      name: "Garrett Winters",
-      position: "Accountant",
-      office: "Tokyo",
-      age: "63",
-      start: "2011/07/25",
-      salary: "$170,750",
-    },
-    {
-      name: "Tiger Nixon",
-      position: "System Architect",
-      office: "Edinburgh",
-      age: "61",
-      start: "2011/04/25",
-      salary: "$320,800",
-    },
-    {
-      name: "Garrett Winters",
-      position: "Accountant",
-      office: "Tokyo",
-      age: "63",
-      start: "2011/07/25",
-      salary: "$170,750",
-    },
-    {
-      name: "Tiger Nixon",
-      position: "System Architect",
-      office: "Edinburgh",
-      age: "61",
-      start: "2011/04/25",
-      salary: "$320,800",
-    },
-    {
-      name: "Garrett Winters",
-      position: "Accountant",
-      office: "Tokyo",
-      age: "63",
-      start: "2011/07/25",
-      salary: "$170,750",
-    },
-    {
-      name: "Tiger Nixon",
-      position: "System Architect",
-      office: "Edinburgh",
-      age: "61",
-      start: "2011/04/25",
-      salary: "$320,800",
-    },
-    {
-      name: "Garrett Winters",
-      position: "Accountant",
-      office: "Tokyo",
-      age: "63",
-      start: "2011/07/25",
-      salary: "$170,750",
-    },
-    {
-      name: "Tiger Nixon",
-      position: "System Architect",
-      office: "Edinburgh",
-      age: "61",
-      start: "2011/04/25",
-      salary: "$320,800",
-    },
-    {
-      name: "Garrett Winters",
-      position: "Accountant",
-      office: "Tokyo",
-      age: "63",
-      start: "2011/07/25",
-      salary: "$170,750",
-    },
-    {
-      name: "Tiger Nixon",
-      position: "System Architect",
-      office: "Edinburgh",
-      age: "61",
-      start: "2011/04/25",
-      salary: "$320,800",
-    },
-    {
-      name: "Garrett Winters",
-      position: "Accountant",
-      office: "Tokyo",
-      age: "63",
-      start: "2011/07/25",
-      salary: "$170,750",
-    },
-    {
-      name: "Vilain",
-      position: "System Architect",
-      office: "Edinburgh",
-      age: "61",
-      start: "2011/04/25",
-      salary: "$320,800",
-    },
-    {
-      name: "Nerveux",
-      position: "BBB",
-      office: "Tokyo",
-      age: "63",
-      start: "2011/07/25",
-      salary: "$170,750",
-    },
-    {
-      name: "blsjgjm",
-      position: "System Architect",
-      office: "Edinburgh",
-      age: "61",
-      start: "2011/04/25",
-      salary: "$320,800",
-    },
-    {
-      name: "Garrett Winters",
-      position: "Accountant",
-      office: "Tokyo",
-      age: "63",
-      start: "2011/07/25",
-      salary: "$170,750",
-    },
-  ];
-
+  rows: any[];
   closeResult: string;
 
   SelectionType = SelectionType;
   constructor(
     private service: BreadcrumbService,
-    private modalService: NgbModal,
-    private router: Router,
-    private route: ActivatedRoute
-
+    private modalService: NgbModal
   ) {
     this.page.pageNumber = 0;
-    this.page.size = 10;
+    this.page.size = 20;
+  }
+
+  public SuscribeAllData: Subscription;
+  ngOnDestroy(): void {
+    this.SuscribeAllData.unsubscribe;
   }
 
   page = new Page();
 
+  @ViewChild("dropzone", { static: true }) dropzoneElement: ElementRef;
+
   ngOnInit(): void {
     this.setPage({ offset: 0 });
+    let currentMultipleFile = undefined;
+    // multiple dropzone file - accepts any type of file
   }
 
-  onAddProduit(){
-    console.log('Ajout effectuer')
+  onAddProduit() {
+    console.log("Ajout effectuer");
   }
-  onUpdateProduit(){
-    console.log("modification effectuer")
+  onUpdateProduit() {
+    console.log("modification effectuer");
   }
-  onNavAvisNote(){
-    this.router.navigate(['administration/catalogue/produits/avisNote'], {replaceUrl: true})
-  }
-
   entriesChange($event) {
     this.entries = $event.target.value;
   }
@@ -236,22 +85,15 @@ export class GestionProduisComponent implements OnInit {
   }
 
   setPage(pageInfo) {
-    this.service.getApi({ page: pageInfo.offset + 1 }).subscribe({
+    this.SuscribeAllData=this.service.getApi({ page: pageInfo.offset + 1 }).subscribe({
       next: (value) => {
         this.page.pageNumber = pageInfo.offset;
-        this.page.size = 20;
+        this.page.size = 10;
         this.page.totalElements = value.count;
         this.page.totalPages = 9;
         console.log("Appel Api", value.results);
         this.temp = value.results;
       },
-    });
-    this.temp = this.temp.map((prop, key) => {
-      return {
-        ...prop,
-        id: key,
-        homeworld: prop.homeworld, // Remplacez par l'URL réelle de l'image pour chaque élément
-      };
     });
   }
   getImage(): string[] {
@@ -328,10 +170,6 @@ export class GestionProduisComponent implements OnInit {
   }
   @ViewChild("content", { static: true }) modalContent: TemplateRef<any>;
   private modalRef: NgbModalRef;
-
-  openModal() {
-    this.modalRef = this.modalService.open(this.modalContent);
-  }
 
   closeModal() {
     if (this.modalRef) {

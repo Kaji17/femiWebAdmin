@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { GestionBanniereComponent } from './gestion-banniere/gestion-banniere.component';
 import { RouterModule, Routes } from '@angular/router';
 import { GestionDispositionComponent } from './gestion-disposition/gestion-disposition.component';

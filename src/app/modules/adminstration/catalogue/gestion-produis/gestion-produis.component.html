@@ -98,7 +98,7 @@
       </ngx-datatable-column>
       <ngx-datatable-column name="Produit"></ngx-datatable-column>
       <ngx-datatable-column name="Categorie"></ngx-datatable-column>
-      <ngx-datatable-column name="Promotion"></ngx-datatable-column>
+      <ngx-datatable-column name="Réduction"></ngx-datatable-column>
       <ngx-datatable-column name="Prix unitaire"></ngx-datatable-column>
       <ngx-datatable-column name="Dexcription"></ngx-datatable-column>
       <ngx-datatable-column name="Note">
@@ -120,12 +120,12 @@
             </a>
             <a
               role="button"
+              (click)="open(classic1, '', 'sm')"
               data-target="#modal-form"
               data-toggle="modal"
-              (click)="onNavAvisNote()"
             >
-              <i class="ni ni-like-2 mr-2" style="font-size: 14px"></i>
-            </a>
+            <i class="ni ni-like-2 mr-2" style="font-size: 14px"></i>
+          </a>
             <a
               role="button"
               (click)="open(classic2, 'Notification', '')"
@@ -134,7 +134,6 @@
             >
               <i class="ni ni-fat-remove mr-2" style="font-size: 14px"></i>
             </a>
-            
           </div>
         </ng-template>
       </ngx-datatable-column>
@@ -165,7 +164,7 @@
           style="width: 100%"
         >
           <label for="name-produit" class="form-control-label col-md-4"
-            >Nom</label
+            >Nom <span class="text-danger">*</span></label
           >
           <input
             class="form-control col-md-8"
@@ -179,7 +178,7 @@
           style="width: 100%"
         >
           <label for="catégorie-produit" class="form-control-label col-md-4"
-            >Catégorie</label
+            >Catégorie<span class="text-danger"> *</span></label
           >
           <select
             class="btn btn-sm col form-control selectr-visible me-1 col-md-8"
@@ -199,7 +198,9 @@
           class="form-group row m-0 justify-content-between align-items-center mb-3"
           style="width: 100%"
         >
-          <label for="images" class="form-control-label col-md-4">Images</label>
+          <label for="images" class="form-control-label col-md-4"
+            >Images <span class="text-danger">*</span></label
+          >
           <input class="form-control col-md-8" type="file" id="imagest" />
         </div>
         <div
@@ -207,7 +208,7 @@
           style="width: 100%"
         >
           <label for="prix-produit" class="form-control-label col-md-4"
-            >Prix</label
+            >Prix <span class="text-danger">*</span></label
           >
           <input
             class="form-control col-md-8"
@@ -221,7 +222,7 @@
           style="width: 100%"
         >
           <label for="prix-promotion" class="form-control-label col-md-4"
-            >Taux promotion</label
+            >Taux réduction</label
           >
           <input
             class="form-control col-md-8"
@@ -255,7 +256,7 @@
           style="width: 100%"
         >
           <label for="description" class="form-control-label col-md-4"
-            >Description</label
+            >Description <span class="text-danger">*</span></label
           >
           <textarea
             class="form-control col-md-8"
@@ -268,7 +269,7 @@
           style="width: 100%"
         >
           <label for="caratéristiques" class="form-control-label col-md-4"
-            >Caractéristique</label
+            >Caractéristique <span class="text-danger">*</span></label
           >
           <textarea
             class="form-control col-md-8"
@@ -282,7 +283,7 @@
       <button
         type="button"
         class="btn btn-primary"
-        (click)="onUpdateProduit();c('Close click')"
+        (click)="onUpdateProduit(); c('Close click')"
       >
         Modifier
       </button>
@@ -366,7 +367,7 @@
           style="width: 100%"
         >
           <label for="name-produit" class="form-control-label col-md-4"
-            >Nom</label
+            >Nom <span class="text-danger">*</span></label
           >
           <input
             class="form-control col-md-8"
@@ -380,7 +381,7 @@
           style="width: 100%"
         >
           <label for="catégorie-produit" class="form-control-label col-md-4"
-            >Catégorie</label
+            >Catégorie <span class="text-danger">*</span></label
           >
           <select
             class="btn btn-sm col form-control selectr-visible me-1 col-md-8"
@@ -400,7 +401,9 @@
           class="form-group row m-0 justify-content-between align-items-center mb-3"
           style="width: 100%"
         >
-          <label for="images" class="form-control-label col-md-4">Images</label>
+          <label for="images" class="form-control-label col-md-4"
+            >Images <span class="text-danger">*</span></label
+          >
           <input class="form-control col-md-8" type="file" id="imagest" />
         </div>
         <div
@@ -408,7 +411,7 @@
           style="width: 100%"
         >
           <label for="prix-produit" class="form-control-label col-md-4"
-            >Prix</label
+            >Prix <span class="text-danger">*</span></label
           >
           <input
             class="form-control col-md-8"
@@ -422,7 +425,7 @@
           style="width: 100%"
         >
           <label for="prix-promotion" class="form-control-label col-md-4"
-            >Taux promotion</label
+            >Taux réduction</label
           >
           <input
             class="form-control col-md-8"
@@ -456,7 +459,7 @@
           style="width: 100%"
         >
           <label for="description" class="form-control-label col-md-4"
-            >Description</label
+            >Description <span class="text-danger">*</span></label
           >
           <textarea
             class="form-control col-md-8"
@@ -469,7 +472,7 @@
           style="width: 100%"
         >
           <label for="caratéristiques" class="form-control-label col-md-4"
-            >Caractéristique</label
+            >Caractéristique <span class="text-danger">*</span></label
           >
           <textarea
             class="form-control col-md-8"
@@ -482,7 +485,7 @@
     <div class="modal-footer">
       <button
         type="button"
-        (click)="onAddProduit();c('Close click')"
+        (click)="onAddProduit(); c('Close click')"
         class="btn btn-primary"
         data-dismiss="modal"
       >

@@ -69,13 +69,18 @@ export const NavConstants = [
         display: true,
       },
       {
+        label: "Gestion catégorie produits",
+        path: "/administration/catalogue/categorie-produit",
+        display: true,
+      },
+      {
         label: "Gestion packs",
         path: "/administration/catalogue/packs",
         display: true,
       },
       {
         label: "Gestion type packs",
-        path: "/administration/catalogue/type-pack",
+        path: "/administration/catalogue/typepack",
         display: true,
       },
     ],

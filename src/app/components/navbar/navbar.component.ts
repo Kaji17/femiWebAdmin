@@ -22,14 +22,14 @@ export class NavbarComponent implements OnInit {
   public notifs: any[];
   public name = "Get Current Url Route Demo";
   public currentRoute: string;
-  @Input() titlebreadcrumb: string;
-  @Input() itemsbreadcrumb: any[];
+  titlebreadcrumb: string;
+  itemsbreadcrumb: any[];
 
   constructor(
     location: Location,
     private element: ElementRef,
     private router: Router,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) {
     this.location = location;
   }
