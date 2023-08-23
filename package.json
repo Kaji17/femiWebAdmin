@@ -45,6 +45,8 @@
     "ngx-sweetalert2": "^0.2.7",
     "ngx-toastr": "14.2.2",
     "nouislider": "15.5.1",
+    "primeicons": "^6.0.1",
+    "primeng": "^16.2.0",
     "rxjs": "~7.5.0",
     "rxjs-compat": "^6.6.7",
     "web-animations-js": "2.3.2",
