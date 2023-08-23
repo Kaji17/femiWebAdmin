@@ -15,6 +15,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { DashboardModule } from "./modules/adminstration/dashboard/dashboard.module";
 import { registerLocaleData } from '@angular/common';
 import * as fr from '@angular/common/locales/fr';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import * as fr from '@angular/common/locales/fr';
     RouterModule,
     AppRoutingModule,
     DashboardModule,
+    ToastrModule.forRoot(),
   ],
   declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent],
   providers: [{provide: LOCALE_ID, useValue: 'fr-FR'}],
