@@ -4,14 +4,12 @@ import { GestionAdministrateursComponent } from './gestion-administrateurs/gesti
 import { GestionClientsComponent } from './gestion-clients/gestion-clients.component';
 import { GestionRolePermissionComponent } from './gestion-role-permission/gestion-role-permission.component';
 import { GestionTypeUtilisateurComponent } from './gestion-type-utilisateur/gestion-type-utilisateur.component';
-import { GestionUtilisateursComponent } from './gestion-utilisateurs/gestion-utilisateurs.component';
 
 const routes: Routes = [
   { path: 'administrateur', component: GestionAdministrateursComponent },
   { path: 'client', component: GestionClientsComponent },
   { path: 'role-permission', component: GestionRolePermissionComponent },
   { path: 'type-user', component: GestionTypeUtilisateurComponent },
-  { path: 'utilisateur', component: GestionUtilisateursComponent },
 ];
 
 

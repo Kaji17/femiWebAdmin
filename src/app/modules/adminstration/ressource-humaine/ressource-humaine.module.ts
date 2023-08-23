@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GestionClientsComponent } from './gestion-clients/gestion-clients.component';
-import { GestionUtilisateursComponent } from './gestion-utilisateurs/gestion-utilisateurs.component';
 import { GestionAdministrateursComponent } from './gestion-administrateurs/gestion-administrateurs.component';
 import { RessourceHumaineRoutingModule } from './ressource-humaine-routing.module';
 import { GestionRolePermissionComponent } from './gestion-role-permission/gestion-role-permission.component';
@@ -15,7 +14,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     GestionClientsComponent,
-    GestionUtilisateursComponent,
     GestionAdministrateursComponent,
     GestionRolePermissionComponent,
     GestionTypeUtilisateurComponent
@@ -27,7 +25,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     NgxDatatableModule,
     TagInputModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ]
 })
 export class RessourceHumaineModule { }
