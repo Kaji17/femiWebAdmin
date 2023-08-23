@@ -23,6 +23,6 @@ export class Configurable {
     // 
 
     // 
-    return `${ApiUrls['HOST:API']}${a[key as keyof typeof a]}`;
+    return `${ApiUrls['HOST_API-DEV']}${a[key as keyof typeof a]}`;
   }
 }
