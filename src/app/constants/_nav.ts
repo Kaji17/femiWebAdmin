@@ -32,7 +32,7 @@ export const navAdminItems: NavItems[] = [
   {
     level: 1,
     title: "DashBoard",
-    disabled: false,
+    disabled: true,
     isEpandedd: false,
     icon: "ni-tv-2 text-primary",
     children: [
@@ -72,7 +72,7 @@ export const navAdminItems: NavItems[] = [
   {
     level: 1,
     title: "Boutique",
-    disabled: false,
+    disabled: true,
     isEpandedd: false,
     icon: "ni-shop text-success",
     children: [

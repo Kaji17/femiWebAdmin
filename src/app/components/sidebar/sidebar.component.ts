@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavConstants } from 'src/app/constants/nav.const';
+import { navAdminItems } from 'src/app/constants/_nav';
 
 export const NOTIF: any[] = [
   {  title: 'Dashboard', describe: 'describe',  icon: 'ni-tv-2 text-primary', date: '12/03/2003'},
@@ -30,7 +31,7 @@ export class SidebarComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit() {
-   this.menuItems = NavConstants
+   this.menuItems = navAdminItems
    this.notifs=[
     {  title: 'Dashboard', describe: 'describe',  icon: 'ni-tv-2 text-primary', date: '12/03/2003'},
     {  title: 'Notif1', describe: 'describe',  icon: 'ni-planet text-blue', date: '12/03/2003'},
