@@ -23,13 +23,16 @@
             <div class="text-center text-muted mb-4">
               <small>Réinitialiser mot de passe</small>
             </div>
-            <form role="form">
+            <form role="form" [formGroup]="formResetPassword">
               <div class="form-group">
                 <div class="input-group input-group-alternative">
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                   </div>
-                  <input class="form-control" placeholder="Entrer OTP" type="text">
+                  <input class="form-control" placeholder="Entrer OTP" type="number" formControlName="otp">
+                </div>
+                <div  *ngIf="formResetPassword.controls['otp'].status=='INVALID' &&formResetPassword.controls['otp'].touched">
+                  <small class="text-primary"><span class="text-danger">*</span>dois conternir 4 caratère</small>
                 </div>
               </div>
               <div class="form-group">
@@ -37,7 +40,10 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                   </div>
-                  <input class="form-control" placeholder="Nouveau mot de passe" type="password">
+                  <input class="form-control" placeholder="Nouveau mot de passe" type="password" [(ngModel)]="password1" formControlName="newpassword">
+                </div>
+                <div  *ngIf="formResetPassword.controls['newpassword'].status=='INVALID' &&formResetPassword.controls['newpassword'].touched">
+                  <small class="text-primary"><span class="text-danger">*</span>Le mot de passe doit contenir au moins une lettre majuscule, un symbole , un nombre et minimum 8 caractères</small>
                 </div>
               </div>
               <div class="form-group">
@@ -45,11 +51,16 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                       </div>
-                  <input class="form-control" placeholder="Confirmer mot de passe" type="password">
+                  <input class="form-control" [(ngModel)]="password2" placeholder="Confirmer mot de passe" type="password" formControlName="newpassword1">
+                </div>
+                <div  *ngIf="!(password1===password2) &&formResetPassword.controls['newpassword1'].touched">
+                  <small class="text-danger">Les mots de passe saisis ne correspondent pas. Veuillez vous assurer de saisir le même mot de passe dans les deux champs.</small>
                 </div>
               </div>
               <div class="text-center"> 
-                <a class="btn btn-primary my-4" role="button" (click)="infoSwal()" > Modifier</a>
+                <button class="btn btn-primary my-4" [disabled]="formResetPassword.invalid" type="button" (click)="handleOk()" >
+                  <i class="fa-solid fa-spinner fa-spin" *ngIf="loading"></i>
+                  Modifier</button>
               </div>
             </form>
           </div>

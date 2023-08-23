@@ -29,13 +29,14 @@ export class AdminLoginComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnDestroy(): void {
-    this.suscriptionLogin.unsubscribe();
+    this.loading?this.suscriptionLogin.unsubscribe():''
   }
 
   ngOnInit(): void {
     this.buildForm();
   }
 
+  // Construction du formulaire
   buildForm() {
     this.loginForm = this.fb.group({
       email: [
@@ -56,6 +57,7 @@ export class AdminLoginComponent implements OnInit, OnDestroy {
     this.login(res);
   }
 
+  // Notification alerte
   showNotification(type) {
     if (type === "default") {
       this.toastr.show(
@@ -107,6 +109,7 @@ export class AdminLoginComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Se connecter
   login(obj: any) {
     this.loading = true;
     this.suscriptionLogin = this.adminService.login(obj).subscribe({
