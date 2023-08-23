@@ -1,1 +1,449 @@
-<p>gestion-administrateurs works!</p>
+<div class="header bg-gradient-danger pb-2 pt-0 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <div
+        class="row align-items-center py-md-3 py-sm-5 px-0 justify-content-between"
+      >
+        <div class="col-lg-6 col-xl-5 col-md-4">
+          <div class="row align-items-center">
+            <div class="">
+              <h6 class="h2 text-white d-inline-block mb-0 me-1">
+                Administrateurs
+              </h6>
+            </div>
+            <div class="col-sm-1 col-md-2 col-lg-3 col-xl-6 text-left">
+              <button
+                class="btn btn-primary btn-md"
+                (click)="open(classic3, '', 'sm')"
+              >
+                <i class="ni ni-fat-add text-white"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-xl-5 col-md-6 row justify-content-end px-0">
+          <form
+            class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto"
+          >
+            <div
+              class="form-group mb-0"
+              [ngClass]="{ focused: focus === true }"
+            >
+              <div class="input-group input-group-alternative">
+                <input
+                  class="form-control w-auto"
+                  placeholder="Search"
+                  type="text"
+                  (focus)="focus = true"
+                  (blur)="focus = false"
+                />
+                <div class="input-group-prepend">
+                  <span class="input-group-text" style="cursor: pointer;"
+                    ><i class="fas fa-search" (click)="onSearchAdminByName()"></i
+                  ></span>
+                </div>
+                
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TABLEAU -->
+<div class="container-fluid mt-5">
+  <div class="dataTables_wrapper py-4 card px-4">
+    <ngx-datatable
+      class="bootstrap selection-cell"
+      [columnMode]="'force'"
+      [headerHeight]="50"
+      [footerHeight]="50"
+      [rowHeight]="'auto'"
+      [rows]="temp"
+      [summaryPosition]="'bottom'"
+      [scrollbarH]="'true'"
+      (activate)="onActivate($event)"
+      [loadingIndicator]="'true'"
+      [virtualization]="'false'"
+      [count]="page.totalElements"
+      [offset]="page.pageNumber"
+      [limit]="page.size"
+      [externalPaging]="'false'"
+      (page)="setPage($event)"
+      [selected]="selected"
+      [selectionType]="SelectionType.checkbox"
+      [selectAllRowsOnPage]="false"
+      [displayCheck]="displayCheck"
+      (select)="onSelect($event)"
+    >
+      <ngx-datatable-column name="Nom"></ngx-datatable-column>
+      <ngx-datatable-column name="Email"> </ngx-datatable-column>
+      <ngx-datatable-column name="Contact"></ngx-datatable-column>
+      <ngx-datatable-column name="Création"></ngx-datatable-column>
+      <ngx-datatable-column name="Actions">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <div>
+            <a
+              role="button"
+              (click)="open(classic1, '', 'sm')"
+              data-target="#modal-form"
+              data-toggle="modal"
+            >
+              <i class="ni ni-bullet-list-67 mr-2" style="font-size: 14px"></i>
+              <!-- <i class="fa-solid fa-pen"></i> -->
+          </a>
+            <a
+              role="button"
+              (click)="open(classic2, 'Notification', '')"
+              data-target="#modal-form"
+              data-toggle="modal"
+            >
+              <i class="ni ni-fat-remove mr-2" style="font-size: 14px"></i>
+            </a>
+          </div>
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable>
+  </div>
+</div>
+<!-- MODAL MODIFICATION -->
+
+<ng-template #classic1 let-c="close" let-d="dismiss">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-title-default">
+        Modifier Administrateur
+      </h4>
+      <hr class="my-4" />
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+        (click)="d('Cross click')"
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form class="row">
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="name-admin" class="form-control-label col-md-4"
+            >Nom <span class="text-danger">*</span></label
+          >
+          <input
+            class="form-control col-md-8"
+            type="text"
+            value="Jhonie"
+            id="name-admin"
+          />
+        </div>
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="email-admin" class="form-control-label col-md-4"
+            >Email<span class="text-danger"> *</span></label
+          >
+          <input
+            class="form-control col-md-8"
+            type="email"
+            value="Jhonie"
+            id="email-admin"
+          />
+        </div>
+
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="birth-day" class="form-control-label col-md-4"
+            >Date de naissance</label
+          >
+          <input class="form-control col-md-8" type="date" id="birth-day" />
+        </div>
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="prix-produit" class="form-control-label col-md-4"
+            >Genre <span class="text-danger">*</span></label
+          >
+          <div class="col-md-8">
+            <div class="custom-control custom-radio custom-control-inline">
+              <input
+                type="radio"
+                id="customRadioInline1"
+                name="customRadioInline1"
+                class="custom-control-input"
+              />
+              <label class="custom-control-label" for="customRadioInline1"
+                >Homme</label
+              >
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+              <input
+                type="radio"
+                id="customRadioInline2"
+                name="customRadioInline1"
+                class="custom-control-input"
+              />
+              <label class="custom-control-label" for="customRadioInline2"
+                >Femme</label
+              >
+            </div>
+            <!-- <div class="custom-control  custom-radio custom-control-inline">
+              <input type="radio" id="customRadioInline3" name="customRadioInline1" class="custom-control-input">
+              <label class="custom-control-label" for="customRadioInline3">Autre</label>
+            </div> -->
+          </div>
+        </div>
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="contact" class="form-control-label col-md-4"
+            >Contact <span class="text-danger">*</span></label
+          >
+          <input
+            class="form-control col-md-8"
+            type="number"
+            value="0101010101"
+            id="contact"
+          />
+        </div>
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="position-produit" class="form-control-label col-md-4"
+            >Rôle <span class="text-danger">*</span></label
+          >
+          <select
+            class="btn btn-sm col form-control selectr-visible me-1 col-md-8"
+            data-toggle="select"
+            tabindex="-1"
+            aria-hidden="true"
+            data-gtm-form-interact-field-id="4"
+          >
+            <option value="jours">Administrateur</option>
+            <option value="semaine">Utilisateur</option>
+            <option value="semaine">Médecin</option>
+          </select>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="onUpdateAdministrateur(); c('Close click')"
+      >
+        Modifier
+      </button>
+      <button
+        type="button"
+        class="btn btn-link ml-auto"
+        data-dismiss="modal"
+        (click)="c('Close click')"
+      >
+        Annuler
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- MODAL SUPPRIMER PRODUIT -->
+<ng-template #classic2 let-c="close" let-d="dismiss">
+  <div class="modal-content bg-gradient-danger">
+    <div class="modal-header">
+      <h6 class="modal-title" id="modal-title-notification">
+        Votre attention est réquise
+      </h6>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+        (click)="d('Cross click')"
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="py-3 text-center">
+        <i class="ni ni-bell-55 ni-3x"></i>
+        <h4 class="heading mt-4">
+          Voulez-vous supprimer produit <strong>#20</strong>
+        </h4>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-white"
+        (click)="onDeleteAdministrateur(2); c('Close click')"
+      >
+        Oui, supprimer
+      </button>
+      <button
+        type="button"
+        class="btn btn-link text-white ml-auto"
+        data-dismiss="modal"
+        (click)="c('Close click')"
+      >
+        Annuler
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- MODAL ADD PRODUIT -->
+<ng-template #classic3 let-c="close" let-d="dismiss">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-title-default">
+        Ajouter Administrateur
+      </h4>
+      <hr class="my-4" />
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+        (click)="d('Cross click')"
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form class="row">
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="name-admin" class="form-control-label col-md-4"
+            >Nom <span class="text-danger">*</span></label
+          >
+          <input
+            class="form-control col-md-8"
+            type="text"
+            value="Jhonie"
+            id="name-admin"
+          />
+        </div>
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="email-admin" class="form-control-label col-md-4"
+            >Email<span class="text-danger"> *</span></label
+          >
+          <input
+            class="form-control col-md-8"
+            type="email"
+            value="Jhonie"
+            id="email-admin"
+          />
+        </div>
+
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="birth-day" class="form-control-label col-md-4"
+            >Date de naissance <span class="text-danger">*</span></label
+          >
+          <input class="form-control col-md-8" type="date" id="birth-day" />
+        </div>
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="prix-produit" class="form-control-label col-md-4"
+            >Genre <span class="text-danger">*</span></label
+          >
+          <div class="col-md-8">
+            <div class="custom-control custom-radio custom-control-inline">
+              <input
+                type="radio"
+                id="customRadioInline1"
+                name="customRadioInline1"
+                class="custom-control-input"
+              />
+              <label class="custom-control-label" for="customRadioInline1"
+                >Homme</label
+              >
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+              <input
+                type="radio"
+                id="customRadioInline2"
+                name="customRadioInline1"
+                class="custom-control-input"
+              />
+              <label class="custom-control-label" for="customRadioInline2"
+                >Femme</label
+              >
+            </div>
+          </div>
+        </div>
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="contact" class="form-control-label col-md-4"
+            >Contact <span class="text-danger">*</span></label
+          >
+          <input
+            class="form-control col-md-8"
+            type="number"
+            value="0101010101"
+            id="contact"
+          />
+        </div>
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="position-produit" class="form-control-label col-md-4"
+            >Rôle <span class="text-danger">*</span></label
+          >
+          <select
+            class="btn btn-sm col form-control selectr-visible me-1 col-md-8"
+            data-toggle="select"
+            tabindex="-1"
+            aria-hidden="true"
+            data-gtm-form-interact-field-id="4"
+          >
+            <option value="jours">Administrateur</option>
+            <option value="semaine">Utilisateur</option>
+            <option value="semaine">Médecin</option>
+          </select>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="onAddAdministrateur(); c('Close click')"
+      >
+        Ajouter
+      </button>
+      <button
+        type="button"
+        class="btn btn-link ml-auto"
+        data-dismiss="modal"
+        (click)="c('Close click')"
+      >
+        Annuler
+      </button>
+    </div>
+  </div>
+</ng-template>
