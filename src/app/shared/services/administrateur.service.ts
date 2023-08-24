@@ -14,4 +14,45 @@ export class AdministrateurService {
       observe: "response",
     });
   }
+
+  // Forgot password
+  public forgotPassword(email: any) {
+    return this.http.get(this.configService.getApi("ADMIN_OTP_GET"), {
+      observe: "response",
+      params: email,
+    });
+  }
+
+  // Reset password
+  public resetPassword(obj: any) {
+    return this.http.post(
+      this.configService.getApi("ADMIN_RESETPASSWORD_POST"),
+      obj,
+      {
+        observe: "response",
+      }
+    );
+  }
+
+  // Update password
+  public updatePassword(obj: any) {
+    return this.http.put(
+      this.configService.getApi("ADMIN_UPDPASSWORD_PUT"),
+      obj,
+      {
+        observe: "response",
+      }
+    );
+  }
+
+  // Update profil admin
+  public updateAdmin(obj, adminId) {
+    return this.http.put(
+      this.configService.getApi("ADMIN_UPD_PUT") + `/`+ adminId,
+      obj,
+      {
+        observe: "response",
+      },
+    );
+  }
 }

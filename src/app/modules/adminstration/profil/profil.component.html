@@ -8,7 +8,9 @@
   <div class="container-fluid d-flex align-items-center">
     <div class="row">
       <div class="col-lg-7 col-md-10">
-        <h1 class="display-2 text-white">Hello {{ nameAdmin }}</h1>
+        <h1 class="display-2 text-white">
+          Hello {{ profil.body.nom | titlecase }}
+        </h1>
         <p class="text-white mt-0 mb-5">
           Ceci est votre page de profil. Vous pouvez voir gérer toutes vos
           informations personnelles ici
@@ -24,12 +26,13 @@
         <div class="card-body pt-0 pt-md-4">
           <div class="row"></div>
           <div class="text-center">
-            <h3>Jessica Jones</h3>
+            <h3>{{ profil.body.nom | titlecase }}</h3>
             <div class="h5 font-weight-300">
-              <i class="ni location_pin mr-2"></i>Cocody, Abidjan
+              <i class="ni location_pin mr-2"></i
+              >{{ profil.body.boutique.adresse | titlecase }}
             </div>
-            <div class="h5 mt-4">Manager I</div>
-            <div>KLAMAM</div>
+            <div class="h5 mt-4">{{ profil.body.role.nom | titlecase }}</div>
+            <div>{{ profil.body.role.boutique.nom | titlecase }}</div>
             <hr class="my-4" />
             <a href="javascript:void(0)">Show more</a>
           </div>
@@ -59,11 +62,19 @@
                     type="text"
                     id="input-username"
                     class="form-control form-control-alternative"
-                    placeholder="Nom et prénoms"
-                    formControlName="username"
+                    formControlName="nom"
+                    maxlength="50"
                   />
-                  <div  *ngIf="formEditProfile.controls['username'].status  ==  'INVALID' &&formEditProfile.controls['username'].touched">
-                    <small class="text-danger">Renseigner votre nom et prénom</small>
+                  <div
+                    *ngIf="
+                      formEditProfile.controls['nom'].status ==
+                        'INVALID' &&
+                      formEditProfile.controls['nom'].touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Renseigner votre nom et prénom</small
+                    >
                   </div>
                 </div>
               </div>
@@ -76,19 +87,14 @@
                     type="email"
                     id="input-email"
                     class="form-control form-control-alternative"
-                    placeholder="jesse@example.com"
-                    formControlName="email"
+                    [value]="emailHide"
                     disabled
-
                   />
-                  <div  *ngIf="formEditProfile.controls['email'].status=='INVALID' &&formEditProfile.controls['email'].touched">
-                    <small class="text-danger">Entrer un email valide</small>
-                  </div>
                 </div>
               </div>
             </div>
             <div class="row">
-              <div class="col-lg-5">
+              <div class="col-lg-4">
                 <div class="form-group">
                   <label class="form-control-label" for="input-contact"
                     >Contact</label
@@ -97,40 +103,44 @@
                     type="text"
                     id="input-contact"
                     class="form-control form-control-alternative"
-                    placeholder="+225 0101010101"
                     formControlName="contact"
                   />
-                  <div  *ngIf="formEditProfile.controls['contact'].status=='INVALID' &&formEditProfile.controls['contact'].touched">
-                    <small class="text-danger">Entrer un numéro à 10 chiffres</small>
+                  <div
+                    *ngIf="
+                      formEditProfile.controls['contact'].status == 'INVALID' &&
+                      formEditProfile.controls['contact'].touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Entrer un numéro à 10 chiffres</small
+                    >
                   </div>
                 </div>
               </div>
-              <div class="col-lg-2">
+              <div class="col-lg-4">
                 <div class="form-group">
-                  <label class="form-control-label" for="input-role"
-                    >Rôle</label
-                  >
-                  <input
-                    type="text"
-                    id="input-role"
-                    class="form-control form-control-alternative"
-                    placeholder="MANAGER"
-                    value="MANAGER"
-                    disabled
-                  />
-                </div>
-              </div>
-              <div class="col-lg-5">
-                <div class="form-group">
-                  <label class="form-control-label" for="input-boutique"
+                  <label class="form-control-label" for=" input-boutique"
                     >Boutique</label
                   >
                   <input
                     type="text"
                     id="input-boutique"
                     class="form-control form-control-alternative"
-                    placeholder="KLAMAN"
-                    value="KLAMAN"
+                    [value]="nomboutique"
+                    disabled
+                  />
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-role"
+                    >Rôle</label
+                  >
+                  <input
+                    type="text"
+                    id=" input-role"
+                    class="form-control form-control-alternative"
+                    [value]=" role"
                     disabled
                   />
                 </div>
@@ -139,7 +149,14 @@
 
             <div class="row">
               <div class="col-lg-4">
-                <button class="btn btn-info" [disabled]="formEditProfile.invalid" (click)="handleOk1()">Enregistrer</button>
+                <button
+                  class="btn btn-info"
+                  [disabled]="formEditProfile.invalid"
+                  (click)="handleOk1()"
+                >
+                <i class="fa-solid fa-spinner fa-spin" *ngIf="loading"></i>
+                  Enregistrer
+                </button>
               </div>
             </div>
           </form>
@@ -161,7 +178,14 @@
                     class="form-control form-control-alternative"
                     formControlName="currentpassword"
                   />
-                  <div  *ngIf="formEditPassword.controls['currentpassword'].status=='INVALID' &&formEditPassword.controls['currentpassword'].touched  && true">
+                  <div
+                    *ngIf="
+                      formEditPassword.controls['currentpassword'].status ==
+                        'INVALID' &&
+                      formEditPassword.controls['currentpassword'].touched &&
+                      true
+                    "
+                  >
                     <small class="text-danger">Mot de passe éronné</small>
                   </div>
                 </div>
@@ -176,7 +200,21 @@
                     id="input-new-password"
                     class="form-control form-control-alternative"
                     formControlName="newpassord"
+                    [(ngModel)]="password1"
                   />
+                </div>
+                <div
+                  *ngIf="
+                    formEditPassword.controls['newpassord'].status ==
+                      'INVALID' &&
+                    formEditPassword.controls['newpassord'].touched
+                  "
+                >
+                  <small class="text-primary"
+                    ><span class="text-danger">*</span>Le mot de passe doit
+                    contenir au moins une lettre majuscule, un symbole , un
+                    nombre et minimum 8 caractères</small
+                  >
                 </div>
               </div>
               <div class="col-lg-4">
@@ -187,19 +225,36 @@
                     >Confirmer mot de passe</label
                   >
                   <input
-                    type="number"
+                    type="text"
                     id="input-confirm-new-password"
                     class="form-control form-control-alternative"
                     formControlName="confirmpassword"
-
+                    [(ngModel)]="password2"
                   />
+                </div>
+                <div
+                  *ngIf="
+                    !(password1 === password2) &&
+                    formEditPassword.controls['confirmpassword'].touched
+                  "
+                >
+                  <small class="text-danger"
+                    >Les mots de passe saisis ne correspondent pas. Veuillez
+                    vous assurer de saisir le même mot de passe dans les deux
+                    champs.</small
+                  >
                 </div>
               </div>
             </div>
 
             <div class="row">
               <div class="col-lg-4">
-                <button class="btn btn-info" (click)="handleOk2()">
+                <button
+                  class="btn btn-info"
+                  [disabled]="formEditPassword.invalid"
+                  (click)="handleOk2()"
+                >
+                <i class="fa-solid fa-spinner fa-spin" *ngIf="loading1"></i>
                   Enregistrer
                 </button>
               </div>
