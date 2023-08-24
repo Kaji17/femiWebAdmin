@@ -24,7 +24,8 @@ export class NavbarComponent implements OnInit {
   public currentRoute: string;
   titlebreadcrumb: string;
   itemsbreadcrumb: any[];
-
+  public profil: any;
+  public adminName: string
   constructor(
     location: Location,
     private element: ElementRef,
@@ -35,11 +36,7 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.titlebreadcrumb = "Dasboard";
-    // this.itemsbreadcrumb = [
-    //   { name: "Accueil", path: "/administration/dasboard" },
-    //   { name: "Dasboard", path: "/administration/dasboard" },
-    // ];
+    this.profil = JSON.parse(localStorage.getItem("user_info"));
     this.menuItems = NavConstants;
     this.notifs = [
       {
@@ -72,6 +69,8 @@ export class NavbarComponent implements OnInit {
         icon: "ni-key-25 text-info",
         date: "12/03/2003",
       },
+      
+      
     ];
     this.currentRoute = this.route.snapshot.url.join("/");
     console.log("url", this.currentRoute);
@@ -88,5 +87,10 @@ export class NavbarComponent implements OnInit {
       }
     }
     return "Dashboard";
+  }
+
+  logOut() {
+    localStorage.removeItem("user_info");
+    localStorage.removeItem("user_email");
   }
 }
