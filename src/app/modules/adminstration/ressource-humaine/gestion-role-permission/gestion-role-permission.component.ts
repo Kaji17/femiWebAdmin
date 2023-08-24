@@ -9,6 +9,7 @@ import { NavConstants } from 'src/app/constants/nav.const';
 import { Nav2Constants } from 'src/app/constants/nav2.const';
 import {NavItems, navAdminItems}from 'src/app/constants/_nav'
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { RoleModalComponent } from './role-modal/role-modal.component';
 
 
 @Component({
@@ -170,7 +171,7 @@ console.log('Bonjour')
           }
         );
     } else {
-      this.modalService.open(content, { centered: true, size: 'lg' }).result.then(
+      this.modalService.open(RoleModalComponent, { centered: true, size: 'lg' }).result.then(
         (result) => {
           this.closeResult = "Closed with: " + result;
         },

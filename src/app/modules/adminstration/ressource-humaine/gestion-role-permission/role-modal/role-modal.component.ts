@@ -23,7 +23,8 @@ menu:any
       })
     }
     else{
-      let litem = parent.items.find(el=>item=el)
+      parent[module] = event.currentTarget.checked
+      let litem = parent.items.find(el=>item.label==el.label)
       litem[module]=event.currentTarget.checked
     }
     

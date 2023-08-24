@@ -5,7 +5,6 @@
           <h5 class="mb-0 ">Interface</h5>
          </div>
          <div class="col-sm-8 row align-items-center">
-           <div class="col-sm-2"><h5 class="mb-0 ">Desactiver</h5></div>
            <div class="col-sm-2"><h5 class="mb-0 ">Full</h5></div>
            <div class="col-sm-2"><h5 class="mb-0 ">Create</h5></div>
            <div class="col-sm-2"><h5 class="mb-0 ">Update</h5></div>
@@ -30,12 +29,11 @@
             <h5 class="mb-0">{{item.title}}</h5>
            </div>
            <div class="col-sm-8 row">
-             <div class="col-sm-2"><input type="checkbox" /></div>
-             <div class="col-sm-2"><input type="checkbox" /></div>
+             <div class="col-sm-2"><input type="checkbox" [checked]="item.display" (change)="checkValue($event,item,'display')"/></div>
              <div class="col-sm-2"><input type="checkbox" [checked]="item.create" (change)="checkValue($event,item,'create')"/></div>
-             <div class="col-sm-2"><input type="checkbox" /></div>
-             <div class="col-sm-2"><input type="checkbox" /></div>
-             <div class="col-sm-2"><input type="checkbox" /></div>
+             <div class="col-sm-2"><input type="checkbox" [checked]="item.update" (change)="checkValue($event,item,'update')"/></div>
+             <div class="col-sm-2"><input type="checkbox" [checked]="item.delete" (change)="checkValue($event,item,'delete')"/></div>
+             <div class="col-sm-2"><input type="checkbox" [checked]="item.other" (change)="checkValue($event,item,'other')"/></div>
             
            </div>
          </div>
@@ -51,12 +49,11 @@
                <h5 class="mb-0 " [style.marginLeft]="'40%'">{{children.label}}</h5>
               </div>
               <div class="col-sm-8 row">
-                <div class="col-sm-2"><input  type="checkbox" /></div>
-                <div class="col-sm-2"><input  type="checkbox" /></div>
+                <div class="col-sm-2"><input  [checked]="children.display" type="checkbox" (change)="checkValue($event,children,'display',item)"  /></div>
                 <div class="col-sm-2"><input [checked]="children.create" type="checkbox" (change)="checkValue($event,children,'create',item)" /></div>
-                <div class="col-sm-2"><input  type="checkbox" /></div>
-                <div class="col-sm-2"><input  type="checkbox" /></div>
-                <div class="col-sm-2"><input  type="checkbox" /></div>
+                <div class="col-sm-2"><input  [checked]="children.update" type="checkbox" (change)="checkValue($event,children,'update',item)"  /></div>
+                <div class="col-sm-2"><input  [checked]="children.delete" type="checkbox" (change)="checkValue($event,children,'delete',item)"  /></div>
+                <div class="col-sm-2"><input  [checked]="children.other" type="checkbox" (change)="checkValue($event,children,'other',item)"  /></div>
                
               </div>
             </div>

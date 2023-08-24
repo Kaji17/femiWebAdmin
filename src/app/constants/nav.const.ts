@@ -2,11 +2,22 @@ export const NavConstants = [
   {
     title: "DashBoard",
     level: 1,
+
+    create: false,
+    update: false,
+    delete: false,
+    other: false,
+    display: false,
     items: [
       {
         label: "Dashboard",
         path: "/administration/dasboard",
         level: 2,
+        display: false,
+        create: false,
+        update: false,
+        delete: false,
+        other: false,
       },
     ],
     isEpandedd: false,
@@ -16,15 +27,24 @@ export const NavConstants = [
 
   {
     title: "Achat",
-        level: 1,
+    level: 1,
+
+    create: false,
+    update: false,
+    delete: false,
+    other: false,
+    display: false,
 
     items: [
       {
         label: "Commandes",
         path: "/administration/achat/commandes",
-        display: true,
-            level: 2,
-
+        display: false,
+        level: 2,
+        create: false,
+        update: false,
+        delete: false,
+        other: false,
       },
     ],
     isEpandedd: false,
@@ -34,36 +54,54 @@ export const NavConstants = [
 
   {
     title: "Boutique",
-        level: 1,
+
+    create: false,
+    update: false,
+    delete: false,
+    other: false,
+    display: false,
+    level: 1,
 
     items: [
       {
         label: "Astuce & Conseil",
         path: "/administration/boutique/astuce-conseil",
-        display: true,
-            level: 2,
-
+        display: false,
+        level: 2,
+        create: false,
+        update: false,
+        delete: false,
+        other: false,
       },
       {
         label: "Banniere",
         path: "/administration/boutique/banniere",
-        display: true,
-            level: 2,
-
+        display: false,
+        level: 2,
+        create: false,
+        update: false,
+        delete: false,
+        other: false,
       },
       {
         label: "Disposition",
         path: "/administration/boutique/display",
         display: false,
-            level: 2,
-
+        level: 2,
+        create: false,
+        update: false,
+        delete: false,
+        other: false,
       },
       {
         label: "Type Astuce & Conseil",
         path: "/administration/boutique/type-astuce-conseil",
         display: false,
-            level: 2,
-
+        level: 2,
+        create: false,
+        update: false,
+        delete: false,
+        other: false,
       },
     ],
     isEpandedd: false,
@@ -72,43 +110,64 @@ export const NavConstants = [
   },
   {
     title: "Catalogue",
-        level: 1,
+
+    create: false,
+    update: false,
+    delete: false,
+    other: false,
+    display: false,
+    level: 1,
 
     items: [
       {
         label: "Gestion promotion",
         path: "/administration/catalogue/promotions",
-        display: true,
-            level: 2,
-
+        display: false,
+        level: 2,
+        create: false,
+        update: false,
+        delete: false,
+        other: false,
       },
       {
         label: "Gestion produits",
         path: "/administration/catalogue/produits",
-        display: true,
-            level: 2,
-
+        display: false,
+        level: 2,
+        create: false,
+        update: false,
+        delete: false,
+        other: false,
       },
       {
         label: "Gestion catégorie produits",
         path: "/administration/catalogue/categorie-produit",
-        display: true,
-            level: 2,
-
+        display: false,
+        level: 2,
+        create: false,
+        update: false,
+        delete: false,
+        other: false,
       },
       {
         label: "Gestion packs",
         path: "/administration/catalogue/packs",
-        display: true,
-            level: 2,
-
+        display: false,
+        level: 2,
+        create: false,
+        update: false,
+        delete: false,
+        other: false,
       },
       {
         label: "Gestion type packs",
         path: "/administration/catalogue/typepack",
-        display: true,
-            level: 2,
-
+        display: false,
+        level: 2,
+        create: false,
+        update: false,
+        delete: false,
+        other: false,
       },
     ],
     isEpandedd: false,
@@ -117,28 +176,43 @@ export const NavConstants = [
   },
   {
     title: "Ressource humaine",
-        level: 1,
+
+    create: false,
+    update: false,
+    delete: false,
+    other: false,
+    display: false,
+    level: 1,
     items: [
       {
         label: "Gestion administrateurs",
         path: "/administration/ressource-humaine/administrateur",
-        display: true,
-            level: 2,
-
+        display: false,
+        level: 2,
+        create: false,
+        update: false,
+        delete: false,
+        other: false,
       },
       {
         label: "Gestion clients",
         path: "/administration/ressource-humaine/client",
-        display: true,
-            level: 2,
-
+        display: false,
+        level: 2,
+        create: false,
+        update: false,
+        delete: false,
+        other: false,
       },
       {
         label: "Gestion role et permission",
         path: "/administration/ressource-humaine/role-permission",
-        display: true,
-            level: 2,
-
+        display: false,
+        level: 2,
+        create: false,
+        update: false,
+        delete: false,
+        other: false,
       },
     ],
     isEpandedd: false,
@@ -147,22 +221,34 @@ export const NavConstants = [
   },
   {
     title: "Parametre",
-        level: 1,
+
+    create: false,
+    update: false,
+    delete: false,
+    other: false,
+    display: false,
+    level: 1,
 
     items: [
       {
         label: "Gestion Zone",
         path: "/administration/parametre/zone",
-        display: true,
-            level: 2,
-
+        display: false,
+        level: 2,
+        create: false,
+        update: false,
+        delete: false,
+        other: false,
       },
       {
         label: "Gestion prix livraison",
         path: "/administration/parametre/prix-livraison",
-        display: true,
-            level: 2,
-
+        display: false,
+        level: 2,
+        create: false,
+        update: false,
+        delete: false,
+        other: false,
       },
     ],
     isEpandedd: false,
