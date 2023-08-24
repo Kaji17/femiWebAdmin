@@ -45,4 +45,9 @@ export class SidebarComponent implements OnInit {
   toggleExpansion(index) {
     this.menuItems[index].isEpandedd = !this.menuItems[index].isEpandedd;
   }
+  
+  logOut(){
+    localStorage.removeItem("user_info")
+    localStorage.removeItem("user_email")
+  }
 }

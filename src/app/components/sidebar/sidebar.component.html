@@ -86,7 +86,7 @@
             <span>Parametre</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a [routerLink]="['/session/login']" class="dropdown-item">
+          <a [routerLink]="['/session/login']" (click)="logOut()" class="dropdown-item">
             <i class="ni ni-user-run"></i>
             <span>Déconnexion</span>
           </a>
