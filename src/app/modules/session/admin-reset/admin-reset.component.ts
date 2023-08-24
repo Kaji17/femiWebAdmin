@@ -40,7 +40,7 @@ export class AdminResetComponent implements OnInit, OnDestroy {
     this.formResetPassword = this.fb.group({
       otp: [
         "",
-        [Validators.required,Validators.pattern(/^\w{4}$/)],
+        [Validators.required],
       ],
       newpassword: [
         "",
@@ -63,7 +63,7 @@ export class AdminResetComponent implements OnInit, OnDestroy {
     if(bool){
       swal({
         title: "Success",
-        text: "Votre mot de passe à été modifier avec succès",
+        text: "Votre mot de passe à été réinitialiser avec succès",
         type: "success",
         buttonsStyling: false,
         confirmButtonClass: "btn btn-success",

@@ -39,7 +39,7 @@ export class AdminLoginComponent implements OnInit, OnDestroy {
   // Construction du formulaire
   buildForm() {
     this.loginForm = this.fb.group({
-      email: [
+      username: [
         "",
         [
           Validators.required,
