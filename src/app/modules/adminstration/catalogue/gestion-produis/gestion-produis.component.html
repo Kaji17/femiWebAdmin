@@ -124,8 +124,8 @@
               data-target="#modal-form"
               data-toggle="modal"
             >
-            <i class="ni ni-like-2 mr-2" style="font-size: 14px"></i>
-          </a>
+              <i class="ni ni-like-2 mr-2" style="font-size: 14px"></i>
+            </a>
             <a
               role="button"
               (click)="open(classic2, 'Notification', '')"
@@ -361,7 +361,7 @@
       </button>
     </div>
     <div class="modal-body">
-      <form class="row">
+      <form class="row" [formGroup]="formAddProduit">
         <div
           class="form-group row m-0 justify-content-between align-items-center mb-3"
           style="width: 100%"
@@ -374,6 +374,7 @@
             type="text"
             value="Savon tétrapleura"
             id="name-produit"
+            formControlName="nom"
           />
         </div>
         <div
@@ -383,7 +384,16 @@
           <label for="catégorie-produit" class="form-control-label col-md-4"
             >Catégorie <span class="text-danger">*</span></label
           >
-          <select
+          <!-- <ngx-select-dropdown
+            [instanceId]="'instance2'"
+            (change)="selectionChanged($event)"
+            formControlName="selectcategorie"
+            [multiple]="true"
+            [config]="config"
+            [options]="dropdownOptions"
+          ></ngx-select-dropdown> -->
+
+          <!-- <select
             class="btn btn-sm col form-control selectr-visible me-1 col-md-8"
             data-toggle="select"
             tabindex="-1"
@@ -394,17 +404,63 @@
             <option value="semaine">Cheveux</option>
             <option value="mois">Lotion</option>
             <option value="Année">Crème</option>
-          </select>
+          </select> -->
         </div>
 
         <div
           class="form-group row m-0 justify-content-between align-items-center mb-3"
           style="width: 100%"
         >
-          <label for="images" class="form-control-label col-md-4"
-            >Images <span class="text-danger">*</span></label
-          >
-          <input class="form-control col-md-8" type="file" id="imagest" />
+          <label for="catégorie-produit" class="form-control-label col-md-4"
+            >Image(s)<span class="text-danger"></span
+          ></label>
+          <input
+            #file2
+            type="file"
+            style="display: none"
+            (change)="loadFile($event)"
+            accept="image/png, image/gif, image/jpeg"
+          />
+          <div class="col-md-8">
+            <div class="row">
+              <div
+                (click)="file2.click()"
+                class="rounded border-primary border align-items-center p-1 col-md-3 m-1 row justify-content-center"
+                style="
+                  min-height: 100px;
+                  width: fit-content;
+                  border-style: dashed !important;
+                  background-color: #dee2e6;
+                  cursor: pointer;
+                "
+              >
+                <span><i class="fa-solid fa-plus"></i> UPLOAD</span>
+              </div>
+
+              <div
+                *ngFor="let image of fileTab"
+                class="col-md-3 m-1 rounded border align-items-center p-1 m-1 row justify-content-center"
+                [style]="'background-image: url(' + image + ')'"
+                style="
+                  position: relative;
+                  background-repeat: no-repeat;
+                  background-size: cover;
+                  min-height: 100px;
+                  width: 91px !important;
+                "
+              >
+                <i
+                  class="fa-solid fa-circle-xmark"
+                  style="
+                    position: absolute;
+                    color: #c32830;
+                    top: -7px;
+                    right: -10px;
+                  "
+                ></i>
+              </div>
+            </div>
+          </div>
         </div>
         <div
           class="form-group row m-0 justify-content-between align-items-center mb-3"
@@ -502,3 +558,4 @@
     </div>
   </div>
 </ng-template>
+

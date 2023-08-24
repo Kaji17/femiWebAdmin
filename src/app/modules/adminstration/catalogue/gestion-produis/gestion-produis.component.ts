@@ -17,6 +17,10 @@ import { Page } from "src/app/shared/model/page";
 import { BreadcrumbService } from "src/app/shared/services/breadcrumb.service";
 import Dropzone from "dropzone";
 import { Subscription } from "rxjs";
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { ProduitService } from "src/app/shared/services/produit.service";
+import { UtilisService } from "src/app/shared/services/utilis.service";
+import { CategorieService } from "src/app/shared/services/categorie.service";
 
 @Component({
   selector: "app-gestion-produis",
@@ -33,17 +37,33 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   closeResult: string;
 
   SelectionType = SelectionType;
+  file: any;
+  fileSrc: any = "";
+  background: boolean;
+  fileTab: any[] = [];
+  formAddProduit: FormGroup
+  dropdownOptions: string[] = [
+    "Savon",
+    "Savon",
+    "Savon"
+  ]
   constructor(
     private service: BreadcrumbService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private produitService : ProduitService,
+    private utilitisService: UtilisService,
+    private fb: FormBuilder,
+    private categorieService: CategorieService
   ) {
     this.page.pageNumber = 0;
     this.page.size = 20;
   }
 
   public SuscribeAllData: Subscription;
+  public SuscribeAllCategorie: Subscription;
   ngOnDestroy(): void {
     this.SuscribeAllData.unsubscribe;
+    this.SuscribeAllCategorie.unsubscribe;
   }
 
   page = new Page();
@@ -53,7 +73,13 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.setPage({ offset: 0 });
     let currentMultipleFile = undefined;
+    this.buildForm()
+    this.getAllCategorie()
     // multiple dropzone file - accepts any type of file
+  }
+
+  buildForm(){
+    // this.formAddProduit =this.fb
   }
 
   onAddProduit() {
@@ -85,16 +111,18 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   }
 
   setPage(pageInfo) {
-    this.SuscribeAllData=this.service.getApi({ page: pageInfo.offset + 1 }).subscribe({
-      next: (value) => {
-        this.page.pageNumber = pageInfo.offset;
-        this.page.size = 10;
-        this.page.totalElements = value.count;
-        this.page.totalPages = 9;
-        console.log("Appel Api", value.results);
-        this.temp = value.results;
-      },
-    });
+    this.SuscribeAllData = this.service
+      .getApi({ page: pageInfo.offset + 1 })
+      .subscribe({
+        next: (value) => {
+          this.page.pageNumber = pageInfo.offset;
+          this.page.size = 10;
+          this.page.totalElements = value.count;
+          this.page.totalPages = 9;
+          console.log("Appel Api", value.results);
+          this.temp = value.results;
+        },
+      });
   }
   getImage(): string[] {
     return this.rows.map((row) => row.films);
@@ -150,15 +178,20 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
           }
         );
     } else {
-      this.modalService.open(content, { centered: true }).result.then(
-        (result) => {
-          this.closeResult = "Closed with: " + result;
-        },
-        (reason) => {
-          this.closeResult = "Dismissed " + this.getDismissReason(reason);
-        }
-      );
+      this.modalService
+        .open(content, { centered: true, size: "lg" })
+        .result.then(
+          (result) => {
+            this.closeResult = "Closed with: " + result;
+          },
+          (reason) => {
+            this.closeResult = "Dismissed " + this.getDismissReason(reason);
+          }
+        );
     }
+    // this.modalRef.result.then(()=>{
+    //   console.log("yoy")
+    // })
   }
 
   close() {
@@ -180,4 +213,39 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   onDeleteProduit(id: number) {
     console.log("produits supprimer");
   }
+
+  // Charger les images
+  loadFile(event: any) {
+    let reader = new FileReader();
+    console.log("KK", reader);
+    this.file = event.target.files[0];
+
+    reader.readAsDataURL(this.file)
+    reader.onload = (e) => {
+      this.fileSrc = reader.result as string;
+      this.background = true;
+      this.fileTab.push(this.fileSrc);
+      console.log(this.fileTab);
+      console.log('e',e)
+      //  this.background = "bg-[url('"+this.fileSrc+"')]"
+    };
+    // let litem = parent.items.find(el=>item.label==el.label)
+    console.log("La table",this.fileTab);
+  }
+
+  deleteFile(){
+  }
+
+  getAllCategorie(){
+    this.SuscribeAllCategorie = this.categorieService.getAllCategorie(false).subscribe({
+      next: value=>{
+        console.log('val', value)
+      }
+    })
+  }
 }
+
+
+
+
+

@@ -12,6 +12,19 @@
       "ADMIN_GETALL_GET": "/klaman/v1/user/administrateur/getall",
       "ADMIN_OTP_GET": "/klaman/v1/user/administrateur/forgotpassword",
       "ADMIN_DEL_DEL": "/klaman/v1/user/administrateur/delete",
+
+      "comment ": "------------ OPERATIONS PRODUIT ---------------",
+      "PRODUIT_UPD_PUT": "/klaman/v1/vente/produit/update",
+      "PRODUIT_ADD_POST": "/klaman/v1/vente/produit/add",
+      "PRODUIT_GETALL_GET": "/klaman/v1/vente/produit/getall",
+      "PRODUIT_GETAVIS_GET": "/klaman/v1/vente/produit/avis",
+      "PRODUIT_DEL_DEL": "/klaman/v1/vente/produit/delete",
+
+      "comment ": "------------ OPERATIONS CATEGORIE ---------------",
+      "CATEGORIE_UPD_PUT": "/klaman/v1/vente/categorie/update",
+      "CATEGORIE_ADD_POST": "/klaman/v1/vente/categorie/add",
+      "CATEGORIE_GETALL_GET": "/klaman/v1/vente/categorie/getall",
+      "CATEGORIE_DEL_DEL": "/klaman/v1/vente/categorie/delete",
   
       "comment ": "----------- OPERATIONS BANIERE ---------------",
       "BANNIERE_UPD_PUT": "/klaman/v1/user/banniere/update",
