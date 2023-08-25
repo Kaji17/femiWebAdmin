@@ -85,17 +85,29 @@
         [checkboxable]="true"
       >
       </ngx-datatable-column>
-      <ngx-datatable-column name="Code" prop="id"></ngx-datatable-column>
-      <!-- <ngx-datatable-column name="Image" prop="imageproduits">
+      <ngx-datatable-column
+        name="Code"
+        prop="id"
+        [maxWidth]="60"
+      ></ngx-datatable-column>
+      <ngx-datatable-column name="Image" prop="imageproduits">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <img
             *ngIf="row.imageproduits.length"
             [src]="getImg(row.imageproduits[0].url)"
             alt="Image"
             style="max-height: 100px; max-width: 100px"
+            class="border rounded"
+          />
+          <img
+            *ngIf="!row.imageproduits.length"
+            src="assets/img/brand/undraw_Images_re_0kll.png"
+            alt="Image"
+            style="max-height: 100px; max-width: 100px"
+            class="border rounded"
           />
         </ng-template>
-      </ngx-datatable-column> -->
+      </ngx-datatable-column>
       <!-- <ngx-datatable-column name="Nom" prop="nom"></ngx-datatable-column> -->
       <ngx-datatable-column name="Produit" prop="nom"></ngx-datatable-column>
       <ngx-datatable-column
@@ -106,9 +118,12 @@
       </ngx-datatable-column>
       <ngx-datatable-column name="Réduction" prop="promotion">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <span *ngIf="row">
-            {{row.pourcentage}}%
+          <!-- <span *ngIf="row.promotion.pourcentage" class="badge badge-pill badge-default">
+            {{ row.promotion.pourcentage }}%
           </span>
+          <span *ngIf="!rowpromotion.pourcentage">
+            Aucune Promotion
+          </span> -->
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column name="Note moyenne" prop="notemoyenne">
@@ -119,18 +134,24 @@
       <ngx-datatable-column name="Création" prop="datecreation">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <span>
-            {{row.datecreation | date : "dd/MM/yyyy HH:mm:ss"}}
+            {{ row.datecreation | date : "dd/MM/yyyy HH:mm:ss" }}
           </span>
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column name="Statut" prop="statut">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <span class="badge badge-pill" ngClass="">
-            {{row.statut|uppercase}}
+          <span class="badge badge-pill badge-md badge-success" *ngIf="row.statut=='Accepté'">
+            {{ row.statut | uppercase }}
+          </span>
+          <span class="badge badge-pill badge-md badge-danger" *ngIf="row.statut=='Refusé'">
+            {{ row.statut | uppercase }}
+          </span>
+          <span class="badge badge-pill badge-md badge-warning" *ngIf="row.statut=='En attente'">
+            {{ row.statut | uppercase }}
           </span>
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="Code">
+      <ngx-datatable-column name="Actions">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <div>
             <a
@@ -151,9 +172,7 @@
             </a>
             <a
               role="button"
-              (click)="
-                onDeleteRow(row.id); open(classic2, 'Notification', '')
-              "
+              (click)="onDeleteRow(row.id); open(classic2, 'Notification', '')"
               data-target="#modal-form"
               data-toggle="modal"
             >

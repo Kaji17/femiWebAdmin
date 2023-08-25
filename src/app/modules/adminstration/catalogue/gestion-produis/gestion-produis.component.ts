@@ -263,6 +263,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
               console.log("produits supprimer");
               console.log(data);
               this.showNotification("success");
+              this.getAllProduit({pagination: true, page: 0, size:10});
             }
           });
         },
