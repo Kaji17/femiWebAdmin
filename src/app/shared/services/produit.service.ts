@@ -35,42 +35,18 @@ export class ProduitService {
       });
     }
     form.append("produitDto", JSON.stringify(produitDto));
-    return this.http.post(this.configService.getApi1("PRODUIT_ADD_POST"),form, {
-      observe: "response",
-      // params: form,
-    });
+    return this.http.post(
+      this.configService.getApi1("PRODUIT_ADD_POST"),
+      form,
+      {
+        observe: "response",
+        // params: form,
+      }
+    );
   }
 
   // GET ALL PRODUIT
-  public gettAllProduit(
-    obj:any,
-
-  ) 
-  {
-    // pagination: boolean,
-    // page?: number,
-    // size?: any,
-    // boutiqueid?: any,
-    // categorieid?: any,
-    // nom?: string
-  //   let data: any = {
-  //     pagination: pagination,
-  //   };
-  //   if (boutiqueid) {
-  //     data.boutiqueid = boutiqueid;
-  //   }
-  //   if (page) {
-  //     data.page = page;
-  //   }
-  //   if (size) {
-  //     data.size = boutiqueid;
-  //   }
-  //   if (categorieid) {
-  //     data.categorieid = categorieid;
-  //   }
-  //   if (nom) {
-  //     data.nom = nom;
-  //   }
+  public gettAllProduit(obj: any) {
     return this.http.get(this.configService.getApi1("PRODUIT_GETALL_GET"), {
       observe: "response",
       params: obj,
