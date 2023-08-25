@@ -10,7 +10,11 @@ import { ComponentsModule } from "src/app/components/components.module";
 import { NgxDatatableModule } from "@swimlane/ngx-datatable";
 import { TagInputModule } from "ngx-chips";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { SelectDropDownModule } from 'ngx-select-dropdown'
+import { SelectDropDownModule } from 'ngx-select-dropdown';
+import { ModalAddComponent } from './gestion-produis/modal-add/modal-add.component';
+import { ModalUpdateComponent } from './gestion-produis/modal-update/modal-update.component';
+import { ModalDeleteComponent } from './gestion-produis/modal-delete/modal-delete.component';
+import { ModalDetailsComponent } from './gestion-produis/modal-details/modal-details.component'
 
 
 @NgModule({
@@ -20,6 +24,10 @@ import { SelectDropDownModule } from 'ngx-select-dropdown'
     GestionProduisComponent,
     GestionCategorieComponent,
     GestionTypePackComponent,
+    ModalAddComponent,
+    ModalUpdateComponent,
+    ModalDeleteComponent,
+    ModalDetailsComponent,
   ],
   imports: [
     CommonModule,
