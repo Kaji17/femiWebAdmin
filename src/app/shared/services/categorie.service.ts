@@ -12,7 +12,7 @@ export class CategorieService {
   // UPDATE CATEGORIE
   public updateCategorie(id: any, obj: any) {
     return this.http.put(
-      this.configService.getApi("CATEGORIE_UPD_PUT") + "/" + id,
+      this.configService.getApi1("CATEGORIE_UPD_PUT") + "/" + id,
       obj,
       {
         observe: "response",
@@ -23,7 +23,7 @@ export class CategorieService {
   // ADD CATEGORIE
   public addCategorie(obj: any) {
     return this.http.post(
-      this.configService.getApi("CATEGORIE_ADD_POST"),
+      this.configService.getApi1("CATEGORIE_ADD_POST"),
       obj,
       {
         observe: "response",
@@ -33,15 +33,26 @@ export class CategorieService {
 
   // GET ALL CATEGORIE
   public getAllCategorie(pagination: boolean, page?: number, size?: number) {
-    return this.http.get(this.configService.getApi("CATEGORIE_GETALL_GET"), {
+    let data: any ={
+      pagination: pagination
+    }
+    if (page) {
+      data.page =page
+    }
+    if (size) {
+      data.size =size
+    }
+
+    return this.http.get(this.configService.getApi1("CATEGORIE_GETALL_GET"), {
       observe: "response",
+      params: data
     });
   }
 
   // DELETE CATEGORIE
   public deleteCategorie(id: any) {
     return this.http.delete(
-      this.configService.getApi("CATEGORIE_DEL_DEL") + "/" + id,
+      this.configService.getApi1("CATEGORIE_DEL_DEL") + "/" + id,
       {
         observe: "response",
       }
