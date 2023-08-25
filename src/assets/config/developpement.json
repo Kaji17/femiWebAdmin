@@ -21,6 +21,13 @@
       "PRODUIT_GETAVIS_GET": "/klaman/v1/vente/produit/avis",
       "PRODUIT_DEL_DEL": "/klaman/v1/vente/produit/delete",
 
+
+      "comment ": "------------ OPERATIONS IMAGES PRODUIT ---------------",
+      "IMGPRODUIT_UPD_PUT": "/klaman/v1/vente/imageproduit/update",
+      "IMGPRODUIT_ADD_POST": "/klaman/v1/vente/imageproduit/add",
+      "IMGPRODUIT_GETALL_GET": "/klaman/v1/vente/imageproduit/getall",
+      "IMGPRODUIT_DEL_DEL": "/klaman/v1/vente/imageproduit/delete",
+
       "comment ": "------------ OPERATIONS CATEGORIE ---------------",
       "CATEGORIE_UPD_PUT": "/klaman/v1/vente/categorie/update",
       "CATEGORIE_ADD_POST": "/klaman/v1/vente/categorie/add",
