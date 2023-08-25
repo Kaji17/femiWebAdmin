@@ -42,6 +42,7 @@
     "ngx-bootstrap-icons": "^1.9.2",
     "ngx-chips": "^3.0.0",
     "ngx-clipboard": "15.0.1",
+    "ngx-select-dropdown": "^3.3.1",
     "ngx-sweetalert2": "^0.2.7",
     "ngx-toastr": "14.2.2",
     "nouislider": "15.5.1",

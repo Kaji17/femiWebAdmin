@@ -16,6 +16,7 @@ import { DashboardModule } from "./modules/adminstration/dashboard/dashboard.mod
 import { registerLocaleData } from '@angular/common';
 import * as fr from '@angular/common/locales/fr';
 import { ToastrModule } from 'ngx-toastr';
+import { SelectDropDownModule } from 'ngx-select-dropdown'
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { ToastrModule } from 'ngx-toastr';
     AppRoutingModule,
     DashboardModule,
     ToastrModule.forRoot(),
+    SelectDropDownModule
   ],
   declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent],
   providers: [{provide: LOCALE_ID, useValue: 'fr-FR'}],

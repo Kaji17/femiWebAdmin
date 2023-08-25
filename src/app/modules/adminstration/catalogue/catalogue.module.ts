@@ -8,10 +8,10 @@ import { GestionCategorieComponent } from "./gestion-categorie/gestion-categorie
 import { GestionTypePackComponent } from "./gestion-type-pack/gestion-type-pack.component";
 import { ComponentsModule } from "src/app/components/components.module";
 import { NgxDatatableModule } from "@swimlane/ngx-datatable";
-import { RouterModule } from "@angular/router";
 import { TagInputModule } from "ngx-chips";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations"; // this is needed!
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { SelectDropDownModule } from 'ngx-select-dropdown'
+
 
 @NgModule({
   declarations: [
@@ -28,7 +28,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
     NgxDatatableModule,
     TagInputModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SelectDropDownModule
   ],
 })
 export class CatalogueModule {}

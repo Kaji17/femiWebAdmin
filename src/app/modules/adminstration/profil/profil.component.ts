@@ -156,6 +156,7 @@ export class ProfilComponent implements OnInit, OnDestroy {
               this.infoSwal(false);
             } else {
               this.infoSwal(true);
+              this.loading1 = false;
             }
           });
         },
