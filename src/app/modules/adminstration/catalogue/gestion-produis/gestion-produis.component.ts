@@ -27,9 +27,7 @@ import { Configurable } from "src/app/core/config";
   templateUrl: "./gestion-produis.component.html",
   styleUrls: ["./gestion-produis.component.scss"],
 })
-
 export class GestionProduisComponent implements OnInit, OnDestroy {
-
   public focus;
   entries: number = 10;
   selected: any[] = [];
@@ -39,11 +37,18 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   closeResult: string;
 
   SelectionType = SelectionType;
+  
   file: any;
   fileSrc: any = "";
   background: boolean;
   fileTab: any[] = [];
   fileTabSrc: any[] = [];
+
+  fileUpdate: any;
+  fileSrcUpdate: any = "";
+  fileTabUpdate: any[] = [];
+  fileTabSrcUpdate: any[] = [];
+
   formAddProduit: FormGroup;
   dropdownOptions: string[] = ["Savon", "Savon", "Savon"];
   listCategorie: any[] = [];
@@ -54,13 +59,15 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   loadingupdate: boolean = false;
   idProduitSelect: any;
   formUpdate: FormGroup;
-  totalElementNumber: number
-  totalPage: number
+  totalElementNumber: number;
+  totalPage: number;
 
   totalElements: number;
   pageNumber: number;
   cache: any = {};
   isLoading = 0;
+
+  rowSelected: any;
 
   config = {
     // displayFn:(item: any) => { return item.hello.world; }, //to support flexible text displaying for each item
@@ -82,7 +89,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private configService: Configurable
   ) {
-    this.pageNumber=0
+    this.pageNumber = 0;
     this.page.size = 10;
     this.infoUser = JSON.parse(localStorage.getItem("user_info"));
   }
@@ -106,7 +113,11 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     let currentMultipleFile = undefined;
     this.buildForm();
     this.getAllCategorie();
-    this.getAllProduit({pagination: true, page: this.page.pageNumber, size:this.page.size});
+    this.getAllProduit({
+      pagination: true,
+      page: this.page.pageNumber,
+      size: this.page.size,
+    });
   }
 
   buildForm() {
@@ -122,7 +133,30 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     });
   }
 
-  buildFormUpdate(id: number) {}
+  buildFormUpdate() {
+    let data:any= {}
+    data = this.rowSelected
+    // this.rowSelected?data=this.rowSelected:''
+    this.formUpdate = this.fb.group({
+      nom: [data&&data.nom?data.nom:"", Validators.required],
+      caracteristique: [data&&data.caracteristique?data.caracteristique:""],
+      description: [data&&data.description?data.description:""],
+      positionaffichage: [""],
+      prix: [data&&data.prix?data.prix:0, Validators.required],
+      quantite: [data&&data.quantite?data.quantite:1],
+      categorieid: ["", Validators.required],
+      boutiqueid: [this.infoUser.body.boutique.id, Validators.required],
+    });
+
+    let tab = data.imageproduits
+    this.fileTabUpdate= []
+    tab.map((el)=>{
+      this.fileTabUpdate.push(this.getImg(el.url))
+    })
+
+    console.log("======Table Pour modication", this.fileTabUpdate)
+
+  }
 
   onAddProduit() {
     console.log("Ajout effectuer");
@@ -154,9 +188,13 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
 
   // INSERER LES DONNEES DU TABLEAU
   setPage(pageInfo) {
-    this.page.pageNumber = pageInfo.offset
+    this.page.pageNumber = pageInfo.offset;
     console.log("=====pageInfo", this.page);
-    this.getAllProduit({pagination: true, page: this.page.pageNumber, size:this.page.size})
+    this.getAllProduit({
+      pagination: true,
+      page: this.page.pageNumber,
+      size: this.page.size,
+    });
   }
 
   getImage(): string[] {
@@ -186,7 +224,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   }
 
   // OUVRIR LES MODALS
-  open(content, type, modalDimension, event?:any) {
+  open(content, type, modalDimension, event?: any) {
     if (modalDimension === "sm" && type === "modal_mini") {
       this.modalService
         .open(content, {
@@ -263,7 +301,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
               console.log("produits supprimer");
               console.log(data);
               this.showNotification("success");
-              this.getAllProduit({pagination: true, page: 0, size:10});
+              this.getAllProduit({ pagination: true, page: 0, size: 10 });
             }
           });
         },
@@ -275,6 +313,26 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   loadFile(event: any) {
     let reader = new FileReader();
     console.log("KK", reader);
+    this.file = event.target.files[0];
+
+    this.fileTab.push(this.file);
+    reader.readAsDataURL(this.file);
+    reader.onload = (e) => {
+      this.fileSrc = reader.result as string;
+      this.background = true;
+      this.fileTabSrc.push(this.fileSrc);
+      console.log("e", e);
+      //  this.background = "bg-[url('"+this.fileSrc+"')]"
+    };
+
+    console.log("La table src", this.fileTab);
+    console.log("La table", this.fileSrc);
+  }
+
+   // Charger les images
+   loadFileUpdate(event: any) {
+    let reader = new FileReader();
+    console.log("JJ", reader);
     this.file = event.target.files[0];
 
     this.fileTab.push(this.file);
@@ -324,6 +382,18 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
       this.formAddProduit.value.categorieid.id;
     console.log("========res", this.formAddProduit.value);
     this.addproduit(this.formAddProduit.value, this.fileTab);
+    this.getAllProduit({
+      pagination: true,
+      page: this.page.pageNumber,
+      size: this.page.size,
+    });
+    this.fileTabSrc = []
+    this.fileTab = []
+  }
+
+  handleOk1(){
+    this.fileTabSrc = []
+    this.fileTab = []
   }
 
   // RECUPERER TOUTE LES PRODUITS
@@ -455,8 +525,9 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   }
   // Recupere Id de la ligne selectionner a supprimer
   onUpdateRow(row: any) {
-    console.log("=======Row", row);
-    this.idProduitSelect = row;
+    console.log("=======RowFOrUpdate", row);
+    this.rowSelected = row;
+    this.buildFormUpdate()
   }
 
   onGetRow(row: any) {}
@@ -470,8 +541,8 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     }
   }
 
-  // GET ALL PRODUIT  
-  getAllProduit(obj:any){
+  // GET ALL PRODUIT
+  getAllProduit(obj: any) {
     this.SuscribeAllData = this.produitService.gettAllProduit(obj).subscribe({
       next: (data) => {
         this.utilitisService.response(data, (d: any) => {
@@ -479,7 +550,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
           if (data.status == 200) {
             this.page.size = d.body.size;
             this.page.pageNumber = d.body.number;
-            this.page.totalElements= d.body.totalElements;
+            this.page.totalElements = d.body.totalElements;
             this.totalPage = d.body.totalPages;
             this.temp = d.body.content;
             console.log("======CONTENT", d);
@@ -508,5 +579,21 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
         this.utilitisService.response(error, (d: any) => {});
       },
     });
+  }
+
+  onResetFile(){
+    this.fileSrc = []
+    this.fileTab =  []
+    this.file= {}
+  }
+
+  removeImg(image){
+    this.fileTabSrc = this.fileTabSrc.filter(chaine => chaine !== image)
+    console.log("======tab after del", this.fileTabSrc)
+  }
+
+  removeImgUpdate(image){
+    this.fileTabUpdate = this.fileTabUpdate.filter(chaine => chaine !== image)
+    console.log("======tab after del", this.fileTabUpdate)
   }
 }

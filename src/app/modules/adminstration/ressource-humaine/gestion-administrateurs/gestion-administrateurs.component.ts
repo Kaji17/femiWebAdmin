@@ -25,7 +25,7 @@ export class GestionAdministrateursComponent implements OnInit {
     private service: BreadcrumbService,
     private modalService: NgbModal
   ) {
-    this.page.pageNumber = 0;
+    // this.page.pageNumber = 0;
     this.page.size = 20;
   }
 
@@ -78,10 +78,10 @@ export class GestionAdministrateursComponent implements OnInit {
   setPage(pageInfo) {
     this.SuscribeAllData=this.service.getApi({ page: pageInfo.offset + 1 }).subscribe({
       next: (value) => {
-        this.page.pageNumber = pageInfo.offset;
-        this.page.size = 10;
-        this.page.totalElements = value.count;
-        this.page.totalPages = 9;
+        // this.page.pageNumber = pageInfo.offset;
+        // this.page.size = 10;
+        // this.page.totalElements = value.count;
+        // this.page.totalPages = 9;
         console.log("Appel Api", value.results);
         this.temp = value.results;
       },
