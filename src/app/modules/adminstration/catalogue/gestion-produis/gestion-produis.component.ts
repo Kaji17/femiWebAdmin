@@ -12,7 +12,7 @@ import {
   NgbModalRef,
 } from "@ng-bootstrap/ng-bootstrap";
 import { SelectionType } from "@swimlane/ngx-datatable";
-import { Page } from "src/app/shared/model/page";
+import { Page } from "src/app/shared/model/paged";
 import { BreadcrumbService } from "src/app/shared/services/breadcrumb.service";
 import { Subscription } from "rxjs";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
@@ -20,13 +20,16 @@ import { ProduitService } from "src/app/shared/services/produit.service";
 import { UtilisService } from "src/app/shared/services/utilis.service";
 import { CategorieService } from "src/app/shared/services/categorie.service";
 import { ToastrService } from "ngx-toastr";
+import { Configurable } from "src/app/core/config";
 
 @Component({
   selector: "app-gestion-produis",
   templateUrl: "./gestion-produis.component.html",
   styleUrls: ["./gestion-produis.component.scss"],
 })
+
 export class GestionProduisComponent implements OnInit, OnDestroy {
+
   public focus;
   entries: number = 10;
   selected: any[] = [];
@@ -40,6 +43,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   fileSrc: any = "";
   background: boolean;
   fileTab: any[] = [];
+  fileTabSrc: any[] = [];
   formAddProduit: FormGroup;
   dropdownOptions: string[] = ["Savon", "Savon", "Savon"];
   listCategorie: any[] = [];
@@ -47,9 +51,17 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   listAllProduit: any[] = [];
   listAffichage: any[] = [];
   loadingadd: boolean = false;
-  souscriptionAddproduit: Subscription;
+  loadingupdate: boolean = false;
   idProduitSelect: any;
-  formUpdate:  FormGroup
+  formUpdate: FormGroup;
+  totalElementNumber: number
+  totalPage: number
+
+  totalElements: number;
+  pageNumber: number;
+  cache: any = {};
+  isLoading = 0;
+
   config = {
     // displayFn:(item: any) => { return item.hello.world; }, //to support flexible text displaying for each item
     displayKey: "nom", //if objects array passed which key to be displayed defaults to description
@@ -57,7 +69,9 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     placeholder: this.listCategorie[0], // text to be displayed when no item is selected defaults to Select,
   };
   loadingdel: boolean = false;
+  souscriptionAddproduit: Subscription;
   souscriptionDelproduit: any;
+  souscriptionGetAllPromotion: any;
   constructor(
     private service: BreadcrumbService,
     private modalService: NgbModal,
@@ -65,20 +79,22 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     private utilitisService: UtilisService,
     private fb: FormBuilder,
     private categorieService: CategorieService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private configService: Configurable
   ) {
-    this.page.pageNumber = 0;
-    this.page.size = 20;
+    this.pageNumber=0
+    this.page.size = 10;
     this.infoUser = JSON.parse(localStorage.getItem("user_info"));
   }
 
   public SuscribeAllData: Subscription;
   public SuscribeAllCategorie: Subscription;
   ngOnDestroy(): void {
-    this.SuscribeAllData.unsubscribe;
-    this.SuscribeAllCategorie.unsubscribe;
-    this.loadingadd ? this.souscriptionAddproduit.unsubscribe : "";
-    this.loadingdel ? this.souscriptionDelproduit.unsubscribe : "";
+    this.SuscribeAllData.unsubscribe();
+    this.SuscribeAllCategorie.unsubscribe();
+    this.loadingadd ? this.souscriptionAddproduit.unsubscribe() : "";
+    this.loadingdel ? this.souscriptionDelproduit.unsubscribe() : "";
+    this.loadingupdate ? this.souscriptionGetAllPromotion.unsubscribe() : "";
   }
 
   page = new Page();
@@ -86,35 +102,27 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   @ViewChild("dropzone", { static: true }) dropzoneElement: ElementRef;
 
   ngOnInit(): void {
-    this.setPage({ offset: 0 });
+    // this.setPage({ pagination: true, page: 0});
     let currentMultipleFile = undefined;
     this.buildForm();
     this.getAllCategorie();
-    this.getAllProduit();
+    this.getAllProduit({pagination: true, page: this.page.pageNumber, size:this.page.size});
   }
 
   buildForm() {
     this.formAddProduit = this.fb.group({
       nom: ["", Validators.required],
       caracteristique: [""],
-      datecreation: [""],
-      datevalidation: [""],
       description: [""],
-      enable: [false],
-      notecounter: [0],
-      notesum: [0],
-      notemoyenne: [0],
       positionaffichage: [0],
       prix: [0],
       quantite: [1],
-      statut: [""],
-      selectcategorie: ["", Validators.required],
-      boutique: [this.infoUser.body.boutique, Validators.required],
+      categorieid: ["", Validators.required],
+      boutiqueid: [this.infoUser.body.boutique.id, Validators.required],
     });
   }
 
-  buildFormUpdate(id: number){
-  }
+  buildFormUpdate(id: number) {}
 
   onAddProduit() {
     console.log("Ajout effectuer");
@@ -146,18 +154,9 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
 
   // INSERER LES DONNEES DU TABLEAU
   setPage(pageInfo) {
-    this.SuscribeAllData = this.service
-      .getApi({ page: pageInfo.offset + 1 })
-      .subscribe({
-        next: (value) => {
-          this.page.pageNumber = pageInfo.offset;
-          this.page.size = 10;
-          this.page.totalElements = value.count;
-          this.page.totalPages = 9;
-          console.log("Appel Api", value.results);
-          this.temp = value.results;
-        },
-      });
+    this.page.pageNumber = pageInfo.offset
+    console.log("=====pageInfo", this.page);
+    this.getAllProduit({pagination: true, page: this.page.pageNumber, size:this.page.size})
   }
 
   getImage(): string[] {
@@ -187,7 +186,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   }
 
   // OUVRIR LES MODALS
-  open(content, type, modalDimension) {
+  open(content, type, modalDimension, event?:any) {
     if (modalDimension === "sm" && type === "modal_mini") {
       this.modalService
         .open(content, {
@@ -258,12 +257,12 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
             console.log(d);
             if (data.status == 204) {
               console.log("Le produit avec l'id:", id, " n'existe");
-            }else if(data.status == 400){
+            } else if (data.status == 400) {
               console.log("Verifier l'id renseigner");
-            }else{
+            } else {
               console.log("produits supprimer");
               console.log(data);
-              this.showNotification("success")
+              this.showNotification("success");
             }
           });
         },
@@ -277,17 +276,18 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     console.log("KK", reader);
     this.file = event.target.files[0];
 
+    this.fileTab.push(this.file);
     reader.readAsDataURL(this.file);
     reader.onload = (e) => {
       this.fileSrc = reader.result as string;
       this.background = true;
-      this.fileTab.push(this.fileSrc);
-      console.log(this.fileTab);
+      this.fileTabSrc.push(this.fileSrc);
       console.log("e", e);
       //  this.background = "bg-[url('"+this.fileSrc+"')]"
     };
-    // let litem = parent.items.find(el=>item.label==el.label)
-    console.log("La table", this.fileTab);
+
+    console.log("La table src", this.fileTab);
+    console.log("La table", this.fileSrc);
   }
 
   deleteFile() {}
@@ -319,49 +319,50 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
 
   // VALIDER AJOUT PRODUIT
   handleOk() {
-    this.formAddProduit.value.files = this.fileTab;
+    this.formAddProduit.value.categorieid =
+      this.formAddProduit.value.categorieid.id;
     console.log("========res", this.formAddProduit.value);
-    this.addproduit(this.formAddProduit.value, this.formAddProduit.value.files);
+    this.addproduit(this.formAddProduit.value, this.fileTab);
   }
 
   // RECUPERER TOUTE LES PRODUITS
-  getAllProduit() {
-    this.SuscribeAllCategorie = this.produitService
-      .gettAllProduit(false, this.infoUser.body.boutique.id)
-      .subscribe({
-        next: (data) => {
-          this.utilitisService.response(data, (d: any) => {
-            console.log(d);
-            if (data.status == 200) {
-              // this.listCategorie = data.body
-              let lis: any[] = [];
-              let lisAff: any[] = [];
-              let nbr = 0;
-              lis = d.body;
-              this.listAllProduit = lis;
-              this.listAllProduit.map((el) => {
-                nbr = nbr + 1;
-                lisAff.push(nbr);
-              });
-              lisAff.length == 0
-                ? this.listAffichage.push(1)
-                : (this.listAffichage = lisAff);
-              console.log(this.listAffichage);
-            } else {
-              console.log("erreur", d);
-            }
-          });
-        },
-        error: (error) => {
-          this.utilitisService.response(error, (d: any) => {});
-        },
-      });
+  // getAllProduit() {
+  //   this.SuscribeAllCategorie = this.produitService
+  //     .gettAllProduit(true, this.infoUser.body.boutique.id)
+  //     .subscribe({
+  //       next: (data) => {
+  //         this.utilitisService.response(data, (d: any) => {
+  //           console.log(d);
+  //           if (data.status == 200) {
+  //             // this.listCategorie = data.body
+  //             let lis: any[] = [];
+  //             let lisAff: any[] = [];
+  //             let nbr = 0;
+  //             lis = d.body;
+  //             this.listAllProduit = lis;
+  //             this.listAllProduit.map((el) => {
+  //               nbr = nbr + 1;
+  //               lisAff.push(nbr);
+  //             });
+  //             this.listAllProduit.push(this.listAllProduit.length+1)
+  //             lisAff.length == 0
+  //               ? this.listAffichage.push(1)
+  //               : (this.listAffichage = lisAff);
+  //             console.log(this.listAffichage);
+  //           } else {
+  //             console.log("erreur", d);
+  //           }
+  //         });
+  //       },
+  //       error: (error) => {
+  //         this.utilitisService.response(error, (d: any) => {});
+  //       },
+  //     });
+  // }
+
+  getProduitById(id) {
+    this.loadingupdate = true;
   }
-
-  getProduitById(id){
-
-  }
-
 
   // AJOUTER UN PRODUIT
   addproduit(obj, file?: any[]) {
@@ -373,8 +374,10 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
           this.utilitisService.response(data, (d: any) => {
             this.loadingadd = false;
             console.log(d);
-            if (d.status == 200) {
+            if (d.status == 201) {
               this.showNotification("success");
+              this.buildForm();
+              this.fileTab = [];
             }
           });
         },
@@ -444,13 +447,65 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Recupere Id de la ligne selectionner
+  // Recupere Id de la ligne selectionner a supprimer
   onDeleteRow(row: any) {
     console.log("=======Row", row);
     this.idProduitSelect = row;
   }
+  // Recupere Id de la ligne selectionner a supprimer
+  onUpdateRow(row: any) {
+    console.log("=======Row", row);
+    this.idProduitSelect = row;
+  }
 
-  onGetRow(row: any){
+  onGetRow(row: any) {}
 
+  getImg(src: string) {
+    if (src) {
+      return src.replace(
+        this.configService.get("imgVar"),
+        this.configService.get("imgHttp")
+      ) as any;
+    }
+  }
+
+  // GET ALL PRODUIT  
+  getAllProduit(obj:any){
+    this.SuscribeAllData = this.produitService.gettAllProduit(obj).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log(d);
+          if (data.status == 200) {
+            this.page.size = d.body.size;
+            this.page.pageNumber = d.body.number;
+            this.page.totalElements= d.body.totalElements;
+            this.totalPage = d.body.totalPages;
+            this.temp = d.body.content;
+            console.log("======CONTENT", d);
+
+            let lis: any[] = [];
+            let lisAff: any[] = [];
+            let nbr = 0;
+            lis = d.body;
+            this.listAllProduit = this.temp;
+            this.listAllProduit.map((el) => {
+              nbr = nbr + 1;
+              lisAff.push(nbr);
+            });
+            lisAff.push(lisAff.length + 1);
+            // this.listAllProduit.push(this.listAllProduit.length+1)
+            lisAff.length == 0
+              ? this.listAffichage.push(1)
+              : (this.listAffichage = lisAff);
+            console.log(this.listAffichage);
+          } else {
+            console.log("erreur", d);
+          }
+        });
+      },
+      error: (error) => {
+        this.utilitisService.response(error, (d: any) => {});
+      },
+    });
   }
 }

@@ -85,34 +85,57 @@
         [checkboxable]="true"
       >
       </ngx-datatable-column>
-      <ngx-datatable-column name="Name"></ngx-datatable-column>
-      <ngx-datatable-column name="Image">
+      <ngx-datatable-column name="Code" prop="id"></ngx-datatable-column>
+      <!-- <ngx-datatable-column name="Image" prop="imageproduits">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <img
-            *ngIf="row.homeworld"
-            [src]="row.homeworld"
+            *ngIf="row.imageproduits.length"
+            [src]="getImg(row.imageproduits[0].url)"
             alt="Image"
             style="max-height: 100px; max-width: 100px"
           />
         </ng-template>
+      </ngx-datatable-column> -->
+      <!-- <ngx-datatable-column name="Nom" prop="nom"></ngx-datatable-column> -->
+      <ngx-datatable-column name="Produit" prop="nom"></ngx-datatable-column>
+      <ngx-datatable-column
+        name="Categorie"
+        prop="categorie.nom"
+      ></ngx-datatable-column>
+      <ngx-datatable-column name="Prix unitaire (FCFA)" prop="prix">
       </ngx-datatable-column>
-      <ngx-datatable-column name="Produit"></ngx-datatable-column>
-      <ngx-datatable-column name="Categorie"></ngx-datatable-column>
-      <ngx-datatable-column name="Réduction"></ngx-datatable-column>
-      <ngx-datatable-column name="Prix unitaire"></ngx-datatable-column>
-      <ngx-datatable-column name="Dexcription"></ngx-datatable-column>
-      <ngx-datatable-column name="Note">
+      <ngx-datatable-column name="Réduction" prop="promotion">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <app-star-rating [note]="5"></app-star-rating>
+          <span *ngIf="row">
+            {{row.pourcentage}}%
+          </span>
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="Création"></ngx-datatable-column>
+      <ngx-datatable-column name="Note moyenne" prop="notemoyenne">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <app-star-rating [note]="row"></app-star-rating>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Création" prop="datecreation">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span>
+            {{row.datecreation | date : "dd/MM/yyyy HH:mm:ss"}}
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Statut" prop="statut">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span class="badge badge-pill" ngClass="">
+            {{row.statut|uppercase}}
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
       <ngx-datatable-column name="Code">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <div>
             <a
               role="button"
-              (click)="open(classic1, '', 'sm')"
+              (click)="onUpdateRow(row.name); open(classic1, '', 'sm')"
               data-target="#modal-form"
               data-toggle="modal"
             >
@@ -129,7 +152,7 @@
             <a
               role="button"
               (click)="
-                open(classic2, 'Notification', ''); onDeleteRow(row.name)
+                onDeleteRow(row.id); open(classic2, 'Notification', '')
               "
               data-target="#modal-form"
               data-toggle="modal"
@@ -389,22 +412,11 @@
           >
           <ngx-select-dropdown
             [instanceId]="'instance2'"
-            formControlName="selectcategorie"
+            formControlName="categorieid"
             [config]="config"
             [options]="listCategorie"
             class="col-md-4 p-0"
           ></ngx-select-dropdown>
-
-          <!-- <select
-            class="btn btn-sm col form-control selectr-visible me-1 col-md-8"
-            data-toggle="select"
-            tabindex="-1"
-            aria-hidden="true"
-            data-gtm-form-interact-field-id="4"
-            formControlName="selectCategorie"
-          >
-            <option *ngFor="let item of listCategorie" [value]="item">{{item}}</option>
-          </select> -->
         </div>
 
         <div
@@ -424,6 +436,7 @@
           <div class="col-md-8">
             <div class="row">
               <div
+                *ngIf="this.fileTab.length < 4"
                 (click)="file2.click()"
                 class="rounded border-primary border align-items-center p-1 col-md-3 m-1 row justify-content-center"
                 style="
@@ -438,7 +451,7 @@
               </div>
 
               <div
-                *ngFor="let image of fileTab"
+                *ngFor="let image of fileTabSrc"
                 class="col-md-3 m-1 rounded border align-items-center p-1 m-1 row justify-content-center"
                 [style]="'background-image: url(' + image + ')'"
                 style="
@@ -474,20 +487,6 @@
             type="number"
             id="prix-produit"
             formControlName="prix"
-          />
-        </div>
-        <div
-          class="form-group row m-0 justify-content-between align-items-center mb-3"
-          style="width: 100%"
-        >
-          <label for="prix-promotion" class="form-control-label col-md-4"
-            >Taux réduction</label
-          >
-          <input
-            class="form-control col-md-8"
-            type="text"
-            value="30%"
-            id="prix-promotion"
           />
         </div>
         <div
@@ -537,7 +536,7 @@
     <div class="modal-footer">
       <button
         type="button"
-        (click)="handleOk()"
+        (click)="handleOk(); c('Close click')"
         class="btn btn-primary"
         data-dismiss="modal"
       >

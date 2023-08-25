@@ -43,34 +43,37 @@ export class ProduitService {
 
   // GET ALL PRODUIT
   public gettAllProduit(
-    pagination: boolean,
-    boutiqueid?: number,
-    page?: number,
-    size?: number,
-    categorieid?: number,
-    nom?: string
-  ) {
-    let data: any = {
-      pagination: pagination,
-    };
-    if (boutiqueid) {
-      data.boutiqueid = boutiqueid;
-    }
-    if (page) {
-      data.page = page;
-    }
-    if (size) {
-      data.size = boutiqueid;
-    }
-    if (categorieid) {
-      data.categorieid = categorieid;
-    }
-    if (nom) {
-      data.nom = nom;
-    }
+    obj:any,
+
+  ) 
+  {
+    // pagination: boolean,
+    // page?: number,
+    // size?: any,
+    // boutiqueid?: any,
+    // categorieid?: any,
+    // nom?: string
+  //   let data: any = {
+  //     pagination: pagination,
+  //   };
+  //   if (boutiqueid) {
+  //     data.boutiqueid = boutiqueid;
+  //   }
+  //   if (page) {
+  //     data.page = page;
+  //   }
+  //   if (size) {
+  //     data.size = boutiqueid;
+  //   }
+  //   if (categorieid) {
+  //     data.categorieid = categorieid;
+  //   }
+  //   if (nom) {
+  //     data.nom = nom;
+  //   }
     return this.http.get(this.configService.getApi1("PRODUIT_GETALL_GET"), {
       observe: "response",
-      params: data,
+      params: obj,
     });
   }
 
