@@ -140,13 +140,22 @@
       </ngx-datatable-column>
       <ngx-datatable-column name="Statut" prop="statut">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <span class="badge badge-pill badge-md badge-success" *ngIf="row.statut=='Accepté'">
+          <span
+            class="badge badge-pill badge-md badge-success"
+            *ngIf="row.statut == 'Accepté'"
+          >
             {{ row.statut | uppercase }}
           </span>
-          <span class="badge badge-pill badge-md badge-danger" *ngIf="row.statut=='Refusé'">
+          <span
+            class="badge badge-pill badge-md badge-danger"
+            *ngIf="row.statut == 'Refusé'"
+          >
             {{ row.statut | uppercase }}
           </span>
-          <span class="badge badge-pill badge-md badge-warning" *ngIf="row.statut=='En attente'">
+          <span
+            class="badge badge-pill badge-md badge-warning"
+            *ngIf="row.statut == 'En attente'"
+          >
             {{ row.statut | uppercase }}
           </span>
         </ng-template>
@@ -160,7 +169,15 @@
               data-target="#modal-form"
               data-toggle="modal"
             >
-              <i class="fa-solid fa-pen-to-square mr-2"></i>
+              <i class="fa-solid fa-pen-to-square mr-2 text-primary fs-5"></i>
+            </a>
+            <a
+              role="button"
+              (click)="onUpdateImgRow(row); openEditImages(row)"
+              data-target="#modal-form"
+              data-toggle="modal"
+            >
+              <i class="fa-solid fa-image mr-2 text-info fs-5"></i>
             </a>
             <a
               role="button"
@@ -168,7 +185,7 @@
               data-target="#modal-form"
               data-toggle="modal"
             >
-              <i class="fa-regular fa-eye mr-2"></i>
+              <i class="fa-regular fa-eye mr-2 text-warning fs-5"></i>
             </a>
             <a
               role="button"
@@ -176,7 +193,7 @@
               data-target="#modal-form"
               data-toggle="modal"
             >
-              <i class="fa-solid fa-trash-can text-danger mr-2"></i>
+              <i class="fa-solid fa-trash-can text-danger mr-2 fs-5"></i>
             </a>
           </div>
         </ng-template>
@@ -482,7 +499,7 @@
                 "
               >
                 <i
-                (click)="removeImg(image)"
+                  (click)="removeImg(image)"
                   class="fa-solid fa-circle-xmark"
                   style="
                     position: absolute;
@@ -568,7 +585,7 @@
         type="button"
         class="btn btn-link ml-auto"
         data-dismiss="modal"
-        (click)="c('Close click');onResetFile()"
+        (click)="c('Close click'); onResetFile()"
       >
         Annuler
       </button>
@@ -623,7 +640,7 @@
             class="col-md-4 p-0"
           ></ngx-select-dropdown>
         </div>
-
+        <!-- 
         <div
           class="form-group row m-0 justify-content-between align-items-center mb-3"
           style="width: 100%"
@@ -667,20 +684,10 @@
                   width: 91px !important;
                 "
               >
-                <i
-                (click)="removeImg(image)"
-                  class="fa-solid fa-circle-xmark"
-                  style="
-                    position: absolute;
-                    color: #c32830;
-                    top: -7px;
-                    right: -10px;
-                  "
-                ></i>
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         <div
           class="form-group row m-0 justify-content-between align-items-center mb-3"
           style="width: 100%"
@@ -756,6 +763,100 @@
         (click)="c('Close click'); onResetFile()"
       >
         Annuler
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #classic4 let-c="close" let-d="dismiss">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-title-default">
+        Modifier Images Produit
+      </h4>
+      <hr class="my-4" />
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+        (click)="d('Cross click')"
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form class="row">
+        <div
+          *ngIf="this.fileSrcUpdate.length < 4"
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="catégorie-produit" class="form-control-label col-md-5"
+            >Ajouter Image<span class="text-danger"></span
+          ></label>
+          <input
+            #file4
+            type="file"
+            style="display: none"
+            (change)="loadFileUpdate($event, 'u')"
+            accept="image/png, image/gif, image/jpeg"
+          />
+          <div class="col-md-7">
+            <div
+              (click)="file4.click()"
+              class="rounded border-primary border align-items-center p-1 col-md-7 m-1 row justify-content-center"
+              style="
+                min-height: 100px;
+                width: fit-content;
+                border-style: dashed !important;
+                background-color: #dee2e6;
+                cursor: pointer;
+              "
+            >
+              <span><i class="fa-solid fa-plus"></i> UPLOAD</span>
+            </div>
+          </div>
+        </div>
+        <div
+          *ngFor="let image of fileSrcUpdate"
+          class="form-group row m-0 align-items-center mb-3"
+          style="width: 100%"
+        >
+          <div
+            class="col-md-5 m-1 rounded border align-items-center p-1 m-1 row justify-content-center"
+            [style]="'background-image: url(' + image + ')'"
+            style="
+              position: relative;
+              background-repeat: no-repeat;
+              background-size: cover;
+              min-height: 100px;
+              width: 91px !important;
+            "
+          ></div>
+          <div class="form-control-label row col-md-7">
+            <button class="col-md-16 btn btn-info mb-2">
+              Modifier
+              <input
+                #file5
+                type="file"
+                style="display: none"
+                
+                accept="image/png, image/gif, image/jpeg"
+              /></button
+            ><button class="col-md-16 btn btn-danger mb-2">Supprimer</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        (click)="c('Close click')"
+        class="btn btn-primary"
+        data-dismiss="modal"
+      >
+        Ok
       </button>
     </div>
   </div>

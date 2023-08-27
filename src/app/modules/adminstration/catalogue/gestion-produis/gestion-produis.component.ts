@@ -21,6 +21,8 @@ import { UtilisService } from "src/app/shared/services/utilis.service";
 import { CategorieService } from "src/app/shared/services/categorie.service";
 import { ToastrService } from "ngx-toastr";
 import { Configurable } from "src/app/core/config";
+import { ImageProduitService } from "src/app/shared/services/image-produit.service";
+import { ModalImagesProduitComponent } from "./modal-images-produit/modal-images-produit.component";
 
 @Component({
   selector: "app-gestion-produis",
@@ -37,7 +39,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   closeResult: string;
 
   SelectionType = SelectionType;
-  
+
   file: any;
   fileSrc: any = "";
   background: boolean;
@@ -48,6 +50,11 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   fileSrcUpdate: any = "";
   fileTabUpdate: any[] = [];
   fileTabSrcUpdate: any[] = [];
+
+  fileChange: any;
+  fileSrcChange: any = "";
+  fileTabChange: any[] = [];
+  fileTabSrcChange: any[] = [];
 
   formAddProduit: FormGroup;
   dropdownOptions: string[] = ["Savon", "Savon", "Savon"];
@@ -87,21 +94,24 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private categorieService: CategorieService,
     private toastr: ToastrService,
-    private configService: Configurable
+    private configService: Configurable,
+    private imgProduit: ImageProduitService
   ) {
-    this.pageNumber = 0;
+    this.page.pageNumber = 0;
     this.page.size = 10;
     this.infoUser = JSON.parse(localStorage.getItem("user_info"));
   }
 
   public SuscribeAllData: Subscription;
   public SuscribeAllCategorie: Subscription;
+  // public SuscribeImGProduit: Subscription;
   ngOnDestroy(): void {
     this.SuscribeAllData.unsubscribe();
     this.SuscribeAllCategorie.unsubscribe();
     this.loadingadd ? this.souscriptionAddproduit.unsubscribe() : "";
     this.loadingdel ? this.souscriptionDelproduit.unsubscribe() : "";
     this.loadingupdate ? this.souscriptionGetAllPromotion.unsubscribe() : "";
+    // this.SuscribeImGProduit.unsubscribe();
   }
 
   page = new Page();
@@ -134,28 +144,30 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   }
 
   buildFormUpdate() {
-    let data:any= {}
-    data = this.rowSelected
+    let data: any = {};
+    data = this.rowSelected;
     // this.rowSelected?data=this.rowSelected:''
     this.formUpdate = this.fb.group({
-      nom: [data&&data.nom?data.nom:"", Validators.required],
-      caracteristique: [data&&data.caracteristique?data.caracteristique:""],
-      description: [data&&data.description?data.description:""],
+      nom: [data && data.nom ? data.nom : "", Validators.required],
+      caracteristique: [
+        data && data.caracteristique ? data.caracteristique : "",
+      ],
+      description: [data && data.description ? data.description : ""],
       positionaffichage: [""],
-      prix: [data&&data.prix?data.prix:0, Validators.required],
-      quantite: [data&&data.quantite?data.quantite:1],
+      prix: [data && data.prix ? data.prix : 0, Validators.required],
+      quantite: [data && data.quantite ? data.quantite : 1],
       categorieid: ["", Validators.required],
       boutiqueid: [this.infoUser.body.boutique.id, Validators.required],
     });
 
-    let tab = data.imageproduits
-    this.fileTabUpdate= []
-    tab.map((el)=>{
-      this.fileTabUpdate.push(this.getImg(el.url))
-    })
+    // this.getImageByProduitId({ produitid: data.id });
+    // let tab = data.imageproduits;
+    // this.fileTabUpdate.map((el) => {
+    //   tab.push(this.getImg(el.url));
+    // });
+    // this.fileTabUpdate =tab
 
-    console.log("======Table Pour modication", this.fileTabUpdate)
-
+    console.log("======Table Pour modication", this.fileTabUpdate);
   }
 
   onAddProduit() {
@@ -223,24 +235,27 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     }
   }
 
-  // OUVRIR LES MODALS
-  open(content, type, modalDimension, event?: any) {
-    if (modalDimension === "sm" && type === "modal_mini") {
-      this.modalService
-        .open(content, {
-          windowClass: "modal-mini",
-          size: "sm",
-          centered: true,
-        })
-        .result.then(
-          (result) => {
-            this.closeResult = "Closed with: " + result;
-          },
-          (reason) => {
-            this.closeResult = "Dismissed " + this.getDismissReason(reason);
-          }
-        );
-    } else if (modalDimension === "" && type === "Notification") {
+  // OUVRIR MODALS EDITS IMAGES
+  openEditImages(infoData: any) {
+    const modalRef = this.modalService.open(ModalImagesProduitComponent, {
+      windowClass: "modal-mini",
+      size: "sm",
+      centered: true,
+    });
+    modalRef.result.then(
+      (result) => {
+        this.closeResult = "Closed with: " + result;
+        console.log("yaaaa", this.closeResult);
+      },
+      (reason) => {
+        this.closeResult = "Dismissed " + this.getDismissReason(reason);
+      }
+    );
+    modalRef.componentInstance.infoDaTa = infoData;
+  }
+
+  open(content, type, modalDimension, event?: any, infoData?: any) {
+    if (modalDimension === "" && type === "Notification") {
       this.modalService
         .open(content, { windowClass: "modal-danger", centered: true })
         .result.then(
@@ -263,6 +278,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
           }
         );
     }
+    // this.modalRef.componentInstance.infoDaTa = infoData
     // this.modalRef.result.then(()=>{
     //   console.log("yoy")
     // })
@@ -310,7 +326,8 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   }
 
   // Charger les images
-  loadFile(event: any) {
+  loadFile(event: any, action?: string) {
+    // let id = this.rowSelected.id;
     let reader = new FileReader();
     console.log("KK", reader);
     this.file = event.target.files[0];
@@ -325,27 +342,66 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
       //  this.background = "bg-[url('"+this.fileSrc+"')]"
     };
 
+    // if (action == "u") {
+    //   console.log("Ice Spsiz", this.fileSrc);
+    //   this.addImageByProduitId(id, this.fileTab);
+    //   let obj: any = {
+    //     produitid: id,
+    //   };
+    //   this.getImageByProduitId(obj);
+    // }
     console.log("La table src", this.fileTab);
     console.log("La table", this.fileSrc);
   }
 
-   // Charger les images
-   loadFileUpdate(event: any) {
-    let reader = new FileReader();
-    console.log("JJ", reader);
-    this.file = event.target.files[0];
+  // Charger les images
+  loadFileUpdate(event: any) {
+    console.log("donnée du tab 1", this.fileTabUpdate);
 
-    this.fileTab.push(this.file);
-    reader.readAsDataURL(this.file);
+    let reader1 = new FileReader();
+    console.log("Js", reader1);
+    let id = this.rowSelected.id;
+    console.log("Id produit", id);
+    this.fileUpdate = event.target.files[0];
+
+    this.fileTabUpdate.push(this.fileUpdate);
+    console.log("donnée du tab 1 apprés ajout", this.fileTabUpdate);
+
+    reader1.readAsDataURL(this.fileUpdate);
+    reader1.onload = (e) => {
+      this.fileSrcUpdate = reader1.result as string;
+      console.log("e", e);
+
+      // this.background = true;
+      // this.fileTabSrc.push(this.fileSrc);
+      //  this.background = "bg-[url('"+this.fileSrc+"')]"
+    };
+
+    console.log("La table que j'envoie pour l'ajout", this.fileTabUpdate);
+    // this.addImageByProduitId(id, this.fileTabUpdate);
+  }
+
+  // Charger les images
+  loadFileChange(event: any) {
+    let id = this.rowSelected.id;
+    console.log("Id produit", id);
+    let reader = new FileReader();
+    console.log("Changed", reader);
+    this.fileChange = event.target.files[0];
+
+    // this.fileTabChange.push(this.file);
+    reader.readAsDataURL(this.fileChange);
     reader.onload = (e) => {
-      this.fileSrc = reader.result as string;
+      this.fileSrcChange = reader.result as string;
+      // this.UpdateImageByProduitId(id, { file: this.fileChange });
       this.background = true;
-      this.fileTabSrc.push(this.fileSrc);
+
+      this.fileTabUpdate.push(this.fileSrcChange);
       console.log("e", e);
       //  this.background = "bg-[url('"+this.fileSrc+"')]"
     };
 
-    console.log("La table src", this.fileTab);
+    console.log("La table src", this.fileChange);
     console.log("La table", this.fileSrc);
   }
 
@@ -381,19 +437,21 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     this.formAddProduit.value.categorieid =
       this.formAddProduit.value.categorieid.id;
     console.log("========res", this.formAddProduit.value);
+    console.log("=====tab de file", this.fileTab);
     this.addproduit(this.formAddProduit.value, this.fileTab);
     this.getAllProduit({
       pagination: true,
       page: this.page.pageNumber,
       size: this.page.size,
     });
-    this.fileTabSrc = []
-    this.fileTab = []
+    this.fileTabSrc = [];
+    this.fileTab = [];
   }
 
-  handleOk1(){
-    this.fileTabSrc = []
-    this.fileTab = []
+  handleOk1() {
+    console.log("========Content", this.formUpdate.value);
+    console.log("=====tab de file", this.rowSelected.id);
+    this.updateProduit(this.rowSelected.id, this.formUpdate.value)
   }
 
   // RECUPERER TOUTE LES PRODUITS
@@ -449,6 +507,12 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
               this.showNotification("success");
               this.buildForm();
               this.fileTab = [];
+
+              this.getAllProduit({
+                pagination: true,
+                page: 0,
+                size: 10,
+              });
             }
           });
         },
@@ -523,11 +587,25 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     console.log("=======Row", row);
     this.idProduitSelect = row;
   }
+
   // Recupere Id de la ligne selectionner a supprimer
   onUpdateRow(row: any) {
     console.log("=======RowFOrUpdate", row);
     this.rowSelected = row;
-    this.buildFormUpdate()
+    // this.getImageByProduitId(n)
+    this.buildFormUpdate();
+  }
+
+  // Recupere Id de la ligne selectionner a supprimer
+  onUpdateImgRow(row: any) {
+    console.log("=======RowFOrUpdate", row);
+    this.rowSelected = row;
+    console.log("=======RowFOrUpdateID", this.rowSelected.id);
+    let n: any = {
+      produitid: this.rowSelected.id,
+    };
+    this.getImageByProduitId(n);
+    // this.buildFormUpdate();
   }
 
   onGetRow(row: any) {}
@@ -581,19 +659,88 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     });
   }
 
-  onResetFile(){
-    this.fileSrc = []
-    this.fileTab =  []
-    this.file= {}
+  onResetFile() {
+    this.fileSrc = [];
+    this.fileTab = [];
+    this.file = {};
   }
 
-  removeImg(image){
-    this.fileTabSrc = this.fileTabSrc.filter(chaine => chaine !== image)
-    console.log("======tab after del", this.fileTabSrc)
+  removeImg(image) {
+    this.fileTabSrc = this.fileTabSrc.filter((chaine) => chaine !== image);
+    console.log("======tab after del", this.fileTabSrc);
   }
 
-  removeImgUpdate(image){
-    this.fileTabUpdate = this.fileTabUpdate.filter(chaine => chaine !== image)
-    console.log("======tab after del", this.fileTabUpdate)
+  removeImgUpdate(image) {
+    this.fileTabUpdate = this.fileTabUpdate.filter(
+      (chaine) => chaine !== image
+    );
+    console.log("======tab after del", this.fileTabUpdate);
+  }
+
+  getImageByProduitId(id: any) {
+    this.imgProduit.gettAllImgProduit(id).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log("======response ImgProduit", d);
+          if (data.status == 200) {
+            console.log(d.body);
+            this.fileSrcUpdate = d.body;
+            let tab = [];
+            this.fileSrcUpdate.map((el) => {
+              tab.push(this.getImg(el.url));
+            });
+            this.fileSrcUpdate = tab;
+            console.log("======response fileSrcUpdate", this.fileSrcUpdate);
+          }
+        });
+      },
+    });
+  }
+
+  deleteImageByProduitId(id: number) {}
+
+  addImageByProduitId(id: number, files?: any) {
+    this.imgProduit.addImgProduit(id, files).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log("======response ImgProduit", d);
+          if (data.status == 201) {
+            console.log(d.body);
+            this.showNotification("success");
+            let obj: any = {
+              produitid: id,
+            };
+            this.getImageByProduitId(obj);
+            // this.fileTabSrcUpdate = []
+          }
+        });
+      },
+    });
+  }
+
+  UpdateImageByProduitId(id: number, img: any) {
+    this.imgProduit.updateImgProduit(id, img).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log("======response ImgProduit", d);
+          if (data.status == 200) {
+            console.log(d.body);
+          }
+        });
+      },
+    });
+  }
+
+  updateProduit(id: number, obj: any) {
+    this.produitService.updateProduit(id, obj).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log("======response ImgProduit", d);
+          if (d.status == 200) {
+            console.log(d.body);
+          }
+        });
+      },
+    });
   }
 }

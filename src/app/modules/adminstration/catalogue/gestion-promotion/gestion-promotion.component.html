@@ -66,14 +66,17 @@
       (activate)="onActivate($event)"
       [loadingIndicator]="'true'"
       [virtualization]="'false'"
-      [count]="page"
-      [offset]="page"
+      [count]="page.totalElements"
+      [offset]="page.pageNumber"
       [limit]="page.size"
       [externalPaging]="'false'"
       (page)="setPage($event)"
     >
-    <ngx-datatable-column name="Libelle" prop="nom"> </ngx-datatable-column>
-      <ngx-datatable-column name="Code promo" prop="code"></ngx-datatable-column>
+      <ngx-datatable-column name="Libelle" prop="nom"> </ngx-datatable-column>
+      <ngx-datatable-column
+        name="Code promo"
+        prop="code"
+      ></ngx-datatable-column>
       <ngx-datatable-column
         name="Réduction"
         prop="pourcentage"
@@ -112,7 +115,8 @@
               data-target="#modal-form"
               data-toggle="modal"
             >
-<i class="fa-solid fa-trash-can text-danger mr-2"></i>            </a>
+              <i class="fa-solid fa-trash-can text-danger mr-2"></i>
+            </a>
           </div>
         </ng-template>
       </ngx-datatable-column>
@@ -169,7 +173,9 @@
           class="form-group row m-0 justify-content-between align-items-center mb-3"
           style="width: 100%"
         >
-          <label for="datedebut-promotion-user" class="form-control-label col-md-4"
+          <label
+            for="datedebut-promotion-user"
+            class="form-control-label col-md-4"
             >Date de début<span class="text-danger">*</span></label
           >
           <input
@@ -183,7 +189,9 @@
           class="form-group row m-0 justify-content-between align-items-center mb-3"
           style="width: 100%"
         >
-          <label for="datefin-promotion-user" class="form-control-label col-md-4"
+          <label
+            for="datefin-promotion-user"
+            class="form-control-label col-md-4"
             >Date de fin<span class="text-danger">*</span></label
           >
           <input
@@ -279,61 +287,65 @@
     <div class="modal-body">
       <form class="row">
         <div
-        class="form-group row m-0 justify-content-between align-items-center mb-3"
-        style="width: 100%"
-      >
-        <label for="name-promotion-user" class="form-control-label col-md-4"
-          >Libelle promotion<span class="text-danger">*</span></label
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
         >
-        <input
-          class="form-control col-md-8"
-          type="text"
-          value="Black Friday"
-          id="name-promotion-user"
-        />
-      </div>
-      <div
-        class="form-group row m-0 justify-content-between align-items-center mb-3"
-        style="width: 100%"
-      >
-        <label for="taux-promotion-user" class="form-control-label col-md-4"
-          >Taux réduction<span class="text-danger">*</span></label
+          <label for="name-promotion-user" class="form-control-label col-md-4"
+            >Libelle promotion<span class="text-danger">*</span></label
+          >
+          <input
+            class="form-control col-md-8"
+            type="text"
+            value="Black Friday"
+            id="name-promotion-user"
+          />
+        </div>
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
         >
-        <input
-          class="form-control col-md-8"
-          type="number"
-          value="Black Friday"
-          id="taux-promotion-user"
-        />
-      </div>
-      <div
-        class="form-group row m-0 justify-content-between align-items-center mb-3"
-        style="width: 100%"
-      >
-        <label for="datedebut-promotion-user" class="form-control-label col-md-4"
-          >Date de début<span class="text-danger">*</span></label
+          <label for="taux-promotion-user" class="form-control-label col-md-4"
+            >Taux réduction<span class="text-danger">*</span></label
+          >
+          <input
+            class="form-control col-md-8"
+            type="number"
+            value="Black Friday"
+            id="taux-promotion-user"
+          />
+        </div>
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
         >
-        <input
-          type="date"
-          class="form-control col-md-8"
-          bsDatepicker
-          [(ngModel)]="dateDebut"
-        />
-      </div>
-      <div
-        class="form-group row m-0 justify-content-between align-items-center mb-3"
-        style="width: 100%"
-      >
-        <label for="datefin-promotion-user" class="form-control-label col-md-4"
-          >Date de fin<span class="text-danger">*</span></label
+          <label
+            for="datedebut-promotion-user"
+            class="form-control-label col-md-4"
+            >Date de début<span class="text-danger">*</span></label
+          >
+          <input
+            type="date"
+            class="form-control col-md-8"
+            bsDatepicker
+            [(ngModel)]="dateDebut"
+          />
+        </div>
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
         >
-        <input
-          type="date"
-          class="form-control col-md-8"
-          bsDatepicker
-          [(ngModel)]="dateFin"
-        />
-      </div>
+          <label
+            for="datefin-promotion-user"
+            class="form-control-label col-md-4"
+            >Date de fin<span class="text-danger">*</span></label
+          >
+          <input
+            type="date"
+            class="form-control col-md-8"
+            bsDatepicker
+            [(ngModel)]="dateFin"
+          />
+        </div>
       </form>
     </div>
     <div class="modal-footer">

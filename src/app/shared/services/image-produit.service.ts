@@ -38,8 +38,8 @@ export class ImageProduitService {
   }
 
   // GET ALL PRODUIT
-  public gettAllImgProduit(produitid?: any) {
-    return this.http.get(this.configService.getApi1("PRODUIT_GETALL_GET"), {
+  public gettAllImgProduit(produitid: any) {
+    return this.http.get(this.configService.getApi1("IMGPRODUIT_GETALL_GET"), {
       observe: "response",
       params: produitid,
     });

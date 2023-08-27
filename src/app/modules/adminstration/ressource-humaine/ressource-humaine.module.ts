@@ -10,6 +10,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { TagInputModule } from "ngx-chips";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RoleModalComponent } from './gestion-role-permission/role-modal/role-modal.component';
+import { RoleUpdateModalComponent } from './gestion-role-permission/role-update-modal/role-update-modal.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { RoleModalComponent } from './gestion-role-permission/role-modal/role-mo
     GestionAdministrateursComponent,
     GestionRolePermissionComponent,
     GestionTypeUtilisateurComponent,
-    RoleModalComponent
+    RoleModalComponent,
+    RoleUpdateModalComponent
   ],
   imports: [
     CommonModule,

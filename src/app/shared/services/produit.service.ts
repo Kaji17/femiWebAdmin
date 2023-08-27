@@ -19,9 +19,9 @@ export class ProduitService {
     form.append("produitDto", JSON.stringify(produitDto));
     return this.http.put(
       this.configService.getApi1("PRODUIT_UPD_PUT") + "/" + id,
+      form,
       {
         observe: "response",
-        params: form,
       }
     );
   }

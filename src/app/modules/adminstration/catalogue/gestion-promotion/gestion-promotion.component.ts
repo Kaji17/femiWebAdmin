@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { SelectionType } from '@swimlane/ngx-datatable';
 import { Subscription } from 'rxjs';
-import { Page } from 'src/app/shared/model/page';
+import { Page } from "src/app/shared/model/paged";
 import { BreadcrumbService } from 'src/app/shared/services/breadcrumb.service';
 
 @Component({
@@ -22,6 +22,8 @@ export class GestionPromotionComponent implements OnInit,OnDestroy {
   bsValue
   public dateDebut: string
   public dateFin: string
+  infoUser: any;
+
 
 
   closeResult: string;
@@ -33,14 +35,15 @@ export class GestionPromotionComponent implements OnInit,OnDestroy {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    // this.page.pageNumber = 0;
+    this.page.pageNumber = 0;
     this.page.size = 10;
+    this.infoUser = JSON.parse(localStorage.getItem("user_info"));
   }
 
   page = new Page();
   public SuscribeAllData: Subscription;
   ngOnDestroy(): void {
-    this.SuscribeAllData.unsubscribe;
+    // this.SuscribeAllData.unsubscribe;
   }
 
   ngOnInit(): void {
@@ -69,33 +72,20 @@ export class GestionPromotionComponent implements OnInit,OnDestroy {
       return false;
     });
   }
-  //   onSelect({selected}) {
-  //     this.selected.splice(0, this.selected.length);
-  //     this.selected.push(...selected);
-  //  }
+
   onActivate(event) {
     this.activeRow = event.row;
   }
 
-  // Méthode d'ajout d'élément dans le tableau
+  // INSERER LES DONNEES DU TABLEAU
   setPage(pageInfo) {
-    this.SuscribeAllData=this.service.getApi({ page: pageInfo.offset + 1 }).subscribe({
-      next: (value) => {
-        // this.page.pageNumber = pageInfo.offset;
-        // this.page.size = 20;
-        // this.page.totalElements = value.count;
-        // this.page.totalPages = 9;
-        console.log("Appel Api", value.results);
-        this.temp = value.results;
-      },
-    });
-    this.temp = this.temp.map((prop, key) => {
-      return {
-        ...prop,
-        id: key,
-        homeworld: prop.homeworld, // Remplacez par l'URL réelle de l'image pour chaque élément
-      };
-    });
+    this.page.pageNumber = pageInfo.offset;
+    console.log("=====pageInfo", this.page);
+    // this.getAllPromotion({
+    //   pagination: true,
+    //   page: this.page.pageNumber,
+    //   size: this.page.size,
+    // });
   }
 
   // Méthode d'ajout a la liste d'élément selectionner
@@ -175,5 +165,46 @@ export class GestionPromotionComponent implements OnInit,OnDestroy {
   onDeletePromotion(id: number) {
     console.log("produits supprimer");
   }
+
+
+  // GET ALL PRODUIT
+  // getAllPromotion(obj: any) {
+  //   this.produitService.gettAllProduit(obj).subscribe({
+  //     next: (data) => {
+  //       this.utilitisService.response(data, (d: any) => {
+  //         console.log(d);
+  //         if (data.status == 200) {
+  //           this.page.size = d.body.size;
+  //           this.page.pageNumber = d.body.number;
+  //           this.page.totalElements = d.body.totalElements;
+  //           this.totalPage = d.body.totalPages;
+  //           this.temp = d.body.content;
+  //           console.log("======CONTENT", d);
+
+  //           let lis: any[] = [];
+  //           let lisAff: any[] = [];
+  //           let nbr = 0;
+  //           lis = d.body;
+  //           this.listAllProduit = this.temp;
+  //           this.listAllProduit.map((el) => {
+  //             nbr = nbr + 1;
+  //             lisAff.push(nbr);
+  //           });
+  //           lisAff.push(lisAff.length + 1);
+  //           // this.listAllProduit.push(this.listAllProduit.length+1)
+  //           lisAff.length == 0
+  //             ? this.listAffichage.push(1)
+  //             : (this.listAffichage = lisAff);
+  //           console.log(this.listAffichage);
+  //         } else {
+  //           console.log("erreur", d);
+  //         }
+  //       });
+  //     },
+  //     error: (error) => {
+  //       this.utilitisService.response(error, (d: any) => {});
+  //     },
+  //   });
+  // }
 
 }
