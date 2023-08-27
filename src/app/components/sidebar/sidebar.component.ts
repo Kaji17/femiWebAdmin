@@ -31,7 +31,7 @@ export class SidebarComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit() {
-   this.menuItems = navAdminItems
+   this.menuItems = NavConstants
    this.notifs=[
     {  title: 'Dashboard', describe: 'describe',  icon: 'ni-tv-2 text-primary', date: '12/03/2003'},
     {  title: 'Notif1', describe: 'describe',  icon: 'ni-planet text-blue', date: '12/03/2003'},
