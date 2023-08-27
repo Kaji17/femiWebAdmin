@@ -14,7 +14,8 @@ import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { ModalAddComponent } from './gestion-produis/modal-add/modal-add.component';
 import { ModalUpdateComponent } from './gestion-produis/modal-update/modal-update.component';
 import { ModalDeleteComponent } from './gestion-produis/modal-delete/modal-delete.component';
-import { ModalDetailsComponent } from './gestion-produis/modal-details/modal-details.component'
+import { ModalDetailsComponent } from './gestion-produis/modal-details/modal-details.component';
+import { ModalImagesProduitComponent } from './gestion-produis/modal-images-produit/modal-images-produit.component'
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { ModalDetailsComponent } from './gestion-produis/modal-details/modal-det
     ModalUpdateComponent,
     ModalDeleteComponent,
     ModalDetailsComponent,
+    ModalImagesProduitComponent,
   ],
   imports: [
     CommonModule,

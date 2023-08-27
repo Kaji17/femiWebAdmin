@@ -1,0 +1,90 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title-default">
+      Modifier Images Produit
+    </h4>
+    <hr class="my-4" />
+    <button
+      type="button"
+      class="close"
+      data-dismiss="modal"
+      aria-label="Close"
+      (click)="closeModal()"
+    >
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="row">
+      <!-- <div
+        *ngIf="this.fileSrcUpdate.length < 4"
+        class="form-group row m-0 justify-content-between align-items-center mb-3"
+        style="width: 100%"
+      >
+        <label for="catégorie-produit" class="form-control-label col-md-5"
+          >Ajouter Image<span class="text-danger"></span
+        ></label>
+        <input
+          #file
+          type="file"
+          style="display: none"
+          (change)="loadFileUpdate($event)"
+          accept="image/png, image/gif, image/jpeg"
+        />
+        <div class="col-md-7">
+          <div
+            (click)="file.click()"
+            class="rounded border-primary border align-items-center p-1 col-md-7 m-1 row justify-content-center"
+            style="
+              min-height: 100px;
+              width: fit-content;
+              border-style: dashed !important;
+              background-color: #dee2e6;
+              cursor: pointer;
+            "
+          >
+            <span><i class="fa-solid fa-plus"></i> UPLOAD</span>
+          </div>
+        </div>
+      </div> -->
+      <div
+        *ngFor="let image of fileSrcUpdate"
+        class="form-group row m-0 align-items-center mb-3"
+        style="width: 100%"
+      >
+        <div
+          class="col-md-5 m-1 rounded border align-items-center p-1 m-1 row justify-content-center"
+          [style]="'background-image: url(' + image + ')'"
+          style="
+            position: relative;
+            background-repeat: no-repeat;
+            background-size: cover;
+            min-height: 100px;
+            width: 91px !important;
+          "
+        ></div>
+        <div class="form-control-label row col-md-7">
+          <button class="col-md-16 btn btn-info mb-2">
+            Modifier
+            <input
+              #file5
+              type="file"
+              style="display: none"
+              accept="image/png, image/gif, image/jpeg"
+            /></button
+          ><button class="col-md-16 btn btn-danger mb-2" (click)="onDelete(image)">Supprimer</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      (click)="closeModal()"
+      class="btn btn-primary"
+      data-dismiss="modal"
+    >
+      Ok
+    </button>
+  </div>
+</div>
