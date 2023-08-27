@@ -167,14 +167,14 @@
           >
           <!--Navigation Subtitle-->
             <ul class="nav nav-sm flex-column">
-              <li *ngFor="let menuItem of menuItems[i].children" class="nav-item">
+              <li *ngFor="let menuItem of menuItems[i].items" class="nav-item">
                 <a
                   routerLinkActive="active"
-                  [routerLink]="[menuItem.url]"
+                  [routerLink]="[menuItem.path]"
                   class="nav-link"
                   style="font-size: 12px;"
                 >
-                  {{ menuItem.title }}
+                  {{ menuItem.label }}
                 </a>
               </li>
             </ul>

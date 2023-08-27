@@ -1,4 +1,4 @@
-//definir un id est obligatoire sur les titres, ça sert a leur identification dans l'algo
+ //definir un id est obligatoire sur les titres, ça sert a leur identification dans l'algo
 //tout les menus en dessous d'un titre doivent definir le titreid
 //
 export interface Perms {
