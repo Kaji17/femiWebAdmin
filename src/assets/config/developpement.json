@@ -28,6 +28,16 @@
       "IMGPRODUIT_GETALL_GET": "/klaman/v1/vente/imageproduit/getall",
       "IMGPRODUIT_DEL_DEL": "/klaman/v1/vente/imageproduit/delete",
 
+      "comment ": "------------ OPERATIONS PROMOTIONS ---------------",
+      "PROMOTION_UPD_PUT": "/klaman/v1/vente/promotion/update",
+      "PROMOTION_REMOVE_PUT": "/klaman/v1/vente/promotion/remove",
+      "PROMOTION_ASSIGN_PUT": "/klaman/v1/vente/promotion/assign",
+      "PROMOTION_ADD_POST": "/klaman/v1/vente/promotion/add",
+      "PROMOTION_GETALL_GET": "/klaman/v1/vente/produit/getall",
+      "PROMOTION_GETAVIS_GET": "/klaman/v1/vente/promotion/getall",
+      "PROMOTION_DEL_DEL": "/klaman/v1/vente/promotion/delete",
+
+
       "comment ": "------------ OPERATIONS CATEGORIE ---------------",
       "CATEGORIE_UPD_PUT": "/klaman/v1/vente/categorie/update",
       "CATEGORIE_ADD_POST": "/klaman/v1/vente/categorie/add",
