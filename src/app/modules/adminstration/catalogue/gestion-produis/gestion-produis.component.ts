@@ -449,9 +449,19 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   }
 
   handleOk1() {
+    this.formUpdate.value.categorieid = this.formUpdate.value.categorieid.id;
     console.log("========Content", this.formUpdate.value);
     console.log("=====tab de file", this.rowSelected.id);
-    this.updateProduit(this.rowSelected.id, this.formUpdate.value)
+
+    let obj: any = {
+      produitDto: this.formUpdate.value,
+    };
+    this.updateProduit(this.rowSelected.id, this.formUpdate.value);
+    this.getAllProduit({
+      pagination: true,
+      page: 0,
+      size: 10,
+    });
   }
 
   // RECUPERER TOUTE LES PRODUITS

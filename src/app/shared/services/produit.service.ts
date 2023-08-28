@@ -9,17 +9,16 @@ export class ProduitService {
   constructor(private http: HttpClient, private configService: Configurable) {}
 
   // UPDATE PRODUIT
-  public updateProduit(id: number, produitDto: any, files?: any[]) {
-    let form = new FormData();
-    if (files) {
-      files.map((el) => {
-        form.append("files", el);
-      });
-    }
-    form.append("produitDto", JSON.stringify(produitDto));
+  public updateProduit(id: number, produitDto: any) {
+    // let form = new FormData();
+    // if (files) {
+    //   files.map((el) => {
+    //     form.append("files", el);
+    //   });
+    // }
+    // form.append("produitDto", JSON.stringify(produitDto));
     return this.http.put(
-      this.configService.getApi1("PRODUIT_UPD_PUT") + "/" + id,
-      form,
+      this.configService.getApi1("PRODUIT_UPD_PUT") + "/" + id,produitDto,
       {
         observe: "response",
       }
