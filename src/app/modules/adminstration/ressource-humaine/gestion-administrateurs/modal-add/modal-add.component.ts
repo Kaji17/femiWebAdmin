@@ -5,6 +5,7 @@ import { ToastrService } from "ngx-toastr";
 import { AdministrateurService } from "src/app/shared/services/administrateur.service";
 import { RolePermissionsService } from "src/app/shared/services/role-permissions.service";
 import { UtilisService } from "src/app/shared/services/utilis.service";
+import swal from "sweetalert2";
 
 @Component({
   selector: "app-modal-add",
@@ -13,8 +14,12 @@ import { UtilisService } from "src/app/shared/services/utilis.service";
 })
 export class ModalAddComponent implements OnInit {
   formAddAdmin: FormGroup;
+  formAddProduit: FormGroup;
   infoUser: any;
   listRole: any[] = [];
+  passwordConfirm: string = "";
+  password: string = "";
+  result: string;
 
   config = {
     // displayFn:(item: any) => { return item.hello.world; }, //to support flexible text displaying for each item
@@ -34,41 +39,59 @@ export class ModalAddComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.buildForm();
     this.getAllRole({
       boutiqueid: this.infoUser.body.boutique.id,
       pagination: false,
     });
+    this.buildForm();
   }
   // Fermer le modal
   closeModal() {
     this.activeModal.close();
   }
 
+  closeModalOk() {
+    this.activeModal.close("ok");
+  }
+
   buildForm() {
     this.formAddAdmin = this.fb.group({
-      nom: ["", Validators.required],
+      nom: ["", [Validators.required]],
       email: [
         "",
-        Validators.required,
-        Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,100}$"),
+        [
+          Validators.required,
+          Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,100}$"),
+        ],
       ],
-      contact: ["", Validators.required, Validators.pattern(/^\w{10}$/)],
+      contact: ["", [Validators.required, Validators.pattern(/^\w{10}$/)]],
       motdepasse: [
         "",
-        Validators.required,
-        Validators.pattern(
-          /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
-        ),
+        [
+          Validators.required,
+          Validators.pattern(
+            /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+          ),
+        ],
       ],
-      role: ["", Validators.required],
+      confirmepassword: [
+        "",
+        [
+          Validators.required,
+          Validators.pattern(
+            /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+          ),
+        ],
+      ],
+      role: ["", [Validators.required]],
       boutique: [this.infoUser.body.boutique],
     });
   }
 
   handleOk() {
-    console.log("Infos de l'administrateur", this.formAddAdmin.value)
-    this.addAdmin(this.formAddAdmin.value)
+    console.log("Infos de l'administrateur", this.formAddAdmin.value);
+    this.addAdmin(this.formAddAdmin.value);
+    this.closeModalOk()
   }
 
   getAllRole(obj: any) {
@@ -87,12 +110,14 @@ export class ModalAddComponent implements OnInit {
     this.adminService.addAdmin(obj).subscribe({
       next: (data) => {
         this.utilitisService.response(data, (d: any) => {
-          this.listRole = d.body.content;
-          if (data.status == 201) {
+          console.log("======Ajout Success", d);
+          if (data.status == 200) {
             console.log("======Ajout Success", d);
             this.showNotification("success");
+          } else if (data.status == 409) {
+            console.log("======Ajout failled", d);
+            this.showNotification("danger");
           }
-          // this.allRole = JSON.parse(atob(d.body.content.description))
         });
       },
     });
@@ -118,7 +143,7 @@ export class ModalAddComponent implements OnInit {
     }
     if (type === "danger") {
       this.toastr.show(
-        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">Désolé nous ne pouvons pas créer ce produit vérifier les données</span></div>',
+        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">Désolé email existe déja réessayer avec une autre adresse mail</span></div>',
         "",
         {
           timeOut: 3000,
@@ -149,4 +174,27 @@ export class ModalAddComponent implements OnInit {
       );
     }
   }
+
+  // infoSwal(bool: boolean) {
+  //   if(bool){
+  //     swal({
+  //       title: "Success",
+  //       text: "L'utilisateur à été créer avec succès",
+  //       type: "success",
+  //       buttonsStyling: false,
+  //       confirmButtonClass: "btn btn-success",
+  //     });
+  //   }else{
+  //     swal({
+  //       title: 'Email existante',
+  //       text: "L'email existe déja réessayer en utilisant une autre adresse mail",
+  //       type: 'warning',
+  //       buttonsStyling: false,
+  //       confirmButtonClass: 'btn btn-warning',
+  //       onClose : ()=>{
+  //         this.buildForm()
+  //       }
+  //     });
+  //   }
+  // }
 }

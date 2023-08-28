@@ -19,6 +19,7 @@ import { AdministrateurService } from "src/app/shared/services/administrateur.se
 import { UtilisService } from "src/app/shared/services/utilis.service";
 import { ModalUpdateComponent } from "./modal-update/modal-update.component";
 import { ToastrService } from "ngx-toastr";
+import swal from "sweetalert2";
 
 @Component({
   selector: "app-gestion-administrateurs",
@@ -187,6 +188,14 @@ export class GestionAdministrateursComponent implements OnInit {
       (result) => {
         this.closeResult = "Closed with: " + result;
         console.log("yaaaa", this.closeResult);
+        if (result == "ok") {
+          this.getAllAdministrateur({
+            boutiqueid: this.infoUser.body.boutique.id,
+            pagination: true,
+            page: 0,
+            size: 10,
+          });
+        }
       },
       (reason) => {
         this.closeResult = "Dismissed " + this.getDismissReason(reason);
@@ -206,12 +215,14 @@ export class GestionAdministrateursComponent implements OnInit {
       (result) => {
         this.closeResult = "Closed with: " + result;
         console.log("yaaaa", this.closeResult);
-        this.getAllAdministrateur({
-          boutiqueid: this.infoUser.body.boutique.id,
-          pagination: true,
-          page: 0,
-          size: 10,
-        });
+        if (result == "ok") {
+          this.getAllAdministrateur({
+            boutiqueid: this.infoUser.body.boutique.id,
+            pagination: true,
+            page: 0,
+            size: 10,
+          });
+        }
       },
       (reason) => {
         this.closeResult = "Dismissed " + this.getDismissReason(reason);
@@ -334,6 +345,26 @@ export class GestionAdministrateursComponent implements OnInit {
             "ngx-toastr alert alert-dismissible alert-success alert-notify",
         }
       );
+    }
+  }
+
+  infoSwal(bool: boolean) {
+    if (bool) {
+      swal({
+        title: "Success",
+        text: "L'utilisateur à été créer avec succès",
+        type: "success",
+        buttonsStyling: false,
+        confirmButtonClass: "btn btn-success",
+      });
+    } else {
+      swal({
+        title: "Email existante",
+        text: "L'email existe déja réessayer en utilisant une autre adresse mail",
+        type: "warning",
+        buttonsStyling: false,
+        confirmButtonClass: "btn btn-warning",
+      });
     }
   }
 }

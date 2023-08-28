@@ -46,7 +46,7 @@ export class AdministrateurService {
   }
 
   // Update profil admin
-  public updateAdmin(obj, adminId) {
+  public updateAdmin(adminId,obj ) {
     return this.http.put(
       this.configService.getApi("ADMIN_UPD_PUT") + `/` + adminId,
       obj,

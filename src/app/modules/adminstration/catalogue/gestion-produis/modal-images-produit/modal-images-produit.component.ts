@@ -53,13 +53,14 @@ export class ModalImagesProduitComponent implements OnInit, AfterContentInit {
     this.fileTabUpdate.push(this.fileUpdate);
     console.log("donnée du tab 1 apprés ajout", this.fileTabUpdate);
 
-    reader1.readAsDataURL(this.fileUpdate);
+
     console.log("reader1", reader1);
 
     reader1.onload = (e) => {
       this.fileSrcUpdate = reader1.result as string;
       console.log("e", e);
     };
+    reader1.readAsDataURL(this.fileUpdate);
 
     console.log("La table que j'envoie pour l'ajout", this.fileTabUpdate);
     // this.addImageByProduitId(id, this.fileTabUpdate);

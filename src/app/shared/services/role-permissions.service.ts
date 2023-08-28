@@ -37,7 +37,7 @@ export class RolePermissionsService {
   // Update password
   public deleteRole(id: number) {
     return this.http.delete(
-      this.configService.getApi("ADMIN_UPDPASSWORD_PUT")+'/'+id,
+      this.configService.getApi("ROLE_DEL_DEL")+'/'+id,
       {
         observe: "response",
       }

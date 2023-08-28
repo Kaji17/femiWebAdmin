@@ -2,9 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { SelectionType } from '@swimlane/ngx-datatable';
+import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { Page } from "src/app/shared/model/paged";
 import { BreadcrumbService } from 'src/app/shared/services/breadcrumb.service';
+import { PromotionService } from 'src/app/shared/services/promotion.service';
+import { UtilisService } from 'src/app/shared/services/utilis.service';
 
 @Component({
   selector: 'app-gestion-promotion',
@@ -33,7 +36,10 @@ export class GestionPromotionComponent implements OnInit,OnDestroy {
     private service: BreadcrumbService,
     private modalService: NgbModal,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private promotionService: PromotionService,
+    private utilitisService: UtilisService,
+    private toastr: ToastrService
   ) {
     this.page.pageNumber = 0;
     this.page.size = 10;
@@ -47,7 +53,6 @@ export class GestionPromotionComponent implements OnInit,OnDestroy {
   }
 
   ngOnInit(): void {
-    this.setPage({ offset: 0 });
   }
 
   // Méthode d'ajout nouvelle catégorie de  produit
@@ -168,43 +173,27 @@ export class GestionPromotionComponent implements OnInit,OnDestroy {
 
 
   // GET ALL PRODUIT
-  // getAllPromotion(obj: any) {
-  //   this.produitService.gettAllProduit(obj).subscribe({
-  //     next: (data) => {
-  //       this.utilitisService.response(data, (d: any) => {
-  //         console.log(d);
-  //         if (data.status == 200) {
-  //           this.page.size = d.body.size;
-  //           this.page.pageNumber = d.body.number;
-  //           this.page.totalElements = d.body.totalElements;
-  //           this.totalPage = d.body.totalPages;
-  //           this.temp = d.body.content;
-  //           console.log("======CONTENT", d);
-
-  //           let lis: any[] = [];
-  //           let lisAff: any[] = [];
-  //           let nbr = 0;
-  //           lis = d.body;
-  //           this.listAllProduit = this.temp;
-  //           this.listAllProduit.map((el) => {
-  //             nbr = nbr + 1;
-  //             lisAff.push(nbr);
-  //           });
-  //           lisAff.push(lisAff.length + 1);
-  //           // this.listAllProduit.push(this.listAllProduit.length+1)
-  //           lisAff.length == 0
-  //             ? this.listAffichage.push(1)
-  //             : (this.listAffichage = lisAff);
-  //           console.log(this.listAffichage);
-  //         } else {
-  //           console.log("erreur", d);
-  //         }
-  //       });
-  //     },
-  //     error: (error) => {
-  //       this.utilitisService.response(error, (d: any) => {});
-  //     },
-  //   });
-  // }
+  getAllPromotion(obj: any) {
+    this.promotionService.gettAllPromotion(obj).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log(d);
+          if (data.status == 200) {
+            this.page.size = d.body.size;
+            this.page.pageNumber = d.body.number;
+            this.page.totalElements = d.body.totalElements;
+            // this.totalPage = d.body.totalPages;
+            this.temp = d.body.content;
+            console.log("======CONTENT", d);
+          } else {
+            console.log("erreur", d);
+          }
+        });
+      },
+      error: (error) => {
+        this.utilitisService.response(error, (d: any) => {});
+      },
+    });
+  }
 
 }

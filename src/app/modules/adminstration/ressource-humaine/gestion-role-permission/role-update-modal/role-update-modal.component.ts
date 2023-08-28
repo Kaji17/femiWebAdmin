@@ -84,6 +84,10 @@ export class RoleUpdateModalComponent implements OnInit {
     this.activeModal.close();
   }
 
+  closeModalOk() {
+    this.activeModal.close('ok');
+  }
+  
   handleOk() {
     let res: any = {};
     // res.id = this.infoUser.body.id;

@@ -202,6 +202,14 @@ export class GestionRolePermissionComponent implements OnInit {
       (result) => {
         this.closeResult = "Closed with: " + result;
         console.log("yaaaa", this.closeResult);
+        if(result == 'ok'){
+          this.getAllRole({
+            boutiqueid: this.infoUser.body.boutique.id,
+            pagination: true,
+            page: 0,
+            size: 10,
+          });
+        }
       },
       (reason) => {
         this.closeResult = "Dismissed " + this.getDismissReason(reason);
@@ -220,6 +228,14 @@ export class GestionRolePermissionComponent implements OnInit {
       (result) => {
         this.closeResult = "Closed with: " + result;
         console.log("yaaaa", this.closeResult);
+        if(result == 'ok'){
+          this.getAllRole({
+            boutiqueid: this.infoUser.body.boutique.id,
+            pagination: true,
+            page: 0,
+            size: 10,
+          });
+        }
       },
       (reason) => {
         this.closeResult = "Dismissed " + this.getDismissReason(reason);

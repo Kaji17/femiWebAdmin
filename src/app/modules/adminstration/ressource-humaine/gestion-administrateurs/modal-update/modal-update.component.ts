@@ -53,25 +53,47 @@ export class ModalUpdateComponent implements OnInit {
     this.activeModal.close();
   }
 
+  closeModalOk() {
+    this.activeModal.close('ok');
+  }
+
+  // buildForm() {
+  //   console.log('====', this.infoDaTa)
+  //   let fv: any = this.infoDaTa;
+  //   this.formUpdateAdmin = this.fb.group({
+  //     nom: [fv&&fv.nom?fv.nom:null, Validators.required],
+  //     email: [
+  //       fv&&fv.email?fv.email:null,
+  //       Validators.required,
+  //       Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,100}$"),
+  //     ],
+  //     contact: [fv&&fv.contact?fv.contact:null, Validators.required, Validators.pattern(/^\w{10}$/)],
+  //     role: ["", Validators.required],
+  //     boutique: [this.infoUser.body.boutique]
+  //   });
+  // }
+
   buildForm() {
-    console.log('====', this.infoDaTa)
+    console.log("d", this.infoDaTa);
     let fv: any = this.infoDaTa;
     this.formUpdateAdmin = this.fb.group({
-      nom: [fv&&fv.nom?fv.nom:"", Validators.required],
+      nom: [fv&&fv.nom?fv.nom:null,[ Validators.required]],
       email: [
-        fv&&fv.email?fv.email:"",
-        Validators.required,
-        Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,100}$"),
+        fv&&fv.email?fv.email:null,
+        [Validators.required,
+        Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,100}$")],
       ],
-      contact: [fv&&fv.contact?fv.contact:"", Validators.required, Validators.pattern(/^\w{10}$/)],
-      role: ["", Validators.required],
-      boutique: [this.infoUser.body.boutique]
+      contact: [fv&&fv.contact?fv.contact:null, [Validators.required, Validators.pattern(/^\w{10}$/)]],
+      role: ["", [Validators.required]],
+      boutique: [this.infoUser.body.boutique],
     });
   }
 
   handleOk() {
     console.log("Infos de l'administrateur", this.formUpdateAdmin.value)
-    this.updateAdmin(this.infoDaTa.id,this.formUpdateAdmin.value)
+    let n : number =0
+    n = this.infoDaTa.id
+    this.updateAdmin(n,this.formUpdateAdmin.value)
   }
 
   getAllRole(obj: any) {

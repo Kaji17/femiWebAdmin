@@ -55,6 +55,9 @@ export class RoleModalComponent implements OnInit {
   closeModal() {
     this.activeModal.close();
   }
+  closeModalOk() {
+    this.activeModal.close('ok');
+  }
 
   handleOk() {
     let res :any ={};
