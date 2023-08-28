@@ -11,6 +11,9 @@ import { TagInputModule } from "ngx-chips";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RoleModalComponent } from './gestion-role-permission/role-modal/role-modal.component';
 import { RoleUpdateModalComponent } from './gestion-role-permission/role-update-modal/role-update-modal.component';
+import { ModalAddComponent } from './gestion-administrateurs/modal-add/modal-add.component';
+import { ModalUpdateComponent } from './gestion-administrateurs/modal-update/modal-update.component';
+import { SelectDropDownModule } from 'ngx-select-dropdown';
 
 
 @NgModule({
@@ -20,7 +23,9 @@ import { RoleUpdateModalComponent } from './gestion-role-permission/role-update-
     GestionRolePermissionComponent,
     GestionTypeUtilisateurComponent,
     RoleModalComponent,
-    RoleUpdateModalComponent
+    RoleUpdateModalComponent,
+    ModalAddComponent,
+    ModalUpdateComponent
   ],
   imports: [
     CommonModule,
@@ -30,6 +35,7 @@ import { RoleUpdateModalComponent } from './gestion-role-permission/role-update-
     TagInputModule,
     FormsModule,
     ReactiveFormsModule,
+    SelectDropDownModule
   ]
 })
 export class RessourceHumaineModule { }

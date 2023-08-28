@@ -48,11 +48,33 @@ export class AdministrateurService {
   // Update profil admin
   public updateAdmin(obj, adminId) {
     return this.http.put(
-      this.configService.getApi("ADMIN_UPD_PUT") + `/`+ adminId,
+      this.configService.getApi("ADMIN_UPD_PUT") + `/` + adminId,
       obj,
       {
         observe: "response",
-      },
+      }
     );
   }
+
+  // Add admin
+  public addAdmin(obj: any) {
+    return this.http.post(this.configService.getApi("ADMIN_ADD_POST"), obj, {
+      observe: "response",
+    });
+  }
+
+  // Get All admin
+  public getAllAdmin(obj: any) {
+    return this.http.get(this.configService.getApi("ADMIN_GETALL_GET"), {
+      observe: "response",
+      params: obj,
+    });
+  }
+
+    // Get All admin
+    public deleteAdmin(id: any) {
+      return this.http.delete(this.configService.getApi("ADMIN_DEL_DEL")+'/'+id, {
+        observe: "response",
+      });
+    }
 }
