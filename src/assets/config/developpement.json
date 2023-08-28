@@ -33,7 +33,8 @@
       "PROMOTION_REMOVE_PUT": "/klaman/v1/vente/promotion/remove",
       "PROMOTION_ASSIGN_PUT": "/klaman/v1/vente/promotion/assign",
       "PROMOTION_ADD_POST": "/klaman/v1/vente/promotion/add",
-      "PROMOTION_GETALL_GET": "/klaman/v1/vente/produit/getall",
+      "PROMOTION_GETALL_GET": "/klaman/v1/vente/promotion/getall",
+      "PROMOTION_GETALLTYPE_GET": "/klaman/v1/vente/typepromotion/getall",
       "PROMOTION_GETAVIS_GET": "/klaman/v1/vente/promotion/getall",
       "PROMOTION_DEL_DEL": "/klaman/v1/vente/promotion/delete",
 

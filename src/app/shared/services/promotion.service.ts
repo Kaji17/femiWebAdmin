@@ -46,13 +46,13 @@ export class PromotionService {
     }
 
   // ADD PROMOTION
-  public addPromotion(promotionDto: any) {
+  public addPromotion(promotionDto: any, file?:any) {
     let form = new FormData();
 
-    form.append("produitDto", JSON.stringify(promotionDto));
-    form.append("file", JSON.stringify(promotionDto));
+    form.append("promotionDto", JSON.stringify(promotionDto));
+    form.append("file", file);
     return this.http.post(
-      this.configService.getApi1("PRODUIT_ADD_POST"),
+      this.configService.getApi1("PROMOTION_ADD_POST"),
       form,
       {
         observe: "response",
@@ -63,9 +63,17 @@ export class PromotionService {
 
   // GET ALL PRODUIT
   public gettAllPromotion(obj: any) {
-    return this.http.get(this.configService.getApi1("PRODUIT_GETALL_GET"), {
+    return this.http.get(this.configService.getApi1("PROMOTION_GETALL_GET"), {
       observe: "response",
       params: obj,
+    });
+  }
+
+
+  // GET ALL PRODUIT
+  public gettAllTypePromotion() {
+    return this.http.get(this.configService.getApi1("PROMOTION_GETALLTYPE_GET"), {
+      observe: "response",
     });
   }
 
@@ -82,7 +90,7 @@ export class PromotionService {
   // DELETE PRODUIT
   public deletePromotion(id: number) {
     return this.http.delete(
-      this.configService.getApi1("PRODUIT_DEL_DEL") + "/" + id,
+      this.configService.getApi1("PROMOTION_DEL_DEL") + "/" + id,
       {
         observe: "response",
       }
