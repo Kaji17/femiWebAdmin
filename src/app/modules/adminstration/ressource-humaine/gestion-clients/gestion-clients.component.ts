@@ -5,6 +5,7 @@ import { Subscription } from "rxjs";
 import { Page } from "src/app/shared/model/page";
 import { BreadcrumbService } from "src/app/shared/services/breadcrumb.service";
 import * as FileSaver from "file-saver";
+import { RolePermissionsService } from "src/app/shared/services/role-permissions.service";
 
 @Component({
   selector: "app-gestion-clients",
@@ -23,11 +24,15 @@ export class GestionClientsComponent implements OnInit, OnDestroy {
 
   itemselected: number;
   public listProduitSelect = ['bonjour'];
+  public crudPerms: any;
+  public menuItems: any[];
 
   SelectionType = SelectionType;
   constructor(
     private service: BreadcrumbService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private rolePermission: RolePermissionsService,
+
   ) {
     // this.page.pageNumber = 0;
     this.page.size = 20;
@@ -38,6 +43,13 @@ export class GestionClientsComponent implements OnInit, OnDestroy {
     this.SuscribeAllData.unsubscribe;
   }
   ngOnInit(): void {
+    this.menuItems = this.rolePermission.getMenuPermission();
+
+    this.crudPerms = {
+      create: this.menuItems[5].items[1].create,
+      update: this.menuItems[5].items[1].update,
+      delete: this.menuItems[5].items[1].delete,
+    };
     this.setPage({ offset: 0 });
     let currentMultipleFile = undefined;
     this.itemselected = 2;

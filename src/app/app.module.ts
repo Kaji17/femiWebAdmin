@@ -17,6 +17,8 @@ import { registerLocaleData } from '@angular/common';
 import * as fr from '@angular/common/locales/fr';
 import { ToastrModule } from 'ngx-toastr';
 import { SelectDropDownModule } from 'ngx-select-dropdown'
+// import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'; // Import du module
+
 
 @NgModule({
   imports: [
@@ -29,7 +31,9 @@ import { SelectDropDownModule } from 'ngx-select-dropdown'
     AppRoutingModule,
     DashboardModule,
     ToastrModule.forRoot(),
-    SelectDropDownModule
+    // BsDatepickerModule.forRoot(),
+    SelectDropDownModule,
+
   ],
   declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent],
   providers: [{provide: LOCALE_ID, useValue: 'fr-FR'}],

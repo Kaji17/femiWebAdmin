@@ -10,12 +10,15 @@ export class PromotionService {
   constructor(private http: HttpClient, private configService: Configurable) { }
 
    // UPDATE PROMOTION
-   public updatePromotion(id: number, promotionDto: any, file: any) {
+   public updatePromotion(id: number, promotionDto: any, file?: any) {
     let form = new FormData();
 
-    const queryParams = new HttpParams({ fromObject: promotionDto });
     form.append("promotionDto", JSON.stringify(promotionDto));
-    form.append("file", JSON.stringify(file));
+
+    if (file) {
+      form.append("file", JSON.stringify(file));
+    }
+    
     return this.http.put(
       this.configService.getApi1("PROMOTION_UPD_PUT") + "/" + id,
       form,

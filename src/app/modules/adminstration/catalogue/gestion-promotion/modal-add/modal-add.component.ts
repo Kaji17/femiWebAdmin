@@ -13,6 +13,9 @@ import { UtilisService } from "src/app/shared/services/utilis.service";
 export class ModalAddComponent implements OnInit {
 
 
+  public dateDebut: string =''
+  public dateFin: string =''
+
   public formPromotion: FormGroup
 
   constructor(

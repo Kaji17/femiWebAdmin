@@ -105,16 +105,16 @@
             <a
               *ngIf="crudPerms.update"
               role="button"
-              (click)="open(classic1, '', 'sm')"
+              (click)="onUpdateRow(row);open(classic1, '', 'sm')"
               data-target="#modal-form"
               data-toggle="modal"
             >
-              <i class="fa-solid fa-pen-to-square mr-2"></i>
+              <i class="fa-solid fa-pen-to-square mr-2 text-primary"></i>
             </a>
             <a
               *ngIf="crudPerms.delete"
               role="button"
-              (click)="open(classic2, 'Notification', '')"
+              (click)="onDeleteRow(row.id); open(classic2, 'Notification', '')"
               data-target="#modal-form"
               data-toggle="modal"
             >
@@ -130,7 +130,7 @@
 <ng-template #classic1 let-c="close" let-d="dismiss">
   <div class="modal-content">
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-title-default">Modifier Promotion</h4>
+      <h4 class="modal-title" id="modal-title-default">Modifier promotion {{idPromotionSelect}}</h4>
       <hr class="my-4" />
       <button
         type="button"
@@ -143,76 +143,176 @@
       </button>
     </div>
     <div class="modal-body">
-      <form class="row">
+      <form class="row" [formGroup]="formUpdatePromotion">
         <div
           class="form-group row m-0 justify-content-between align-items-center mb-3"
           style="width: 100%"
         >
-          <label for="name-promotion-user" class="form-control-label col-md-4"
-            >Libelle promotion<span class="text-danger">*</span></label
+          <label for="name-produit" class="form-control-label col-md-4"
+            >Nom <span class="text-danger">*</span></label
           >
           <input
             class="form-control col-md-8"
             type="text"
-            value="Black Friday"
-            id="name-promotion-user"
+            id="name-produit"
+            formControlName="nom"
+            [maxLength]="32"
           />
         </div>
         <div
           class="form-group row m-0 justify-content-between align-items-center mb-3"
           style="width: 100%"
         >
-          <label for="taux-promotion-user" class="form-control-label col-md-4"
-            >Taux réduction<span class="text-danger">*</span></label
+          <label for="code-produit" class="form-control-label col-md-4"
+            >Code <span class="text-danger">*</span></label
+          >
+          <input
+            class="form-control col-md-8"
+            type="text"
+            id="code-produit"
+            formControlName="code"
+            [maxLength]="32"
+          />
+        </div>
+        <div
+          class="form-group row m-0 align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="catégorie-produit" class="form-control-label col-md-4"
+            >Type promotion <span class="text-danger">*</span></label
+          >
+          <ngx-select-dropdown
+            formControlName="typepromotionid"
+            [config]="config"
+            [options]="listPromotion"
+            class="col-md-4 p-0"
+          ></ngx-select-dropdown>
+        </div>
+
+        <!-- <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="catégorie-produit" class="form-control-label col-md-4"
+            >Image<span class="text-danger"></span
+          ></label>
+          <input
+            #fileProm
+            type="file"
+            style="display: none"
+            (change)="loadFile($event)"
+            accept="image/png, image/gif, image/jpeg"
+          />
+          <div class="col-md-8">
+            <div class="row">
+              <div
+                *ngIf="!this.fileTab.length"
+                (click)="fileProm.click()"
+                class="rounded border-primary border align-items-center p-1 col-md-3 m-1 row justify-content-center"
+                style="
+                  min-height: 100px;
+                  width: fit-content;
+                  border-style: dashed !important;
+                  background-color: #dee2e6;
+                  cursor: pointer;
+                "
+              >
+                <span><i class="fa-solid fa-plus"></i> UPLOAD</span>
+              </div>
+
+              <div
+                *ngFor="let image of fileTabSrc"
+                class="col-md-3 m-1 rounded border align-items-center p-1 m-1 row justify-content-center"
+                [style]="'background-image: url(' + image + ')'"
+                style="
+                  position: relative;
+                  background-repeat: no-repeat;
+                  background-size: cover;
+                  min-height: 100px;
+                  width: 91px !important;
+                "
+              >
+                <i
+                  (click)="removeImg(image)"
+                  class="fa-solid fa-circle-xmark"
+                  style="
+                    position: absolute;
+                    color: #c32830;
+                    top: -7px;
+                    right: -10px;
+                    cursor: pointer;
+                  "
+                ></i>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <div
+          class="form-group row m-0 justify-content-between align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="prix-produit" class="form-control-label col-md-4"
+            >Taux de réduction (%)<span class="text-danger">*</span></label
           >
           <input
             class="form-control col-md-8"
             type="number"
-            value="Black Friday"
-            id="taux-promotion-user"
+            id="prix-produit"
+            formControlName="pourcentage"
+          />
+        </div>
+        <div
+          class="form-group row m-0 align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="position-produit" class="form-control-label col-md-4"
+            >Date début</label
+          >
+          <input
+            type="datetime-local"
+            class="form-control col-md-8"
+            formControlName="datedebut"
+          
+          />
+        </div>
+        <div
+          class="form-group row m-0 align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="position-produit" class="form-control-label col-md-4"
+            >Date fin</label
+          >
+          <input
+            type="datetime-local"
+            class="form-control col-md-8"
+            bsDatepicker
+            formControlName="datefin"
           />
         </div>
         <div
           class="form-group row m-0 justify-content-between align-items-center mb-3"
           style="width: 100%"
         >
-          <label
-            for="datedebut-promotion-user"
-            class="form-control-label col-md-4"
-            >Date de début<span class="text-danger">*</span></label
+          <label for="description" class="form-control-label col-md-4"
+            >Description</label
           >
-          <input
-            type="date"
+          <textarea
             class="form-control col-md-8"
-            bsDatepicker
-            [(ngModel)]="dateDebut"
-          />
-        </div>
-        <div
-          class="form-group row m-0 justify-content-between align-items-center mb-3"
-          style="width: 100%"
-        >
-          <label
-            for="datefin-promotion-user"
-            class="form-control-label col-md-4"
-            >Date de fin<span class="text-danger">*</span></label
-          >
-          <input
-            type="date"
-            class="form-control col-md-8"
-            bsDatepicker
-            [(ngModel)]="dateFin"
-          />
+            id="description"
+            rows="3"
+            formControlName="description"
+          ></textarea>
         </div>
       </form>
     </div>
     <div class="modal-footer">
       <button
         type="button"
+        (click)="handleOk1(); c('Close click')"
         class="btn btn-primary"
-        (click)="onUpdatePromotion(); c('Close click')"
+        data-dismiss="modal"
       >
-        Modifier
+        Ajouter
       </button>
       <button
         type="button"
@@ -247,7 +347,7 @@
       <div class="py-3 text-center">
         <i class="ni ni-bell-55 ni-3x"></i>
         <h4 class="heading mt-4">
-          Voulez-vous supprimer promotion <strong>#20</strong>
+          Voulez-vous supprimer promotion <strong>#{{ idPromotionSelect }}</strong>
         </h4>
       </div>
     </div>
@@ -255,7 +355,7 @@
       <button
         type="button"
         class="btn btn-white"
-        (click)="onDeletePromotion(2); c('Close click')"
+        (click)="onDeletePromotion(idPromotionSelect); c('Close click')"
       >
         Oui, supprimer
       </button>

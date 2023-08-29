@@ -20,6 +20,7 @@ import { UtilisService } from "src/app/shared/services/utilis.service";
 import { ModalUpdateComponent } from "./modal-update/modal-update.component";
 import { ToastrService } from "ngx-toastr";
 import swal from "sweetalert2";
+import { RolePermissionsService } from "src/app/shared/services/role-permissions.service";
 
 @Component({
   selector: "app-gestion-administrateurs",
@@ -36,13 +37,17 @@ export class GestionAdministrateursComponent implements OnInit {
   closeResult: string;
   infoUser: any;
   idAdminSelect: any;
+  public crudPerms: any;
+  public menuItems: any[];
 
   SelectionType = SelectionType;
   constructor(
     private modalService: NgbModal,
     private adminService: AdministrateurService,
     private utilitisService: UtilisService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private rolePermission: RolePermissionsService,
+
   ) {
     this.page.pageNumber = 0;
     this.page.size = 10;
@@ -59,6 +64,13 @@ export class GestionAdministrateursComponent implements OnInit {
   @ViewChild("dropzone", { static: true }) dropzoneElement: ElementRef;
 
   ngOnInit(): void {
+    this.menuItems = this.rolePermission.getMenuPermission();
+
+    this.crudPerms = {
+      create: this.menuItems[5].items[1].create,
+      update: this.menuItems[5].items[1].update,
+      delete: this.menuItems[5].items[1].delete,
+    };
     // this.setPage({ offset: 0 });
     let currentMultipleFile = undefined;
     this.getAllAdministrateur({

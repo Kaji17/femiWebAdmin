@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Router, ActivatedRoute } from "@angular/router";
-import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
+import { ActivatedRoute, Router } from "@angular/router";
+import { ModalDismissReasons, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { SelectionType } from "@swimlane/ngx-datatable";
 import { ToastrService } from "ngx-toastr";
 import { Subscription } from "rxjs";
@@ -29,6 +29,8 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
   public dateFin: string;
   infoUser: any;
   public formAddPromotion: FormGroup;
+  public formUpdatePromotion: FormGroup;
+  rowSelected:any
   file: any;
   fileSrc: any = "";
   background: boolean;
@@ -48,12 +50,11 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
     placeholder: this.listPromotion[0], // text to be displayed when no item is selected defaults to Select,
   };
 
+  idPromotionSelect: any;
+
   SelectionType = SelectionType;
   constructor(
-    private service: BreadcrumbService,
     private modalService: NgbModal,
-    private router: Router,
-    private route: ActivatedRoute,
     private promotionService: PromotionService,
     private utilitisService: UtilisService,
     private toastr: ToastrService,
@@ -75,12 +76,12 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.menuItems = this.rolePermission.getMenuPermission();
 
-    console.log("Type Promo", this.listPromotion)
+    console.log("Type Promo", this.listPromotion);
     this.buildForm();
     this.crudPerms = {
-      create: this.menuItems[3].create,
-      update: this.menuItems[3].update,
-      delete: this.menuItems[3].delete,
+      create: this.menuItems[3].items[0].create,
+      update: this.menuItems[3].items[0].update,
+      delete: this.menuItems[3].items[0].delete,
     };
 
     this.getAllPromotion({
@@ -101,6 +102,23 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
       pourcentage: [0],
       datedebut: ["", [Validators.required]],
       datefin: ["", [Validators.required]],
+      typepromotionid: ["", [Validators.required]],
+      boutiqueid: [this.infoUser.body.boutique.id, [Validators.required]],
+    });
+  }
+
+  // BUild Form Ajout promotion
+  buildFormUpdate() {
+    let data: any = {};
+    data = this.rowSelected;
+
+    this.formUpdatePromotion = this.fb.group({
+      nom: [data&&data.nom?data.nom:null, [Validators.required]],
+      code: [data&&data.code?data.code:null, [Validators.required]],
+      description: [data&&data.description?data.description:null],
+      pourcentage: [data&&data.pourcentage?data.pourcentage:null],
+      datedebut: [data&&data.datedebut?data.datedebut:null, [Validators.required]],
+      datefin: [data&&data.datefin?data.datefin:null, [Validators.required]],
       typepromotionid: ["", [Validators.required]],
       boutiqueid: [this.infoUser.body.boutique.id, [Validators.required]],
     });
@@ -233,9 +251,9 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
     }
   }
 
-  onDeletePromotion(id: number) {
-    console.log("produits supprimer");
-  }
+  // onDeletePromotion(id: number) {
+  //   console.log("produits supprimer");
+  // }
 
   // GET ALL PRODUIT
   getAllPromotion(obj: any) {
@@ -269,7 +287,7 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
           console.log(d);
           if (data.status == 200) {
             this.listPromotion = d.body;
-            console.log("Type Promo", this.listPromotion)
+            console.log("Type Promo", this.listPromotion);
           }
         });
       },
@@ -284,7 +302,7 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
       next: (data) => {
         this.utilitisService.response(data, (d: any) => {
           console.log("======response", d);
-          if (d.status ==201) {
+          if (d.status == 201) {
             console.log("======response", d);
             this.getAllPromotion({
               pagination: true,
@@ -293,9 +311,32 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
               isActive: false,
               boutiqueid: this.infoUser.body.boutique.id,
             });
-            this.infoSwal(true)
-          }else{
-            this.infoSwal(false)
+            this.infoSwal(true);
+          } else {
+            this.infoSwal(false);
+          }
+        });
+      },
+    });
+  }
+
+  updatePromotion(id:number,obj: any, file?:any) {
+    this.promotionService.updatePromotion(id,obj, file).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log("======response", d);
+          if (d.status == 200) {
+            console.log("======response promotion modifier", d);
+            this.getAllPromotion({
+              pagination: true,
+              page: this.page.pageNumber,
+              size: this.page.size,
+              isActive: false,
+              boutiqueid: this.infoUser.body.boutique.id,
+            });
+            this.infoSwal(true);
+          } else {
+            this.infoSwal(false);
           }
         });
       },
@@ -310,14 +351,40 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
     console.log("===== file pour la promo", this.file);
 
     const originalDate = new Date(this.formAddPromotion.value.datedebut);
-    this.formAddPromotion.value.datedebut = `${originalDate.getFullYear()}-${(originalDate.getMonth() + 1).toString().padStart(2, '0')}-${originalDate.getDate().toString().padStart(2, '0')} ${originalDate.getHours()}:${originalDate.getMinutes()}:${originalDate.getSeconds()}.${originalDate.getMilliseconds().toString().padStart(3, '0')}`;
+    this.formAddPromotion.value.datedebut = `${originalDate.getFullYear()}-${(
+      originalDate.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0")}-${originalDate
+      .getDate()
+      .toString()
+      .padStart(
+        2,
+        "0"
+      )} ${originalDate.getHours()}:${originalDate.getMinutes()}:${originalDate.getSeconds()}.${originalDate
+      .getMilliseconds()
+      .toString()
+      .padStart(3, "0")}`;
 
     const originalDateFin = new Date(this.formAddPromotion.value.datefin);
-    this.formAddPromotion.value.datefin = `${originalDateFin.getFullYear()}-${(originalDateFin.getMonth() + 1).toString().padStart(2, '0')}-${originalDateFin.getDate().toString().padStart(2, '0')} ${originalDateFin.getHours()}:${originalDateFin.getMinutes()}:${originalDateFin.getSeconds()}.${originalDateFin.getMilliseconds().toString().padStart(3, '0')}`;
+    this.formAddPromotion.value.datefin = `${originalDateFin.getFullYear()}-${(
+      originalDateFin.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0")}-${originalDateFin
+      .getDate()
+      .toString()
+      .padStart(
+        2,
+        "0"
+      )} ${originalDateFin.getHours()}:${originalDateFin.getMinutes()}:${originalDateFin.getSeconds()}.${originalDateFin
+      .getMilliseconds()
+      .toString()
+      .padStart(3, "0")}`;
 
     console.log("=====Date Debut", this.formAddPromotion.value.datedebut);
     console.log("=====Date Fin", this.formAddPromotion.value.datefin);
-    
+
     this.addPromotion(this.formAddPromotion.value, this.file);
     this.getAllPromotion({
       pagination: true,
@@ -328,12 +395,59 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
     });
     this.fileTabSrc = [];
     this.fileTab = [];
-    this.file={}
+    this.file = {};
   }
 
+    // VALIDER AJOUT PRODUIT
+    handleOk1() {
+      this.formUpdatePromotion.value.typepromotionid =
+        this.formUpdatePromotion.value.typepromotionid.id;
+      console.log("========res", this.formUpdatePromotion.value);
+      console.log("===== file pour la promo", this.file);
+  
+      const originalDate = new Date(this.formUpdatePromotion.value.datedebut);
+      this.formUpdatePromotion.value.datedebut = `${originalDate.getFullYear()}-${(
+        originalDate.getMonth() + 1
+      )
+        .toString()
+        .padStart(2, "0")}-${originalDate
+        .getDate()
+        .toString()
+        .padStart(
+          2,
+          "0"
+        )} ${originalDate.getHours()}:${originalDate.getMinutes()}:${originalDate.getSeconds()}.${originalDate
+        .getMilliseconds()
+        .toString()
+        .padStart(3, "0")}`;
+  
+      const originalDateFin = new Date(this.formUpdatePromotion.value.datefin);
+      this.formUpdatePromotion.value.datefin = `${originalDateFin.getFullYear()}-${(
+        originalDateFin.getMonth() + 1
+      )
+        .toString()
+        .padStart(2, "0")}-${originalDateFin
+        .getDate()
+        .toString()
+        .padStart(
+          2,
+          "0"
+        )} ${originalDateFin.getHours()}:${originalDateFin.getMinutes()}:${originalDateFin.getSeconds()}.${originalDateFin
+        .getMilliseconds()
+        .toString()
+        .padStart(3, "0")}`;
+  
+      console.log("=====Date Debut", this.formUpdatePromotion.value.datedebut);
+      console.log("=====Date Fin", this.formUpdatePromotion.value.datefin);
+  
+      this.updatePromotion(this.rowSelected.id,this.formUpdatePromotion.value, this.file);
+      this.fileTabSrc = [];
+      this.fileTab = [];
+      this.file = {};
+    }
 
-    infoSwal(bool: boolean) {
-    if(bool){
+  infoSwal(bool: boolean) {
+    if (bool) {
       swal({
         title: "Success",
         text: "Promotion ajoutée avec succès",
@@ -341,17 +455,110 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
         buttonsStyling: false,
         confirmButtonClass: "btn btn-success",
       });
-    }else{
+    } else {
       swal({
-        title: 'Error',
+        title: "Error",
         text: "Un problème estsurvenu lors de l'ajout de la promotion",
-        type: 'warning',
+        type: "warning",
         buttonsStyling: false,
-        confirmButtonClass: 'btn btn-warning',
-        onClose : ()=>{
-          this.buildForm()
-        }
+        confirmButtonClass: "btn btn-warning",
+        onClose: () => {
+          this.buildForm();
+        },
       });
     }
   }
+
+  // Recupere Id de la ligne selectionner a supprimer
+  onDeleteRow(row: any) {
+    console.log("=======Row", row);
+    this.idPromotionSelect = row;
+  }
+
+  onDeletePromotion(id: number) {
+    this.promotionService.deletePromotion(id).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log(d);
+          if (data.status == 204) {
+            console.log("La promotion avec l'id:", id, " n'existe pas");
+          } else if (data.status == 400) {
+            console.log("Verifier l'id renseigner");
+          } else {
+            console.log("promotion supprimer");
+            console.log(data);
+            this.showNotification("success");
+            this.getAllPromotion({
+              pagination: true,
+              page: this.page.pageNumber,
+              size: this.page.size,
+              isActive: false,
+              boutiqueid: this.infoUser.body.boutique.id,
+            });
+          }
+        });
+      },
+    });
+    console.log("produits supprimer");
+  }
+
+  // Notification alerte
+  showNotification(type, message?: string) {
+    if (type === "default") {
+      this.toastr.show(
+        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">Error server 505</span> <span data-notify="message">Désolé le serveur est innacsseible pour l\'instant réesayer plus tard ou contacter le service client</span></div>',
+        "",
+        {
+          timeOut: 3000,
+          closeButton: true,
+          enableHtml: true,
+          tapToDismiss: false,
+          titleClass: "alert-title",
+          positionClass: "toast-top-center",
+          toastClass:
+            "ngx-toastr alert alert-dismissible alert-default alert-notify",
+        }
+      );
+    }
+    if (type === "danger") {
+      this.toastr.show(
+        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">Désolé nous ne pouvons pas créer ce produit vérifier les données</span></div>',
+        "",
+        {
+          timeOut: 3000,
+          closeButton: true,
+          enableHtml: true,
+          tapToDismiss: false,
+          titleClass: "alert-title",
+          positionClass: "toast-top-center",
+          toastClass:
+            "ngx-toastr alert alert-dismissible alert-danger alert-notify",
+        }
+      );
+    }
+    if (type === "success") {
+      this.toastr.show(
+        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">Ngx Toastr</span> <span data-notify="message">La promotion à été supprimer avec succès</span></div>',
+        "",
+        {
+          timeOut: 3000,
+          closeButton: true,
+          enableHtml: true,
+          tapToDismiss: false,
+          titleClass: "alert-title",
+          positionClass: "toast-top-center",
+          toastClass:
+            "ngx-toastr alert alert-dismissible alert-success alert-notify",
+        }
+      );
+    }
+  }
+
+    // Recupere Id de la ligne selectionner a supprimer
+    onUpdateRow(row: any) {
+      console.log("=======RowFOrUpdate", row);
+      this.rowSelected = row;
+      // this.getImageByProduitId(n)
+      this.buildFormUpdate();
+    }
 }

@@ -15,8 +15,12 @@ import { ModalAddComponent } from './gestion-produis/modal-add/modal-add.compone
 import { ModalUpdateComponent } from './gestion-produis/modal-update/modal-update.component';
 import { ModalDeleteComponent } from './gestion-produis/modal-delete/modal-delete.component';
 import { ModalDetailsComponent } from './gestion-produis/modal-details/modal-details.component';
-import { ModalImagesProduitComponent } from './gestion-produis/modal-images-produit/modal-images-produit.component'
+import { ModalImagesProduitComponent } from './gestion-produis/modal-images-produit/modal-images-produit.component';
+import { ModalAssignPromotionComponent } from './gestion-produis/modal-assign-promotion/modal-assign-promotion.component';
+import { ModalRemovePromotionComponent } from './gestion-produis/modal-remove-promotion/modal-remove-promotion.component'
 
+// import { DateTimeModule } from 'nxt-pick-datetime'
+// import { NativeDateTimeModule } from 'nxt-pick-datetime/native-adapter'
 
 @NgModule({
   declarations: [
@@ -30,6 +34,8 @@ import { ModalImagesProduitComponent } from './gestion-produis/modal-images-prod
     ModalDeleteComponent,
     ModalDetailsComponent,
     ModalImagesProduitComponent,
+    ModalAssignPromotionComponent,
+    ModalRemovePromotionComponent,
   ],
   imports: [
     CommonModule,
@@ -39,7 +45,9 @@ import { ModalImagesProduitComponent } from './gestion-produis/modal-images-prod
     TagInputModule,
     FormsModule,
     ReactiveFormsModule,
-    SelectDropDownModule
+    SelectDropDownModule,
+    // DateTimeModule,
+    // NativeDateTimeModule
   ],
 })
 export class CatalogueModule {}

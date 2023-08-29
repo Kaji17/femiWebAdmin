@@ -5,6 +5,7 @@ import { SelectionType } from '@swimlane/ngx-datatable';
 import { Subscription } from 'rxjs';
 import { Page } from 'src/app/shared/model/page';
 import { BreadcrumbService } from 'src/app/shared/services/breadcrumb.service';
+import { RolePermissionsService } from 'src/app/shared/services/role-permissions.service';
 
 @Component({
   selector: 'app-gestion-type-pack',
@@ -20,13 +21,17 @@ export class GestionTypePackComponent implements OnInit,OnDestroy {
   activeRow: any;
   rows: any[];
   closeResult: string;
+  public crudPerms: any;
+  public menuItems: any[];
 
   SelectionType = SelectionType;
   constructor(
     private service: BreadcrumbService,
     private modalService: NgbModal,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private rolePermission: RolePermissionsService,
+
   ) {
     // this.page.pageNumber = 0;
     // this.page.size = 10;
@@ -42,8 +47,13 @@ export class GestionTypePackComponent implements OnInit,OnDestroy {
     this.SuscribeAllData.unsubscribe;
   }
   ngOnInit(): void {
-    this.setPage({ offset: 0 });
+    this.menuItems = this.rolePermission.getMenuPermission();
     let currentMultipleFile = undefined;
+    this.crudPerms = {
+      create: this.menuItems[3].items[4].create,
+      update: this.menuItems[3].items[4].update,
+      delete: this.menuItems[3].items[4].delete,
+    };
     // multiple dropzone file - accepts any type of file
   }
 

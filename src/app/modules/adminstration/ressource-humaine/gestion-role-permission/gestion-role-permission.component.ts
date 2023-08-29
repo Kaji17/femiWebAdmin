@@ -54,6 +54,8 @@ export class GestionRolePermissionComponent implements OnInit {
   }
 
   page = new Page();
+  public crudPerms: any;
+  public menuItems1: any[];
 
   //
   permForm: FormGroup;
@@ -71,6 +73,13 @@ export class GestionRolePermissionComponent implements OnInit {
   ngOnDestroy(): void {
   }
   ngOnInit(): void {
+    this.menuItems1 = this.rolePerms.getMenuPermission();
+
+    this.crudPerms = {
+      create: this.menuItems[5].items[1].create,
+      update: this.menuItems[5].items[1].update,
+      delete: this.menuItems[5].items[1].delete,
+    };
     // this.setPage({ offset: 0 });
     this.menuItems = Nav2Constants;
     this.file = this.buildTableNodes(navAdminItems);

@@ -13,9 +13,9 @@ import { UtilisService } from "src/app/shared/services/utilis.service";
 })
 export class RoleModalComponent implements OnInit {
   rows = [];
-  libelle: string
-  infoUser:any
-  loading:boolean=false
+  libelle: string;
+  infoUser: any;
+  loading: boolean = false;
 
   ColumnMode = ColumnMode;
   menu: any;
@@ -24,31 +24,33 @@ export class RoleModalComponent implements OnInit {
     private rolePerms: RolePermissionsService,
     private utilitisService: UtilisService,
     private toastr: ToastrService
-
   ) {
     this.infoUser = JSON.parse(localStorage.getItem("user_info"));
   }
 
   ngOnInit(): void {
     this.menu = NavConstants;
-    this.rows =  this.menu
+    this.rows = this.menu;
   }
 
-  checkValue(event,item,module,parent?){
-    if(!parent){
+  checkValue(event, item, module, parent?) {
+    console.log(item);
+    console.log(event.currentTarget.checked);
+    if (!parent) {
       console.log(event.currentTarget.checked);
-      item[module]=event.currentTarget.checked
-      item.items.map(el=>{
-        el[module]=event.currentTarget.checked
-      })
-    }
-    else{
-      parent[module] = event.currentTarget.checked
-      let litem = parent.items.find(el=>item.label==el.label)
-      litem[module]=event.currentTarget.checked
-    }
+      item[module] = event.currentTarget.checked;
+      item.items.map((el) => {
+        el[module] = event.currentTarget.checked;
+      });
+    } else {
+      let litem = parent.items.find((el) => item.label == el.label);
+      litem[module] = event.currentTarget.checked;
+      if (event.currentTarget.checked) {
+        parent[module] = event.currentTarget.checked;
+      }
 
-    console.log('le nav',this.menu)
+      console.log(litem);
+    }
   }
 
   // Fermer le modal
@@ -56,19 +58,19 @@ export class RoleModalComponent implements OnInit {
     this.activeModal.close();
   }
   closeModalOk() {
-    this.activeModal.close('ok');
+    this.activeModal.close("ok");
   }
 
   handleOk() {
-    let res :any ={};
+    let res: any = {};
     // res.id =  this.infoUser.body.id
     res.nom = this.libelle;
-    res.boutique=this.infoUser.body.boutique
+    res.boutique = this.infoUser.body.boutique;
 
     const getCircularReplacer = () => {
       const seen = new WeakSet();
       return (key: any, value: object | null) => {
-        if (typeof value === 'object' && value !== null) {
+        if (typeof value === "object" && value !== null) {
           if (seen.has(value)) {
             return;
           }
@@ -77,15 +79,10 @@ export class RoleModalComponent implements OnInit {
         return value;
       };
     };
-    ;
-
-    res.description = btoa(
-      JSON.stringify(this.menu, getCircularReplacer())
-    );
-    console.log("======content", res)
-    this.addRole(res)
+    res.description = btoa(JSON.stringify(this.menu, getCircularReplacer()));
+    console.log("======content", res);
+    this.addRole(res);
   }
-
 
   // Notification alerte
   showNotification(type, message?: string) {
@@ -139,16 +136,14 @@ export class RoleModalComponent implements OnInit {
     }
   }
 
-  addRole(obj:any){
+  addRole(obj: any) {
     this.rolePerms.addRole(obj).subscribe({
       next: (data) => {
         this.utilitisService.response(data, (d: any) => {
-          if(data.status==201)
-          console.log("======CONTENT", d);
-          this.showNotification("success")
+          if (data.status == 201) console.log("======CONTENT", d);
+          this.showNotification("success");
         });
       },
     });
   }
-
 }

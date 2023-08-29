@@ -64,6 +64,8 @@ export class RoleUpdateModalComponent implements OnInit {
   }
 
   checkValue(event, item, module, parent?) {
+    console.log(item);
+    console.log(event.currentTarget.checked);
     if (!parent) {
       console.log(event.currentTarget.checked);
       item[module] = event.currentTarget.checked;
@@ -71,12 +73,14 @@ export class RoleUpdateModalComponent implements OnInit {
         el[module] = event.currentTarget.checked;
       });
     } else {
-      parent[module] = event.currentTarget.checked;
       let litem = parent.items.find((el) => item.label == el.label);
       litem[module] = event.currentTarget.checked;
-    }
+      if (event.currentTarget.checked) {
+        parent[module] = event.currentTarget.checked;
+      }
 
-    console.log("le nav", this.menu);
+      console.log(litem);
+    }
   }
 
   // Fermer le modal

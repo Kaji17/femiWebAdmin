@@ -63,7 +63,7 @@
           Attribuer promotions
         </button>
       </div>
-      <div class="col-md-2" *ngIf="selected.length&&crudPerms.delete">
+      <div class="col-md-2" *ngIf="selected.length==1&&crudPerms.delete&&verifiyItemPromed">
         <button
           class="btn btn-danger btn-sm"
           (click)="openRemovePromotion()"

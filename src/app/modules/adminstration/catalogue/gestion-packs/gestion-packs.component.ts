@@ -5,6 +5,7 @@ import { SelectionType } from "@swimlane/ngx-datatable";
 import { Subscription } from "rxjs";
 import { Page } from "src/app/shared/model/page";
 import { BreadcrumbService } from "src/app/shared/services/breadcrumb.service";
+import { RolePermissionsService } from "src/app/shared/services/role-permissions.service";
 
 @Component({
   selector: "app-gestion-packs",
@@ -23,6 +24,8 @@ export class GestionPacksComponent implements OnInit, OnDestroy {
   public dateFin: string;
   public listProduitSelect = ['bonjour'];
   public itemtag;
+  public crudPerms: any;
+  public menuItems: any[];
 
   closeResult: string;
 
@@ -31,7 +34,9 @@ export class GestionPacksComponent implements OnInit, OnDestroy {
     private service: BreadcrumbService,
     private modalService: NgbModal,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private rolePermission: RolePermissionsService,
+
   ) {
     // this.page.pageNumber = 0;
     this.page.size = 10;
@@ -45,6 +50,13 @@ export class GestionPacksComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.setPage({ offset: 0 });
+    this.menuItems = this.rolePermission.getMenuPermission();
+
+    this.crudPerms = {
+      create: this.menuItems[3].items[3].create,
+      update: this.menuItems[3].items[3].update,
+      delete: this.menuItems[3].items[3].delete,
+    };
   }
 
   // Méthode d'ajout nouvelle catégorie de  produit

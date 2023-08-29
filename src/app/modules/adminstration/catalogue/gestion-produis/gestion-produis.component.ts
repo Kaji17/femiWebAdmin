@@ -78,6 +78,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   isLoading = 0;
   public crudPerms: any;
   public menuItems: any[];
+  verifiyItemPromed:any
 
   rowSelected: any;
 
@@ -124,6 +125,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   @ViewChild("dropzone", { static: true }) dropzoneElement: ElementRef;
 
   ngOnInit(): void {
+    this.verifiyItemPromed=false
     this.menuItems = this.rolePermission.getMenuPermission();
     let currentMultipleFile = undefined;
     this.buildForm();
@@ -134,9 +136,9 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
       size: this.page.size,
     });
     this.crudPerms = {
-      create: this.menuItems[3].create,
-      update: this.menuItems[3].update,
-      delete: this.menuItems[3].delete,
+      create: this.menuItems[3].items[1].create,
+      update: this.menuItems[3].items[1].update,
+      delete: this.menuItems[3].items[1].delete,
     };
 
   }
@@ -230,6 +232,9 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     this.selected.splice(0, this.selected.length);
     this.selected.push(...selected);
     console.log("hhh", this.selected);
+    selected[0].promotion?this.verifiyItemPromed=true:this.verifiyItemPromed=false
+    console.log("verify", this.verifiyItemPromed);
+
   }
 
   displayCheck(row) {
@@ -288,8 +293,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   openRemovePromotion() {
     const modalRef = this.modalService.open(ModalRemovePromotionComponent, {
       windowClass: "modal-mini",
-      size: "lg",
-      centered: true,
+      size: "sm",
     });
     modalRef.result.then(
       (result) => {
