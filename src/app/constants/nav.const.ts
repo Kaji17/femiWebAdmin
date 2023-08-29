@@ -216,7 +216,7 @@ export const NavConstants = [
 
     items: [
       {
-        label: "Gestion administrateurs",
+        label: "Gestion utilisateurs",
         path: "/administration/ressource-humaine/administrateur",
         display: false,
         level: 2,

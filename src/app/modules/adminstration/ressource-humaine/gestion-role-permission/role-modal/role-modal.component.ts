@@ -29,7 +29,8 @@ export class RoleModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.menu = NavConstants;
+    this.menu = this.rolePerms.getMenuPermission();
+    // this.menu = NavConstants;
     this.rows = this.menu;
   }
 

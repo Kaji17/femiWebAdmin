@@ -11,9 +11,15 @@ export class RolePermissionsService {
   constructor(private http: HttpClient, private configService: Configurable) {}
 
   public menuItems: any[];
+  public menuItemsBoutique: any[];
 
   getMenuPermission(){
     return this.menuItems
+  }
+
+
+  getMenuPermissionBoutique(){
+    return this.menuItemsBoutique
   }
 
   // ADD ROLE
@@ -51,8 +57,20 @@ export class RolePermissionsService {
     );
   }
 
+  // Attribuer les permissions 
   public setPermission(infoUser:any){
-    if (infoUser.body.role.description) {
+    if (infoUser.body.role.nom=="Administrateur") {
+      let encodedValue = infoUser.body.boutique.description;
+
+      // Décodez la valeur en base64
+      let decodedValue = atob(encodedValue);
+
+      // Parsez la valeur décodée pour obtenir un objet JSON
+      let decodedObject = JSON.parse(decodedValue);
+      this.menuItems = decodedObject;
+      console.log('===description décodé de l\'administrateur P success',this.menuItems)
+      
+    }else  {
       let encodedValue = infoUser.body.role.description;
 
       // Décodez la valeur en base64
@@ -61,12 +79,26 @@ export class RolePermissionsService {
       // Parsez la valeur décodée pour obtenir un objet JSON
       let decodedObject = JSON.parse(decodedValue);
       this.menuItems = decodedObject;
-      console.log('===description décodé success',this.menuItems)
-    }
-    else{
-      console.log('===description vide')
-      this.menuItems = NavConstants;
-    }
-  }
+      console.log('===description décodé de l\'utilisateur success',this.menuItems)
+    }}
+
+
+  // public setPermissionBoutique(infoUser:any){
+  //   if (infoUser.body.role.description) {
+  //      let encodedValue = infoUser.body.role.description;
+ 
+  //      // Décodez la valeur en base64
+  //      let decodedValue = atob(encodedValue);
+ 
+  //      // Parsez la valeur décodée pour obtenir un objet JSON
+  //      let decodedObject = JSON.parse(decodedValue);
+  //      this.menuItems = decodedObject;
+  //      console.log('===description décodé success',this.menuItems)
+  //    }
+  //    else{
+  //      console.log('===description vide')
+  //      this.menuItems = NavConstants;
+  //    }
+  //  }
 
 }

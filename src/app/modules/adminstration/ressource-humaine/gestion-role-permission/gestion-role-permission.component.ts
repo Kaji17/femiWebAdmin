@@ -30,6 +30,7 @@ export class GestionRolePermissionComponent implements OnInit {
   activeRow: any;
   rows: any[];
   public menuItems: any[];
+  public isAdmin: boolean =false
 
   closeResult: string;
   isExpandedd2: boolean = true;
@@ -51,6 +52,9 @@ export class GestionRolePermissionComponent implements OnInit {
     this.page.pageNumber = 0;
     this.page.size = 10;
     this.infoUser = JSON.parse(localStorage.getItem("user_info"));
+    // if (this.infoUser.body.role.nom=="") {
+    //   this.isAdmin = true
+    // }
   }
 
   page = new Page();
@@ -75,10 +79,13 @@ export class GestionRolePermissionComponent implements OnInit {
   ngOnInit(): void {
     this.menuItems1 = this.rolePerms.getMenuPermission();
 
+    if (this.infoUser.body.role.nom=="Administrateur") {
+      this.isAdmin = true
+    }
     this.crudPerms = {
-      create: this.menuItems[5].items[1].create,
-      update: this.menuItems[5].items[1].update,
-      delete: this.menuItems[5].items[1].delete,
+      create: this.menuItems1[5].items[1].create,
+      update: this.menuItems1[5].items[1].update,
+      delete: this.menuItems1[5].items[1].delete,
     };
     // this.setPage({ offset: 0 });
     this.menuItems = Nav2Constants;

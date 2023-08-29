@@ -190,7 +190,7 @@ export const navAdminItems: NavItems[] = [
     children: [
       {
         level: 2,
-        title: "Gestion administrateurs",
+        title: "Gestion utilisateurs",
         icon: "",
         url: "/administration/ressource-humaine/administrateur",
         selected: false,

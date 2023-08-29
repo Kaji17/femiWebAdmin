@@ -12,7 +12,7 @@
               </h6>
             </div>
             <div class="col-lg-6 col-md-4 col-sm-1 col-xs-1 text-left" *ngIf="crudPerms.create">
-              <button class="btn btn-primary btn-md" (click)="openAddRole()">
+              <button class="btn btn-primary btn-md" (click)="openAddRole()" >
                 <i class="ni ni-fat-add text-white"></i>
               </button>
             </div>
@@ -70,11 +70,11 @@
       (page)="setPage($event)"
     >
       <ngx-datatable-column name="Role" prop="nom"> </ngx-datatable-column>
-      <ngx-datatable-column name="Actions">
+      <ngx-datatable-column name="Actions" prop="nom">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <div>
             <a
-            *ngIf="crudPerms.update"
+            *ngIf="crudPerms.update&& !(row.nom==='Administrateur')"
               role="button"
               (click)="openEditRole(row)"
               data-target="#modal-form"
@@ -83,7 +83,7 @@
               <i class="fa-solid fa-pen-to-square mr-2 text-primary"></i>
             </a>
             <a
-            *ngIf="crudPerms.delete"
+            *ngIf="crudPerms.delete && !(row.nom==='Administrateur')"
               role="button"
               (click)="onDeleteRow(row.id); open(classic2, 'Notification', '')"
               data-target="#modal-form"
