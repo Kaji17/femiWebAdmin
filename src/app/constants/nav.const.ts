@@ -8,6 +8,7 @@ export const NavConstants = [
     delete: false,
     other: false,
     display: false,
+    name: "dasboard",
     items: [
       {
         label: "Dashboard",
@@ -18,6 +19,7 @@ export const NavConstants = [
         update: false,
         delete: false,
         other: false,
+        name: "dasboard",
       },
     ],
     isEpandedd: false,
@@ -34,6 +36,7 @@ export const NavConstants = [
     delete: false,
     other: false,
     display: false,
+    name: "achat",
 
     items: [
       {
@@ -45,6 +48,7 @@ export const NavConstants = [
         update: false,
         delete: false,
         other: false,
+        name: "achat",
       },
       {
         label: "Transactions",
@@ -55,6 +59,8 @@ export const NavConstants = [
         update: false,
         delete: false,
         other: false,
+        name: "transaction",
+
       },
     ],
     isEpandedd: false,
@@ -71,6 +77,7 @@ export const NavConstants = [
     other: false,
     display: false,
     level: 1,
+    name: "boutique",
 
     items: [
       // {
@@ -82,6 +89,7 @@ export const NavConstants = [
       //   update: false,
       //   delete: false,
       //   other: false,
+      // name: "astuce-conseil",
       // },
       {
         label: "Banniere",
@@ -92,6 +100,7 @@ export const NavConstants = [
         update: false,
         delete: false,
         other: false,
+        name: "banniere",
       },
       // {
       //   label: "Disposition",
@@ -102,6 +111,7 @@ export const NavConstants = [
       //   update: false,
       //   delete: false,
       //   other: false,
+      // name: "display",
       // },
       // {
       //   label: "Type Astuce & Conseil",
@@ -112,6 +122,7 @@ export const NavConstants = [
       //   update: false,
       //   delete: false,
       //   other: false,
+      // name: "type-astuce-conseil",
       // },
     ],
     isEpandedd: false,
@@ -127,6 +138,7 @@ export const NavConstants = [
     other: false,
     display: false,
     level: 1,
+    name: "catalogue",
 
     items: [
       {
@@ -138,6 +150,7 @@ export const NavConstants = [
         update: false,
         delete: false,
         other: false,
+        name: "promotions",
       },
       {
         label: "Gestion produits",
@@ -148,6 +161,7 @@ export const NavConstants = [
         update: false,
         delete: false,
         other: false,
+        name: "produits",
       },
       {
         label: "Gestion catégorie produits",
@@ -158,6 +172,7 @@ export const NavConstants = [
         update: false,
         delete: false,
         other: false,
+        name: "categorie-produit",
       },
       // {
       //   label: "Gestion packs",
@@ -168,6 +183,8 @@ export const NavConstants = [
       //   update: false,
       //   delete: false,
       //   other: false,
+      //  name: "packs",
+
       // },
       // {
       //   label: "Gestion type packs",
@@ -178,6 +195,8 @@ export const NavConstants = [
       //   update: false,
       //   delete: false,
       //   other: false,
+      //  name: "typepack",
+
       // },
     ],
     isEpandedd: false,
@@ -193,6 +212,8 @@ export const NavConstants = [
     other: false,
     display: false,
     level: 1,
+    name: "ressource-humaine",
+
     items: [
       {
         label: "Gestion administrateurs",
@@ -203,6 +224,8 @@ export const NavConstants = [
         update: false,
         delete: false,
         other: false,
+
+        name: "administrateur",
       },
       {
         label: "Gestion clients",
@@ -213,6 +236,7 @@ export const NavConstants = [
         update: false,
         delete: false,
         other: false,
+        name: "client",
       },
       {
         label: "Gestion role et permission",
@@ -223,6 +247,7 @@ export const NavConstants = [
         update: false,
         delete: false,
         other: false,
+        name: "role-permission",
       },
     ],
     isEpandedd: false,
@@ -238,6 +263,7 @@ export const NavConstants = [
     other: false,
     display: false,
     level: 1,
+    name: "parametre",
 
     items: [
       {
@@ -249,6 +275,8 @@ export const NavConstants = [
         update: false,
         delete: false,
         other: false,
+
+        name: "prix-livraison",
       },
       {
         label: "Gestion prix livraison",
@@ -259,6 +287,7 @@ export const NavConstants = [
         update: false,
         delete: false,
         other: false,
+        name: "zone",
       },
     ],
     isEpandedd: false,
