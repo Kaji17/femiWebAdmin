@@ -6,23 +6,26 @@ import {
   TemplateRef,
   ViewChild,
 } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import {
-  NgbModal,
   ModalDismissReasons,
+  NgbModal,
   NgbModalRef,
 } from "@ng-bootstrap/ng-bootstrap";
 import { SelectionType } from "@swimlane/ngx-datatable";
+import { ToastrService } from "ngx-toastr";
+import { Subscription } from "rxjs";
+import { Configurable } from "src/app/core/config";
 import { Page } from "src/app/shared/model/paged";
 import { BreadcrumbService } from "src/app/shared/services/breadcrumb.service";
-import { Subscription } from "rxjs";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { CategorieService } from "src/app/shared/services/categorie.service";
+import { ImageProduitService } from "src/app/shared/services/image-produit.service";
 import { ProduitService } from "src/app/shared/services/produit.service";
 import { UtilisService } from "src/app/shared/services/utilis.service";
-import { CategorieService } from "src/app/shared/services/categorie.service";
-import { ToastrService } from "ngx-toastr";
-import { Configurable } from "src/app/core/config";
-import { ImageProduitService } from "src/app/shared/services/image-produit.service";
+import { ModalAssignPromotionComponent } from "./modal-assign-promotion/modal-assign-promotion.component";
 import { ModalImagesProduitComponent } from "./modal-images-produit/modal-images-produit.component";
+import { ModalRemovePromotionComponent } from "./modal-remove-promotion/modal-remove-promotion.component";
+import { RolePermissionsService } from "src/app/shared/services/role-permissions.service";
 
 @Component({
   selector: "app-gestion-produis",
@@ -73,6 +76,8 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   pageNumber: number;
   cache: any = {};
   isLoading = 0;
+  public crudPerms: any;
+  public menuItems: any[];
 
   rowSelected: any;
 
@@ -87,7 +92,6 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   souscriptionDelproduit: any;
   souscriptionGetAllPromotion: any;
   constructor(
-    private service: BreadcrumbService,
     private modalService: NgbModal,
     private produitService: ProduitService,
     private utilitisService: UtilisService,
@@ -95,7 +99,8 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     private categorieService: CategorieService,
     private toastr: ToastrService,
     private configService: Configurable,
-    private imgProduit: ImageProduitService
+    private imgProduit: ImageProduitService,
+    private rolePermission: RolePermissionsService,
   ) {
     this.page.pageNumber = 0;
     this.page.size = 10;
@@ -119,7 +124,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   @ViewChild("dropzone", { static: true }) dropzoneElement: ElementRef;
 
   ngOnInit(): void {
-    // this.setPage({ pagination: true, page: 0});
+    this.menuItems = this.rolePermission.getMenuPermission();
     let currentMultipleFile = undefined;
     this.buildForm();
     this.getAllCategorie();
@@ -128,18 +133,24 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
       page: this.page.pageNumber,
       size: this.page.size,
     });
+    this.crudPerms = {
+      create: this.menuItems[3].create,
+      update: this.menuItems[3].update,
+      delete: this.menuItems[3].delete,
+    };
+
   }
 
   buildForm() {
     this.formAddProduit = this.fb.group({
-      nom: ["", Validators.required],
+      nom: ["", [Validators.required]],
       caracteristique: [""],
       description: [""],
       positionaffichage: [0],
       prix: [0],
       quantite: [1],
-      categorieid: ["", Validators.required],
-      boutiqueid: [this.infoUser.body.boutique.id, Validators.required],
+      categorieid: ["", [Validators.required]],
+      boutiqueid: [this.infoUser.body.boutique.id, [Validators.required]],
     });
   }
 
@@ -148,16 +159,16 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     data = this.rowSelected;
     // this.rowSelected?data=this.rowSelected:''
     this.formUpdate = this.fb.group({
-      nom: [data && data.nom ? data.nom : "", Validators.required],
+      nom: [data && data.nom ? data.nom : "", [Validators.required]],
       caracteristique: [
         data && data.caracteristique ? data.caracteristique : "",
       ],
       description: [data && data.description ? data.description : ""],
       positionaffichage: [""],
-      prix: [data && data.prix ? data.prix : 0, Validators.required],
+      prix: [data && data.prix ? data.prix : 0, [Validators.required]],
       quantite: [data && data.quantite ? data.quantite : 1],
-      categorieid: ["", Validators.required],
-      boutiqueid: [this.infoUser.body.boutique.id, Validators.required],
+      categorieid: ["", [Validators.required]],
+      boutiqueid: [this.infoUser.body.boutique.id, [Validators.required]],
     });
 
     // this.getImageByProduitId({ produitid: data.id });
@@ -254,6 +265,44 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.infoDaTa = infoData;
   }
 
+  // OUVRIR MODALS POUR ATTRIBUER PROMOTION
+  openAssignPromotion() {
+    const modalRef = this.modalService.open(ModalAssignPromotionComponent, {
+      windowClass: "modal-mini",
+      size: "lg",
+      centered: true,
+    });
+    modalRef.result.then(
+      (result) => {
+        this.closeResult = "Closed with: " + result;
+        console.log("yaaaa", this.closeResult);
+      },
+      (reason) => {
+        this.closeResult = "Dismissed " + this.getDismissReason(reason);
+      }
+    );
+    modalRef.componentInstance.produitSelect = this.selected;
+  }
+
+  // OUVRIR MODALS POUR ATTRIBUER PROMOTION
+  openRemovePromotion() {
+    const modalRef = this.modalService.open(ModalRemovePromotionComponent, {
+      windowClass: "modal-mini",
+      size: "lg",
+      centered: true,
+    });
+    modalRef.result.then(
+      (result) => {
+        this.closeResult = "Closed with: " + result;
+        console.log("yaaaa", this.closeResult);
+      },
+      (reason) => {
+        this.closeResult = "Dismissed " + this.getDismissReason(reason);
+      }
+    );
+    modalRef.componentInstance.produitSelect = this.selected;
+  }
+
   open(content, type, modalDimension, event?: any, infoData?: any) {
     if (modalDimension === "" && type === "Notification") {
       this.modalService
@@ -339,17 +388,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
       this.background = true;
       this.fileTabSrc.push(this.fileSrc);
       console.log("e", e);
-      //  this.background = "bg-[url('"+this.fileSrc+"')]"
     };
-
-    // if (action == "u") {
-    //   console.log("Ice Spsiz", this.fileSrc);
-    //   this.addImageByProduitId(id, this.fileTab);
-    //   let obj: any = {
-    //     produitid: id,
-    //   };
-    //   this.getImageByProduitId(obj);
-    // }
     console.log("La table src", this.fileTab);
     console.log("La table", this.fileSrc);
   }
@@ -463,41 +502,6 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
       size: 10,
     });
   }
-
-  // RECUPERER TOUTE LES PRODUITS
-  // getAllProduit() {
-  //   this.SuscribeAllCategorie = this.produitService
-  //     .gettAllProduit(true, this.infoUser.body.boutique.id)
-  //     .subscribe({
-  //       next: (data) => {
-  //         this.utilitisService.response(data, (d: any) => {
-  //           console.log(d);
-  //           if (data.status == 200) {
-  //             // this.listCategorie = data.body
-  //             let lis: any[] = [];
-  //             let lisAff: any[] = [];
-  //             let nbr = 0;
-  //             lis = d.body;
-  //             this.listAllProduit = lis;
-  //             this.listAllProduit.map((el) => {
-  //               nbr = nbr + 1;
-  //               lisAff.push(nbr);
-  //             });
-  //             this.listAllProduit.push(this.listAllProduit.length+1)
-  //             lisAff.length == 0
-  //               ? this.listAffichage.push(1)
-  //               : (this.listAffichage = lisAff);
-  //             console.log(this.listAffichage);
-  //           } else {
-  //             console.log("erreur", d);
-  //           }
-  //         });
-  //       },
-  //       error: (error) => {
-  //         this.utilitisService.response(error, (d: any) => {});
-  //       },
-  //     });
-  // }
 
   getProduitById(id) {
     this.loadingupdate = true;
@@ -735,6 +739,11 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
           console.log("======response ImgProduit", d);
           if (data.status == 200) {
             console.log(d.body);
+            this.getAllProduit({
+              pagination: true,
+              page: this.page.pageNumber,
+              size: this.page.size,
+            });
           }
         });
       },
@@ -748,6 +757,11 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
           console.log("======response ImgProduit", d);
           if (d.status == 200) {
             console.log(d.body);
+            this.getAllProduit({
+              pagination: true,
+              page: this.page.pageNumber,
+              size: this.page.size,
+            });
           }
         });
       },

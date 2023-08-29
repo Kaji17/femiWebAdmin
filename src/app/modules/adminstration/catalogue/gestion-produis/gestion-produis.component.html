@@ -11,6 +11,7 @@
             </div>
             <div class="col-lg-3 col-md-2 col-sm-1 col-xs-1 text-left">
               <button
+              *ngIf="crudPerms.create"
                 class="btn btn-primary btn-md"
                 (click)="open(classic3, '', 'sm')"
               >
@@ -52,6 +53,26 @@
 <!-- TABLEAU -->
 <div class="container-fluid mt-5">
   <div class="dataTables_wrapper py-4 card px-4">
+    <div class="row">
+      <div class="col-md-2" *ngIf="selected.length&&crudPerms.update">
+        <button
+          class="btn btn-success btn-sm"
+          (click)="openAssignPromotion()"
+          type="button"
+        >
+          Attribuer promotions
+        </button>
+      </div>
+      <div class="col-md-2" *ngIf="selected.length&&crudPerms.delete">
+        <button
+          class="btn btn-danger btn-sm"
+          (click)="openRemovePromotion()"
+          type="button"
+        >
+          Rétirer promotions
+        </button>
+      </div>
+    </div>
     <ngx-datatable
       class="bootstrap selection-cell"
       [columnMode]="'force'"
@@ -116,14 +137,20 @@
       ></ngx-datatable-column>
       <ngx-datatable-column name="Prix unitaire (FCFA)" prop="prix">
       </ngx-datatable-column>
-      <ngx-datatable-column name="Réduction" prop="promotion">
+      <ngx-datatable-column name="Promotion" prop="promotion">
         <ng-template let-row="row" ngx-datatable-cell-template>
+          <span
+            class="badge badge-pill badge-md badge-danger"
+            *ngIf="row.promotion"
+          >
+          -{{ row.promotion.pourcentage }}%
+          </span>
           <!-- <span *ngIf="row.promotion.pourcentage" class="badge badge-pill badge-default">
             {{ row.promotion.pourcentage }}%
-          </span>
-          <span *ngIf="!rowpromotion.pourcentage">
-            Aucune Promotion
           </span> -->
+          <span *ngIf="!row.promotion">
+            Aucune Promotion
+          </span>
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column name="Note moyenne" prop="notemoyenne">
@@ -164,6 +191,7 @@
         <ng-template let-row="row" ngx-datatable-cell-template>
           <div>
             <a
+            *ngIf="crudPerms.update"
               role="button"
               (click)="onUpdateRow(row); open(classic1, '', 'sm')"
               data-target="#modal-form"
@@ -172,6 +200,7 @@
               <i class="fa-solid fa-pen-to-square mr-2 text-primary fs-5"></i>
             </a>
             <a
+            *ngIf="crudPerms.update"
               role="button"
               (click)="onUpdateImgRow(row); openEditImages(row)"
               data-target="#modal-form"
@@ -188,6 +217,7 @@
               <i class="fa-regular fa-eye mr-2 text-warning fs-5"></i>
             </a>
             <a
+            *ngIf="crudPerms.delete"
               role="button"
               (click)="onDeleteRow(row.id); open(classic2, 'Notification', '')"
               data-target="#modal-form"

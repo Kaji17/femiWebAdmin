@@ -1,0 +1,294 @@
+<!-- MODAL MODIFICATION -->
+
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title-default">Attribuer promotion</h4>
+    <hr class="my-4" />
+    <button
+      type="button"
+      class="close"
+      data-dismiss="modal"
+      aria-label="Close"
+      (click)="closeModal()"
+    >
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div
+        class="form-group row m-0 justify-content-between align-items-center mb-3"
+        style="width: 100%"
+      >
+        <button
+          class="col-md-5 btn"
+          [routerLink]="['/administration/catalogue/promotions']"
+          (click)="closeModal()"
+          type="button"
+          [ngClass]="itemselected == 1 ? 'btn-primary' : 'btn-secondary'"
+        >
+        <i class="fa-solid fa-arrow-left"></i>
+          Nouvelle Promotion
+        </button>
+        <button
+          class="col-md-5 btn"
+          (click)="onAddNewPromotionShow(2)"
+          type="button"
+          [ngClass]="itemselected == 1 ? 'btn-secondary' : 'btn-primary'"
+        >
+          Promotion existante
+        </button>
+      </div>
+    </div>
+
+    <!-- PROMOTION EXISTANTE -->
+    <div class="row">
+      <form [formGroup]="formAssignPromo">
+        <div
+          *ngIf="itemselected == 2"
+          class="form-group row m-0 justify-content-between align-items-center"
+        >
+          <div
+            class="form-group row m-0 justify-content-between align-items-center"
+            style="width: 100%"
+          >
+            <label for="position-produit" class="form-control-label col-md-4"
+              >Libellé produits</label
+            >
+
+            <div class="col-md-8 align-items-center">
+              <span
+                class="badge badge-pill badge-md badge-info m-1"
+                *ngFor="let tag of produitSelect"
+              >
+                {{ tag.nom | uppercase }}
+                <i class="fa-solid fa-xmark"  style="cursor: pointer;" (click)="removeProd(tag.id)"></i>
+              </span>
+            </div>
+          </div>
+          <div
+            class="form-group row m-0 justify-content-between align-items-center"
+            style="width: 100%"
+          >
+            <label for="position-produit" class="form-control-label col-md-5"
+              >Sélectionner promotion</label
+            >
+            <ngx-select-dropdown
+              [instanceId]="'instance2'"
+              formControlName="promotionid"
+              [config]="config"
+              [options]="listPromotions"
+              class="col-md-4 p-0"
+            ></ngx-select-dropdown>
+          </div>
+          <div
+            class="modal-footer form-group row m-0 justify-content-between align-items-center"
+          >
+            <button
+              type="button"
+              class="btn btn-link ml-auto"
+              (click)="handleOk1(); onAddNewPromotionShow(2)"
+            >
+              Attribuer promotion
+            </button>
+            <button
+              type="button"
+              class="btn btn-link ml-auto text-danger"
+              data-dismiss="modal"
+              (click)="closeModal()"
+            >
+              Annuler
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- 
+<form [formGroup]="formAddPromotion">
+    <div
+      class="form-group row m-0 justify-content-between align-items-center"
+      style="width: 100%"
+      *ngIf="itemselected == 1"
+    >
+      <div
+        class="form-group row m-0 justify-content-between align-items-center mb-3"
+        style="width: 100%"
+      >
+        <label for="name-produit" class="form-control-label col-md-4"
+          >Nom <span class="text-danger">*</span></label
+        >
+        <input
+          class="form-control col-md-8"
+          type="text"
+          id="name-produit"
+          formControlName="nom"
+          [maxLength]="32"
+        />
+      </div>
+      <div
+        class="form-group row m-0 justify-content-between align-items-center mb-3"
+        style="width: 100%"
+      >
+        <label for="code-produit" class="form-control-label col-md-4"
+          >Code <span class="text-danger">*</span></label
+        >
+        <input
+          class="form-control col-md-8"
+          type="text"
+          id="code-produit"
+          formControlName="code"
+          [maxLength]="32"
+        />
+      </div>
+      <div
+        class="form-group row m-0 align-items-center mb-3"
+        style="width: 100%"
+      >
+        <label for="catégorie-produit" class="form-control-label col-md-4"
+          >Type promotion <span class="text-danger">*</span></label
+        >
+        <ngx-select-dropdown
+          [config]="config"
+          [options]="listTypePromotion"
+          formControlName="typepromotionid"
+          class="col-md-4 p-0"
+        ></ngx-select-dropdown>
+      </div>
+
+      <div
+        class="form-group row m-0 justify-content-between align-items-center mb-3"
+        style="width: 100%"
+      >
+        <label for="catégorie-produit" class="form-control-label col-md-4"
+          >Image<span class="text-danger"></span
+        ></label>
+        <input
+          #fileProm
+          type="file"
+          style="display: none"
+          (change)="loadFile($event)"
+          accept="image/png, image/gif, image/jpeg"
+        />
+        <div class="col-md-8">
+          <div class="row">
+            <div
+              *ngIf="!this.fileTab.length"
+              (click)="fileProm.click()"
+              class="rounded border-primary border align-items-center p-1 col-md-3 m-1 row justify-content-center"
+              style="
+                min-height: 100px;
+                width: fit-content;
+                border-style: dashed !important;
+                background-color: #dee2e6;
+                cursor: pointer;
+              "
+            >
+              <span><i class="fa-solid fa-plus"></i> UPLOAD</span>
+            </div>
+
+            <div
+              *ngFor="let image of fileTabSrc"
+              class="col-md-3 m-1 rounded border align-items-center p-1 m-1 row justify-content-center"
+              [style]="'background-image: url(' + image + ')'"
+              style="
+                position: relative;
+                background-repeat: no-repeat;
+                background-size: cover;
+                min-height: 100px;
+                width: 91px !important;
+              "
+            >
+              <i
+                (click)="removeImg(image)"
+                class="fa-solid fa-circle-xmark"
+                style="
+                  position: absolute;
+                  color: #c32830;
+                  top: -7px;
+                  right: -10px;
+                  cursor: pointer;
+                "
+              ></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="form-group row m-0 justify-content-between align-items-center mb-3"
+        style="width: 100%"
+      >
+        <label for="prix-produit" class="form-control-label col-md-4"
+          >Taux de réduction (%)<span class="text-danger">*</span></label
+        >
+        <input
+          class="form-control col-md-8"
+          type="number"
+          id="prix-produit"
+          formControlName="pourcentage"
+        />
+      </div>
+      <div
+        class="form-group row m-0 align-items-center mb-3"
+        style="width: 100%"
+      >
+        <label for="position-produit" class="form-control-label col-md-4"
+          >Date début</label
+        >
+        <input
+          type="datetime-local"
+          class="form-control col-md-8"
+          formControlName="datedebut"
+        />
+      </div>
+      <div
+        class="form-group row m-0 align-items-center mb-3"
+        style="width: 100%"
+      >
+        <label for="position-produit" class="form-control-label col-md-4"
+          >Date fin</label
+        >
+        <input
+          type="datetime-local"
+          class="form-control col-md-8"
+          bsDatepicker
+          formControlName="datefin"
+        />
+      </div>
+      <div
+        class="form-group row m-0 justify-content-between align-items-center mb-3"
+        style="width: 100%"
+      >
+        <label for="description" class="form-control-label col-md-4"
+          >Description</label
+        >
+        <textarea
+          class="form-control col-md-8"
+          id="description"
+          rows="3"
+          formControlName="description"
+        ></textarea>
+      </div>
+      <div
+        class="modal-footer form-group row m-0 justify-content-between align-items-center"
+      >
+        <button
+          type="button"
+          class="btn btn-link ml-auto"
+          (click)="handleOk(); onAddNewPromotionShow(2)"
+        >
+          Ajouter promotion
+        </button>
+        <button
+          type="button"
+          class="btn btn-link ml-auto text-danger"
+          data-dismiss="modal"
+          (click)="closeModal()"
+        >
+          Annuler
+        </button>
+      </div>
+    </div>
+  </form> -->
