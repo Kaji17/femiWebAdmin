@@ -11,7 +11,7 @@
                 Rôles & Permissions
               </h6>
             </div>
-            <div class="col-lg-6 col-md-4 col-sm-1 col-xs-1 text-left">
+            <div class="col-lg-6 col-md-4 col-sm-1 col-xs-1 text-left" *ngIf="crudPerms.create">
               <button class="btn btn-primary btn-md" (click)="openAddRole()">
                 <i class="ni ni-fat-add text-white"></i>
               </button>
@@ -74,6 +74,7 @@
         <ng-template let-row="row" ngx-datatable-cell-template>
           <div>
             <a
+            *ngIf="crudPerms.update"
               role="button"
               (click)="openEditRole(row)"
               data-target="#modal-form"
@@ -82,6 +83,7 @@
               <i class="fa-solid fa-pen-to-square mr-2 text-primary"></i>
             </a>
             <a
+            *ngIf="crudPerms.delete"
               role="button"
               (click)="onDeleteRow(row.id); open(classic2, 'Notification', '')"
               data-target="#modal-form"
