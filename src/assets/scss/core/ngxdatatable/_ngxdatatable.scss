@@ -11,7 +11,8 @@ bootstrap table theme
         background-color: rgba(0, 0, 0, 0.05);
       }
       &.active {
-        color: #f5365c!important;
+        background-color: transparent!important;
+        color: #5E71E4!important;
       }
 
     }
@@ -68,3 +69,5 @@ bootstrap table theme
     }
   }
 }
+
+
