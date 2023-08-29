@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { NavConstants } from 'src/app/constants/nav.const';
 import { Configurable } from 'src/app/core/config';
 
 @Injectable({
@@ -8,6 +9,12 @@ import { Configurable } from 'src/app/core/config';
 export class RolePermissionsService {
 
   constructor(private http: HttpClient, private configService: Configurable) {}
+
+  public menuItems: any[];
+
+  getMenuPermission(){
+    return this.menuItems
+  }
 
   // ADD ROLE
   public updateRole(id:number,obj: any) {
@@ -42,6 +49,24 @@ export class RolePermissionsService {
         observe: "response",
       }
     );
+  }
+
+  public setPermission(infoUser:any){
+    if (infoUser.body.role.description) {
+      let encodedValue = infoUser.body.role.description;
+
+      // Décodez la valeur en base64
+      let decodedValue = atob(encodedValue);
+
+      // Parsez la valeur décodée pour obtenir un objet JSON
+      let decodedObject = JSON.parse(decodedValue);
+      this.menuItems = decodedObject;
+      console.log('===description décodé success',this.menuItems)
+    }
+    else{
+      console.log('===description vide')
+      this.menuItems = NavConstants;
+    }
   }
 
 }
