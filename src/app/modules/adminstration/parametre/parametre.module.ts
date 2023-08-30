@@ -4,17 +4,26 @@ import { PrixLivraisonComponent } from './prix-livraison/prix-livraison.componen
 import { GestionZoneComponent } from './gestion-zone/gestion-zone.component';
 import { ParametreRoutingModule } from './parametre-routing.module';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { SelectDropDownModule } from 'ngx-select-dropdown';
+import { ModalAddPrixLivraisonComponent } from './prix-livraison/modal-add-prix-livraison/modal-add-prix-livraison.component';
 
 
 @NgModule({
   declarations: [
     PrixLivraisonComponent,
-    GestionZoneComponent
+    GestionZoneComponent,
+    ModalAddPrixLivraisonComponent
   ],
   imports: [
     CommonModule,
     ParametreRoutingModule,
-    ComponentsModule
+    ComponentsModule,
+    NgxDatatableModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SelectDropDownModule
     ]
 })
 export class ParametreModule { }

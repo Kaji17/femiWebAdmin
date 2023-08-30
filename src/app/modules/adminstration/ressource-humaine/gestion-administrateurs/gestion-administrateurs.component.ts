@@ -111,6 +111,7 @@ export class GestionAdministrateursComponent implements OnInit {
   //  }
   onActivate(event) {
     this.activeRow = event.row;
+    console.log("Je suis active ===", this.activeRow)
   }
 
   setPage(pageInfo) {
