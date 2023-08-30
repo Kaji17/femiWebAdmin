@@ -6,6 +6,9 @@ import { GestionAstuceConseilComponent } from "./gestion-astuce-conseil/gestion-
 import { GestionTypeAstuceConseilComponent } from "./gestion-type-astuce-conseil/gestion-type-astuce-conseil.component";
 import { BoutiqueRoutingModule } from "./boutique-routing.module";
 import { ComponentsModule } from "src/app/components/components.module";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { NgxDatatableModule } from "@swimlane/ngx-datatable";
+import { SelectDropDownModule } from "ngx-select-dropdown";
 
 @NgModule({
   declarations: [
@@ -14,6 +17,14 @@ import { ComponentsModule } from "src/app/components/components.module";
     GestionAstuceConseilComponent,
     GestionTypeAstuceConseilComponent,
   ],
-  imports: [CommonModule, BoutiqueRoutingModule,ComponentsModule],
+  imports: [
+    CommonModule,
+    BoutiqueRoutingModule,
+    ComponentsModule,
+    NgxDatatableModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SelectDropDownModule,
+  ],
 })
 export class BoutiqueModule {}
