@@ -1,0 +1,92 @@
+
+<div class="modal-content">
+    <div class="modal-header">
+     
+      <div class="row">
+        <h2 class="modal-title ml-4 mr-2" id="modal-title-default">{{dataRecover?.nom}}</h2>
+        <span [class]="dataRecover.statut">{{dataRecover.statut}}</span>
+    </div>
+      <button type="button" class="close" (click)="activeModal.dismiss('Cross click')" >
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+     <!-- app.component.html -->
+     <div class="row">
+        <div class="col-md-6">
+             <!-- image produit -->
+             
+                <div class="col" [style.marginBottom]="'40px'">
+                    <div
+                    [style]="dataRecover?.imageproduits.length ? 'background-image: url('+getImg(lurl)+')':'background-image: url(assets/img/undraw_Images_re_0kll.png)' "
+                    class=" imgLogo">
+                    
+                   
+                    </div>
+                    <div *ngIf="dataRecover?.imageproduits.length" class="row mt-2">
+                        <div *ngFor="let item of dataRecover?.imageproduits">
+                            <div
+                            (click)="clicSurImg(item.url)"
+                            [style]="'background-image: url('+getImg(item.url)+')' "
+                            class=" imgLogo2 mr-1">
+                            </div>
+                        </div>
+                    </div>
+                    <h3 class="mt-2">{{dataRecover?.prix}} FCFA</h3>
+                 </div>
+            
+
+            <!--  -->
+        </div>
+        <div class="col-md-6">
+            <!-- <div class="row justify-content-between px-3" [style.marginBottom]="'30px'">
+                <h2>{{dataRecover?.nom}}</h2>
+                <h3 class="">{{dataRecover?.prix}}</h3>
+            </div> -->
+
+           
+                <div [style.marginBottom]="'30px'" >
+                    <h5>Boutique</h5>
+                    <p [style.fontSize]="'0.7rem'">{{dataRecover?.boutique.nom}}</p>
+                </div>
+    
+               
+    
+                <div [style.marginBottom]="'30px'" >
+                    <h5>Categorie</h5>
+                    <p [style.fontSize]="'0.7rem'">{{dataRecover?.categorie.nom}}</p>
+                </div>
+           
+
+
+            <div class="" [style.marginBottom]="'30px'">
+                <h5>Description</h5>
+                <p [style.fontSize]="'0.7rem'">{{dataRecover?.description}}</p>
+            </div>
+
+            <div class="" [style.marginBottom]="'30px'">
+                <h5>Caracreristique</h5>
+                <p [style.fontSize]="'0.7rem'">{{dataRecover?.description}}</p>
+            </div>
+
+            <div class="mb-10">
+                <h5>Date de création</h5>
+              <p [style.fontSize]="'0.7rem'"> {{dataRecover?.datecreation}}</p> 
+            </div>
+        </div>
+            
+
+            
+
+         
+         
+     </div>
+       
+  
+    </div>
+    <div class="modal-footer" *ngIf="dataRecover.statut=='En attente' || dataRecover.statut=='Modifié'">
+        <button type="button" class="btn btn-danger ml-auto" (click)="handleDen()" >{{btnMsgDeny}}</button>
+        <button type="button" class="btn btn-primary " (click)="handleVal()">{{btnMsgVal}}</button>
+     
+    </div>
+  </div>
