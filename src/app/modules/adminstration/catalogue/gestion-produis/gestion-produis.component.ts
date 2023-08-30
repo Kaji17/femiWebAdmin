@@ -26,6 +26,7 @@ import { ModalAssignPromotionComponent } from "./modal-assign-promotion/modal-as
 import { ModalImagesProduitComponent } from "./modal-images-produit/modal-images-produit.component";
 import { ModalRemovePromotionComponent } from "./modal-remove-promotion/modal-remove-promotion.component";
 import { RolePermissionsService } from "src/app/shared/services/role-permissions.service";
+import { CreateProduitComponent } from "./create-produit/create-produit.component";
 
 @Component({
   selector: "app-gestion-produis",
@@ -67,6 +68,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   listAffichage: any[] = [];
   loadingadd: boolean = false;
   loadingupdate: boolean = false;
+  loadingIndicator = true;
   idProduitSelect: any;
   formUpdate: FormGroup;
   totalElementNumber: number;
@@ -292,6 +294,29 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     );
     modalRef.componentInstance.produitSelect = this.selected;
   }
+
+    // OUVRIR MODALS POUR ATTRIBUER PROMOTION
+    openTest() {
+      const modalRef = this.modalService.open(CreateProduitComponent, {
+        windowClass: "modal-mini",
+        size: "lg",
+        centered: true,
+      });
+      modalRef.result.then(
+        (result) => {
+          this.closeResult = "Closed with: " + result;
+          console.log("yaaaa", this.closeResult);
+          if(result=='ok'){
+            this.getAllProduit({ pagination: true, page: 0, size: 10 });
+            this.selected = []
+          }
+        },
+        (reason) => {
+          this.closeResult = "Dismissed " + this.getDismissReason(reason);
+        }
+      );
+      modalRef.componentInstance.produitSelect = this.selected;
+    }
 
   // OUVRIR MODALS POUR ATTRIBUER PROMOTION
   openRemovePromotion() {
@@ -647,6 +672,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
 
   // GET ALL PRODUIT
   getAllProduit(obj: any) {
+    
     this.SuscribeAllData = this.produitService.gettAllProduit(obj).subscribe({
       next: (data) => {
         this.utilitisService.response(data, (d: any) => {
@@ -658,6 +684,9 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
             this.totalPage = d.body.totalPages;
             this.temp = d.body.content;
             console.log("======CONTENT", d);
+            setTimeout(() => {
+              this.loadingIndicator = false;
+            }, 1500);
 
             let lis: any[] = [];
             let lisAff: any[] = [];

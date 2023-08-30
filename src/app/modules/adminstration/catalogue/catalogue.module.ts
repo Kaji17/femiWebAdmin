@@ -18,6 +18,7 @@ import { ModalDetailsComponent } from './gestion-produis/modal-details/modal-det
 import { ModalImagesProduitComponent } from './gestion-produis/modal-images-produit/modal-images-produit.component';
 import { ModalAssignPromotionComponent } from './gestion-produis/modal-assign-promotion/modal-assign-promotion.component';
 import { ModalRemovePromotionComponent } from './gestion-produis/modal-remove-promotion/modal-remove-promotion.component'
+import { CreateProduitComponent } from "./gestion-produis/create-produit/create-produit.component";
 
 // import { DateTimeModule } from 'nxt-pick-datetime'
 // import { NativeDateTimeModule } from 'nxt-pick-datetime/native-adapter'
@@ -36,6 +37,7 @@ import { ModalRemovePromotionComponent } from './gestion-produis/modal-remove-pr
     ModalImagesProduitComponent,
     ModalAssignPromotionComponent,
     ModalRemovePromotionComponent,
+    CreateProduitComponent
   ],
   imports: [
     CommonModule,

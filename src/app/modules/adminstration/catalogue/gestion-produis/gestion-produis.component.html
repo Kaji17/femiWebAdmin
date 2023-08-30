@@ -83,7 +83,7 @@
       [summaryPosition]="'bottom'"
       [scrollbarH]="'true'"
       (activate)="onActivate($event)"
-      [loadingIndicator]="'true'"
+      [loadingIndicator]="loadingIndicator"
       [virtualization]="'false'"
       [count]="page.totalElements"
       [offset]="page.pageNumber"
@@ -185,6 +185,12 @@
           >
             {{ row.statut | uppercase }}
           </span>
+          <span
+          class="badge badge-pill badge-md badge-info"
+          *ngIf="row.statut == 'Modifié'"
+        >
+          {{ row.statut | uppercase }}
+        </span>
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column name="Actions">
@@ -210,7 +216,7 @@
             </a>
             <a
               role="button"
-              (click)="open(classic1, '', 'sm')"
+              (click)="openTest()"
               data-target="#modal-form"
               data-toggle="modal"
             >
@@ -557,7 +563,7 @@
             formControlName="prix"
           />
         </div>
-        <div
+        <!-- <div
           class="form-group row m-0 align-items-center mb-3"
           style="width: 100%"
         >
@@ -570,7 +576,7 @@
             [options]="listAffichage"
             class="col-md-4 p-0"
           ></ngx-select-dropdown>
-        </div>
+        </div> -->
         <div
           class="form-group row m-0 justify-content-between align-items-center mb-3"
           style="width: 100%"
