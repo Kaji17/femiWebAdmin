@@ -1,5 +1,172 @@
 <div class="header bg-gradient-danger pb-2 pt-0 pt-md-8">
-    <div class="container-fluid">
+  <div class="container-fluid">
+    <div class="header-body">
+      <div
+        class="row align-items-center py-md-3 py-sm-5 px-0 justify-content-between"
+      >
+        <div class="col-lg-6 col-xl-5 col-md-4">
+          <div class="row align-items-center">
+            <div class="col-lg-7 col-md-7 col-sm-2 col-xs-2">
+              <h6 class="h2 text-white d-inline-block mb-0 me-1">
+                Mini-bannière
+              </h6>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <p>gestion-banniere works!</p>
+</div>
+
+<!-- TABLEAU -->
+<div class="container-fluid mt-5">
+  <div class="dataTables_wrapper py-4 card px-4">
+    <div class="row">
+      <div class="col-md-6" *ngIf="crudPerms.create">
+        <input
+          #fileBanAdd
+          type="file"
+          style="display: none"
+          (change)="loadFile($event)"
+          accept="image/png, image/gif, image/jpeg"
+        />
+        <button
+          class="btn btn-success btn-sm"
+          (click)="fileBanAdd.click()"
+          type="button"
+        >
+          Ajouter une mini-bannière
+        </button>
+      </div>
+    </div>
+    <ngx-datatable
+      class="bootstrap selection-cell"
+      [columnMode]="'force'"
+      [headerHeight]="50"
+      [footerHeight]="50"
+      [rowHeight]="'auto'"
+      [rows]="temp"
+      [summaryPosition]="'bottom'"
+      [scrollbarH]="'true'"
+      (activate)="onActivate($event)"
+      [loadingIndicator]="'true'"
+      [virtualization]="'false'"
+      [count]="page.totalElements"
+      [offset]="page.pageNumber"
+      [limit]="page.size"
+      [externalPaging]="'false'"
+      (page)="setPage($event)"
+      [selectAllRowsOnPage]="false"
+    >
+      <ngx-datatable-column name="Image" prop="url">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <img
+            [src]="getImg(row.url)"
+            alt="Image"
+            style="max-height: 100px; max-width: 100px"
+            class="border rounded"
+          />
+          <img
+            *ngIf="!row.url"
+            src="assets/img/brand/undraw_Images_re_0kll.png"
+            alt="Image"
+            style="max-height: 100px; max-width: 100px"
+            class="border rounded"
+          />
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Actions">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <div>
+            <button
+              *ngIf="crudPerms.update"
+              type="button"
+              (click)="rowSelected(row); positionUp(row.positionaffichage)"
+              data-target="#modal-form"
+              data-toggle="modal"
+              class="btn p-0 m-0"
+              [disabled]="row.positionaffichage==1?'disabled':''"
+            >
+              <i class="fa-solid fa-arrow-up mr-2"></i>
+            </button>
+            <button
+              *ngIf="crudPerms.update"
+              type="button"
+              (click)="rowSelected(row); positionDown(row.positionaffichage)"
+              data-target="#modal-form"
+              data-toggle="modal"
+              class="btn p-0"
+              [disabled]="row.positionaffichage==last?'disabled':''"
+            >
+              <i class="fa-solid fa-arrow-down"></i>
+            </button>
+            <a
+              *ngIf="crudPerms.update"
+              role="button"
+              (click)="rowSelected(row); loadFile($event, 'u')"
+              data-target="#modal-form"
+              data-toggle="modal"
+            >
+              <i class="fa-solid fa-pen-to-square mr-2 text-primary fs-5"></i>
+            </a>
+            <a
+              *ngIf="crudPerms.delete"
+              role="button"
+              (click)="rowSelected(row); open(classic2, 'Notification', '')"
+              data-target="#modal-form"
+              data-toggle="modal"
+            >
+              <i class="fa-solid fa-trash-can text-danger mr-2 fs-5"></i>
+            </a>
+          </div>
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable>
+  </div>
+</div>
+
+<!-- MODAL SUPPRIMER MINIBANNIERE -->
+<ng-template #classic2 let-c="close" let-d="dismiss">
+  <div class="modal-content bg-gradient-danger">
+    <div class="modal-header">
+      <h6 class="modal-title" id="modal-title-notification">
+        Votre attention est réquise
+      </h6>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+        (click)="d('Cross click')"
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="py-3 text-center">
+        <i class="ni ni-bell-55 ni-3x"></i>
+        <h4 class="heading mt-4">
+          Voulez-vous supprimer mini bannière
+          <strong>#{{ idMiniBannSelect.id }}</strong>
+        </h4>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-white"
+        (click)="onDeleteProduit(idMiniBannSelect.id); c('Close click')"
+      >
+        Oui, supprimer
+      </button>
+      <button
+        type="button"
+        class="btn btn-link text-white ml-auto"
+        data-dismiss="modal"
+        (click)="c('Close click')"
+      >
+        Annuler
+      </button>
+    </div>
+  </div>
+</ng-template>
