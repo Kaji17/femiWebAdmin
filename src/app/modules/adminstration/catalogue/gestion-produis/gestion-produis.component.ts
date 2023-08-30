@@ -281,6 +281,10 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
       (result) => {
         this.closeResult = "Closed with: " + result;
         console.log("yaaaa", this.closeResult);
+        if(result=='ok'){
+          this.getAllProduit({ pagination: true, page: 0, size: 10 });
+          this.selected = []
+        }
       },
       (reason) => {
         this.closeResult = "Dismissed " + this.getDismissReason(reason);
@@ -299,6 +303,10 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
       (result) => {
         this.closeResult = "Closed with: " + result;
         console.log("yaaaa", this.closeResult);
+        if(result=='ok'){
+          this.getAllProduit({ pagination: true, page: 0, size: 10 });
+          this.selected = []
+        }
       },
       (reason) => {
         this.closeResult = "Dismissed " + this.getDismissReason(reason);

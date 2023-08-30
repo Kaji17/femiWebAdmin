@@ -30,7 +30,7 @@ export class PromotionService {
 
   // REMOVE PROMOTION
   public removePromotion(promotionid: number, produitid: any) {
-    return this.http.put(
+    return this.http.get(
       this.configService.getApi1("PROMOTION_REMOVE_PUT") + "/" + promotionid+'/'+produitid,
       {
         observe: "response",
@@ -40,7 +40,7 @@ export class PromotionService {
 
     // UPDATE PRODUIT
     public assignPromotion(promotionid: number, produitid: any) {
-      return this.http.put(
+      return this.http.get(
         this.configService.getApi1("PROMOTION_ASSIGN_PUT") + "/" + promotionid+'/'+produitid,
         {
           observe: "response",
@@ -64,7 +64,7 @@ export class PromotionService {
     );
   }
 
-  // GET ALL PRODUIT
+  // GET ALL PROMOTION
   public gettAllPromotion(obj: any) {
     return this.http.get(this.configService.getApi1("PROMOTION_GETALL_GET"), {
       observe: "response",
@@ -81,14 +81,14 @@ export class PromotionService {
   }
 
   // GET ALL PRODUIT
-  public getAvisPromotion(produitid: number) {
-    return this.http.get(
-      this.configService.getApi1("PRODUIT_GETAVIS_GET") + "/" + produitid,
-      {
-        observe: "response",
-      }
-    );
-  }
+  // public getAvisPromotion(produitid: number) {
+  //   return this.http.get(
+  //     this.configService.getApi1("PRODUIT_GETAVIS_GET") + "/" + produitid,
+  //     {
+  //       observe: "response",
+  //     }
+  //   );
+  // }
 
   // DELETE PRODUIT
   public deletePromotion(id: number) {
