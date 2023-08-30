@@ -1,6 +1,7 @@
 {   
     "HOST_API-DEV": "https://kms02.net:9802",
     "HOST_API-DEV1": "https://kms02.net:9803",
+    "HOST_API-DEV2": "https://kms02.net:9803",
     "HOST:API": "https://kms02.net:9802",
     "API_ENDPOINTS": {
 
