@@ -45,12 +45,12 @@
       "CATEGORIE_GETALL_GET": "/klaman/v1/vente/categorie/getall",
       "CATEGORIE_DEL_DEL": "/klaman/v1/vente/categorie/delete",
   
-      "comment ": "----------- OPERATIONS BANIERE ---------------",
-      "BANNIERE_UPD_PUT": "/klaman/v1/user/banniere/update",
-      "BANNIERE_ADD_POST": "/klaman/v1/user/banniere/add",
-      "BANNIERE_GETALL_GET": "/klaman/v1/user/banniere/getall",
-      "BANNIERE_GETCONFIG_GET": "/klaman/v1/user/banniere/configure",
-      "BANNIERE_DEL_DEL": "/klaman/v1/user/banniere/delete",
+      "comment ": "----------- OPERATIONS MINI-BANIERE ---------------",
+      "MINIBANNIERE_UPD_PUT": "/klaman/v1/user/minibanniere/update",
+      "MINIBANNIERE_ADD_POST": "/klaman/v1/user/minibanniere/add",
+      "MINIBANNIERE_GETALL_GET": "/klaman/v1/user/minibanniere/getall",
+      "MINIBANNIERE_GETCONFIG_GET": "/klaman/v1/user/minibanniere/configure",
+      "MINIBANNIERE_DEL_DEL": "/klaman/v1/user/minibanniere/delete",
 
       "comment ": "------------ OPERATIONS CLIENT---------------",
       "CLIENT_GETALL_GET": "/klaman/v1/user/client/getall",
@@ -72,9 +72,21 @@
   
       "comment ": "------------ OPERATIONS ZONE ---------------",
       "ZONE_GETALL_GET": "/klaman/v1/user/zone/getall",
+
+      "comment ": "------------ OPERATIONS MODE DE PAIEMENT ---------------",
+      "PAIEMENT_GETALL_GET": "/klaman/v1/vente/modepaiement/getall",
   
       "comment ": "------------ OPERATIONS TYPE ZONE ---------------",
-      "TYPEZONE_GETALL_GET": "/klaman/v1/user/typezone/getall"
+      "TYPEZONE_GETALL_GET": "/klaman/v1/user/typezone/getall",
+
+      "comment ": "----------- OPERATIONS COMMANDE ---------------",
+      "COMMANDE_VALIDER_GET": "/klaman/v1/vente/commande/valider",
+      "COMMANDE_REGLER_GET": "/klaman/v1/vente/commande/regler",
+      "COMMANDE_REFUSER_GET": "/klaman/v1/vente/commande/refuser",
+      "COMMANDE_GETALL_GET": "/klaman/v1/vente/commande/getall",
+      "COMMANDE_MODIFIERETAPE_GET": "/klaman/v1/vente/commande/etape",
+      "COMMANDE_GETETAPE_GET": "/klaman/v1/vente/commande/etape/consulter",
+      "COMMANDE_ANNULER_GET": "/klaman/v1/vente/commande/annuler"
     },
     "imgVar": "/var/www/html/",
     "imgHttp": "https://kms02.net/"
