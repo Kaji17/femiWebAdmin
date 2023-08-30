@@ -86,7 +86,14 @@
       "COMMANDE_GETALL_GET": "/klaman/v1/vente/commande/getall",
       "COMMANDE_MODIFIERETAPE_GET": "/klaman/v1/vente/commande/etape",
       "COMMANDE_GETETAPE_GET": "/klaman/v1/vente/commande/etape/consulter",
-      "COMMANDE_ANNULER_GET": "/klaman/v1/vente/commande/annuler"
+      "COMMANDE_ANNULER_GET": "/klaman/v1/vente/commande/annuler",
+
+      "comment ": "----------- OPERATIONS SATISTIQUES ---------------",
+      "STATISTIQUE_PANIERMOYEN_GET": "/klaman/v1/statistique/paniermoyen",
+      "STATISTIQUE_NOMBREVENTES_GET": "/klaman/v1/statistique/nombredeventes",
+      "STATISTIQUE_PRODUITPLUSVENDUS_GET": "/klaman/v1/statistique/getproduitsplusvendus",
+      "STATISTIQUE_MODEPAIEMENT_GET": "/klaman/v1/statistique/getmodepaimentstats",
+      "STATISTIQUE_CHIFFREAFFAIRE_GET": "/klaman/v1/statistique/chiffreaffaires"
     },
     "imgVar": "/var/www/html/",
     "imgHttp": "https://kms02.net/"
