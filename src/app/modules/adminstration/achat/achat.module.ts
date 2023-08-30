@@ -4,6 +4,9 @@ import { GestionCommandeComponent } from './gestion-commande/gestion-commande.co
 import { AchatRoutingModule } from './achat-routing.module';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { GestionTransactionComponent } from './gestion-transaction/gestion-transaction.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { SelectDropDownModule } from 'ngx-select-dropdown';
 
 
 
@@ -15,7 +18,11 @@ import { GestionTransactionComponent } from './gestion-transaction/gestion-trans
   imports: [
     CommonModule,
     AchatRoutingModule,
-    ComponentsModule
-  ]
+    ComponentsModule,
+    NgxDatatableModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SelectDropDownModule
+    ]
 })
 export class AchatModule { }
