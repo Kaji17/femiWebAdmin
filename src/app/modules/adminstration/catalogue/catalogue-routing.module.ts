@@ -11,6 +11,7 @@ const routes: Routes = [
   { path: 'produits', component: GestionProduisComponent },
   { path: 'promotions', component: GestionPromotionComponent },
   { path: 'typepack', component: GestionTypePackComponent },
+  { path: 'typepack', component: GestionTypePackComponent },
 ];
 
 @NgModule({

@@ -133,12 +133,9 @@ export class GestionCommandeComponent implements OnInit {
   setPage(pageInfo) {
     this.page.pageNumber = pageInfo.offset;
     console.log("=====pageInfo", this.page);
-    this.getAllCommandes({
-      pagination: true,
-      page: this.page.pageNumber,
-      size: this.page.size,
-      boutiqueid: this.infoUser.body.boutique.id,
-    });
+    this.getAllCommandes(
+      this.objSearch
+    );
   }
 
   // Get all commandes

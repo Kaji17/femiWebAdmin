@@ -8,6 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class StarRatingComponent implements OnInit {
 
   @Input() note: number
+  @Input() color: string
   constructor() { }
 
   ngOnInit(): void {

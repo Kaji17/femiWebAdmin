@@ -20,7 +20,8 @@ import { ModalAssignPromotionComponent } from './gestion-produis/modal-assign-pr
 import { ModalRemovePromotionComponent } from './gestion-produis/modal-remove-promotion/modal-remove-promotion.component'
 import { CreateProduitComponent } from "./gestion-produis/create-produit/create-produit.component";
 import { ModalUpdatePositionAffichageComponent } from './gestion-produis/modal-update-position-affichage/modal-update-position-affichage.component';
-import { NgbTooltipModule } from "@ng-bootstrap/ng-bootstrap";
+import { NgbRatingModule, NgbTooltipModule } from "@ng-bootstrap/ng-bootstrap";
+import { DetailsProduitComponent } from './gestion-produis/details-produit/details-produit.component';
 
 // import { DateTimeModule } from 'nxt-pick-datetime'
 // import { NativeDateTimeModule } from 'nxt-pick-datetime/native-adapter'
@@ -40,7 +41,8 @@ import { NgbTooltipModule } from "@ng-bootstrap/ng-bootstrap";
     ModalAssignPromotionComponent,
     ModalRemovePromotionComponent,
     CreateProduitComponent,
-    ModalUpdatePositionAffichageComponent
+    ModalUpdatePositionAffichageComponent,
+    DetailsProduitComponent
   ],
   imports: [
     CommonModule,
@@ -51,7 +53,8 @@ import { NgbTooltipModule } from "@ng-bootstrap/ng-bootstrap";
     FormsModule,
     ReactiveFormsModule,
     SelectDropDownModule,
-    NgbTooltipModule
+    NgbTooltipModule,
+    NgbRatingModule
     // DateTimeModule,
     // NativeDateTimeModule
   ],
