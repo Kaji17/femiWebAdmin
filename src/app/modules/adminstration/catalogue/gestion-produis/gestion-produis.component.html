@@ -11,39 +11,14 @@
             </div>
             <div class="col-lg-3 col-md-2 col-sm-1 col-xs-1 text-left">
               <button
-              *ngIf="crudPerms.create"
+                *ngIf="crudPerms.create"
                 class="btn btn-primary btn-md"
-                (click)="open(classic3, '', 'sm')"
+                (click)="openAddproduit()"
               >
                 <i class="ni ni-fat-add text-white"></i>
               </button>
             </div>
           </div>
-        </div>
-        <div class="col-lg-6 col-xl-5 col-md-6 row justify-content-end px-0">
-          <form
-            class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto"
-          >
-            <div
-              class="form-group mb-0"
-              [ngClass]="{ focused: focus === true }"
-            >
-              <div class="input-group input-group-alternative">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"
-                    ><i class="fas fa-search"></i
-                  ></span>
-                </div>
-                <input
-                  class="form-control w-auto"
-                  placeholder="Search"
-                  type="text"
-                  (focus)="focus = true"
-                  (blur)="focus = false"
-                />
-              </div>
-            </div>
-          </form>
         </div>
       </div>
     </div>
@@ -54,7 +29,7 @@
 <div class="container-fluid mt-5">
   <div class="dataTables_wrapper py-4 card px-4">
     <div class="row">
-      <div class="col-md-2" *ngIf="selected.length&&crudPerms.update">
+      <div class="col-md-2 mb-2" *ngIf="selected.length && crudPerms.update">
         <button
           class="btn btn-success btn-sm"
           (click)="openAssignPromotion()"
@@ -63,7 +38,10 @@
           Attribuer promotions
         </button>
       </div>
-      <div class="col-md-2" *ngIf="selected.length==1&&crudPerms.delete&&verifiyItemPromed">
+      <div
+        class="col-md-2 mb-2"
+        *ngIf="selected.length == 1 && crudPerms.delete && verifiyItemPromed"
+      >
         <button
           class="btn btn-danger btn-sm"
           (click)="openRemovePromotion()"
@@ -71,6 +49,48 @@
         >
           Rétirer promotions
         </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 mb-md-2 mb-3 col-lg-4 col-xl-2">
+        <ngx-select-dropdown
+          [instanceId]="'instance3'"
+          [(ngModel)]="statutselect"
+          (change)="filterStatut()"
+          [config]="configStatut"
+          [options]="listStatut"
+          class="col-md-2 p-0"
+        ></ngx-select-dropdown>
+      </div>
+      <div class="col-md-6 mb-md-2 mb-3 col-lg-4 col-xl-2">
+        <ngx-select-dropdown
+          [instanceId]="'instance2'"
+          [(ngModel)]="categorieselect"
+          (change)="filterCategorie()"
+          [config]="config"
+          [options]="listCategorie"
+          class="col-md-4 p-0"
+          disabled
+        ></ngx-select-dropdown>
+      </div>
+      <div
+        class="form-group mb-0 mb-3 col-md-12 col-lg-5 col-xl-3"
+        [ngClass]="{ focused: focus === true }"
+      >
+        <div class="input-group input-group-alternative">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-search"></i></span>
+          </div>
+          <input
+            class="form-control w-auto"
+            [(ngModel)]="nomProduit"
+            (input)="onsearchproduit($event)"
+            placeholder="Rechercher par nom"
+            type="text"
+            (focus)="focus = true"
+            (blur)="focus = false"
+          />
+        </div>
       </div>
     </div>
     <ngx-datatable
@@ -143,19 +163,17 @@
             class="badge badge-pill badge-md badge-danger"
             *ngIf="row.promotion"
           >
-          -{{ row.promotion.pourcentage }}%
+            -{{ row.promotion.pourcentage }}%
           </span>
-          <!-- <span *ngIf="row.promotion.pourcentage" class="badge badge-pill badge-default">
-            {{ row.promotion.pourcentage }}%
-          </span> -->
-          <span *ngIf="!row.promotion">
-            Aucune Promotion
-          </span>
+          <span *ngIf="!row.promotion"> Aucune Promotion </span>
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column name="Note moyenne" prop="notemoyenne">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <app-star-rating [note]="row"></app-star-rating>
+          <app-star-rating
+            [note]="row"
+            [color]="'text-yellow'"
+          ></app-star-rating>
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column name="Création" prop="datecreation">
@@ -186,18 +204,18 @@
             {{ row.statut | uppercase }}
           </span>
           <span
-          class="badge badge-pill badge-md badge-info"
-          *ngIf="row.statut == 'Modifié'"
-        >
-          {{ row.statut | uppercase }}
-        </span>
+            class="badge badge-pill badge-md badge-info"
+            *ngIf="row.statut == 'Modifié'"
+          >
+            {{ row.statut | uppercase }}
+          </span>
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column name="Actions">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <div>
             <a
-            *ngIf="crudPerms.update"
+              *ngIf="crudPerms.update"
               role="button"
               (click)="openUpdateAffichage(row)"
               data-target="#modal-form"
@@ -205,10 +223,10 @@
               ngbTooltip="Position affichage"
               placement="bottom"
             >
-            <i class="fa-solid fa-arrow-up-1-9 mr-2 text-orange fs-5"></i>
+              <i class="fa-solid fa-arrow-up-1-9 mr-2 text-orange fs-5"></i>
             </a>
             <a
-            *ngIf="crudPerms.update"
+              *ngIf="crudPerms.update"
               role="button"
               (click)="onUpdateRow(row); open(classic1, '', 'sm')"
               data-target="#modal-form"
@@ -219,7 +237,7 @@
               <i class="fa-solid fa-pen-to-square mr-2 text-primary fs-5"></i>
             </a>
             <a
-            *ngIf="crudPerms.update"
+              *ngIf="crudPerms.update"
               role="button"
               (click)="onUpdateImgRow(row); openEditImages(row)"
               data-target="#modal-form"
@@ -231,7 +249,7 @@
             </a>
             <a
               role="button"
-              (click)="openTest()"
+              (click)="openDetailProduit()"
               data-target="#modal-form"
               data-toggle="modal"
               ngbTooltip="Détails produit"
@@ -240,7 +258,7 @@
               <i class="fa-regular fa-eye mr-2 text-warning fs-5"></i>
             </a>
             <a
-            *ngIf="crudPerms.delete"
+              *ngIf="crudPerms.delete"
               role="button"
               (click)="onDeleteRow(row.id); open(classic2, 'Notification', '')"
               data-target="#modal-form"
@@ -256,166 +274,6 @@
     </ngx-datatable>
   </div>
 </div>
-<!-- MODAL MODIFICATION -->
-
-<!-- <ng-template #classic1 let-c="close" let-d="dismiss">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h4 class="modal-title" id="modal-title-default">Modifier produit</h4>
-      <hr class="my-4" />
-      <button
-        type="button"
-        class="close"
-        data-dismiss="modal"
-        aria-label="Close"
-        (click)="d('Cross click')"
-      >
-        <span aria-hidden="true">×</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <form class="row" [formGroup]="formUpdate">
-        <div
-          class="form-group row m-0 justify-content-between align-items-center mb-3"
-          style="width: 100%"
-        >
-          <label for="name-produit" class="form-control-label col-md-4"
-            >Nom <span class="text-danger">*</span></label
-          >
-          <input
-            class="form-control col-md-8"
-            type="text"
-            value="Savon tétrapleura"
-            id="name-produit"
-          />
-        </div>
-        <div
-          class="form-group row m-0 justify-content-between align-items-center mb-3"
-          style="width: 100%"
-        >
-          <label for="catégorie-produit" class="form-control-label col-md-4"
-            >Catégorie<span class="text-danger"> *</span></label
-          >
-          <select
-            class="btn btn-sm col form-control selectr-visible me-1 col-md-8"
-            data-toggle="select"
-            tabindex="-1"
-            aria-hidden="true"
-            data-gtm-form-interact-field-id="4"
-            formControlName="select"
-          >
-            <option value="jours">Savon</option>
-            <option value="semaine">Cheveux</option>
-            <option value="mois">Lotion</option>
-            <option value="Année">Crème</option>
-          </select>
-        </div>
-
-        <div
-          class="form-group row m-0 justify-content-between align-items-center mb-3"
-          style="width: 100%"
-        >
-          <label for="images" class="form-control-label col-md-4"
-            >Images <span class="text-danger">*</span></label
-          >
-          <input class="form-control col-md-8" type="file" id="imagest" />
-        </div>
-        <div
-          class="form-group row m-0 justify-content-between align-items-center mb-3"
-          style="width: 100%"
-        >
-          <label for="prix-produit" class="form-control-label col-md-4"
-            >Prix <span class="text-danger">*</span></label
-          >
-          <input
-            class="form-control col-md-8"
-            type="text"
-            value="2700FCFA"
-            id="prix-produit"
-          />
-        </div>
-        <div
-          class="form-group row m-0 justify-content-between align-items-center mb-3"
-          style="width: 100%"
-        >
-          <label for="prix-promotion" class="form-control-label col-md-4"
-            >Taux réduction</label
-          >
-          <input
-            class="form-control col-md-8"
-            type="text"
-            value="30%"
-            id="prix-promotion"
-          />
-        </div>
-        <div
-          class="form-group row m-0 justify-content-between align-items-center mb-3"
-          style="width: 100%"
-        >
-          <label for="position-produit" class="form-control-label col-md-4"
-            >Position affichage</label
-          >
-          <select
-            class="btn btn-sm col form-control selectr-visible me-1 col-md-8"
-            data-toggle="select"
-            tabindex="-1"
-            aria-hidden="true"
-            data-gtm-form-interact-field-id="4"
-          >
-            <option value="jours">1</option>
-            <option value="semaine">2</option>
-            <option value="mois">3</option>
-            <option value="Année">4</option>
-          </select>
-        </div>
-        <div
-          class="form-group row m-0 justify-content-between align-items-center mb-3"
-          style="width: 100%"
-        >
-          <label for="description" class="form-control-label col-md-4"
-            >Description <span class="text-danger">*</span></label
-          >
-          <textarea
-            class="form-control col-md-8"
-            id="description"
-            rows="3"
-          ></textarea>
-        </div>
-        <div
-          class="form-group row m-0 justify-content-between align-items-center mb-3"
-          style="width: 100%"
-        >
-          <label for="caratéristiques" class="form-control-label col-md-4"
-            >Caractéristique <span class="text-danger">*</span></label
-          >
-          <textarea
-            class="form-control col-md-8"
-            id="caratéristiques"
-            rows="3"
-          ></textarea>
-        </div>
-      </form>
-    </div>
-    <div class="modal-footer">
-      <button
-        type="button"
-        class="btn btn-primary"
-        (click)="onUpdateProduit(); c('Close click')"
-      >
-        Modifier
-      </button>
-      <button
-        type="button"
-        class="btn btn-link ml-auto"
-        data-dismiss="modal"
-        (click)="c('Close click')"
-      >
-        Annuler
-      </button>
-    </div>
-  </div>
-</ng-template> -->
-
 <!-- MODAL SUPPRIMER PRODUIT -->
 <ng-template #classic2 let-c="close" let-d="dismiss">
   <div class="modal-content bg-gradient-danger">
@@ -454,193 +312,6 @@
         class="btn btn-link text-white ml-auto"
         data-dismiss="modal"
         (click)="c('Close click')"
-      >
-        Annuler
-      </button>
-    </div>
-  </div>
-</ng-template>
-
-<!-- MODAL ADD PRODUIT -->
-<ng-template #classic3 let-c="close" let-d="dismiss">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h4 class="modal-title" id="modal-title-default">Ajouter produit</h4>
-      <hr class="my-4" />
-      <button
-        type="button"
-        class="close"
-        data-dismiss="modal"
-        aria-label="Close"
-        (click)="d('Cross click')"
-      >
-        <span aria-hidden="true">×</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <form class="row" [formGroup]="formAddProduit">
-        <div
-          class="form-group row m-0 justify-content-between align-items-center mb-3"
-          style="width: 100%"
-        >
-          <label for="name-produit" class="form-control-label col-md-4"
-            >Nom <span class="text-danger">*</span></label
-          >
-          <input
-            class="form-control col-md-8"
-            type="text"
-            id="name-produit"
-            formControlName="nom"
-            [maxLength]="32"
-          />
-        </div>
-        <div
-          class="form-group row m-0 align-items-center mb-3"
-          style="width: 100%"
-        >
-          <label for="catégorie-produit" class="form-control-label col-md-4"
-            >Catégorie <span class="text-danger">*</span></label
-          >
-          <ngx-select-dropdown
-            [instanceId]="'instance2'"
-            formControlName="categorieid"
-            [config]="config"
-            [options]="listCategorie"
-            class="col-md-4 p-0"
-          ></ngx-select-dropdown>
-        </div>
-
-        <div
-          class="form-group row m-0 justify-content-between align-items-center mb-3"
-          style="width: 100%"
-        >
-          <label for="catégorie-produit" class="form-control-label col-md-4"
-            >Image(s)<span class="text-danger"></span
-          ></label>
-          <input
-            #file2
-            type="file"
-            style="display: none"
-            (change)="loadFile($event)"
-            accept="image/png, image/gif, image/jpeg"
-          />
-          <div class="col-md-8">
-            <div class="row">
-              <div
-                *ngIf="this.fileTabSrc.length < 4"
-                (click)="file2.click()"
-                class="rounded border-primary border align-items-center p-1 col-md-3 m-1 row justify-content-center"
-                style="
-                  min-height: 100px;
-                  width: fit-content;
-                  border-style: dashed !important;
-                  background-color: #dee2e6;
-                  cursor: pointer;
-                "
-              >
-                <span><i class="fa-solid fa-plus"></i> UPLOAD</span>
-              </div>
-
-              <div
-                *ngFor="let image of fileTabSrc"
-                class="col-md-3 m-1 rounded border align-items-center p-1 m-1 row justify-content-center"
-                [style]="'background-image: url(' + image + ')'"
-                style="
-                  position: relative;
-                  background-repeat: no-repeat;
-                  background-size: cover;
-                  min-height: 100px;
-                  width: 91px !important;
-                "
-              >
-                <i
-                  (click)="removeImg(image)"
-                  class="fa-solid fa-circle-xmark"
-                  style="
-                    position: absolute;
-                    color: #c32830;
-                    top: -7px;
-                    right: -10px;
-                    cursor: pointer;
-                  "
-                ></i>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          class="form-group row m-0 justify-content-between align-items-center mb-3"
-          style="width: 100%"
-        >
-          <label for="prix-produit" class="form-control-label col-md-4"
-            >Prix <span class="text-danger">*</span></label
-          >
-          <input
-            class="form-control col-md-8"
-            type="number"
-            id="prix-produit"
-            formControlName="prix"
-          />
-        </div>
-        <!-- <div
-          class="form-group row m-0 align-items-center mb-3"
-          style="width: 100%"
-        >
-          <label for="position-produit" class="form-control-label col-md-4"
-            >Position affichage</label
-          >
-          <ngx-select-dropdown
-            formControlName="positionaffichage"
-            [config]="config"
-            [options]="listAffichage"
-            class="col-md-4 p-0"
-          ></ngx-select-dropdown>
-        </div> -->
-        <div
-          class="form-group row m-0 justify-content-between align-items-center mb-3"
-          style="width: 100%"
-        >
-          <label for="description" class="form-control-label col-md-4"
-            >Description <span class="text-danger">*</span></label
-          >
-          <textarea
-            class="form-control col-md-8"
-            id="description"
-            rows="3"
-            formControlName="description"
-          ></textarea>
-        </div>
-        <div
-          class="form-group row m-0 justify-content-between align-items-center mb-3"
-          style="width: 100%"
-        >
-          <label for="caratéristiques" class="form-control-label col-md-4"
-            >Caractéristique <span class="text-danger">*</span></label
-          >
-          <textarea
-            class="form-control col-md-8"
-            id="caratéristiques"
-            rows="3"
-            formControlName="caracteristique"
-          ></textarea>
-        </div>
-      </form>
-    </div>
-    <div class="modal-footer">
-      <button
-        type="button"
-        (click)="handleOk(); c('Close click')"
-        class="btn btn-primary"
-        data-dismiss="modal"
-      >
-        <i class="fa-solid fa-spinner fa-spin" *ngIf="loadingadd"></i>
-        Ajouter
-      </button>
-      <button
-        type="button"
-        class="btn btn-link ml-auto"
-        data-dismiss="modal"
-        (click)="c('Close click'); onResetFile()"
       >
         Annuler
       </button>
@@ -695,54 +366,6 @@
             class="col-md-4 p-0"
           ></ngx-select-dropdown>
         </div>
-        <!-- 
-        <div
-          class="form-group row m-0 justify-content-between align-items-center mb-3"
-          style="width: 100%"
-        >
-          <label for="catégorie-produit" class="form-control-label col-md-4"
-            >Image(s)<span class="text-danger"></span
-          ></label>
-          <input
-            #file3
-            type="file"
-            style="display: none"
-            (change)="loadFileUpdate($event)"
-            accept="image/png, image/gif, image/jpeg"
-          />
-          <div class="col-md-8">
-            <div class="row">
-              <div
-                *ngIf="this.fileTabUpdate.length < 4"
-                (click)="file3.click()"
-                class="rounded border-primary border align-items-center p-1 col-md-3 m-1 row justify-content-center"
-                style="
-                  min-height: 100px;
-                  width: fit-content;
-                  border-style: dashed !important;
-                  background-color: #dee2e6;
-                  cursor: pointer;
-                "
-              >
-                <span><i class="fa-solid fa-plus"></i> UPLOAD</span>
-              </div>
-
-              <div
-                *ngFor="let image of fileTabUpdate"
-                class="col-md-3 m-1 rounded border align-items-center p-1 m-1 row justify-content-center"
-                [style]="'background-image: url(' + image + ')'"
-                style="
-                  position: relative;
-                  background-repeat: no-repeat;
-                  background-size: cover;
-                  min-height: 100px;
-                  width: 91px !important;
-                "
-              >
-              </div>
-            </div>
-          </div>
-        </div> -->
         <div
           class="form-group row m-0 justify-content-between align-items-center mb-3"
           style="width: 100%"
@@ -756,20 +379,6 @@
             id="prix-produit"
             formControlName="prix"
           />
-        </div>
-        <div
-          class="form-group row m-0 align-items-center mb-3"
-          style="width: 100%"
-        >
-          <label for="position-produit" class="form-control-label col-md-4"
-            >Position affichage</label
-          >
-          <ngx-select-dropdown
-            formControlName="positionaffichage"
-            [config]="config"
-            [options]="listAffichage"
-            class="col-md-4 p-0"
-          ></ngx-select-dropdown>
         </div>
         <div
           class="form-group row m-0 justify-content-between align-items-center mb-3"
@@ -896,7 +505,6 @@
                 #file5
                 type="file"
                 style="display: none"
-                
                 accept="image/png, image/gif, image/jpeg"
               /></button
             ><button class="col-md-16 btn btn-danger mb-2">Supprimer</button>
