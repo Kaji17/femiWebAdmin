@@ -18,7 +18,8 @@ export class ProduitService {
     // }
     // form.append("produitDto", JSON.stringify(produitDto));
     return this.http.put(
-      this.configService.getApi1("PRODUIT_UPD_PUT") + "/" + id,produitDto,
+      this.configService.getApi1("PRODUIT_UPD_PUT") + "/" + id,
+      produitDto,
       {
         observe: "response",
       }
@@ -50,6 +51,20 @@ export class ProduitService {
       observe: "response",
       params: obj,
     });
+  }
+
+  // GET  PRODUIT UPDATE POSITION
+  public updatePositionProduit(produitid: any, position: any) {
+    return this.http.get(
+      this.configService.getApi1("PRODUIT_UPDATEPOSITION_GET") +
+        "/" +
+        produitid +
+        "/" +
+        position,
+      {
+        observe: "response",
+      }
+    );
   }
 
   // GET ALL PRODUIT

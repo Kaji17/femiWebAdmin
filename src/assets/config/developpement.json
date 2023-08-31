@@ -19,6 +19,7 @@
       "PRODUIT_UPD_PUT": "/klaman/v1/vente/produit/update",
       "PRODUIT_ADD_POST": "/klaman/v1/vente/produit/add",
       "PRODUIT_GETALL_GET": "/klaman/v1/vente/produit/getall",
+      "PRODUIT_UPDATEPOSITION_GET": "/klaman/v1/vente/produit/postion/update",
       "PRODUIT_GETAVIS_GET": "/klaman/v1/vente/produit/avis",
       "PRODUIT_DEL_DEL": "/klaman/v1/vente/produit/delete",
 
@@ -65,6 +66,7 @@
       "comment ": "------------ OPERATIONS PRIX-LIVRAISON ---------------",
       "PRIXLIV_UPD_PUT": "/klaman/v1/user/prixlivraison/update",
       "PRIXLIV_ADD_POST": "/klaman/v1/user/prixlivraison/add",
+      "PRIXLIV_ASSIGN_GET": "/klaman/v1/user/prixlivraison/assign",
       "PRIXLIV_GETALL_GET": "/klaman/v1/user/prixlivraison/getall",
       "PRIXLIV_DEL_DEL": "/klaman/v1/user/prixlivraison/delete",
   

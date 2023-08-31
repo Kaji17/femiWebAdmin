@@ -8,13 +8,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { ModalAddPrixLivraisonComponent } from './prix-livraison/modal-add-prix-livraison/modal-add-prix-livraison.component';
+import { ModalAssignZoneComponent } from './prix-livraison/modal-assign-zone/modal-assign-zone.component';
 
 
 @NgModule({
   declarations: [
     PrixLivraisonComponent,
     GestionZoneComponent,
-    ModalAddPrixLivraisonComponent
+    ModalAddPrixLivraisonComponent,
+    ModalAssignZoneComponent
   ],
   imports: [
     CommonModule,

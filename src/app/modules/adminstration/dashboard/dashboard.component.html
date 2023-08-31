@@ -43,9 +43,9 @@
                   <h5 class="card-title text-uppercase text-muted mb-0">
                     NOUVEAUX CLIENTS
                   </h5>
-                  <span class="h2 font-weight-bold mb-0"
-                    >{{ totalNewUser | number }}</span
-                  >
+                  <span class="h2 font-weight-bold mb-0">{{
+                    totalNewUser | number
+                  }}</span>
                 </div>
                 <div class="col-auto">
                   <div
@@ -120,9 +120,9 @@
                   <h5 class="card-title text-uppercase text-muted mb-0">
                     TOTAL PRODUITS
                   </h5>
-                  <span class="h2 font-weight-bold mb-0"
-                    >{{ totalNombreProduit | number }}</span
-                  >
+                  <span class="h2 font-weight-bold mb-0">{{
+                    totalNombreProduit | number
+                  }}</span>
                 </div>
                 <div class="col-auto">
                   <div
@@ -156,7 +156,6 @@
   </div>
 </div>
 <div class="container-fluid mt--7">
-
   <div class="row">
     <div class="col-xl-8 mb-5 mb-xl-0">
       <div class="card bg-gradient-default shadow">
@@ -253,7 +252,7 @@
   </div>
   <div class="row mt-5">
     <div class="col-xl-4 mb-5 mb-xl-0">
-      <div class="card shadow" style="min-height: 100%;">
+      <div class="card shadow" style="min-height: 100%">
         <div class="card-header border-0">
           <div class="row align-items-center">
             <div class="col">
@@ -296,7 +295,7 @@
       </div>
     </div>
     <div class="col-xl-4 mb-5 mb-xl-0">
-      <div class="card shadow" style="min-height: 100%;">
+      <div class="card shadow" style="min-height: 100%">
         <div class="card-header border-0">
           <div class="row align-items-center">
             <div class="col">
@@ -353,7 +352,7 @@
       </div>
     </div>
     <div class="col-xl-4 mb-5 mb-xl-0">
-      <div class="card shadow" style="min-height: 100%;">
+      <div class="card shadow" style="min-height: 100%">
         <div class="card-header border-0">
           <div class="row align-items-center">
             <div class="col">
@@ -412,48 +411,45 @@
     </div>
   </div>
 
-
   <div class="row mt-5">
-
-    <div class="col-xl-4 mb-5 mb-xl-0">
-      <div class="card shadow" style="min-height: 100%;">
+    <!-- PANIER MOYEN -->
+    <div class="col-xl-6 mb-5 mb-xl-0">
+      <div class="card shadow" style="min-height: 100%">
         <div class="card-header border-0">
           <div class="row align-items-center">
-            <div class="col">
+            <div class="col-lg-3">
               <h3 class="mb-0">Panier moyen</h3>
             </div>
 
             <!-- <a class="btn btn-sm btn-primary">Jour</a> -->
-            <select
-              class="btn btn-sm col form-control selectr-visible me-1"
-              data-toggle="select"
-              tabindex="-1"
-              aria-hidden="true"
-              data-gtm-form-interact-field-id="4"
-            >
-              <option value="jours">Jours</option>
-              <option value="semaine">Semaine</option>
-              <option value="mois">Mois</option>
-              <option value="Année">Année</option>
-            </select>
-
-            <select
-              class="btn btn-sm col form-control selectr-visible"
-              data-toggle="select"
-              tabindex="-1"
-              aria-hidden="true"
-              data-gtm-form-interact-field-id="4"
-            >
-              <option value="jours">Cocody</option>
-              <option value="semaine">Yopougon</option>
-              <option value="mois">Anyama</option>
-              <option value="Année">Port-bouet</option>
-            </select>
+          <div class="col-lg-4">
+            <ngx-select-dropdown
+            [options]="listPeriode"
+            [(ngModel)]="periodeselect"
+            [config]="configperiode"
+            (change)="filterperiode()"
+            class="col-md-2 mr-2"
+          >
+          </ngx-select-dropdown>
+          </div>
+            <div class="col-lg-5">
+              <ngx-select-dropdown
+            [instanceId]="'instance1'"
+            [config]="configZone"
+            [options]="listZone"
+            [(ngModel)]="zoneselect"
+            (change)="filterzone()"
+            class="col-md-2 p-0"
+          >
+          </ngx-select-dropdown>
+            </div>
           </div>
         </div>
-        <div class="table-responsive">
-          <!-- Projects table -->
-          <table class="table align-items-center table-flush" style="height: 100%;">
+        <!-- <div class="table-responsive">
+          <table
+            class="table align-items-center table-flush"
+            style="height: 100%"
+          >
             <thead class="thead-light">
               <tr>
                 <th scope="col">PERIODE</th>
@@ -469,21 +465,34 @@
               </tr>
             </tbody>
           </table>
-        </div>
+        </div> -->
+        <ngx-datatable
+        class="bootstrap selection-cell"
+        [columnMode]="'force'"
+        [headerHeight]="50"
+        [footerHeight]="50"
+        [rowHeight]="'auto'"
+        [rows]="tempPanierMoyen"
+        [summaryPosition]="'bottom'"
+        (activate)="onActivate($event)"
+        (sortable)="false"
+        [limit]="5"
+      >
+        <ngx-datatable-column name="Période"></ngx-datatable-column>
+        <ngx-datatable-column name="Panier moyen"></ngx-datatable-column>
+      </ngx-datatable>
       </div>
     </div>
 
-    <div class="col-xl-8">
+    <!-- NOMBRE DE PRODUIT VENDU -->
+    <div class="col-xl-6">
       <div class="card shadow">
         <div class="card-header bg-transparent">
           <div class="row align-items-center">
             <div class="col">
               <h2 class="mb-0">Quantité vendue par produit</h2>
               <div class="col text-right">
-                <a
-                  class="btn btn-sm btn-primary"
-                  >Sélectionner période</a
-                >
+                <a class="btn btn-sm btn-primary">Sélectionner période</a>
               </div>
             </div>
           </div>
@@ -498,7 +507,7 @@
     </div>
   </div>
 
-
+  <!-- VALEUR DES VENTES PAR PRODUITS -->
   <div class="row mt-5">
     <div class="col-xl-12 align-items-center justify-content-center">
       <div class="card shadow">
@@ -507,10 +516,7 @@
             <div class="col">
               <h2 class="mb-0">Valeur des ventes par produit</h2>
               <div class="col text-right">
-                <a
-                  class="btn btn-sm btn-primary"
-                  >Sélectionner période</a
-                >
+                <a class="btn btn-sm btn-primary">Sélectionner période</a>
               </div>
             </div>
           </div>

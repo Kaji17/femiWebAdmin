@@ -27,14 +27,6 @@
   <!-- TABLEAU -->
   <div class="container-fluid mt-5">
     <div class="dataTables_wrapper py-4 card px-4">
-      <!-- <div class="row">
-        <div class="col-md-5 mb-md-2 mb-3 col-lg-3 mb-lg-2 col-xl-2">
-
-          <ng-template #optionTemplate let-item="item" let-config="config">
-          </ng-template>
-        </div>
-
-      </div> -->
       <ngx-datatable
         class="bootstrap selection-cell"
         [columnMode]="'force'"
@@ -56,18 +48,17 @@
       >
         <ngx-datatable-column name="ID Prix Livraison" prop="id"></ngx-datatable-column>
         <ngx-datatable-column name="Prix" prop="prix"></ngx-datatable-column>
-        <ngx-datatable-column name="Montant" prop="montant"></ngx-datatable-column>
         <ngx-datatable-column name="Actions">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <div>
               <a
                 *ngIf="crudPerms.update"
                 role="button"
-                (click)="open(classic1, '', 'sm')"
+                (click)="openAssignPrixLivraison()"
                 data-target="#modal-form"
                 data-toggle="modal"
               >
-                <i class="fa-solid fa-pen-to-square mr-2 text-primary fs-5"></i>
+              <i class="fa-solid fa-location-dot mr-2 text-primary fs-5"></i>
               </a>
               <a
                 *ngIf="crudPerms.delete"

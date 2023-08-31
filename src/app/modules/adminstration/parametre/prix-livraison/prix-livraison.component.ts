@@ -5,6 +5,7 @@ import { ModalAddPrixLivraisonComponent } from "./modal-add-prix-livraison/modal
 import { Page } from "src/app/shared/model/paged";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { UtilisService } from "src/app/shared/services/utilis.service";
+import { ModalAssignZoneComponent } from "./modal-assign-zone/modal-assign-zone.component";
 
 
 @Component({
@@ -69,12 +70,14 @@ export class PrixLivraisonComponent implements OnInit {
         this.closeResult = "Closed with: " + result;
         console.log("yaaaa", this.closeResult);
         if (result == "ok") {
-          this.getAllPrixLivraion({
-            boutiqueid: this.infoUser.body.boutique.id,
-            pagination: true,
-            page: 0,
-            size: 10,
-          });
+          setTimeout(() => {
+            this.getAllPrixLivraion({
+              boutiqueid: this.infoUser.body.boutique.id,
+              pagination: true,
+              page: 0,
+              size: 10,
+            });
+          }, 1500);
         }
       },
       (reason) => {
@@ -83,6 +86,35 @@ export class PrixLivraisonComponent implements OnInit {
     );
     // modalRef.componentInstance.infoDaTa = infoData;
   }
+
+    // OUVRIR MODALS ASSIGNER PRIX LIVRAISON
+    openAssignPrixLivraison() {
+      const modalRef = this.modalService.open(ModalAssignZoneComponent, {
+        windowClass: "modal-mini",
+        size: "lg",
+        // centered: true,
+      });
+      modalRef.result.then(
+        (result) => {
+          this.closeResult = "Closed with: " + result;
+          console.log("yaaaa", this.closeResult);
+          if (result == "ok") {
+            setTimeout(() => {
+              this.getAllPrixLivraion({
+                boutiqueid: this.infoUser.body.boutique.id,
+                pagination: true,
+                page: 0,
+                size: 10,
+              });
+            }, 1500);
+          }
+        },
+        (reason) => {
+          this.closeResult = "Dismissed " + this.getDismissReason(reason);
+        }
+      );
+      modalRef.componentInstance.infoDaTa = this.activeRow;
+    }
 
   // Récuperer la ligne sélectionner
   onActivate(event) {

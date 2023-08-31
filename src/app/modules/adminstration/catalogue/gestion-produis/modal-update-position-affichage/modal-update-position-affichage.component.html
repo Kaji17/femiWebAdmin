@@ -1,0 +1,50 @@
+<div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-title-default">Modifier position affichage produit: {{infoDaTa.nom}}</h4>
+      <hr class="my-4" />
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+        (click)="closeModal()"
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div
+        class="form-group row m-0 justify-content-between align-items-center mb-3"
+        style="width: 100%"
+      >
+        <label for="position" class="form-control-label col-md-4"
+          >Position <span class="text-danger">*</span></label
+        >
+        <input
+          class="form-control col-md-8"
+          type="number"
+          id="position"
+          [(ngModel)]="position"
+        />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-link ml-auto"
+        data-dismiss="modal"
+        (click)="closeModal()"
+      >
+        Annuler
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        [disabled]="!position"
+        (click)="handleOk();closeModalOk()"
+      >
+        Ajouter
+      </button>
+    </div>
+  </div>
+  

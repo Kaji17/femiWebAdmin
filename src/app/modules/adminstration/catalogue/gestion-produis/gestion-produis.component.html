@@ -107,8 +107,8 @@
       >
       </ngx-datatable-column>
       <ngx-datatable-column
-        name="Code"
-        prop="id"
+        name="Position"
+        prop="positionaffichage"
         [maxWidth]="60"
       ></ngx-datatable-column>
       <ngx-datatable-column name="Image" prop="imageproduits">
@@ -199,9 +199,22 @@
             <a
             *ngIf="crudPerms.update"
               role="button"
+              (click)="openUpdateAffichage(row)"
+              data-target="#modal-form"
+              data-toggle="modal"
+              ngbTooltip="Position affichage"
+              placement="bottom"
+            >
+            <i class="fa-solid fa-arrow-up-1-9 mr-2 text-orange fs-5"></i>
+            </a>
+            <a
+            *ngIf="crudPerms.update"
+              role="button"
               (click)="onUpdateRow(row); open(classic1, '', 'sm')"
               data-target="#modal-form"
               data-toggle="modal"
+              ngbTooltip="Modifier produit"
+              placement="bottom"
             >
               <i class="fa-solid fa-pen-to-square mr-2 text-primary fs-5"></i>
             </a>
@@ -211,6 +224,8 @@
               (click)="onUpdateImgRow(row); openEditImages(row)"
               data-target="#modal-form"
               data-toggle="modal"
+              ngbTooltip="Modifier images"
+              placement="bottom"
             >
               <i class="fa-solid fa-image mr-2 text-info fs-5"></i>
             </a>
@@ -219,6 +234,8 @@
               (click)="openTest()"
               data-target="#modal-form"
               data-toggle="modal"
+              ngbTooltip="Détails produit"
+              placement="bottom"
             >
               <i class="fa-regular fa-eye mr-2 text-warning fs-5"></i>
             </a>
@@ -228,6 +245,8 @@
               (click)="onDeleteRow(row.id); open(classic2, 'Notification', '')"
               data-target="#modal-form"
               data-toggle="modal"
+              ngbTooltip="Supprimer produit"
+              placement="bottom"
             >
               <i class="fa-solid fa-trash-can text-danger mr-2 fs-5"></i>
             </a>

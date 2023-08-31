@@ -9,14 +9,16 @@ import {
 } from "src/app/variables/charts";
 import Chart from "chart.js";
 import { BreadcrumbService } from "src/app/shared/services/breadcrumb.service";
+import { UtilisService } from "src/app/shared/services/utilis.service";
+import { ZoneService } from "src/app/shared/services/zone.service";
+import { Page } from "src/app/shared/model/paged";
+import { StatistiqueService } from "src/app/shared/services/statistique.service";
 
 @Component({
   selector: "app-dashboard",
   templateUrl: "./dashboard.component.html",
   styleUrls: ["./dashboard.component.scss"],
 })
-
-
 export class DashboardComponent implements OnInit {
   public datasets: any;
   public data: any;
@@ -26,7 +28,7 @@ export class DashboardComponent implements OnInit {
   public salesChart;
   public ordersChart;
   public produitChart;
-  public revenuProduitChart
+  public revenuProduitChart;
 
   public clicked: boolean = true;
   public clicked1: boolean = false;
@@ -43,15 +45,61 @@ export class DashboardComponent implements OnInit {
   public tauxCroissancetotalNombreProduit: number;
   public noteProduit: number;
   public avis: any[];
-  public commandeByZone: any[]
-  public itemsbreadcrumb: any[]
-  public tittelbreadcrumb:string ='Dasboard'
+  public commandeByZone: any[];
+  public itemsbreadcrumb: any[];
+  public tittelbreadcrumb: string = "Dasboard";
+  tempPanierMoyen: any [];
+  activeRow:any
+
+  listZone: any[];
+  listPeriode: any[] = [
+    { label: "Jour", key: "day" },
+    { label: "Mois", key: "month" },
+    { label: "Semaine", key: "week" },
+    { label: "Année", key: "year" },
+  ];
+  configZone = {
+    // displayFn:(item: any) => { return item.zone.nom?item.zone.nom:item.nom; },
+    displayKey: "nom", //if objects array passed which key to be displayed defaults to description
+    height: "300px", //height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
+    placeholder: "zone", // text to be displayed when no item is selected defaults to Select,
+    search: true,
+    searchOnKey: "nom",
+  };
+  configperiode = {
+    displayKey: "label", //if objects array passed which key to be displayed defaults to description
+    height: "auto", //height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
+     // text to be displayed when no item is selected defaults to Select,
+     placeholder: this.listPeriode[0].label
+  };
+  zoneselect: any;
+  objSearchPanierMoyen: any;
+  page = new Page();
+  infoUser: any;
+  periodeselect: any;
 
   constructor(
-    private breadcrumbService : BreadcrumbService
-  ){
+    private breadcrumbService: BreadcrumbService,
+    private utilitisService: UtilisService,
+    private zoneService: ZoneService,
+    private statistiqueService: StatistiqueService
+  ) {
+    this.page.pageNumber = 0;
+    this.page.size = 10;
+    this.infoUser = JSON.parse(localStorage.getItem("user_info"));
   }
   ngOnInit() {
+    //
+    this.getAllZone({
+      pagination: false,
+    });
+
+    this.objSearchPanierMoyen = {
+      periode:"day",
+      boutiqueid: this.infoUser.body.boutique.id,
+    };
+    this.getStatPanierMoyen(this.objSearchPanierMoyen);
+    //
     this.chiffreAffaireTotal = 0;
     this.tauxCroissanceCA = 0;
     this.totalNewUser = 0;
@@ -67,7 +115,7 @@ export class DashboardComponent implements OnInit {
       { name: "Dasboard", path: "/administration/dasboard" },
     ];
 
-    this.updatebBreadcrumb(this.itemsbreadcrumb, this.tittelbreadcrumb)
+    this.updatebBreadcrumb(this.itemsbreadcrumb, this.tittelbreadcrumb);
 
     this.avis = [
       {
@@ -79,15 +127,18 @@ export class DashboardComponent implements OnInit {
         produitName: "test",
         note: 2,
         commentaire: 20,
-      },      {
+      },
+      {
         produitName: "test",
         note: 3,
         commentaire: 20,
-      },      {
+      },
+      {
         produitName: "test",
         note: 1,
         commentaire: 20,
-      },      {
+      },
+      {
         produitName: "test",
         note: 5,
         commentaire: 20,
@@ -101,13 +152,16 @@ export class DashboardComponent implements OnInit {
       {
         periode: "10/01/2023",
         nombreDeVente: 20,
-      },      {
+      },
+      {
         periode: "10/01/2023",
         nombreDeVente: 30,
-      },      {
+      },
+      {
         periode: "10/01/2023",
         nombreDeVente: 10,
-      },      {
+      },
+      {
         periode: "10/01/2023",
         nombreDeVente: 50,
       },
@@ -154,21 +208,20 @@ export class DashboardComponent implements OnInit {
       data: chartExample1.data,
     });
 
-
     var chartProduit = document.getElementById("chart-produit");
 
     this.produitChart = new Chart(chartProduit, {
       type: "pie",
       data: chartExample3.data,
-    })
+    });
 
-    var chartRevenuProduit = document.getElementById("chart-revenuProduit")
+    var chartRevenuProduit = document.getElementById("chart-revenuProduit");
 
-    this.revenuProduitChart = new Chart(chartRevenuProduit,{
-      type:"doughnut",
+    this.revenuProduitChart = new Chart(chartRevenuProduit, {
+      type: "doughnut",
       option: chartExample3.options,
-      data : chartExample3.data,
-    })
+      data: chartExample3.data,
+    });
   }
 
   public updateOptions(type: number) {
@@ -200,7 +253,75 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  updatebBreadcrumb(data: any[], title:string){
-    this.breadcrumbService.setData(data, title)
+  updatebBreadcrumb(data: any[], title: string) {
+    this.breadcrumbService.setData(data, title);
+  }
+
+  filterzone() {
+    console.log("zone search", this.zoneselect);
+    if (this.zoneselect.id) {
+      this.objSearchPanierMoyen.zoneid = this.zoneselect.id;
+      this.getStatPanierMoyen(this.objSearchPanierMoyen);
+      console.log("obj search", this.objSearchPanierMoyen);
+    } else {
+      this.objSearchPanierMoyen.zoneid = null;
+    }
+  }
+  filterperiode() {
+    console.log("periode search", this.periodeselect);
+    this.objSearchPanierMoyen.periode = this.periodeselect.key;
+    this.getStatPanierMoyen(this.objSearchPanierMoyen);
+    console.log("obj search", this.objSearchPanierMoyen);
+  }
+
+  onActivate(event) {
+    this.activeRow = event.row;
+    console.log("Je suis active ===", this.activeRow)
+  }
+
+  // Donnée statistique de panier moyen
+  getStatPanierMoyen(obj) {
+    this.statistiqueService.panierMoyenStatistique(obj).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log(d);
+          if (data.status == 200) {
+            this.tempPanierMoyen = [];
+            let lis: any[] = [];
+            lis = d.body;
+            lis.map((el) => {
+              this.tempPanierMoyen.push(el);
+            });
+            console.log("list des stats panier moyen ====", this.tempPanierMoyen);
+          }
+        });
+      },
+      error: (error) => {
+        this.utilitisService.response(error, (d: any) => {});
+      },
+    });
+  }
+
+  // Get all zone
+  getAllZone(obj: any) {
+    this.zoneService.gettAllZone(obj).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log(d);
+          if (data.status == 200) {
+            this.listZone = [];
+            let lis: any[] = [];
+            lis = d.body;
+            lis.map((el) => {
+              this.listZone.push(el);
+            });
+            console.log("list des zones ====", this.listZone);
+          }
+        });
+      },
+      error: (error) => {
+        this.utilitisService.response(error, (d: any) => {});
+      },
+    });
   }
 }

@@ -7,6 +7,7 @@ import { DasboardRoutingModule } from './dasboard-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { SelectDropDownModule } from 'ngx-select-dropdown';
 
 
 
@@ -24,6 +25,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     BrowserModule,
     NgxDatatableModule,
     RouterModule,
+    SelectDropDownModule,
   ],
   exports:[
     DashboardComponent

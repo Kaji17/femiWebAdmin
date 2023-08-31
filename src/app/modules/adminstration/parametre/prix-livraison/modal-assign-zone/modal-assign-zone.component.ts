@@ -1,26 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { AdministrateurService } from 'src/app/shared/services/administrateur.service';
 import { PrixLivraisonService } from 'src/app/shared/services/prix-livraison.service';
-import { RolePermissionsService } from 'src/app/shared/services/role-permissions.service';
 import { UtilisService } from 'src/app/shared/services/utilis.service';
 import { ZoneService } from 'src/app/shared/services/zone.service';
 
 @Component({
-  selector: 'app-modal-add-prix-livraison',
-  templateUrl: './modal-add-prix-livraison.component.html',
-  styleUrls: ['./modal-add-prix-livraison.component.scss']
+  selector: 'app-modal-assign-zone',
+  templateUrl: './modal-assign-zone.component.html',
+  styleUrls: ['./modal-assign-zone.component.scss']
 })
-export class ModalAddPrixLivraisonComponent implements OnInit {
+export class ModalAssignZoneComponent implements OnInit {
 
-  formAddPrixLivraison: FormGroup;
+  @Input() infoDaTa;
+  formAssignPrixLivraison: FormGroup;
   infoUser: any;
-  listRole: any[] = [];
-  passwordConfirm: string = "";
-  password: string = "";
   result: string;
+  // prix:number = this.infoDaTa.prix
 
   listZone: any[]
   configZone = {
@@ -37,24 +34,19 @@ export class ModalAddPrixLivraisonComponent implements OnInit {
     private utilitisService: UtilisService,
     private toastr: ToastrService,
     private fb: FormBuilder,
-    private rolePerms: RolePermissionsService,
-    private adminService: AdministrateurService,
     private zoneService: ZoneService,
     private prixLivraisonService: PrixLivraisonService
   ) {
-    this.infoUser = JSON.parse(localStorage.getItem("user_info"));
     this.getAllZone({
       pagination: false,
     });
   }
 
   ngOnInit(): void {
-    this.getAllRole({
-      boutiqueid: this.infoUser.body.boutique.id,
-      pagination: false,
-    });
+    console.log(this.infoDaTa);
     
     this.buildForm();
+    // this.prix
   }
   // Fermer le modal
   closeModal() {
@@ -66,42 +58,28 @@ export class ModalAddPrixLivraisonComponent implements OnInit {
   }
 
   buildForm() {
-    this.formAddPrixLivraison = this.fb.group({
-      prix: [1000, [Validators.required]],
-      default: [false],
-      boutique: [this.infoUser.body.boutique],
+    this.formAssignPrixLivraison = this.fb.group({
+      id: [this.infoDaTa.id],
+      zoneid: ["", [Validators.required]],
     });
   }
 
   handleOk() {
-    // this.formAddPrixLivraison.value.zoneid = this.formAddPrixLivraison.value.zoneid.id
-    console.log("Infos de l'administrateur", this.formAddPrixLivraison.value);
-    this.addPrixLivraison(this.formAddPrixLivraison.value);
+    this.formAssignPrixLivraison.value.zoneid = this.formAssignPrixLivraison.value.zoneid.id
+    console.log("Infos de l'assignement du prix de livraison", this.formAssignPrixLivraison.value);
+    this.assignPrixLivraison(this.formAssignPrixLivraison.value);
     this.closeModalOk()
   }
 
-  getAllRole(obj: any) {
-    this.rolePerms.getAllRole(obj).subscribe({
+  assignPrixLivraison(obj: any) {
+    this.prixLivraisonService.assignPrixLivraison(obj).subscribe({
       next: (data) => {
         this.utilitisService.response(data, (d: any) => {
-          this.listRole = d.body;
-          // this.allRole = JSON.parse(atob(d.body.content.description))
-          console.log("======Liste des role", this.listRole);
-        });
-      },
-    });
-  }
-
-  addPrixLivraison(obj: any) {
-    this.prixLivraisonService.addPrixLivraison(obj).subscribe({
-      next: (data) => {
-        this.utilitisService.response(data, (d: any) => {
-          console.log("======Ajout Success", d);
           if (data.status == 200||data.status==201) {
-            console.log("======Ajout Success", d);
+            console.log("======assigner avec Success", d);
             this.showNotification("success");
-          } else if (data.status == 409) {
-            console.log("======Ajout failled", d);
+          } else {
+            console.log("======assigner failled", d);
             this.showNotification("danger");
           }
         });
@@ -145,7 +123,7 @@ export class ModalAddPrixLivraisonComponent implements OnInit {
     }
     if (type === "success") {
       this.toastr.show(
-        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">Ngx Toastr</span> <span data-notify="message">Le prix de livraison à été ajouter avec succès</span></div>',
+        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">Ngx Toastr</span> <span data-notify="message">Le prix de livraison à été assigner avec succès</span></div>',
         "",
         {
           timeOut: 3000,
@@ -184,27 +162,5 @@ export class ModalAddPrixLivraisonComponent implements OnInit {
       });
     }
 
-  // infoSwal(bool: boolean) {
-  //   if(bool){
-  //     swal({
-  //       title: "Success",
-  //       text: "L'utilisateur à été créer avec succès",
-  //       type: "success",
-  //       buttonsStyling: false,
-  //       confirmButtonClass: "btn btn-success",
-  //     });
-  //   }else{
-  //     swal({
-  //       title: 'Email existante',
-  //       text: "L'email existe déja réessayer en utilisant une autre adresse mail",
-  //       type: 'warning',
-  //       buttonsStyling: false,
-  //       confirmButtonClass: 'btn btn-warning',
-  //       onClose : ()=>{
-  //         this.buildForm()
-  //       }
-  //     });
-  //   }
-  // }
 
 }

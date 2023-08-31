@@ -17,16 +17,16 @@ import { ToastrService } from "ngx-toastr";
 import { Subscription } from "rxjs";
 import { Configurable } from "src/app/core/config";
 import { Page } from "src/app/shared/model/paged";
-import { BreadcrumbService } from "src/app/shared/services/breadcrumb.service";
 import { CategorieService } from "src/app/shared/services/categorie.service";
 import { ImageProduitService } from "src/app/shared/services/image-produit.service";
 import { ProduitService } from "src/app/shared/services/produit.service";
+import { RolePermissionsService } from "src/app/shared/services/role-permissions.service";
 import { UtilisService } from "src/app/shared/services/utilis.service";
+import { CreateProduitComponent } from "./create-produit/create-produit.component";
 import { ModalAssignPromotionComponent } from "./modal-assign-promotion/modal-assign-promotion.component";
 import { ModalImagesProduitComponent } from "./modal-images-produit/modal-images-produit.component";
 import { ModalRemovePromotionComponent } from "./modal-remove-promotion/modal-remove-promotion.component";
-import { RolePermissionsService } from "src/app/shared/services/role-permissions.service";
-import { CreateProduitComponent } from "./create-produit/create-produit.component";
+import { ModalUpdatePositionAffichageComponent } from "./modal-update-position-affichage/modal-update-position-affichage.component";
 
 @Component({
   selector: "app-gestion-produis",
@@ -80,7 +80,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   isLoading = 0;
   public crudPerms: any;
   public menuItems: any[];
-  verifiyItemPromed:any
+  verifiyItemPromed: any;
 
   rowSelected: any;
 
@@ -103,7 +103,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private configService: Configurable,
     private imgProduit: ImageProduitService,
-    private rolePermission: RolePermissionsService,
+    private rolePermission: RolePermissionsService
   ) {
     this.page.pageNumber = 0;
     this.page.size = 10;
@@ -127,7 +127,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   @ViewChild("dropzone", { static: true }) dropzoneElement: ElementRef;
 
   ngOnInit(): void {
-    this.verifiyItemPromed=false
+    this.verifiyItemPromed = false;
     this.menuItems = this.rolePermission.getMenuPermission();
     let currentMultipleFile = undefined;
     this.buildForm();
@@ -142,7 +142,6 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
       update: this.menuItems[3].items[1].update,
       delete: this.menuItems[3].items[1].delete,
     };
-
   }
 
   buildForm() {
@@ -150,7 +149,6 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
       nom: ["", [Validators.required]],
       caracteristique: [""],
       description: [""],
-      positionaffichage: [0],
       prix: [0],
       quantite: [1],
       categorieid: ["", [Validators.required]],
@@ -234,9 +232,10 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     this.selected.splice(0, this.selected.length);
     this.selected.push(...selected);
     console.log("hhh", this.selected);
-    selected[0].promotion?this.verifiyItemPromed=true:this.verifiyItemPromed=false
+    selected[0].promotion
+      ? (this.verifiyItemPromed = true)
+      : (this.verifiyItemPromed = false);
     console.log("verify", this.verifiyItemPromed);
-
   }
 
   displayCheck(row) {
@@ -272,6 +271,34 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.infoDaTa = infoData;
   }
 
+  // OUVRIR MODALS EDITS IMAGES
+  openUpdateAffichage(infoData: any) {
+    const modalRef = this.modalService.open(
+      ModalUpdatePositionAffichageComponent,
+      {
+        windowClass: "modal-mini",
+        size: "sm",
+      }
+    );
+    modalRef.result.then(
+      (result) => {
+        this.closeResult = "Closed with: " + result;
+        console.log("yaaaa", this.closeResult);
+        if (result == "ok") {
+          setTimeout(() => {
+            this.getAllProduit({ pagination: true, page: 0, size: 10 });
+            this.selected = [];
+          }, 1500)
+          
+        }
+      },
+      (reason) => {
+        this.closeResult = "Dismissed " + this.getDismissReason(reason);
+      }
+    );
+    modalRef.componentInstance.infoDaTa = infoData;
+  }
+
   // OUVRIR MODALS POUR ATTRIBUER PROMOTION
   openAssignPromotion() {
     const modalRef = this.modalService.open(ModalAssignPromotionComponent, {
@@ -283,9 +310,9 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
       (result) => {
         this.closeResult = "Closed with: " + result;
         console.log("yaaaa", this.closeResult);
-        if(result=='ok'){
+        if (result == "ok") {
           this.getAllProduit({ pagination: true, page: 0, size: 10 });
-          this.selected = []
+          this.selected = [];
         }
       },
       (reason) => {
@@ -295,28 +322,30 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.produitSelect = this.selected;
   }
 
-    // OUVRIR MODALS POUR ATTRIBUER PROMOTION
-    openTest() {
-      const modalRef = this.modalService.open(CreateProduitComponent, {
-        windowClass: "modal-mini",
-        size: "lg",
-        centered: true,
-      });
-      modalRef.result.then(
-        (result) => {
-          this.closeResult = "Closed with: " + result;
-          console.log("yaaaa", this.closeResult);
-          if(result=='ok'){
+  // OUVRIR MODALS POUR ATTRIBUER PROMOTION
+  openTest() {
+    const modalRef = this.modalService.open(CreateProduitComponent, {
+      windowClass: "modal-mini",
+      size: "lg",
+      centered: true,
+    });
+    modalRef.result.then(
+      (result) => {
+        this.closeResult = "Closed with: " + result;
+        console.log("yaaaa", this.closeResult);
+        if (result == "ok") {
+          setTimeout(() => {
             this.getAllProduit({ pagination: true, page: 0, size: 10 });
-            this.selected = []
-          }
-        },
-        (reason) => {
-          this.closeResult = "Dismissed " + this.getDismissReason(reason);
+            this.selected = [];
+          }, 1500)
         }
-      );
-      modalRef.componentInstance.produitSelect = this.selected;
-    }
+      },
+      (reason) => {
+        this.closeResult = "Dismissed " + this.getDismissReason(reason);
+      }
+    );
+    modalRef.componentInstance.produitSelect = this.selected;
+  }
 
   // OUVRIR MODALS POUR ATTRIBUER PROMOTION
   openRemovePromotion() {
@@ -328,9 +357,11 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
       (result) => {
         this.closeResult = "Closed with: " + result;
         console.log("yaaaa", this.closeResult);
-        if(result=='ok'){
-          this.getAllProduit({ pagination: true, page: 0, size: 10 });
-          this.selected = []
+        if (result == "ok") {
+          setTimeout(() => {
+            this.getAllProduit({ pagination: true, page: 0, size: 10 });
+            this.selected = [];
+          }, 1500)
         }
       },
       (reason) => {
@@ -672,7 +703,6 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
 
   // GET ALL PRODUIT
   getAllProduit(obj: any) {
-    
     this.SuscribeAllData = this.produitService.gettAllProduit(obj).subscribe({
       next: (data) => {
         this.utilitisService.response(data, (d: any) => {

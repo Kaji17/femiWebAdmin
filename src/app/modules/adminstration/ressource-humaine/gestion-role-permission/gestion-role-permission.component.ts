@@ -219,12 +219,15 @@ export class GestionRolePermissionComponent implements OnInit {
         this.closeResult = "Closed with: " + result;
         console.log("yaaaa", this.closeResult);
         if(result == 'ok'){
-          this.getAllRole({
-            boutiqueid: this.infoUser.body.boutique.id,
-            pagination: true,
-            page: 0,
-            size: 10,
-          });
+          setTimeout(() => {
+            this.getAllRole({
+              boutiqueid: this.infoUser.body.boutique.id,
+              pagination: true,
+              page: 0,
+              size: 10,
+            });
+          }, 1500)
+          
         }
       },
       (reason) => {
@@ -245,12 +248,14 @@ export class GestionRolePermissionComponent implements OnInit {
         this.closeResult = "Closed with: " + result;
         console.log("yaaaa", this.closeResult);
         if(result == 'ok'){
-          this.getAllRole({
-            boutiqueid: this.infoUser.body.boutique.id,
-            pagination: true,
-            page: 0,
-            size: 10,
-          });
+          setTimeout(() => {
+            this.getAllRole({
+              boutiqueid: this.infoUser.body.boutique.id,
+              pagination: true,
+              page: 0,
+              size: 10,
+            });
+          }, 1500)
         }
       },
       (reason) => {

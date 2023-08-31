@@ -21,7 +21,7 @@ export class PrixLivraisonService {
  }
 
 
- // ADD PROMIX LIVRAISON
+ // ADD PRIX LIVRAISON
  public addPrixLivraison(obj: any) {
    return this.http.post(
      this.configService.getApi("PRIXLIV_ADD_POST"),
@@ -33,7 +33,19 @@ export class PrixLivraisonService {
    );
  }
 
- // GET ALL PROMIX LIVRAISON
+  // ASSIGN PRIX LIVRAISON
+  public assignPrixLivraison(obj: any) {
+    return this.http.get(
+      this.configService.getApi("PRIXLIV_ASSIGN_GET"),
+      {
+        observe: "response",
+        params: obj
+      }
+    );
+  }
+
+
+ // GET ALL PRIX LIVRAISON
  public gettAllPrixLivraison(obj: any) {
    return this.http.get(this.configService.getApi("PRIXLIV_GETALL_GET"), {
      observe: "response",
