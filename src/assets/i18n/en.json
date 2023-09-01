@@ -1,0 +1,66 @@
+{
+    "SIDEBAR":{
+        "DashBoard":"DashBoard",
+        "Dashboard":"Dashboard",
+        "Achat": "Purchase",
+        "Commandes": "Orders",
+        "Transactions": "Transactions",
+        "Boutique":"Store",
+        "Astuce & Conseil":"Tips & Advice",
+        "Banniere": "Banner",
+        "Disposition": "Arrangement",
+        "Type Astuce & Conseil":"Type Tips & Advice",
+        "Catalogue":"Catalog",
+        "Gestion promotion": "Promotion management",
+        "Gestion produits": "Product management",
+        "Gestion catégorie produits": "Product category management",
+        "Gestion packs":"Packs management",
+        "Gestion type packs":"Type Packs management",
+        "Ressource humaine": "Human resource",
+        "Gestion utilisateurs": "Users management",
+        "Gestion administrateurs": "Users management",
+        "Gestion clients":"Customer management",
+        "Gestion role et permission": "Role and permission management",
+        "Parametre":"Setting",
+        "Gestion Zone":"Area management",
+        "Gestion prix livraison": "Delivery price management"    
+    },
+    "PROFIL":{
+        "Salut":"Hello",
+        "message":"This is your profile page. You can see manage all your personal information here",
+        "Informationpersonnel":"Personal information",
+        "InformationProfile": "Profile information",
+        "Nom et Prénoms": "Full Name",
+        "Adresse mail": "Mail address",
+        "Contact": "Phone Number",
+        "Boutique": "Store",
+        "Rôle": "Role",
+        "Mot de Passe": "Password",
+        "Ancien mot de passe": "Current password",
+        "Nouveau mot de passe":"New password",
+        "Confirmer mot de passe": "Validate password",
+        "Voir plus": "Show more"
+    },
+
+    "NOTIFICATION":{
+        "Vous avez":"You have",
+        "notification(s)": "notification(s)"
+    },
+    "MENUPROFILE":{
+        "BIENVENUE":"WELCOME",
+        "Profil": "Profil",
+        "Parametre": "Parameter",
+        "Déconnexion": "Sign out"
+    },
+    "BOUTTON":{
+        "Enregistrer": "Save"
+    },
+    "VALIDATION":{
+        "ErrorName":"Enter your full name",
+        "ErrorContact":"Enter a 10-digit number",
+        "ErrorMotDePasseErroné":"Wrong password",
+        "ErrorMotDePasseFormat":"The password must contain at least one capital letter, a symbol, a number and at least 8 characters",
+        "ErrorMotDePasseFormatConfirmer":"The passwords entered do not match. Please make sure you enter the same password in both fields."
+    }
+
+}

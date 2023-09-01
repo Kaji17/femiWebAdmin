@@ -1,0 +1,65 @@
+{
+    "SIDEBAR":{
+        "DashBoard":"DashBoard",
+        "Dashboard":"Dashboard",
+        "Achat": "Achat",
+        "Commandes": "Commandes",
+        "Transactions": "Transactions",
+        "Boutique":"Boutique",
+        "Astuce & Conseil":"Astuce & Conseil",
+        "Banniere": "Banniere",
+        "Disposition": "Disposition",
+        "Type Astuce & Conseil":"Type Astuce & Conseil",
+        "Catalogue":"Catalogue",
+        "Gestion promotion": "Gestion promotion",
+        "Gestion produits": "Gestion produits",
+        "Gestion catégorie produits": "Gestion catégorie produits",
+        "Gestion packs":"Gestion packs",
+        "Gestion type packs":"Gestion type packs",
+        "Ressource humaine": "Ressource humaine",
+        "Gestion administrateurs": "Gestion administrateurs",
+        "Gestion utilisateurs": "Gestion utilisateurs",
+        "Gestion clients":"Gestion clients",
+        "Gestion role et permission": "Gestion role et permission",
+        "Parametre":"Parametre",
+        "Gestion Zone":"Gestion Zone",
+        "Gestion prix livraison": "Gestion prix livraison"    
+    },
+    "PROFIL":{
+        "Salut":"Salut",
+        "message":"Ceci est votre page de profil. Vous pouvez voir gérer toutes vos informations personnelles ici",
+        "Informationpersonnel":"Information personnel",
+        "InformationProfile": "Information Profile", 
+        "Nom et Prénoms": "Nom et prénom",
+        "Adresse mail": "Adresse mail",
+        "Contact": "Contact",
+        "Boutique": "Boutique",
+        "Rôle": "Rôle",
+        "Mot de Passe": "Mot de Passe",
+        "Ancien mot de passe": "Ancien mot de passe",
+        "Nouveau mot de passe":"Nouveau mot de passe",
+        "Confirmer mot de passe": "Confirmer mot de passe",
+        "Voir plus": "Voir plus"
+    },
+    "NOTIFICATION":{
+        "Vous avez":"Vous avez",
+        "notification(s)": "notification(s)"
+    },
+    "MENUPROFILE":{
+        "BIENVENUE":"BIENVENUE",
+        "Profil": "Profil",
+        "Parametre": "Parametre",
+        "Déconnexion": "Déconnexion"
+    },
+    "BOUTTON":{
+        "Enregistrer": "Enregistrer"
+    },
+    "VALIDATION":{
+        "ErrorName":"Renseigner votre nom et prénom",
+        "ErrorContact":"Entrer un numéro à 10 chiffres",
+        "ErrorMotDePasseErroné":"Mot de passe éronné",
+        "ErrorMotDePasseFormat":"Le mot de passe doit contenir au moins une lettre majuscule, un symbole , un nombre et minimum 8 caractères",
+        "ErrorMotDePasseFormatConfirmer":"Les mots de passe saisis ne correspondent pas. Veuillez vous assurer de saisir le même mot de passe dans les deux champs."
+    }
+
+}

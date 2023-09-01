@@ -9,11 +9,10 @@
     <div class="row">
       <div class="col-lg-7 col-md-10">
         <h1 class="display-2 text-white">
-          Hello {{ profil.body.nom | titlecase }}
+          {{"PROFIL.Salut"|translate}} {{ profil.body.nom | titlecase }}
         </h1>
         <p class="text-white mt-0 mb-5">
-          Ceci est votre page de profil. Vous pouvez voir gérer toutes vos
-          informations personnelles ici
+          {{"PROFIL.message" | translate}}
         </p>
       </div>
     </div>
@@ -34,7 +33,7 @@
             <div class="h5 mt-4">{{ profil.body.role.nom | titlecase }}</div>
             <div>{{ profil.body.role.boutique.nom | titlecase }}</div>
             <hr class="my-4" />
-            <a href="javascript:void(0)">Show more</a>
+            <a href="javascript:void(0)">{{"PROFIL.Voir plus"|translate}}</a>
           </div>
         </div>
       </div>
@@ -44,19 +43,19 @@
         <div class="card-header bg-white border-0">
           <div class="row align-items-center">
             <div class="col-12">
-              <h3 class="mb-0">Information Profile</h3>
+              <h3 class="mb-0">{{"PROFIL.InformationProfile"|translate}}</h3>
             </div>
           </div>
         </div>
         <div class="card-body">
           <!-- Edit Information personnel -->
-          <h6 class="heading-small text-muted mb-4">Information personnel</h6>
+          <h6 class="heading-small text-muted mb-4">{{"PROFIL.Informationpersonnel"|translate}}</h6>
           <form class="pl-lg-4" [formGroup]="formEditProfile">
             <div class="row">
               <div class="col-lg-6">
                 <div class="form-group">
                   <label class="form-control-label" for="input-username"
-                    >Nom et Prénoms</label
+                    >{{"PROFIL.Nom et Prénoms"|translate}}</label
                   >
                   <input
                     type="text"
@@ -73,7 +72,7 @@
                     "
                   >
                     <small class="text-danger"
-                      >Renseigner votre nom et prénom</small
+                      >{{"VALIDATION.ErrorName"|translate}}</small
                     >
                   </div>
                 </div>
@@ -81,7 +80,7 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label class="form-control-label" for="input-email"
-                    >Adresse mail</label
+                    >{{"PROFIL.Adresse mail"|translate}}</label
                   >
                   <input
                     type="email"
@@ -97,7 +96,7 @@
               <div class="col-lg-4">
                 <div class="form-group">
                   <label class="form-control-label" for="input-contact"
-                    >Contact</label
+                    >{{"PROFIL.Contact"|translate}}</label
                   >
                   <input
                     type="text"
@@ -112,7 +111,7 @@
                     "
                   >
                     <small class="text-danger"
-                      >Entrer un numéro à 10 chiffres</small
+                      >{{"VALIDATION.ErrorContact"|translate}}</small
                     >
                   </div>
                 </div>
@@ -120,7 +119,7 @@
               <div class="col-lg-4">
                 <div class="form-group">
                   <label class="form-control-label" for=" input-boutique"
-                    >Boutique</label
+                    >{{"PROFIL.Boutique"|translate}}</label
                   >
                   <input
                     type="text"
@@ -134,7 +133,7 @@
               <div class="col-lg-4">
                 <div class="form-group">
                   <label class="form-control-label" for="input-role"
-                    >Rôle</label
+                    >{{"PROFIL.Rôle"|translate}}</label
                   >
                   <input
                     type="text"
@@ -155,7 +154,7 @@
                   (click)="handleOk1()"
                 >
                 <i class="fa-solid fa-spinner fa-spin" *ngIf="loading"></i>
-                  Enregistrer
+                {{"BOUTTON.Enregistrer"|translate}}
                 </button>
               </div>
             </div>
@@ -164,13 +163,13 @@
           <hr class="my-4" />
 
           <!-- Edit mot de passe -->
-          <h6 class="heading-small text-muted mb-4">Mot de passe</h6>
+          <h6 class="heading-small text-muted mb-4">{{"PROFIL.Mot de Passe"|translate}}</h6>
           <form class="pl-lg-4" [formGroup]="formEditPassword">
             <div class="row">
               <div class="col-lg-4">
                 <div class="form-group">
                   <label class="form-control-label" for="input-ancien-password"
-                    >Ancien mot de passe</label
+                    >{{"PROFIL.Ancien mot de passe"|translate}}</label
                   >
                   <input
                     type="password"
@@ -186,14 +185,14 @@
                       true
                     "
                   >
-                    <small class="text-danger">Mot de passe éronné</small>
+                    <small class="text-danger">{{"VALIDATION.ErrorMotDePasseErroné"|translate}}</small>
                   </div>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-group">
                   <label class="form-control-label" for="input-new-password"
-                    >Nouveau mot de passe</label
+                    >{{"PROFIL.Nouveau mot de passe"|translate}}</label
                   >
                   <input
                     type="text"
@@ -211,9 +210,7 @@
                   "
                 >
                   <small class="text-primary"
-                    ><span class="text-danger">*</span>Le mot de passe doit
-                    contenir au moins une lettre majuscule, un symbole , un
-                    nombre et minimum 8 caractères</small
+                    ><span class="text-danger">*</span>{{"VALIDATION.ErrorMotDePasseFormat"|translate}}</small
                   >
                 </div>
               </div>
@@ -222,7 +219,7 @@
                   <label
                     class="form-control-label"
                     for="input-confirm-new-password"
-                    >Confirmer mot de passe</label
+                    >{{"PROFIL.Confirmer mot de passe"|translate}}</label
                   >
                   <input
                     type="text"
@@ -239,9 +236,7 @@
                   "
                 >
                   <small class="text-danger"
-                    >Les mots de passe saisis ne correspondent pas. Veuillez
-                    vous assurer de saisir le même mot de passe dans les deux
-                    champs.</small
+                    >{{"VALIDATION.ErrorMotDePasseFormatConfirmer"|translate}}</small
                   >
                 </div>
               </div>
@@ -255,7 +250,7 @@
                   (click)="handleOk2()"
                 >
                 <i class="fa-solid fa-spinner fa-spin" *ngIf="loading1"></i>
-                  Enregistrer
+                {{"BOUTTON.Enregistrer"|translate}}
                 </button>
               </div>
             </div>

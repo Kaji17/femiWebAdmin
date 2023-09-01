@@ -239,7 +239,7 @@ export const NavConstants = [
         name: "client",
       },
       {
-        label: "Gestion role et permission",
+        label: "Gestion rôle et permission",
         path: "/administration/ressource-humaine/role-permission",
         display: false,
         level: 2,

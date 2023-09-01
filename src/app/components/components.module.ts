@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { StarRatingComponent } from './star-rating/star-rating.component';
 import { PaginationComponent } from './pagination/pagination.component';
+import { TranslateModule, TranslateLoader, TranslateCompiler, TranslateParser, MissingTranslationHandler } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -14,13 +15,17 @@ import { PaginationComponent } from './pagination/pagination.component';
     CommonModule,
     RouterModule,
     NgbModule,
+    TranslateModule.forChild({
+      // isolate: true,
+      extend:true
+  }),
   ],
   declarations: [
     FooterComponent,
     NavbarComponent,
     SidebarComponent,
     StarRatingComponent,
-    PaginationComponent
+    PaginationComponent,
   ],
   exports: [
     FooterComponent,

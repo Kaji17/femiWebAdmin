@@ -5,6 +5,7 @@ import { AdministrationRoutingModule } from './administration-routing.module';
 import { ProfilComponent } from './profil/profil.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -16,7 +17,11 @@ import { ComponentsModule } from 'src/app/components/components.module';
     AdministrationRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    ComponentsModule
+    ComponentsModule,
+    TranslateModule.forChild({
+      // isolate: true,
+      extend:true
+  }),
   ],
   exports:[
   ]

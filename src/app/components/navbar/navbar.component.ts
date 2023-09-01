@@ -8,6 +8,7 @@ import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { NavConstants } from "src/app/constants/nav.const";
 import { filter } from "rxjs/operators";
 import { BreadcrumbService } from "src/app/shared/services/breadcrumb.service";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: "app-navbar",
@@ -26,16 +27,25 @@ export class NavbarComponent implements OnInit {
   itemsbreadcrumb: any[];
   public profil: any;
   public adminName: string
+  public currentLang
   constructor(
     location: Location,
     private element: ElementRef,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public translate : TranslateService
   ) {
+    translate.addLangs(['en', 'fr']),
+    translate.setDefaultLang('fr')
     this.location = location;
   }
 
+  switchLang(lang:string){
+    this.translate.use(lang);
+    this.currentLang= lang
+  }
   ngOnInit() {
+    this.currentLang='fr'
     this.profil = JSON.parse(localStorage.getItem("user_info"));
     this.menuItems = NavConstants;
     this.notifs = [

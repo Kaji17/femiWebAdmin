@@ -75,20 +75,20 @@
         </a>
         <div class="dropdown-menu-arrow dropdown-menu-right" ngbDropdownMenu>
           <div class="dropdown-header noti-title">
-            <h6 class="text-overflow m-0">Welcome!</h6>
+            <h6 class="text-overflow m-0">{{"MENUPROFILE.BIENVENUE" |translate }}!</h6>
           </div>
           <a routerLinkActive="active" [routerLink]="['/administration/profil']" class="dropdown-item">
             <i class="ni ni-single-02"></i>
-            <span>Profile</span>
+            <span>{{"MENUPROFILE.Profil" |translate }}</span>
           </a>
           <a routerLinkActive="active" [routerLink]="['/administration/parametre/prix-livraison']" class="dropdown-item">
             <i class="ni ni-settings-gear-65"></i>
-            <span>Parametre</span>
+            <span>{{"MENUPROFILE.Parametre" |translate }}</span>
           </a>
           <div class="dropdown-divider"></div>
           <a [routerLink]="['/session/login']" (click)="logOut()" class="dropdown-item">
             <i class="ni ni-user-run"></i>
-            <span>Déconnexion</span>
+            <span>{{"MENUPROFILE.Déconnexion" |translate }}</span>
           </a>
         </div>
       </li>
@@ -150,7 +150,7 @@
             style="font-size: 16px;"
           >
             <i class="ni {{ menuItem.icon }}"></i>
-            {{ menuItem.title }}
+            {{ 'SIDEBAR.'+menuItem.title |translate}}
           </a>
           <!-- Subtitle -->
           <div
@@ -176,7 +176,7 @@
                   class="nav-link"
                   style="font-size: 12px;"
                 >
-                  {{ menuItem.label }}
+                  {{ 'SIDEBAR.'+menuItem.label | translate}}
                 </a>
               </li>
             </ul>

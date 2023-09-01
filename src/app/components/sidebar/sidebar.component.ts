@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NavConstants } from 'src/app/constants/nav.const';
 import { navAdminItems } from 'src/app/constants/_nav';
 import { RolePermissionsService } from 'src/app/shared/services/role-permissions.service';
+import { TranslateService } from '@ngx-translate/core';
 
 export const NOTIF: any[] = [
   {  title: 'Dashboard', describe: 'describe',  icon: 'ni-tv-2 text-primary', date: '12/03/2003'},
@@ -31,8 +32,13 @@ export class SidebarComponent implements OnInit {
 
   public infoUser:any
 
-  constructor(private router: Router,
-    private rolePermission: RolePermissionsService) {
+  constructor(
+    private router: Router,
+    private rolePermission: RolePermissionsService,
+    public translate : TranslateService
+    ) {
+    translate.addLangs(['en', 'fr']),
+    translate.setDefaultLang('fr')
     this.infoUser = JSON.parse(localStorage.getItem("user_info"));
     this.rolePermission.setPermission(this.infoUser)
    }

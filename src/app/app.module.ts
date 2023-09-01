@@ -1,7 +1,7 @@
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { LOCALE_ID, NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule,HttpClient } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
 
 import { AppComponent } from "./app.component";
@@ -16,9 +16,14 @@ import { DashboardModule } from "./modules/adminstration/dashboard/dashboard.mod
 import { registerLocaleData } from '@angular/common';
 import * as fr from '@angular/common/locales/fr';
 import { ToastrModule } from 'ngx-toastr';
-import { SelectDropDownModule } from 'ngx-select-dropdown'
+import { SelectDropDownModule } from 'ngx-select-dropdown';
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 // import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'; // Import du module
 
+export function httpTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   imports: [
@@ -31,6 +36,13 @@ import { SelectDropDownModule } from 'ngx-select-dropdown'
     AppRoutingModule,
     DashboardModule,
     ToastrModule.forRoot(),
+    TranslateModule.forRoot({
+      loader: {
+          provide: TranslateLoader,
+          useFactory: httpTranslateLoader,
+          deps: [HttpClient],
+      }
+  }),
     // BsDatepickerModule.forRoot(),
     SelectDropDownModule,
 
