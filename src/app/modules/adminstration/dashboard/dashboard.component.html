@@ -9,7 +9,7 @@
               <div class="row">
                 <div class="col">
                   <h5 class="card-title text-uppercase text-muted mb-0">
-                    CHIFFRE D'AFFAIRE
+                    {{"DASHBOARD.CHIFFRE D'AFFAIRE"|translate}}
                   </h5>
                   <span class="h2 font-weight-bold mb-0"
                     >{{ chiffreAffaireTotal | number }} FCFA</span
@@ -30,7 +30,7 @@
                 <span class="text-danger mr-2" *ngIf="tauxCroissanceCA < 0"
                   ><i class="fa fa-arrow-down"></i>{{ tauxCroissanceCA }}%</span
                 >
-                <span class="text-nowrap">Depuis le mois dernier</span>
+                <span class="text-nowrap">{{"DASHBOARD.Depuis le mois dernier"|translate}}</span>
               </p>
             </div>
           </div>
@@ -41,7 +41,7 @@
               <div class="row">
                 <div class="col">
                   <h5 class="card-title text-uppercase text-muted mb-0">
-                    NOUVEAUX CLIENTS
+                    {{"DASHBOARD.NOUVEAUX CLIENTS"|translate}}
                   </h5>
                   <span class="h2 font-weight-bold mb-0">{{
                     totalNewUser | number
@@ -68,7 +68,7 @@
                   ><i class="fa fa-arrow-down"></i
                   >{{ tauxCroissancetotalNewUser }}%</span
                 >
-                <span class="text-nowrap">Depuis la semaine dernière</span>
+                <span class="text-nowrap">{{"DASHBOARD.Depuis le mois dernier"|translate}}</span>
               </p>
             </div>
           </div>
@@ -79,7 +79,7 @@
               <div class="row">
                 <div class="col">
                   <h5 class="card-title text-uppercase text-muted mb-0">
-                    VENTES
+                    {{"DASHBOARD.VENTES"|translate}}
                   </h5>
                   <span class="h2 font-weight-bold mb-0"
                     >{{ totalVentes | number }} FCFA</span
@@ -107,7 +107,7 @@
                   >{{ tauxCroissancetotalVentes }}%</span
                 >
 
-                <span class="text-nowrap">Depuis hier</span>
+                <span class="text-nowrap">{{"DASHBOARD.Depuis le mois dernier"|translate}}</span>
               </p>
             </div>
           </div>
@@ -118,7 +118,7 @@
               <div class="row">
                 <div class="col">
                   <h5 class="card-title text-uppercase text-muted mb-0">
-                    TOTAL PRODUITS
+                    {{"DASHBOARD.TOTAL PRODUITS"|translate}}
                   </h5>
                   <span class="h2 font-weight-bold mb-0">{{
                     totalNombreProduit | number
@@ -146,7 +146,7 @@
                   >{{ tauxCroissancetotalNombreProduit }}%</span
                 >
 
-                <span class="text-nowrap">Depuis le mois dernier</span>
+                <span class="text-nowrap">{{"DASHBOARD.Depuis le mois dernier"|translate}}</span>
               </p>
             </div>
           </div>
@@ -162,8 +162,8 @@
         <div class="card-header bg-transparent">
           <div class="row align-items-center">
             <div class="col">
-              <h6 class="text-uppercase text-light ls-1 mb-1">apperçu</h6>
-              <h2 class="text-white mb-0">Valeur des ventes</h2>
+              <h6 class="text-uppercase text-light ls-1 mb-1">{{"DASHBOARD.APPERÇU"|translate}}</h6>
+              <h2 class="text-white mb-0">{{"DASHBOARD.Valeur des ventes"|translate}}</h2>
             </div>
             <div class="col">
               <ul class="nav nav-pills justify-content-end">
@@ -180,8 +180,8 @@
                     data-toggle="tab"
                     (click)="clicked1 = false; clicked = false; clicked2 = true"
                   >
-                    <span class="d-none d-md-block">Année</span>
-                    <span class="d-md-none">A</span>
+                    <span class="d-none d-md-block">{{"PERIODE.Année"|translate}}</span>
+                    <span class="d-md-none">{{"PERIODE.A"|translate}}</span>
                   </a>
                 </li>
                 <li
@@ -197,8 +197,8 @@
                     data-toggle="tab"
                     (click)="clicked = true; clicked1 = false; clicked2 = false"
                   >
-                    <span class="d-none d-md-block">Mois</span>
-                    <span class="d-md-none">M</span>
+                  <span class="d-none d-md-block">{{"PERIODE.Mois"|translate}}</span>
+                  <span class="d-md-none">{{"PERIODE.M"|translate}}</span>
                   </a>
                 </li>
                 <li
@@ -214,8 +214,8 @@
                     data-toggle="tab"
                     (click)="clicked = false; clicked2 = false; clicked1 = true"
                   >
-                    <span class="d-none d-md-block">Semaine</span>
-                    <span class="d-md-none">S</span>
+                  <span class="d-none d-md-block">{{"PERIODE.Semaine"|translate}}</span>
+                  <span class="d-md-none">{{"PERIODE.S"|translate}}</span>
                   </a>
                 </li>
               </ul>
@@ -236,8 +236,8 @@
         <div class="card-header bg-transparent">
           <div class="row align-items-center">
             <div class="col">
-              <h6 class="text-uppercase text-muted ls-1 mb-1">Performance</h6>
-              <h2 class="mb-0">Total Commandes</h2>
+              <h6 class="text-uppercase text-muted ls-1 mb-1">{{"DASHBOARD.PERFORMANCE"|translate}}</h6>
+              <h2 class="mb-0">{{"DASHBOARD.Total Commandes"|translate}}</h2>
             </div>
           </div>
         </div>
@@ -256,13 +256,13 @@
         <div class="card-header border-0">
           <div class="row align-items-center">
             <div class="col">
-              <h3 class="mb-0">Avis produits réçent</h3>
+              <h3 class="mb-0">{{"DASHBOARD.Avis produits réçent"|translate}}</h3>
             </div>
             <div class="col text-right">
               <a
                 [routerLink]="['/administration/catalogue/produits']"
                 class="btn btn-sm btn-primary"
-                >Voir tous</a
+                >{{"DASHBOARD.Voir tous"|translate}}</a
               >
             </div>
           </div>
@@ -272,10 +272,10 @@
           <table class="table align-items-center table-flush">
             <thead class="thead-light">
               <tr>
-                <th scope="col">PRODUITS</th>
-                <th scope="col">NOTES</th>
-                <th scope="col">NOMBRE D'AVIS</th>
-                <th scope="col">DETAILS</th>
+                <th scope="col">{{"DASHBOARD.PRODUITS"|translate}}</th>
+                <th scope="col">{{"DASHBOARD.NOTES"|translate}}</th>
+                <th scope="col">{{"DASHBOARD.NOMBRE D'AVIS"|translate}}</th>
+                <th scope="col">{{"DASHBOARD.DETAILS"|translate}}</th>
               </tr>
             </thead>
             <tbody>
@@ -299,7 +299,7 @@
         <div class="card-header border-0">
           <div class="row align-items-center">
             <div class="col">
-              <h3 class="mb-0">Commandes par zone</h3>
+              <h3 class="mb-0">{{"DASHBOARD.Commandes par zone3"|translate}}</h3>
             </div>
 
             <!-- <a class="btn btn-sm btn-primary">Jour</a> -->

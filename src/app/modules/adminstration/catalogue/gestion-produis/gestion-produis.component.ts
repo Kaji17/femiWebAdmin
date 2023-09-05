@@ -164,17 +164,6 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     };
   }
 
-  // buildForm() {
-  //   this.formAddProduit = this.fb.group({
-  //     nom: ["", [Validators.required]],
-  //     caracteristique: [""],
-  //     description: [""],
-  //     prix: [0],
-  //     quantite: [1],
-  //     categorieid: ["", [Validators.required]],
-  //     boutiqueid: [this.infoUser.body.boutique.id, [Validators.required]],
-  //   });
-  // }
 
   buildFormUpdate() {
     let data: any = {};

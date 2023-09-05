@@ -68,7 +68,7 @@ export class ModalAddPrixLivraisonComponent implements OnInit {
   buildForm() {
     this.formAddPrixLivraison = this.fb.group({
       prix: [1000, [Validators.required]],
-      default: [false],
+      isdefault: [false],
       boutique: [this.infoUser.body.boutique],
     });
   }

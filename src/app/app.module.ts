@@ -19,6 +19,10 @@ import { ToastrModule } from 'ngx-toastr';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { environment } from "src/environments/environment";
+import { AngularFireMessagingModule } from '@angular/fire/compat/messaging';
+import {AngularFireAuthModule} from '@angular/fire/compat/auth';
+import { AngularFireModule } from '@angular/fire/compat';
 // import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'; // Import du module
 
 export function httpTranslateLoader(http: HttpClient) {
@@ -45,6 +49,9 @@ export function httpTranslateLoader(http: HttpClient) {
   }),
     // BsDatepickerModule.forRoot(),
     SelectDropDownModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireMessagingModule,
+    AngularFireAuthModule,
 
   ],
   declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent],

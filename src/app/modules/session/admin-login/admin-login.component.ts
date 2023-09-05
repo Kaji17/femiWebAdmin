@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
+import { AngularFireMessaging } from "@angular/fire/compat/messaging";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
@@ -25,7 +26,8 @@ export class AdminLoginComponent implements OnInit, OnDestroy {
     private adminService: AdministrateurService,
     private utilitisService: UtilisService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private angularFireMessaging:AngularFireMessaging,
   ) {}
 
   ngOnDestroy(): void {
@@ -33,6 +35,27 @@ export class AdminLoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.angularFireMessaging.requestPermission.subscribe(
+      () => {
+        console.log('Permission granted');
+        // TODO: Save the token to your server
+        this.angularFireMessaging.getToken.subscribe(
+          (token) => {
+            console.log('Token:', token);
+            this.tokenFirebase = token;
+            console.log('Token:', token);
+            // TODO: Save the token to your server
+          },
+          (error) => {
+            console.error('Unable to get token', error);
+          }
+        );
+      },
+      (error) => {
+        console.error('Permission denied', error);
+      }
+      
+    );
     this.buildForm();
   }
 
@@ -47,14 +70,16 @@ export class AdminLoginComponent implements OnInit, OnDestroy {
         ],
       ],
       password: ["", [Validators.required]],
+      registrationtoken:[null]
     });
   }
 
   // Validation du formulaire
   handleOk() {
     let res = this.loginForm.value;
-    res.resgistrationtoken = this.tokenFirebase;
+    res.registrationtoken = this.tokenFirebase;
     this.login(res);
+    console.log("Body for connect", res)
   }
 
   // Notification alerte

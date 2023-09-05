@@ -1,66 +1,129 @@
 {
-    "SIDEBAR":{
-        "DashBoard":"DashBoard",
-        "Dashboard":"Dashboard",
-        "Achat": "Purchase",
-        "Commandes": "Orders",
-        "Transactions": "Transactions",
-        "Boutique":"Store",
-        "Astuce & Conseil":"Tips & Advice",
-        "Banniere": "Banner",
-        "Disposition": "Arrangement",
-        "Type Astuce & Conseil":"Type Tips & Advice",
-        "Catalogue":"Catalog",
-        "Gestion promotion": "Promotion management",
-        "Gestion produits": "Product management",
-        "Gestion catégorie produits": "Product category management",
-        "Gestion packs":"Packs management",
-        "Gestion type packs":"Type Packs management",
-        "Ressource humaine": "Human resource",
-        "Gestion utilisateurs": "Users management",
-        "Gestion administrateurs": "Users management",
-        "Gestion clients":"Customer management",
-        "Gestion role et permission": "Role and permission management",
-        "Parametre":"Setting",
-        "Gestion Zone":"Area management",
-        "Gestion prix livraison": "Delivery price management"    
-    },
-    "PROFIL":{
-        "Salut":"Hello",
-        "message":"This is your profile page. You can see manage all your personal information here",
-        "Informationpersonnel":"Personal information",
-        "InformationProfile": "Profile information",
-        "Nom et Prénoms": "Full Name",
-        "Adresse mail": "Mail address",
-        "Contact": "Phone Number",
-        "Boutique": "Store",
-        "Rôle": "Role",
-        "Mot de Passe": "Password",
-        "Ancien mot de passe": "Current password",
-        "Nouveau mot de passe":"New password",
-        "Confirmer mot de passe": "Validate password",
-        "Voir plus": "Show more"
-    },
+  "SIDEBAR": {
+    "DashBoard": "DashBoard",
+    "Dashboard": "Dashboard",
+    "Achat": "Purchase",
+    "Commandes": "Orders",
+    "Transactions": "Transactions",
+    "Boutique": "Store",
+    "Astuce & Conseil": "Tips & Advice",
+    "Banniere": "Banner",
+    "Disposition": "Arrangement",
+    "Type Astuce & Conseil": "Type Tips & Advice",
+    "Catalogue": "Catalog",
+    "Gestion promotion": "Promotion management",
+    "Gestion produits": "Product management",
+    "Gestion catégorie produits": "Product category management",
+    "Gestion packs": "Packs management",
+    "Gestion type packs": "Type Packs management",
+    "Ressource humaine": "Human resource",
+    "Gestion utilisateurs": "Users management",
+    "Gestion administrateurs": "Users management",
+    "Gestion clients": "Customer management",
+    "Gestion role et permission": "Role and permission management",
+    "Parametre": "Setting",
+    "Gestion Zone": "Area management",
+    "Gestion prix livraison": "Delivery price management"
+  },
+  "PROFIL": {
+    "Salut": "Hello",
+    "message": "This is your profile page. You can see manage all your personal information here",
+    "Informationpersonnel": "Personal information",
+    "InformationProfile": "Profile information",
+    "Nom et Prénoms": "Full Name",
+    "Adresse mail": "Mail address",
+    "Contact": "Phone Number",
+    "Boutique": "Store",
+    "Rôle": "Role",
+    "Mot de Passe": "Password",
+    "Ancien mot de passe": "Current password",
+    "Nouveau mot de passe": "New password",
+    "Confirmer mot de passe": "Validate password",
+    "Voir plus": "Show more"
+  },
 
-    "NOTIFICATION":{
-        "Vous avez":"You have",
-        "notification(s)": "notification(s)"
-    },
-    "MENUPROFILE":{
-        "BIENVENUE":"WELCOME",
-        "Profil": "Profil",
-        "Parametre": "Parameter",
-        "Déconnexion": "Sign out"
-    },
-    "BOUTTON":{
-        "Enregistrer": "Save"
-    },
-    "VALIDATION":{
-        "ErrorName":"Enter your full name",
-        "ErrorContact":"Enter a 10-digit number",
-        "ErrorMotDePasseErroné":"Wrong password",
-        "ErrorMotDePasseFormat":"The password must contain at least one capital letter, a symbol, a number and at least 8 characters",
-        "ErrorMotDePasseFormatConfirmer":"The passwords entered do not match. Please make sure you enter the same password in both fields."
-    }
+  "NOTIFICATION": {
+    "Vous avez": "You have",
+    "notification(s)": "notification(s)"
+  },
+  "MENUPROFILE": {
+    "BIENVENUE": "WELCOME",
+    "Profil": "Profil",
+    "Parametre": "Parameter",
+    "Déconnexion": "Sign out"
+  },
+  "BOUTTON": {
+    "Enregistrer": "Save"
+  },
+  "VALIDATION": {
+    "ErrorName": "Enter your full name",
+    "ErrorContact": "Enter a 10-digit number",
+    "ErrorMotDePasseErroné": "Wrong password",
+    "ErrorMotDePasseFormat": "The password must contain at least one capital letter, a symbol, a number and at least 8 characters",
+    "ErrorMotDePasseFormatConfirmer": "The passwords entered do not match. Please make sure you enter the same password in both fields."
+  },
+  "DASHBOARD": {
+    "CHIFFRE D'AFFAIRE": "TURNOVER",
+    "NOUVEAUX CLIENTS": "NEW CUSTOMERS",
+    "VENTES": "SALES",
+    "TOTAL PRODUITS": "TOTAL PRODUCTS",
+    "Depuis le mois dernier": "Since last month",
+    "APPERÇU": "PREVIEW",
+    "Valeur des ventes": "Sales value",
+    "PERFORMANCE": "PERFORMANCE",
+    "Total Commandes": "Total Orders",
+    "Avis produits réçent": "Recent product reviews",
+    "Voir tous": "See all",
+    "Commandes par zone": "Commands by zone",
+    "Meilleurs produits": "Best Products",
+    "Panier moyen": "Average basket",
+    "Quantité vendue par produit": "Quantity sold by product",
+    "Sélectionner période": "Select period",
+    "Période": "Period",
+    "Valeur des ventes par produit": "Sales value by product",
+    "PRODUITS":"PRODUCTS",
+    "NOTES":"NOTES",
+    "NOMBRE D'AVIS":"NUMBER OF REVIEWS",
+    "DETAILS":"DETAILS"
+  },
+  "COMMANDES": {
+    "Commandes": "Orders",
+    "Exporter commandes": "Export orders",
+    "Clear": "Clear filters",
+    "Filtrer zone": "Filter area",
+    "Filtrer Mode paiement": "Filter Payment method",
+    "Filtrer statut pai...": "Filter payment status...",
+    "Filtrer statut": "Filter Status",
+    "Rechercher": "Search",
+    "ID Client": "Customer ID",
+    "ID Commande": "Order ID",
+    "Montant": "Amount",
+    "Prix unitaire (FCFA)": "Unit price (FCFA)",
+    "Note moyenne": "Average rating",
+    "Création": "Creation",
+    "Statut": "Status"
+  },
+  "Actions": "Actions",
+  "Oui, supprimer": "Yes, delete",
+  "Annuler": "Cancel",
 
+  "BANNIERE": {
+    "Mini-bannière": "Mini-banner",
+    "Ajouter une mini-bannière": "Add mini-banner",
+    "Image": "Image"
+  },
+  "MODALSUPPRESSION": {
+    "Votre attention est réquise": "Your attention is required",
+    "VOULEZ-VOUS SUPPRIMER": "DO YOU WANT TO DELETE"
+  },
+  "PERIODE":{
+    "Année":"Year",
+    "Mois":"Month",
+    "Semaine":"Week",
+    "Jour":"Day",
+    "A":"Y",
+    "M":"M",
+    "S":"S",
+    "J":"D"
+  }
 }

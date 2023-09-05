@@ -7,13 +7,22 @@ import { GestionTransactionComponent } from './gestion-transaction/gestion-trans
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { DetailsCommandeComponent } from './gestion-commande/details-commande/details-commande.component';
+import { ValiderCommandeComponent } from './gestion-commande/valider-commande/valider-commande.component';
+import { RefuserCommandeComponent } from './gestion-commande/refuser-commande/refuser-commande.component';
+import { EtapeLivraisonComponent } from './gestion-commande/etape-livraison/etape-livraison.component';
 
 
 
 @NgModule({
   declarations: [
     GestionCommandeComponent,
-    GestionTransactionComponent
+    GestionTransactionComponent,
+    DetailsCommandeComponent,
+    ValiderCommandeComponent,
+    RefuserCommandeComponent,
+    EtapeLivraisonComponent
   ],
   imports: [
     CommonModule,
@@ -22,7 +31,8 @@ import { SelectDropDownModule } from 'ngx-select-dropdown';
     NgxDatatableModule,
     FormsModule,
     ReactiveFormsModule,
-    SelectDropDownModule
+    SelectDropDownModule,
+    NgbTooltipModule,
     ]
 })
 export class AchatModule { }

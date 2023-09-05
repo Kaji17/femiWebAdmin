@@ -1,0 +1,58 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h2 class="modal-title" id="modal-title-default">Etape de livraison</h2>
+    <hr class="my-4" />
+    <button
+      type="button"
+      class="close"
+      data-dismiss="modal"
+      aria-label="Close"
+      (click)="closeModal()"
+    >
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div class="row align-content-center justify-content-between" *ngFor="let etape of etapes">
+      <div
+        class="col-lg-2 col-md-3 col-12 align-items-center justify-content-center"
+      >
+        <p
+          class="text-center"
+          [ngClass]="etape.date?'text-success':'bg-white text-default'"
+          style="
+            color: white;
+            font-size: 1rem !important;
+            max-width: 30px;
+            border-radius: 100%;
+          ">
+        <i class="fa-solid fa-check text-success" *ngIf="etape.date" ></i>
+          {{etape.etape.id}}
+        </p>
+      </div>
+      <div class="col-lg-6 col-md-6 col-8">
+        <p  class="" [ngClass]="etape.date?'text-success':'text-white'"> {{etape.etape.nom}}</p>
+      </div>
+      <div class="col-lg-4 col-md-3 col-4">
+        <p class="" [ngClass]="etape.date?'text-success':'text-white'">{{etape.date}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+    *ngIf="!(infoDaTa.statut == 'Annulée')&&!islivrer"
+      type="button"
+      class="btn btn-white ml-auto"
+      data-dismiss="modal"
+      (click)=" handleOk();closeModalOk();"
+    >
+      Etape suivante
+      <i class="fa-solid fa-forward"></i>
+    </button>
+    <div *ngIf="(infoDaTa.statut == 'Annulée')">
+        <i class="fa-solid fa-circle-xmark text-danger mr-2"></i>
+        Commande annulée
+    </div>
+  </div>
+</div>

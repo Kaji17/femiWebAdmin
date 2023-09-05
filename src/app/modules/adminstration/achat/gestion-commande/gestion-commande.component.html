@@ -19,11 +19,11 @@
 <!-- TABLEAU -->
 <div class="container-fluid mt-5">
   <div class="dataTables_wrapper py-4 card px-4">
-    <div class="row ">
+    <div class="row">
       <div class="col-md-6 col-lg-4 col-xl-2 mb-3" *ngIf="crudPerms.other">
         <button
           class="btn btn-info btn-sm"
-          (click)="exportExcel()"
+          (click)="getFichierCommande()"
           type="button"
         >
           <i class="fa-solid fa-download"></i>
@@ -42,7 +42,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-5 mb-md-2 mb-3 col-lg-3 mb-lg-2 col-xl-2">
+      <div class="col-md-7 mb-md-2 mb-3 col-lg-5 mb-lg-2 col-xl-3">
         <ngx-select-dropdown
           [instanceId]="'instance1'"
           [config]="configZone"
@@ -56,9 +56,8 @@
         <ng-template #optionTemplate let-item="item" let-config="config">
         </ng-template>
       </div>
-      <div class="col-md-7 mb-md-2 mb-3 col-lg-5 mb-lg-2 col-xl-3">
+      <div class="col-md-5 mb-md-2 mb-3 col-lg-3 mb-lg-2 col-xl-2">
         <ngx-select-dropdown
-          [instanceId]="'instance2'"
           [config]="configModePaiement"
           [(ngModel)]="modepaiementselect"
           [options]="listModePaiement"
@@ -66,7 +65,7 @@
           class="col-md-2 p-0"
         ></ngx-select-dropdown>
       </div>
-      <div class="col-md-6  mb-md-2 mb-3 col-lg-4 col-xl-2">
+      <div class="col-md-6 mb-md-2 mb-3 col-lg-4 col-xl-2">
         <ngx-select-dropdown
           [instanceId]="'instance3'"
           [(ngModel)]="statutpaiementselect"
@@ -124,14 +123,49 @@
       (page)="setPage($event)"
       [selectAllRowsOnPage]="false"
     >
-      <ngx-datatable-column name="ID Client" prop="idclient"></ngx-datatable-column>
+      <ngx-datatable-column
+        name="Client"
+        prop="client.nom"
+      ></ngx-datatable-column>
+      <ngx-datatable-column
+        name="Code Commande"
+        prop="code"
+      ></ngx-datatable-column>
       <ngx-datatable-column name="ID Commande" prop="id"></ngx-datatable-column>
-      <ngx-datatable-column name="Montant" prop="montant"></ngx-datatable-column>
-      <!-- <ngx-datatable-column
-        name="Categorie"
-        prop="categorie.nom"
-      ></ngx-datatable-column> -->
-      <ngx-datatable-column name="Prix unitaire (FCFA)" prop="prix">
+
+      <ngx-datatable-column
+        name="Montant Total (FCFA)"
+        prop="montant"
+        [cellClass]="getCellClass"
+      ></ngx-datatable-column>
+
+      <ngx-datatable-column name="Statut" prop="statut">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span
+            class="badge badge-pill badge-md badge-success"
+            *ngIf="row.statut == 'Validée'"
+          >
+            {{ row.statut | uppercase }}
+          </span>
+          <span
+            class="badge badge-pill badge-md badge-danger"
+            *ngIf="row.statut == 'Annulée'"
+          >
+            {{ row.statut | uppercase }}
+          </span>
+          <span
+            class="badge badge-pill badge-md badge-info"
+            *ngIf="row.statut == 'En attente'"
+          >
+            {{ row.statut | uppercase }}
+          </span>
+          <span
+            class="badge badge-pill badge-md badge-warning"
+            *ngIf="row.statut == 'Enregistrée'"
+          >
+            {{ row.statut | uppercase }}
+          </span>
+        </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column name="Promotion" prop="promotion">
         <ng-template let-row="row" ngx-datatable-cell-template>
@@ -141,17 +175,19 @@
           >
             -{{ row.promotion.pourcentage }}%
           </span>
-          <!-- <span *ngIf="row.promotion.pourcentage" class="badge badge-pill badge-default">
-      {{ row.promotion.pourcentage }}%
-    </span> -->
           <span *ngIf="!row.promotion"> Aucune Promotion </span>
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="Note moyenne" prop="notemoyenne">
+      <ngx-datatable-column
+        name="Statut du paiement"
+        prop="statutpaiement"
+      ></ngx-datatable-column>
+
+      <!-- <ngx-datatable-column name="Note moyenne" prop="notemoyenne">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <app-star-rating [note]="row"></app-star-rating>
         </ng-template>
-      </ngx-datatable-column>
+      </ngx-datatable-column> -->
       <ngx-datatable-column name="Création" prop="datecreation">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <span>
@@ -159,48 +195,98 @@
           </span>
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="Statut" prop="statut">
+      <ngx-datatable-column name="Date Livraison" prop="datelivraison">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <span
-            class="badge badge-pill badge-md badge-success"
-            *ngIf="row.statut == 'Accepté'"
-          >
-            {{ row.statut | uppercase }}
-          </span>
-          <span
-            class="badge badge-pill badge-md badge-danger"
-            *ngIf="row.statut == 'Refusé'"
-          >
-            {{ row.statut | uppercase }}
-          </span>
-          <span
-            class="badge badge-pill badge-md badge-warning"
-            *ngIf="row.statut == 'En attente'"
-          >
-            {{ row.statut | uppercase }}
+          <span>
+            {{ row.datecreation | date : "dd/MM/yyyy HH:mm:ss" }}
           </span>
         </ng-template>
       </ngx-datatable-column>
+      <ngx-datatable-column name="Mode de paiement" prop="modepaiement.nom">
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Opérateur" prop="operateur">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span *ngIf="!row.operateur"> null </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Numéro de paiement" prop="contact">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span *ngIf="!row.contact"> null </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column
+        name="Adresse de livraison"
+        prop="adresse"
+        [width]="200"
+      >
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span class="row align-items-center justify-content-center"
+            ><strong>{{ row.adresse.nom }}</strong></span
+          >
+          <span class="row align-items-center justify-content-center">{{
+            row.adresse.description
+          }}</span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column
+        name="Montant Livraison (FCFA)"
+        prop="montantlivraison"
+      ></ngx-datatable-column>
+      <ngx-datatable-column
+        name="Contact Destinataire"
+        prop="client.contact"
+      ></ngx-datatable-column>
       <ngx-datatable-column name="Actions">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <div>
             <a
-              *ngIf="crudPerms.update"
               role="button"
-              (click)="onUpdateRow(row); open(classic1, '', 'sm')"
+              (click)="openDetailProduit()"
               data-target="#modal-form"
               data-toggle="modal"
+              ngbTooltip="Détails produit"
+              placement="bottom"
             >
-              <i class="fa-solid fa-pen-to-square mr-2 text-primary fs-5"></i>
+              <i class="fa-regular fa-eye mr-2 text-warning fs-5"></i>
             </a>
             <a
-              *ngIf="crudPerms.delete"
+              *ngIf="
+                crudPerms.update &&
+                (row.statut === 'Validée' || row.statut === 'Annulée')
+              "
               role="button"
-              (click)="onDeleteRow(row.id); open(classic2, 'Notification', '')"
+              (click)="openEtapeLivraison()"
               data-target="#modal-form"
               data-toggle="modal"
+              ngbTooltip="Etape livraison"
+              placement="bottom"
             >
-              <i class="fa-solid fa-trash-can text-danger mr-2 fs-5"></i>
+              <i class="fa-solid fa-signs-post text-primary mr-2"></i>
+            </a>
+            <a
+              *ngIf="crudPerms.update && row.statut === 'Enregistrée'"
+              role="button"
+              (click)="openValiderCommande()"
+              data-target="#modal-form"
+              data-toggle="modal"
+              ngbTooltip="Valider"
+              placement="bottom"
+            >
+              <i class="fa-solid fa-check mr-2 text-success"></i>
+            </a>
+            <a
+              *ngIf="
+                crudPerms.update &&
+                (row.statut === 'Enregistrée' || row.statut === 'Validée')
+              "
+              role="button"
+              (click)="openRefuserCommande()"
+              data-target="#modal-form"
+              data-toggle="modal"
+              ngbTooltip="Réfuser"
+              placement="bottom"
+            >
+              <i class="fa-solid fa-circle-xmark text-danger mr-2"></i>
             </a>
           </div>
         </ng-template>

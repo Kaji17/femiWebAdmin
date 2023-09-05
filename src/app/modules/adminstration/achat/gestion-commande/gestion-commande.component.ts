@@ -10,6 +10,9 @@ import { SelectionType } from "@swimlane/ngx-datatable";
 import { Page } from "src/app/shared/model/paged";
 import { ModePaiementService } from "src/app/shared/services/mode-paiement.service";
 import { ZoneService } from "src/app/shared/services/zone.service";
+import { ValiderCommandeComponent } from "./valider-commande/valider-commande.component";
+import { RefuserCommandeComponent } from "./refuser-commande/refuser-commande.component";
+import { EtapeLivraisonComponent } from "./etape-livraison/etape-livraison.component";
 
 @Component({
   selector: "app-gestion-commande",
@@ -24,16 +27,16 @@ export class GestionCommandeComponent implements OnInit {
   public infoUser: any;
   public crudPerms: any;
   public menuItems: any[];
-  public objSearch:any
-  zoneselect:any
-  modepaiementselect:any
-  statutselect:any
-  statutpaiementselect:any
-  commandeId:any
+  public objSearch: any;
+  zoneselect: any;
+  modepaiementselect: any;
+  statutselect: any;
+  statutpaiementselect: any;
+  commandeId: any;
   entries: number = 10;
   selected: any[] = [];
   temp = [];
-  tempExport = [];
+  tempExport:[];
   activeRow: any;
   rows: any[];
   closeResult: string;
@@ -45,34 +48,27 @@ export class GestionCommandeComponent implements OnInit {
     height: "auto", //height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
     placeholder: "Filter Mode paiement", // text to be displayed when no item is selected defaults to Select,
   };
-  listZone: any[]
+  listZone: any[];
   configZone = {
+    displayFn: (item: any) => {
+      return item.zone.zone.nom + ", " + item.zone.nom;
+    },
     displayKey: "nom", //if objects array passed which key to be displayed defaults to description
     height: "300px", //height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
-    placeholder: 'Filtrer zone', // text to be displayed when no item is selected defaults to Select,
-    search: true,
-    searchOnKey: "nom",
-    limitTo: 25,
+    placeholder: "Filtrer zone", // text to be displayed when no item is selected defaults to Select,
   };
 
-  listStatutPaiement: any[] = [
-    'Réglée',
-    'Non Réglée'
-  ]
+  listStatutPaiement: any[] = ["Réglée", "Non Réglée"];
   configStatutPaiement = {
     height: "auto", //height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
     placeholder: "Filtrer statut pai...", // text to be displayed when no item is selected defaults to Select,
   };
 
-  listStatut: any[] = [
-    'Réglée',
-    'Non Réglée'
-  ]
+  listStatut: any[] = ["Réglée", "Non Réglée"];
   configStatut = {
     height: "auto", //height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
     placeholder: "Filtrer statut", // text to be displayed when no item is selected defaults to Select,
   };
-
 
   constructor(
     private route: ActivatedRoute,
@@ -100,7 +96,7 @@ export class GestionCommandeComponent implements OnInit {
       page: this.page.pageNumber,
       size: this.page.size,
       boutiqueid: this.infoUser.body.boutique.id,
-    }
+    };
     this.getAllCommandes(this.objSearch);
     this.menuItems = this.rolePermission.getMenuPermission();
 
@@ -133,9 +129,83 @@ export class GestionCommandeComponent implements OnInit {
   setPage(pageInfo) {
     this.page.pageNumber = pageInfo.offset;
     console.log("=====pageInfo", this.page);
-    this.getAllCommandes(
-      this.objSearch
+    this.getAllCommandes(this.objSearch);
+  }
+
+  // OUVRIR MODALS VALIDER COMMANDE
+  openValiderCommande() {
+    const modalRef = this.modalService.open(ValiderCommandeComponent, {
+      windowClass: "modal-mini",
+      size: "sm",
+      // centered: true,
+    });
+    modalRef.result.then(
+      (result) => {
+        this.closeResult = "Closed with: " + result;
+        console.log("yaaaa", this.closeResult);
+        if (result == "ok") {
+          setTimeout(() => {
+            this.getAllCommandes({
+              boutiqueid: this.infoUser.body.boutique.id,
+              pagination: true,
+              page: 0,
+              size: 10,
+            });
+          }, 1500);
+        }
+      },
+      (reason) => {
+        this.closeResult = "Dismissed " + this.getDismissReason(reason);
+      }
     );
+    modalRef.componentInstance.infoDaTa = this.activeRow;
+  }
+
+  // OUVRIR MODALS ASSIGNER PRIX LIVRAISON
+  openRefuserCommande() {
+    const modalRef = this.modalService.open(RefuserCommandeComponent, {
+      windowClass: "modal-mini",
+      size: "sm",
+      // centered: true,
+    });
+    modalRef.result.then(
+      (result) => {
+        this.closeResult = "Closed with: " + result;
+        console.log("yaaaa", this.closeResult);
+        if (result == "ok") {
+          setTimeout(() => {
+            this.getAllCommandes({
+              boutiqueid: this.infoUser.body.boutique.id,
+              pagination: true,
+              page: 0,
+              size: 10,
+            });
+          }, 1500);
+        }
+      },
+      (reason) => {
+        this.closeResult = "Dismissed " + this.getDismissReason(reason);
+      }
+    );
+    modalRef.componentInstance.infoDaTa = this.activeRow;
+  }
+
+  openEtapeLivraison(){
+    const modalRef = this.modalService.open(EtapeLivraisonComponent, {
+      windowClass: "modal-default",
+      size: "lg",
+      centered: true,
+    });
+    modalRef.result.then(
+      (result) => {
+        this.closeResult = "Closed with: " + result;
+        console.log("yaaaa", this.closeResult);
+      },
+      (reason) => {
+        this.closeResult = "Dismissed " + this.getDismissReason(reason);
+      }
+    );
+    modalRef.componentInstance.infoDaTa = this.activeRow;
   }
 
   // Get all commandes
@@ -150,15 +220,12 @@ export class GestionCommandeComponent implements OnInit {
             this.page.totalElements = d.body.totalElements;
             // this.totalPage = d.body.totalPages;
             // this.temp = d.body.content;
-            if(obj.pagination){
-              this.temp =d.body.content
+            if (obj.pagination) {
+              this.temp = d.body.content;
               console.log("======CONTENT commandes paginé", d);
-            }else{
-              this.tempExport = d.body.content;
-              console.log("======CONTENT commandes non paginé", d);
             }
-
-        }});
+          }
+        });
       },
       error: (error) => {
         this.utilitisService.response(error, (d: any) => {});
@@ -173,11 +240,13 @@ export class GestionCommandeComponent implements OnInit {
         this.utilitisService.response(data, (d: any) => {
           console.log(d);
           if (data.status == 200) {
-            this.listZone = []
+            this.listZone = [];
             let lis: any[] = [];
             lis = d.body;
             lis.map((el) => {
-              this.listZone.push(el);
+              if (el.zone && el.zone.zone) {
+                this.listZone.push(el);
+              }
             });
             console.log("list des zones ====", this.listZone);
           }
@@ -197,6 +266,7 @@ export class GestionCommandeComponent implements OnInit {
           console.log(d);
           if (data.status == 200) {
             let lis: any[] = [];
+            this.listModePaiement = [];
             lis = d.body;
             lis.map((el) => {
               this.listModePaiement.push(el);
@@ -211,11 +281,38 @@ export class GestionCommandeComponent implements OnInit {
     });
   }
 
+  getFichierCommande() {
+
+    this.objSearch.pagination=false
+    this.commandeService
+      .gettAllCommande(this.objSearch)
+      .subscribe({
+        next: (data) => {
+          this.utilitisService.response(data, (d: any) => {
+            console.log(d);
+            if (data.status == 200) {
+              this.tempExport =[]
+              this.tempExport = d.body;
+              console.log("======CONTENT commandes paginé", d);
+              this.exportExcel()
+              this.objSearch.pagination=true
+              this.getAllCommandes(this.objSearch);
+            }
+          });
+        },
+        error: (error) => {
+          this.utilitisService.response(error, (d: any) => {});
+        },
+      });
+  }
+
   //EXPORTATION LISTE EN FICHIER EXCEL
   exportExcel() {
     import("xlsx").then((xlsx) => {
       // Liste
-      let ledata = this.tempExport;
+      let ledata = [];
+      ledata = this.tempExport;
+      console.log("data", this.tempExport);
       let dataEnv = [];
       // let cpt = 1
       //     for(let i = 0;i<ledata.length;i++){
@@ -258,64 +355,77 @@ export class GestionCommandeComponent implements OnInit {
     return new_obj;
   }
 
-  filterzone(){
-    console.log('zone search',this.zoneselect)
-    if (this.zoneselect.id) {
-      this.objSearch.zoneid = this.zoneselect.id
+  filterzone() {
+    console.log("zone search", this.zoneselect);
+    if (this.zoneselect.zone) {
+      this.objSearch.zoneid = this.zoneselect.zone.id;
       this.getAllCommandes(this.objSearch);
-    console.log('obj search',this.objSearch)
-    }else{
-      this.objSearch.zoneid = null
+      console.log("obj search", this.objSearch);
+    } else {
+      this.objSearch.zoneid = null;
     }
-    
   }
-  filterModePaiement(){
-    console.log('Mode de paiement',this.zoneselect)
-    if (this.zoneselect.id) {
-      this.objSearch.modepaiementid = this.modepaiementselect.id
-    console.log('obj search',this.objSearch)
-    this.getAllCommandes(this.objSearch);
-    }else{
-      this.objSearch.modepaiementid = null
-    console.log('obj search',this.objSearch)
-    } 
+  filterModePaiement() {
+    console.log("Mode de paiement", this.zoneselect);
+    if (this.modepaiementselect.id) {
+      this.objSearch.modepaiementid = this.modepaiementselect.id;
+      console.log("obj search", this.objSearch);
+      this.getAllCommandes(this.objSearch);
+    } else {
+      this.objSearch.modepaiementid = null;
+      console.log("obj search", this.objSearch);
+    }
   }
-  filterStatutPaiement(){
-    console.log('statut de paiement',this.statutpaiementselect)
+  filterStatutPaiement() {
+    console.log("statut de paiement", this.statutpaiementselect);
     if (this.statutpaiementselect) {
-      this.objSearch.statutpaiement = this.statutpaiementselect
-    console.log('obj search',this.objSearch)
-    this.getAllCommandes(this.objSearch);
-    }else{
-      this.objSearch.statutpaiement = null
-    console.log('obj search',this.objSearch)
-    } 
+      this.objSearch.statutpaiement = this.statutpaiementselect;
+      console.log("obj search", this.objSearch);
+      this.getAllCommandes(this.objSearch);
+    } else {
+      this.objSearch.statutpaiement = null;
+      console.log("obj search", this.objSearch);
+    }
   }
 
-  filterStatut(){
-    console.log('statut',this.statutselect)
+  filterStatut() {
+    console.log("statut", this.statutselect);
     if (this.statutselect) {
-      this.objSearch.statut = this.statutselect
-    console.log('obj search',this.objSearch)
-    this.getAllCommandes(this.objSearch);
-    }else{
-      this.objSearch.statut = null
-    console.log('obj search',this.objSearch)
-    } 
+      this.objSearch.statut = this.statutselect;
+      console.log("obj search", this.objSearch);
+      this.getAllCommandes(this.objSearch);
+    } else {
+      this.objSearch.statut = null;
+      console.log("obj search", this.objSearch);
+    }
   }
 
   // Effacer tout les filtres
-  clearFilter(){
-    this.zoneselect = null
-    this.statutpaiementselect = null
-    this.modepaiementselect = null
-    this.statutselect = null
+  clearFilter() {
+    this.zoneselect = null;
+    this.statutpaiementselect = null;
+    this.modepaiementselect = null;
+    this.statutselect = null;
     this.objSearch = {
       pagination: true,
       page: this.page.pageNumber,
       size: this.page.size,
       boutiqueid: this.infoUser.body.boutique.id,
-    }
+    };
     this.getAllCommandes(this.objSearch);
+  }
+
+  getCellClass({ row, column, value }): any {
+    return "totalAmount";
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return "by pressing ESC";
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return "by clicking on a backdrop";
+    } else {
+      return "with: $reason";
+    }
   }
 }

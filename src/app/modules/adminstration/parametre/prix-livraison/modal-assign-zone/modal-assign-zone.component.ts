@@ -75,7 +75,7 @@ export class ModalAssignZoneComponent implements OnInit {
     this.prixLivraisonService.assignPrixLivraison(obj).subscribe({
       next: (data) => {
         this.utilitisService.response(data, (d: any) => {
-          if (data.status == 200||data.status==201) {
+          if (data.status == 200||data.status==201||data.status==204) {
             console.log("======assigner avec Success", d);
             this.showNotification("success");
           } else {
@@ -107,7 +107,7 @@ export class ModalAssignZoneComponent implements OnInit {
     }
     if (type === "danger") {
       this.toastr.show(
-        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">Désolé email existe déja réessayer avec une autre adresse mail</span></div>',
+        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">Désolé nous n\'avons pas pu assigner le prix de livraison à la zone</span></div>',
         "",
         {
           timeOut: 3000,

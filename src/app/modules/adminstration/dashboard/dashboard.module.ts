@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 
@@ -26,6 +27,10 @@ import { SelectDropDownModule } from 'ngx-select-dropdown';
     NgxDatatableModule,
     RouterModule,
     SelectDropDownModule,
+    TranslateModule.forChild({
+      // isolate: true,
+      extend:true
+  }),
   ],
   exports:[
     DashboardComponent
