@@ -35,7 +35,7 @@
         <p  class="" [ngClass]="etape.date?'text-success':'text-white'"> {{etape.etape.nom}}</p>
       </div>
       <div class="col-lg-4 col-md-3 col-4">
-        <p class="" [ngClass]="etape.date?'text-success':'text-white'">{{etape.date}}</p>
+        <p class="" [ngClass]="etape.date?'text-success':'text-white'">{{etape.date|date :'dd/MM/YYYY '}}</p>
       </div>
     </div>
   </div>

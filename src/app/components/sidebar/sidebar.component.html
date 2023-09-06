@@ -28,8 +28,11 @@
     <ul class="nav align-items-center d-md-none">
       <li class="nav-item" ngbDropdown placement="bottom-right">
         
-        <a class="nav-link nav-link-icon" role="button" ngbDropdownToggle (click)="notifChecked = !notifChecked">
+        <a class="nav-link nav-link-icon position-relative" role="button" ngbDropdownToggle (click)="notifChecked = !notifChecked">
           <i class="ni ni-bell-55"></i>
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger " style="left: 25px;" *ngIf="notifs.length ? notifs.length : 0">
+            {{notifs.length}}
+          </span>
         </a>
 
         <div class="dropdown-menu-arrow dropdown-menu-right py-0 overflow-hidden" ngbDropdownMenu [ngClass]="notifChecked?'show':''" [style]="notifChecked?'inset: 100% 0px auto auto; transform: translateY(0px);':'left: auto; right: 0px;'">
@@ -65,11 +68,16 @@
       <li class="nav-item" ngbDropdown placement="bottom-right">
         <a class="nav-link" role="button" ngbDropdownToggle>
           <div class="media align-items-center">
-            <span class="avatar avatar-sm rounded-circle">
-              <img
-                alt="Image placeholder"
-                src="./assets/img/theme/team-1-800x800.jpg"
-              />
+            <span class="avatar avatar-sm rounded-circle"  class="avatar avatar-sm rounded-circle"
+            *ngIf="infoUser.body.photo"
+            [style]="
+              'background-image: url(' + getImg(infoUser.body.photo) + ')'
+            "
+            style="
+              margin: auto;
+              background-size: cover;
+              background-repeat: no-repeat;
+            ">
             </span>
           </div>
         </a>

@@ -6,11 +6,13 @@ import { ProfilComponent } from './profil/profil.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ModalPhotoProfilComponent } from './profil/modal-photo-profil/modal-photo-profil.component';
 
 
 @NgModule({
   declarations: [  
-    ProfilComponent
+    ProfilComponent, ModalPhotoProfilComponent
   ],
   imports: [
     CommonModule,
@@ -18,6 +20,7 @@ import { TranslateModule } from '@ngx-translate/core';
     ReactiveFormsModule,
     FormsModule,
     ComponentsModule,
+    NgbModule,
     TranslateModule.forChild({
       // isolate: true,
       extend:true

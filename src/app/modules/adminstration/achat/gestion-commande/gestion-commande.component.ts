@@ -13,6 +13,8 @@ import { ZoneService } from "src/app/shared/services/zone.service";
 import { ValiderCommandeComponent } from "./valider-commande/valider-commande.component";
 import { RefuserCommandeComponent } from "./refuser-commande/refuser-commande.component";
 import { EtapeLivraisonComponent } from "./etape-livraison/etape-livraison.component";
+import { ReglerCommandeComponent } from "./regler-commande/regler-commande.component";
+import { DetailsCommandeComponent } from "./details-commande/details-commande.component";
 
 @Component({
   selector: "app-gestion-commande",
@@ -29,6 +31,7 @@ export class GestionCommandeComponent implements OnInit {
   public menuItems: any[];
   public objSearch: any;
   zoneselect: any;
+  etapes: [];
   modepaiementselect: any;
   statutselect: any;
   statutpaiementselect: any;
@@ -36,11 +39,12 @@ export class GestionCommandeComponent implements OnInit {
   entries: number = 10;
   selected: any[] = [];
   temp = [];
-  tempExport:[];
+  tempExport: [];
   activeRow: any;
   rows: any[];
   closeResult: string;
   SelectionType = SelectionType;
+  islivrer: boolean = true;
   page = new Page();
   listModePaiement: any[];
   configModePaiement = {
@@ -190,11 +194,66 @@ export class GestionCommandeComponent implements OnInit {
     modalRef.componentInstance.infoDaTa = this.activeRow;
   }
 
-  openEtapeLivraison(){
+  openEtapeLivraison() {
     const modalRef = this.modalService.open(EtapeLivraisonComponent, {
       windowClass: "modal-default",
       size: "lg",
       centered: true,
+    });
+    modalRef.result.then(
+      (result) => {
+        this.closeResult = "Closed with: " + result;
+        console.log("yaaaa", this.closeResult);
+        if (result == "ok") {
+          setTimeout(() => {
+            this.getAllCommandes({
+              boutiqueid: this.infoUser.body.boutique.id,
+              pagination: true,
+              page: 0,
+              size: 10,
+            });
+          }, 1500);
+        }
+      },
+      (reason) => {
+        this.closeResult = "Dismissed " + this.getDismissReason(reason);
+      }
+    );
+    modalRef.componentInstance.infoDaTa = this.activeRow;
+  }
+  openPayementCommande() {
+    const modalRef = this.modalService.open(ReglerCommandeComponent, {
+      windowClass: "modal-mini",
+      size: "sm",
+      // centered: true,
+    });
+    modalRef.result.then(
+      (result) => {
+        this.closeResult = "Closed with: " + result;
+        console.log("yaaaa", this.closeResult);
+        if (result == "ok") {
+          setTimeout(() => {
+            this.getAllCommandes({
+              boutiqueid: this.infoUser.body.boutique.id,
+              pagination: true,
+              page: 0,
+              size: 10,
+            });
+          }, 1500);
+        }
+      },
+      (reason) => {
+        this.closeResult = "Dismissed " + this.getDismissReason(reason);
+      }
+    );
+    modalRef.componentInstance.infoDaTa = this.activeRow;
+  }
+
+  openDetailProduit() {
+    const modalRef = this.modalService.open(DetailsCommandeComponent, {
+      windowClass: "modal-default",
+      size: "lg",
+      // centered: true,
     });
     modalRef.result.then(
       (result) => {
@@ -282,28 +341,25 @@ export class GestionCommandeComponent implements OnInit {
   }
 
   getFichierCommande() {
-
-    this.objSearch.pagination=false
-    this.commandeService
-      .gettAllCommande(this.objSearch)
-      .subscribe({
-        next: (data) => {
-          this.utilitisService.response(data, (d: any) => {
-            console.log(d);
-            if (data.status == 200) {
-              this.tempExport =[]
-              this.tempExport = d.body;
-              console.log("======CONTENT commandes paginé", d);
-              this.exportExcel()
-              this.objSearch.pagination=true
-              this.getAllCommandes(this.objSearch);
-            }
-          });
-        },
-        error: (error) => {
-          this.utilitisService.response(error, (d: any) => {});
-        },
-      });
+    this.objSearch.pagination = false;
+    this.commandeService.gettAllCommande(this.objSearch).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log(d);
+          if (data.status == 200) {
+            this.tempExport = [];
+            this.tempExport = d.body;
+            console.log("======CONTENT commandes paginé", d);
+            this.exportExcel();
+            this.objSearch.pagination = true;
+            this.getAllCommandes(this.objSearch);
+          }
+        });
+      },
+      error: (error) => {
+        this.utilitisService.response(error, (d: any) => {});
+      },
+    });
   }
 
   //EXPORTATION LISTE EN FICHIER EXCEL
@@ -427,5 +483,28 @@ export class GestionCommandeComponent implements OnInit {
     } else {
       return "with: $reason";
     }
+  }
+
+  consulterEtapeCommande() {
+    this.commandeService.consulterEtapeCommande(this.activeRow.id).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          if (data.status == 200) {
+            console.log("======commande valider avec Success", d);
+            this.etapes = [];
+            this.etapes = d.body;
+            console.log("etape", this.etapes);
+
+            this.etapes.map((el: any) => {
+              if (el.etape.id == 4 && el.date) {
+                this.islivrer = true;
+              }
+            });
+          } else {
+            console.log("======la commande n'a pas pu être valider", d);
+          }
+        });
+      },
+    });
   }
 }

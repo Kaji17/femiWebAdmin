@@ -135,7 +135,7 @@
 
       <ngx-datatable-column
         name="Montant Total (FCFA)"
-        prop="montant"
+        prop="montanttotal"
         [cellClass]="getCellClass"
       ></ngx-datatable-column>
 
@@ -287,6 +287,20 @@
               placement="bottom"
             >
               <i class="fa-solid fa-circle-xmark text-danger mr-2"></i>
+            </a>
+            <a
+              *ngIf="
+                crudPerms.update &&
+                ((row.statut === 'Enregistrée' || row.statut === 'Validée')&&row.statutpaiement=='Non Réglée')
+              "
+              role="button"
+              (click)="openPayementCommande()"
+              data-target="#modal-form"
+              data-toggle="modal"
+              ngbTooltip="Régler commande"
+              placement="bottom"
+            >
+            <i class="fa-solid fa-hand-holding-dollar text-success  mr-2"></i>
             </a>
           </div>
         </ng-template>

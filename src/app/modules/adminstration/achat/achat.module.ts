@@ -12,6 +12,7 @@ import { DetailsCommandeComponent } from './gestion-commande/details-commande/de
 import { ValiderCommandeComponent } from './gestion-commande/valider-commande/valider-commande.component';
 import { RefuserCommandeComponent } from './gestion-commande/refuser-commande/refuser-commande.component';
 import { EtapeLivraisonComponent } from './gestion-commande/etape-livraison/etape-livraison.component';
+import { ReglerCommandeComponent } from './gestion-commande/regler-commande/regler-commande.component';
 
 
 
@@ -22,7 +23,8 @@ import { EtapeLivraisonComponent } from './gestion-commande/etape-livraison/etap
     DetailsCommandeComponent,
     ValiderCommandeComponent,
     RefuserCommandeComponent,
-    EtapeLivraisonComponent
+    EtapeLivraisonComponent,
+    ReglerCommandeComponent
   ],
   imports: [
     CommonModule,
