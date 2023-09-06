@@ -48,8 +48,8 @@ export class DashboardComponent implements OnInit {
   public commandeByZone: any[];
   public itemsbreadcrumb: any[];
   public tittelbreadcrumb: string = "Dasboard";
-  tempPanierMoyen: any [];
-  activeRow:any
+  tempPanierMoyen: any[];
+  activeRow: any;
 
   listZone: any[];
   listPeriode: any[] = [
@@ -69,14 +69,16 @@ export class DashboardComponent implements OnInit {
   configperiode = {
     displayKey: "label", //if objects array passed which key to be displayed defaults to description
     height: "auto", //height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
-     // text to be displayed when no item is selected defaults to Select,
-     placeholder: this.listPeriode[0].label
+    // text to be displayed when no item is selected defaults to Select,
+    placeholder: this.listPeriode[0].label,
   };
   zoneselect: any;
   objSearchPanierMoyen: any;
   page = new Page();
   infoUser: any;
   periodeselect: any;
+
+  dataTotalOrders: any;
 
   constructor(
     private breadcrumbService: BreadcrumbService,
@@ -95,7 +97,7 @@ export class DashboardComponent implements OnInit {
     });
 
     this.objSearchPanierMoyen = {
-      periode:"day",
+      periode: "day",
       boutiqueid: this.infoUser.body.boutique.id,
     };
     this.getStatPanierMoyen(this.objSearchPanierMoyen);
@@ -197,7 +199,7 @@ export class DashboardComponent implements OnInit {
     this.ordersChart = new Chart(chartOrders, {
       type: "bar",
       options: chartExample2.options,
-      data: chartExample2.data,
+      data: this.dataTotalOrders,
     });
 
     var chartSales = document.getElementById("chart-sales");
@@ -276,8 +278,10 @@ export class DashboardComponent implements OnInit {
 
   onActivate(event) {
     this.activeRow = event.row;
-    console.log("Je suis active ===", this.activeRow)
+    console.log("Je suis active ===", this.activeRow);
   }
+
+  /************STATISTIQUE****************/
 
   // Donnée statistique de panier moyen
   getStatPanierMoyen(obj) {
@@ -292,7 +296,85 @@ export class DashboardComponent implements OnInit {
             lis.map((el) => {
               this.tempPanierMoyen.push(el);
             });
-            console.log("list des stats panier moyen ====", this.tempPanierMoyen);
+            console.log(
+              "list des stats panier moyen ====",
+              this.tempPanierMoyen
+            );
+          }
+        });
+      },
+      error: (error) => {
+        this.utilitisService.response(error, (d: any) => {});
+      },
+    });
+  }
+
+  // Donnée statistique de nombre de vente
+  getStatNombreDeVentes(obj, per) {
+    this.statistiqueService.nombreVentesStatistique(obj).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log(d);
+          if (data.status == 200) {
+            this.dataTotalOrders = {
+              labels: [
+                "Jan",
+                "Feb",
+                "Mars",
+                "Avr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sep",
+                "Oct",
+                "Nov",
+                "Dec",
+              ],
+              datasets: [
+                {
+                  label: "Commandes",
+                  data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  maxBarThickness: 12,
+                },
+              ],
+            };
+
+            switch (per) {
+              case "month":
+                d.map((el: any) => {
+                  let date = new Date(el.periode);
+                  let moisGet = date.getMonth();
+                  this.dataTotalOrders.datasets[0].data[moisGet] =
+                    el.nombreventes;
+                });
+                break;
+              case "year":
+                d.map((el: any) => {
+                  let date = new Date(el.periode);
+                  let moisGet = date.getMonth();
+                  this.dataTotalOrders.datasets[0].data[moisGet] =
+                    el.nombreventes;
+                });
+                break;
+
+              default:
+                break;
+            }
+
+            d.map((el: any) => {
+              let date = new Date(el.periode);
+              let moisGet = date.getMonth();
+              if (!(moisGet == 0)) {
+              } else {
+              }
+              this.dataTotalOrders.labels;
+            });
+            // this.dataTotalOrders = d
+            console.log(
+              "list des stats panier moyen ====",
+              this.tempPanierMoyen
+            );
           }
         });
       },

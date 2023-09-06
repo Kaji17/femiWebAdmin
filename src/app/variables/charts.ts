@@ -354,7 +354,7 @@ export const chartExample2 = {
     datasets: [
       {
         label: "Commandes",
-        data: [205, 200, 300, 202, 107, 209,205, 200, 300, 202, 107, 209],
+        data: [0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0],
         maxBarThickness: 12
       }
     ]

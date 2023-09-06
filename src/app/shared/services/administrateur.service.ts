@@ -45,6 +45,8 @@ export class AdministrateurService {
     );
   }
 
+
+
   // Update profil admin
   public updateAdmin(adminId,obj ) {
     return this.http.put(
@@ -55,6 +57,21 @@ export class AdministrateurService {
       }
     );
   }
+
+    // UPDATE PHOTO PROFIL
+    public updatePhoto(id: any, file: any) {
+      let form = new FormData();
+      form.append("id", id);
+      form.append("image", file);
+      return this.http.put(
+        this.configService.getApi("ADMIN_UPDPHOTO_PUT"),
+        form,
+        {
+          observe: "response",
+          // params: form,
+        }
+      );
+    }
 
   // Add admin
   public addAdmin(obj: any) {

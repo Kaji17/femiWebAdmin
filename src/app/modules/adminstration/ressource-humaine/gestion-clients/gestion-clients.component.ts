@@ -2,10 +2,12 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ModalDismissReasons, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { SelectionType } from "@swimlane/ngx-datatable";
 import { Subscription } from "rxjs";
-import { Page } from "src/app/shared/model/page";
+import { Page } from "src/app/shared/model/paged";
 import { BreadcrumbService } from "src/app/shared/services/breadcrumb.service";
 import * as FileSaver from "file-saver";
 import { RolePermissionsService } from "src/app/shared/services/role-permissions.service";
+import { ClientService } from "src/app/shared/services/client.service";
+import { UtilisService } from "src/app/shared/services/utilis.service";
 
 @Component({
   selector: "app-gestion-clients",
@@ -17,10 +19,12 @@ export class GestionClientsComponent implements OnInit, OnDestroy {
   entries: number = 10;
   selected: any[] = [];
   temp = [];
+  tempExport: []
   activeRow: any;
   rows: any[];
   closeResult: string;
   page = new Page();
+  infoUser:any
 
   itemselected: number;
   public listProduitSelect = ['bonjour'];
@@ -32,17 +36,27 @@ export class GestionClientsComponent implements OnInit, OnDestroy {
     private service: BreadcrumbService,
     private modalService: NgbModal,
     private rolePermission: RolePermissionsService,
+    private clientService: ClientService,
+    private utilitisService: UtilisService,
 
   ) {
-    // this.page.pageNumber = 0;
+    this.page.pageNumber = 0;
     this.page.size = 20;
+    this.infoUser = JSON.parse(localStorage.getItem("user_info"));
   }
 
   public SuscribeAllData: Subscription;
   ngOnDestroy(): void {
-    this.SuscribeAllData.unsubscribe;
+    // this.SuscribeAllData.unsubscribe;
   }
   ngOnInit(): void {
+    this.getAllClient({
+      pagination:true,
+      page: this.page.pageNumber,
+      size: this.page.size,
+      boutiqueid: this.infoUser.body.boutique.id,
+
+    })
     this.menuItems = this.rolePermission.getMenuPermission();
 
     this.crudPerms = {
@@ -50,7 +64,6 @@ export class GestionClientsComponent implements OnInit, OnDestroy {
       update: this.menuItems[5].items[1].update,
       delete: this.menuItems[5].items[1].delete,
     };
-    this.setPage({ offset: 0 });
     let currentMultipleFile = undefined;
     this.itemselected = 2;
     // multiple dropzone file - accepts any type of file
@@ -82,18 +95,14 @@ export class GestionClientsComponent implements OnInit, OnDestroy {
   }
 
   setPage(pageInfo) {
-    this.SuscribeAllData = this.service
-      .getApi({ page: pageInfo.offset + 1 })
-      .subscribe({
-        next: (value) => {
-          // this.page.pageNumber = pageInfo.offset;
-          // this.page.size = 20;
-          // this.page.totalElements = value.count;
-          // this.page.totalPages = 9;
-          console.log("Appel Api", value.results);
-          this.temp = value.results;
-        },
-      });
+    this.page.pageNumber = pageInfo.offset;
+    console.log("=====pageInfo", this.page);
+    this.getAllClient({
+      pagination: true,
+      page: this.page.pageNumber,
+      size: this.page.size,
+      boutiqueid: this.infoUser.body.boutique.id,
+    });
   }
 
   onSelect({ selected }) {
@@ -157,9 +166,6 @@ export class GestionClientsComponent implements OnInit, OnDestroy {
     }
   }
 
-  onDeleteProduit(id: number) {
-    console.log("produits supprimer");
-  }
 
   onAddNewPromotionShow(nbr: number) {
     this.itemselected = nbr;
@@ -173,6 +179,60 @@ export class GestionClientsComponent implements OnInit, OnDestroy {
     console.log("Promotion attribuer");
   }
 
+  getFichierClient() {
+    this.clientService.gettAllClient({
+      pagination:false,
+      boutiqueid: this.infoUser.body.boutique.id,
+
+    }).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log(d);
+          if (data.status == 200) {
+            this.tempExport = [];
+            this.tempExport = d.body;
+            console.log("======CONTENT client exporter", d);
+            this.exportExcel();
+            
+            this.getAllClient({
+              pagination: true,
+              page: this.page.pageNumber,
+              size: this.page.size,
+              boutiqueid: this.infoUser.body.boutique.id,
+            });
+          }
+        });
+      },
+      error: (error) => {
+        this.utilitisService.response(error, (d: any) => {});
+      },
+    });
+  }
+  // Get all commandes
+  getAllClient(obj) {
+    this.clientService.gettAllClient(obj).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log(d);
+          if (data.status == 200) {
+            this.page.size = d.body.size;
+            this.page.pageNumber = d.body.number;
+            this.page.totalElements = d.body.totalElements;
+            // this.totalPage = d.body.totalPages;
+            this.temp = d.body.content;
+            // if (obj.pagination) {
+            //   this.temp = d.body.content;
+            //   console.log("======CONTENT commandes paginé", d);
+            // }
+          }
+        });
+      },
+      error: (error) => {
+        this.utilitisService.response(error, (d: any) => {});
+      },
+    });
+  }
+
   onExportData() {}
 
   //
@@ -180,7 +240,7 @@ export class GestionClientsComponent implements OnInit, OnDestroy {
   exportExcel() {
     import("xlsx").then((xlsx) => {
       // Liste
-      let ledata = this.temp;
+      let ledata = this.tempExport;
       let dataEnv = [];
       // let cpt = 1
       //     for(let i = 0;i<ledata.length;i++){

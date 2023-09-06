@@ -1,32 +1,32 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
-import { PrixLivraisonService } from 'src/app/shared/services/prix-livraison.service';
-import { UtilisService } from 'src/app/shared/services/utilis.service';
-import { ZoneService } from 'src/app/shared/services/zone.service';
+import { Component, Input, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
+import { ToastrService } from "ngx-toastr";
+import { PrixLivraisonService } from "src/app/shared/services/prix-livraison.service";
+import { UtilisService } from "src/app/shared/services/utilis.service";
+import { ZoneService } from "src/app/shared/services/zone.service";
 
 @Component({
-  selector: 'app-modal-assign-zone',
-  templateUrl: './modal-assign-zone.component.html',
-  styleUrls: ['./modal-assign-zone.component.scss']
+  selector: "app-modal-assign-zone",
+  templateUrl: "./modal-assign-zone.component.html",
+  styleUrls: ["./modal-assign-zone.component.scss"],
 })
 export class ModalAssignZoneComponent implements OnInit {
-
   @Input() infoDaTa;
   formAssignPrixLivraison: FormGroup;
   infoUser: any;
   result: string;
   // prix:number = this.infoDaTa.prix
 
-  listZone: any[]
+  listZone: any[];
   configZone = {
+    displayFn: (item: any) => {
+      return item.zone.nom;
+    },
     displayKey: "nom", //if objects array passed which key to be displayed defaults to description
     height: "300px", //height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
-    placeholder: 'Filtrer zone', // text to be displayed when no item is selected defaults to Select,
-    search: true,
-    searchOnKey: "nom",
-    limitTo: 25,
+    placeholder: "Filtrer zone", // text to be displayed when no item is selected defaults to Select,
+    enableSelectAll: true,
   };
 
   constructor(
@@ -37,14 +37,16 @@ export class ModalAssignZoneComponent implements OnInit {
     private zoneService: ZoneService,
     private prixLivraisonService: PrixLivraisonService
   ) {
+    this.infoUser = JSON.parse(localStorage.getItem("user_info"));
     this.getAllZone({
       pagination: false,
+      typezoneid: 2,
     });
   }
 
   ngOnInit(): void {
     console.log(this.infoDaTa);
-    
+
     this.buildForm();
     // this.prix
   }
@@ -65,17 +67,21 @@ export class ModalAssignZoneComponent implements OnInit {
   }
 
   handleOk() {
-    this.formAssignPrixLivraison.value.zoneid = this.formAssignPrixLivraison.value.zoneid.id
-    console.log("Infos de l'assignement du prix de livraison", this.formAssignPrixLivraison.value);
+    this.formAssignPrixLivraison.value.zoneid =
+      this.formAssignPrixLivraison.value.zoneid.zone.id;
+    console.log(
+      "Infos de l'assignement du prix de livraison",
+      this.formAssignPrixLivraison.value
+    );
     this.assignPrixLivraison(this.formAssignPrixLivraison.value);
-    this.closeModalOk()
+    this.closeModalOk();
   }
 
   assignPrixLivraison(obj: any) {
     this.prixLivraisonService.assignPrixLivraison(obj).subscribe({
       next: (data) => {
         this.utilitisService.response(data, (d: any) => {
-          if (data.status == 200||data.status==201||data.status==204) {
+          if (data.status == 200 || data.status == 201 || data.status == 204) {
             console.log("======assigner avec Success", d);
             this.showNotification("success");
           } else {
@@ -139,28 +145,26 @@ export class ModalAssignZoneComponent implements OnInit {
     }
   }
 
-    // Get all zone
-    getAllZone(obj: any) {
-      this.zoneService.gettAllZone(obj).subscribe({
-        next: (data) => {
-          this.utilitisService.response(data, (d: any) => {
-            console.log(d);
-            if (data.status == 200) {
-              this.listZone = []
-              let lis: any[] = [];
-              lis = d.body;
-              lis.map((el) => {
-                this.listZone.push(el);
-              });
-              console.log("list des zones ====", this.listZone);
-            }
-          });
-        },
-        error: (error) => {
-          this.utilitisService.response(error, (d: any) => {});
-        },
-      });
-    }
-
-
+  // Get all zone
+  getAllZone(obj: any) {
+    this.zoneService.gettAllZone(obj).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log(d);
+          if (data.status == 200) {
+            this.listZone = [];
+            let lis: any[] = [];
+            lis = d.body;
+            lis.map((el) => {
+              this.listZone.push(el);
+            });
+            console.log("list des zones ====", this.listZone);
+          }
+        });
+      },
+      error: (error) => {
+        this.utilitisService.response(error, (d: any) => {});
+      },
+    });
+  }
 }

@@ -6,6 +6,7 @@ import { Page } from "src/app/shared/model/paged";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { UtilisService } from "src/app/shared/services/utilis.service";
 import { ModalAssignZoneComponent } from "./modal-assign-zone/modal-assign-zone.component";
+import { ZoneService } from "src/app/shared/services/zone.service";
 
 
 @Component({
@@ -19,6 +20,7 @@ export class PrixLivraisonComponent implements OnInit {
   closeResult: string;
   listZone: any[];
   temp: any[] = [];
+  tempZonePrix: any[] = [];
   infoUser: any;
   activeRow: any;
   configZone = {
@@ -30,14 +32,19 @@ export class PrixLivraisonComponent implements OnInit {
     limitTo: 25,
   };
   page = new Page();
+  page1 = new Page();
+
   constructor(
     private rolePermission: RolePermissionsService,
     private prixlivraisonService: PrixLivraisonService,
     private modalService: NgbModal,
     private utilitisService: UtilisService,
+    private zoneService: ZoneService,
   ) {
     this.page.pageNumber = 0;
     this.page.size = 10;
+    this.page1.pageNumber = 0;
+    this.page1.size = 10;
     this.infoUser = JSON.parse(localStorage.getItem("user_info"));
   }
 
@@ -53,6 +60,12 @@ export class PrixLivraisonComponent implements OnInit {
     this.getAllPrixLivraion({
       boutiqueid: this.infoUser.body.boutique.id,
       pagination: true,
+      page: this.page.pageNumber,
+      size: this.page.size,
+    });
+    this.getAllZone({
+      pagination: true,
+      typezoneid: 2,
       page: this.page.pageNumber,
       size: this.page.size,
     });
@@ -106,6 +119,12 @@ export class PrixLivraisonComponent implements OnInit {
                 page: 0,
                 size: 10,
               });
+              this.getAllZone({
+                pagination: true,
+                typezoneid: 2,
+                page: 0,
+                size: 10,
+              });
             }, 1500);
           }
         },
@@ -130,6 +149,16 @@ export class PrixLivraisonComponent implements OnInit {
       pagination: true,
       page: this.page.pageNumber,
       size: this.page.size,
+    });
+  }
+  setPage1(pageInfo) {
+    this.page1.pageNumber = pageInfo.offset;
+    console.log("=====pageInfo", this.page1);
+    this.getAllZone({
+      pagination: true,
+      typezoneid: 2,
+      page: this.page1.pageNumber,
+      size: this.page1.size,
     });
   }
 
@@ -165,4 +194,24 @@ export class PrixLivraisonComponent implements OnInit {
       return "with: $reason";
     }
   }
+
+    // Get all zone
+    getAllZone(obj: any) {
+      this.zoneService.gettAllZone(obj).subscribe({
+        next: (data) => {
+          this.utilitisService.response(data, (d: any) => {
+            this.page1.size = d.body.size;
+            this.page1.pageNumber = d.body.number;
+            this.page1.totalElements = d.body.totalElements;
+            // this.totalPage = d.body.totalPages;
+            // this.temp = d.body.content;
+            this.tempZonePrix =d.body.content
+            console.log("======CONTENT commandes paginé", d);
+          });
+        },
+        error: (error) => {
+          this.utilitisService.response(error, (d: any) => {});
+        },
+      });
+    }
 }

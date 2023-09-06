@@ -8,6 +8,7 @@
       "comment ": "------------ OPERATIONS ADMIN ---------------",
       "ADMIN_UPD_PUT": "/klaman/v1/user/administrateur/update",
       "ADMIN_UPDPASSWORD_PUT": "/klaman/v1/user/administrateur/changepassword",
+      "ADMIN_UPDPHOTO_PUT": "/klaman/v1/user/administrateur/changepp",
       "ADMIN_RESETPASSWORD_POST": "/klaman/v1/user/administrateur/changepassword",
       "ADMIN_ADD_POST": "/klaman/v1/user/administrateur/add",
       "ADMIN_SIGNIN_POST": "/klaman/v1/user/administrateur/signin",      

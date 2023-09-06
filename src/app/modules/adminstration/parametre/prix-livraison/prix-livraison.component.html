@@ -1,78 +1,131 @@
 <div class="header bg-gradient-danger pb-2 pt-0 pt-md-8">
-    <div class="container-fluid">
-      <div class="header-body">
-        <div
-          class="row align-items-center py-md-3 py-sm-5 px-0 justify-content-between"
-        >
-          <div class="col-lg-6 col-xl-5 col-md-12">
-            <div class="row align-items-center">
-              <div class="col-lg-6 col-md-4 col-sm-2 col-xl-4">
-                <h6 class="h2 text-white d-inline-block mb-0 me-1">Prix livraison</h6>
-              </div>
-              <div class="col-lg-3 col-md-4 col-sm-1 col-xs-1 text-left" *ngIf="crudPerms.create">
-                <button
-                  class="btn btn-primary btn-md"
-                  (click)="openAddPrixLivraison()"
-                >
-                  <i class="ni ni-fat-add text-white"></i>
-                </button>
-              </div>
+  <div class="container-fluid">
+    <div class="header-body">
+      <div
+        class="row align-items-center py-md-3 py-sm-5 px-0 justify-content-between"
+      >
+        <div class="col-lg-6 col-xl-5 col-md-12">
+          <div class="row align-items-center">
+            <div class="col-lg-6 col-md-4 col-sm-2 col-xl-4">
+              <h6 class="h2 text-white d-inline-block mb-0 me-1">
+                Prix livraison
+              </h6>
+            </div>
+            <div
+              class="col-lg-3 col-md-4 col-sm-1 col-xs-1 text-left"
+              *ngIf="crudPerms.create"
+            >
+              <button
+                class="btn btn-primary btn-md"
+                (click)="openAddPrixLivraison()"
+              >
+                <i class="ni ni-fat-add text-white"></i>
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  
-  <!-- TABLEAU -->
-  <div class="container-fluid mt-5">
-    <div class="dataTables_wrapper py-4 card px-4">
-      <ngx-datatable
-        class="bootstrap selection-cell"
-        [columnMode]="'force'"
-        [headerHeight]="50"
-        [footerHeight]="50"
-        [rowHeight]="'auto'"
-        [rows]="temp"
-        [summaryPosition]="'bottom'"
-        [scrollbarH]="'true'"
-        (activate)="onActivate($event)"
-        [loadingIndicator]="'true'"
-        [virtualization]="'false'"
-        [count]="page.totalElements"
-        [offset]="page.pageNumber"
-        [limit]="page.size"
-        [externalPaging]="'false'"
-        (page)="setPage($event)"
-        [selectAllRowsOnPage]="false"
-      >
-        <ngx-datatable-column name="ID Prix Livraison" prop="id"></ngx-datatable-column>
-        <ngx-datatable-column name="Prix" prop="prix"></ngx-datatable-column>
-        <ngx-datatable-column name="Actions">
-          <ng-template let-row="row" ngx-datatable-cell-template>
-            <div>
-              <a
-                *ngIf="crudPerms.update"
-                role="button"
-                (click)="openAssignPrixLivraison()"
-                data-target="#modal-form"
-                data-toggle="modal"
-              >
-              <i class="fa-solid fa-location-dot mr-2 text-primary fs-5"></i>
-              </a>
-              <a
-                *ngIf="crudPerms.delete"
-                role="button"
-                (click)="open(classic2, 'Notification', '')"
-                data-target="#modal-form"
-                data-toggle="modal"
-              >
-                <i class="fa-solid fa-trash-can text-danger mr-2 fs-5"></i>
-              </a>
-            </div>
-          </ng-template>
-        </ngx-datatable-column>
-      </ngx-datatable>
+</div>
+
+<!-- TABLEAU -->
+<div class="container-fluid mt-5">
+  <div class="dataTables_wrapper py-4 card px-4">
+    <div class="row">
+      <div class="col">
+        <strong> Prix de livraison</strong>
+      </div>
     </div>
+    <ngx-datatable
+      class="bootstrap selection-cell"
+      [columnMode]="'force'"
+      [headerHeight]="50"
+      [footerHeight]="50"
+      [rowHeight]="'auto'"
+      [rows]="temp"
+      [summaryPosition]="'bottom'"
+      [scrollbarH]="'true'"
+      (activate)="onActivate($event)"
+      [loadingIndicator]="'true'"
+      [virtualization]="'false'"
+      [count]="page.totalElements"
+      [offset]="page.pageNumber"
+      [limit]="page.size"
+      [externalPaging]="'false'"
+      (page)="setPage($event)"
+      [selectAllRowsOnPage]="false"
+    >
+      <ngx-datatable-column
+        name="ID Prix Livraison"
+        prop="id"
+      ></ngx-datatable-column>
+      <ngx-datatable-column name="Prix" prop="prix"></ngx-datatable-column>
+      <ngx-datatable-column name="Actions">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <div>
+            <a
+              *ngIf="crudPerms.update"
+              role="button"
+              (click)="openAssignPrixLivraison()"
+              data-target="#modal-form"
+              data-toggle="modal"
+            >
+              <i class="fa-solid fa-location-dot mr-2 text-primary fs-5"></i>
+            </a>
+            <a
+              *ngIf="crudPerms.delete"
+              role="button"
+              (click)="open(classic2, 'Notification', '')"
+              data-target="#modal-form"
+              data-toggle="modal"
+            >
+              <i class="fa-solid fa-trash-can text-danger mr-2 fs-5"></i>
+            </a>
+          </div>
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable>
   </div>
-  
+</div>
+
+<!-- TABLEAU prix localisation-->
+<div class="container-fluid mt-5">
+  <div class="dataTables_wrapper py-4 card px-4">
+    <div class="row">      <div class="col">
+      <strong> Localisation et prix</strong>
+    </div></div>
+    <ngx-datatable
+      class="bootstrap selection-cell"
+      [columnMode]="'force'"
+      [headerHeight]="50"
+      [footerHeight]="50"
+      [rowHeight]="'auto'"
+      [rows]="tempZonePrix"
+      [summaryPosition]="'bottom'"
+      [scrollbarH]="'true'"
+      [loadingIndicator]="'true'"
+      [virtualization]="'false'"
+      [count]="page1.totalElements"
+      [offset]="page1.pageNumber"
+      [limit]="page1.size"
+      [externalPaging]="'false'"
+      (page)="setPage1($event)"
+      [selectAllRowsOnPage]="false"
+    >
+      <ngx-datatable-column
+        name="ID Zone"
+        prop="zone.id"
+      ></ngx-datatable-column>
+      <ngx-datatable-column name="Zone">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span
+            ><strong>{{ row.zone.nom }}, </strong></span
+          >
+          <span>{{ row.zone.typezone.nom }}</span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Prix" prop="prixlivraison"></ngx-datatable-column>
+    </ngx-datatable>
+  </div>
+</div>

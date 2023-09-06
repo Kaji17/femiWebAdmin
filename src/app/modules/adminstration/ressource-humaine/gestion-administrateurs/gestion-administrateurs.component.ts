@@ -21,6 +21,8 @@ import { ModalUpdateComponent } from "./modal-update/modal-update.component";
 import { ToastrService } from "ngx-toastr";
 import swal from "sweetalert2";
 import { RolePermissionsService } from "src/app/shared/services/role-permissions.service";
+import { Configurable } from "src/app/core/config";
+import { ModalPhotoProfilComponent } from "../../profil/modal-photo-profil/modal-photo-profil.component";
 
 @Component({
   selector: "app-gestion-administrateurs",
@@ -47,6 +49,7 @@ export class GestionAdministrateursComponent implements OnInit {
     private utilitisService: UtilisService,
     private toastr: ToastrService,
     private rolePermission: RolePermissionsService,
+    private configService: Configurable
 
   ) {
     this.page.pageNumber = 0;
@@ -82,6 +85,23 @@ export class GestionAdministrateursComponent implements OnInit {
     // multiple dropzone file - accepts any type of file
   }
 
+  openPhoto() {
+    const modalRef = this.modalService.open(ModalPhotoProfilComponent, {
+      windowClass: "modal-mini",
+      size: "sm",
+      centered: true,
+    });
+    modalRef.result.then(
+      (result) => {
+        this.closeResult = "Closed with: " + result;
+        console.log("yaaaa", this.closeResult);
+      },
+      (reason) => {
+        this.closeResult = "Dismissed " + this.getDismissReason(reason);
+      }
+    );
+    modalRef.componentInstance.infoDaTa = this.activeRow.photo;
+  }
   onAddAdministrateur() {
     console.log("Ajout effectuer");
   }
@@ -125,8 +145,13 @@ export class GestionAdministrateursComponent implements OnInit {
     });
   }
 
-  getImage(): string[] {
-    return this.rows.map((row) => row.films);
+  getImg(src: string) {
+    if (src) {
+      return src.replace(
+        this.configService.get("imgVar"),
+        this.configService.get("imgHttp")
+      ) as any;
+    }
   }
 
   onSelect({ selected }) {
