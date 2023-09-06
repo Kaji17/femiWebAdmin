@@ -1,9 +1,13 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { Subscription } from "rxjs";
+import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
+import { Subscription, window } from "rxjs";
 import { AdministrateurService } from "src/app/shared/services/administrateur.service";
 import { UtilisService } from "src/app/shared/services/utilis.service";
 import swal from "sweetalert2";
+import { ModalPhotoProfilComponent } from "./modal-photo-profil/modal-photo-profil.component";
+import { Configurable } from "src/app/core/config";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-profil",
@@ -18,6 +22,7 @@ export class ProfilComponent implements OnInit, OnDestroy {
   public loading1: boolean = false;
   public suscriptionUpdatePassword: Subscription;
   public suscriptionUpdateAdminInfo: Subscription;
+  closeResult: string;
 
   formEditProfile!: FormGroup;
   formEditPassword!: FormGroup;
@@ -26,10 +31,20 @@ export class ProfilComponent implements OnInit, OnDestroy {
   public lastmotdepasse: string;
   public profil: any;
 
+  file: any;
+  fileSrc: any = "";
+  background: boolean;
+  fileTab: any[] = [];
+  fileTabSrc: any[] = [];
+
   constructor(
     private formBuilder: FormBuilder,
     private adminservice: AdministrateurService,
-    private utilitisService: UtilisService
+    private utilitisService: UtilisService,
+    private modalService: NgbModal,
+    private configService: Configurable,
+    private router: Router,
+    // private location: Location
   ) {}
   ngOnDestroy(): void {
     this.loading1 ? this.suscriptionUpdatePassword.unsubscribe() : "";
@@ -46,31 +61,26 @@ export class ProfilComponent implements OnInit, OnDestroy {
     console.log("Hide", this.emailHide);
   }
 
-
   // Construction du formulaire
   buildForm() {
     let fv: any = this.profil;
 
     this.formEditProfile = this.formBuilder.group({
-      nom:[
-        fv && fv.body.nom ?  fv.body.nom : null,[Validators.required]
-      ],
+      nom: [fv && fv.body.nom ? fv.body.nom : null, [Validators.required]],
       contact: [
-        fv && fv.body.contact ?  fv.body.contact: null,
+        fv && fv.body.contact ? fv.body.contact : null,
         [Validators.required, Validators.pattern(/^\w{10}$/)],
       ],
       email: [
-        fv && fv.body.email ?  fv.body.email : null,[Validators.required]
+        fv && fv.body.email ? fv.body.email : null,
+        [Validators.required],
       ],
-      role: [
-        fv && fv.body.role ?  fv.body.role : null,[Validators.required]
-      ],
-      motdepasse: [
-        fv && fv.body.motdepasse ?  fv.body.motdepasse : null,[]
-      ],
+      role: [fv && fv.body.role ? fv.body.role : null, [Validators.required]],
+      motdepasse: [fv && fv.body.motdepasse ? fv.body.motdepasse : null, []],
       boutique: [
-        fv && fv.body.boutique ?  fv.body.boutique : null,[Validators.required]
-      ]
+        fv && fv.body.boutique ? fv.body.boutique : null,
+        [Validators.required],
+      ],
     });
 
     this.formEditPassword = this.formBuilder.group({
@@ -96,12 +106,11 @@ export class ProfilComponent implements OnInit, OnDestroy {
     });
   }
 
-
   handleOk1() {
-    console.log(this.formEditProfile);   
+    console.log(this.formEditProfile);
     console.log("+++++=+++++=Res+++++=++++++", this.formEditProfile.value);
     let res: any = {};
-    res = this.formEditProfile.value
+    res = this.formEditProfile.value;
     this.updateAdminInfo(res, this.profil.body.id);
   }
 
@@ -128,7 +137,7 @@ export class ProfilComponent implements OnInit, OnDestroy {
         confirmButtonClass: "btn btn-success",
         onClose: () => {
           this.buildForm();
-          location.reload()
+          location.reload();
         },
       });
     } else {
@@ -179,11 +188,11 @@ export class ProfilComponent implements OnInit, OnDestroy {
       .updateAdmin(obj, id)
       .subscribe({
         next: (data) => {
-          console.log(data)
+          console.log(data);
           this.utilitisService.response(data, (d: any) => {
             this.loading = false;
             console.log(d);
-            if (data.status==204) {
+            if (data.status == 204) {
               this.infoSwal(false);
             } else {
               this.infoSwal(true);
@@ -197,5 +206,126 @@ export class ProfilComponent implements OnInit, OnDestroy {
           });
         },
       });
+  }
+
+  openPhoto() {
+    const modalRef = this.modalService.open(ModalPhotoProfilComponent, {
+      windowClass: "modal-mini",
+      size: "sm",
+      centered: true,
+    });
+    modalRef.result.then(
+      (result) => {
+        this.closeResult = "Closed with: " + result;
+        console.log("yaaaa", this.closeResult);
+      },
+      (reason) => {
+        this.closeResult = "Dismissed " + this.getDismissReason(reason);
+      }
+    );
+    modalRef.componentInstance.infoDaTa = this.profil.body.photo;
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return "by pressing ESC";
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return "by clicking on a backdrop";
+    } else {
+      return "with: $reason";
+    }
+  }
+
+  getImg(src: string) {
+    if (src) {
+      return src.replace(
+        this.configService.get("imgVar"),
+        this.configService.get("imgHttp")
+      ) as any;
+    }
+  }
+
+  getFisrtLetter(src: string) {
+    if (src) {
+      return src.substring(0, 1);
+    }
+  }
+
+  // Charger les images
+  loadFile(event: any, e?: any) {
+    // let id = this.rowSelected.id;
+    let reader = new FileReader();
+    console.log("KK", reader);
+    this.file = event.target.files[0];
+
+    this.fileTab.push(this.file);
+    reader.readAsDataURL(this.file);
+    reader.onload = (e) => {
+      this.fileSrc = reader.result as string;
+      this.background = true;
+      this.fileTabSrc.push(this.fileSrc);
+      console.log("e", e);
+    };
+    // if (e == "u") {
+    //   console.log("Modification", this.file);
+    //   this.UpdateMiniBanniere(this.idMiniBannSelect.id, this.file);
+    // } else {
+    //   console.log("Ajout", this.file);
+
+    // }
+    this.updatePhotoAdmin(this.profil.body.id, this.file);
+    console.log("La table src", this.fileTab);
+    console.log("La table", this.fileSrc);
+  }
+
+  updatePhotoAdmin(id, file) {
+    this.adminservice.updatePhoto(id, file).subscribe({
+      next: (data) => {
+        console.log("response==", data);
+        this.utilitisService.response(data, (d: any) => {
+          console.log("======response", d);
+          if (d.status == 200) {
+            console.log("======response", d);
+            localStorage.setItem("user_info", JSON.stringify(d));
+            this.profil = JSON.parse(localStorage.getItem("user_info"));
+            this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+              this.router.navigate(["administration/profil"]);
+            });
+            // this.router.navigate([]);
+            
+            // this.location.reload()
+             // window.location.reload()
+            // this.getAllAdmin({
+            //   boutiqueid: this.profil.body.boutique.id,
+            //   pagination: false,
+            //   page: 0,
+            //   size: 1,
+            //   id: this.profil.body.id,
+            // });
+            // this.infoSwal(true);
+          } else {
+            // this.infoSwal(false);
+          }
+        });
+      },
+    });
+  }
+
+  getAllAdmin(obj) {
+    this.adminservice.getAllAdmin(obj).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log("======response", d);
+          if (d.status == 200) {
+            console.log("======response", d);
+            localStorage.setItem("user_info", JSON.stringify(d));
+            // this.ngOnInit()
+            // this.infoSwal(true);
+          } else {
+            // this.infoSwal(false);
+          }
+        });
+      },
+    });
   }
 }

@@ -9,10 +9,10 @@
     <div class="row">
       <div class="col-lg-7 col-md-10">
         <h1 class="display-2 text-white">
-          {{"PROFIL.Salut"|translate}} {{ profil.body.nom | titlecase }}
+          {{ "PROFIL.Salut" | translate }} {{ profil.body.nom | titlecase }}
         </h1>
         <p class="text-white mt-0 mb-5">
-          {{"PROFIL.message" | translate}}
+          {{ "PROFIL.message" | translate }}
         </p>
       </div>
     </div>
@@ -25,15 +25,138 @@
         <div class="card-body pt-0 pt-md-4">
           <div class="row"></div>
           <div class="text-center">
-            <h3>{{ profil.body.nom | titlecase }}</h3>
-            <div class="h5 font-weight-300">
-              <i class="ni location_pin mr-2"></i
+            <div
+              *ngIf="profil.body.photo"
+              [style]="
+                'background-image: url(' + getImg(profil.body.photo) + ')'
+              "
+              style="
+                width: 100px;
+                height: 100px;
+                margin: auto;
+                background-size: cover;
+                background-repeat: no-repeat;
+              "
+              class="rounded-circle mb-2 mt-2 pp"
+            >
+              <div
+                class="changeImage rounded-circle position-relative"
+                role="button"
+                ngbDropdown
+                placement="bottom-right"
+              >
+                <p
+                  class="position-absolute text-center text-white"
+                  ngbDropdownToggle
+                  style="
+                    top: 26%;
+                    left: 10%;
+                    font-size: 12px;
+                    white-space: wrap !important;
+                  "
+                >
+                  <i class="fa-solid fa-camera"></i>
+                  Modifier photo de profil
+                </p>
+
+                <div
+                  class="dropdown-menu-arrow dropdown-menu-right"
+                  ngbDropdownMenu
+                >
+                <input
+                #fileUPDATEPP
+                type="file"
+                style="display: none"
+                (change)="loadFile($event)"
+                accept="image/png, image/gif, image/jpeg"
+              />
+                  <a class="dropdown-item" role="button" (click)="openPhoto()">
+                    <span>afficher la photo</span>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" role="button" (click)="fileUPDATEPP.click()">
+                    <span>Importer une photo</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div
+              *ngIf="!profil.body.photo"
+              style="
+                width: 100px;
+                height: 100px;
+                margin: auto;
+                align-items: center;
+                display: flex;
+                justify-content: center;
+                font-size: x-large;
+                color: white;
+              "
+              class="rounded-circle mb-2 pp border bg-gradient-danger position-relative"
+            >
+              <span class="position-fixed">{{getFisrtLetter(profil.body.nom)| uppercase}}</span>
+              <div
+                class="changeImage rounded-circle position-relative"
+                role="button"
+                ngbDropdown
+                placement="bottom-right"
+              >
+                <p
+                  class="position-absolute text-center text-white"
+                  ngbDropdownToggle
+                  style="
+                    top: 26%;
+                    left: 10%;
+                    font-size: 12px;
+                    white-space: wrap !important;
+                  "
+                >
+                  <i class="fa-solid fa-camera"></i>
+                  Modifier photo de profil
+                </p>
+
+                <div
+                  class="dropdown-menu-arrow dropdown-menu-right"
+                  ngbDropdownMenu
+                >
+                  <!-- <a class="dropdown-item" role="button" (click)="openPhoto()">
+                    <span>afficher la photo</span>
+                  </a> -->
+                  <div class="dropdown-divider"></div>
+                  <input
+                  #fileUPDATEPP
+                  type="file"
+                  style="display: none"
+                  (change)="loadFile($event)"
+                  accept="image/png, image/gif, image/jpeg"
+                />
+                  <a class="dropdown-item" role="button" (click)="fileUPDATEPP.click()">
+                    <span>Importer une photo</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <h3 class="row align-items-center justify-content-center">
+              {{ profil.body.nom | titlecase }}
+            </h3>
+            <div
+              class="h5 font-weight-300 row align-items-center justify-content-center"
+            >
+              <i class="ni location_pin mr-2 row"></i
               >{{ profil.body.boutique.adresse | titlecase }}
             </div>
-            <div class="h5 mt-4">{{ profil.body.role.nom | titlecase }}</div>
-            <div>{{ profil.body.role.boutique.nom | titlecase }}</div>
-            <hr class="my-4" />
-            <a href="javascript:void(0)">{{"PROFIL.Voir plus"|translate}}</a>
+            <div class="h5 mt-4 row align-items-center justify-content-center">
+              {{ profil.body.role.nom | titlecase }}
+            </div>
+            <div class="row align-items-center justify-content-center">
+              {{ profil.body.role.boutique.nom | titlecase }}
+            </div>
+            <hr class="my-4 row align-items-center justify-content-center" />
+            <a
+              class="row align-items-center justify-content-center"
+              href="javascript:void(0)"
+              >{{ "PROFIL.Voir plus" | translate }}</a
+            >
           </div>
         </div>
       </div>
@@ -43,20 +166,24 @@
         <div class="card-header bg-white border-0">
           <div class="row align-items-center">
             <div class="col-12">
-              <h3 class="mb-0">{{"PROFIL.InformationProfile"|translate}}</h3>
+              <h3 class="mb-0">
+                {{ "PROFIL.InformationProfile" | translate }}
+              </h3>
             </div>
           </div>
         </div>
         <div class="card-body">
           <!-- Edit Information personnel -->
-          <h6 class="heading-small text-muted mb-4">{{"PROFIL.Informationpersonnel"|translate}}</h6>
+          <h6 class="heading-small text-muted mb-4">
+            {{ "PROFIL.Informationpersonnel" | translate }}
+          </h6>
           <form class="pl-lg-4" [formGroup]="formEditProfile">
             <div class="row">
               <div class="col-lg-6">
                 <div class="form-group">
-                  <label class="form-control-label" for="input-username"
-                    >{{"PROFIL.Nom et Prénoms"|translate}}</label
-                  >
+                  <label class="form-control-label" for="input-username">{{
+                    "PROFIL.Nom et Prénoms" | translate
+                  }}</label>
                   <input
                     type="text"
                     id="input-username"
@@ -66,22 +193,21 @@
                   />
                   <div
                     *ngIf="
-                      formEditProfile.controls['nom'].status ==
-                        'INVALID' &&
+                      formEditProfile.controls['nom'].status == 'INVALID' &&
                       formEditProfile.controls['nom'].touched
                     "
                   >
-                    <small class="text-danger"
-                      >{{"VALIDATION.ErrorName"|translate}}</small
-                    >
+                    <small class="text-danger">{{
+                      "VALIDATION.ErrorName" | translate
+                    }}</small>
                   </div>
                 </div>
               </div>
               <div class="col-lg-6">
                 <div class="form-group">
-                  <label class="form-control-label" for="input-email"
-                    >{{"PROFIL.Adresse mail"|translate}}</label
-                  >
+                  <label class="form-control-label" for="input-email">{{
+                    "PROFIL.Adresse mail" | translate
+                  }}</label>
                   <input
                     type="email"
                     id="input-email"
@@ -95,9 +221,9 @@
             <div class="row">
               <div class="col-lg-4">
                 <div class="form-group">
-                  <label class="form-control-label" for="input-contact"
-                    >{{"PROFIL.Contact"|translate}}</label
-                  >
+                  <label class="form-control-label" for="input-contact">{{
+                    "PROFIL.Contact" | translate
+                  }}</label>
                   <input
                     type="text"
                     id="input-contact"
@@ -110,17 +236,17 @@
                       formEditProfile.controls['contact'].touched
                     "
                   >
-                    <small class="text-danger"
-                      >{{"VALIDATION.ErrorContact"|translate}}</small
-                    >
+                    <small class="text-danger">{{
+                      "VALIDATION.ErrorContact" | translate
+                    }}</small>
                   </div>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-group">
-                  <label class="form-control-label" for=" input-boutique"
-                    >{{"PROFIL.Boutique"|translate}}</label
-                  >
+                  <label class="form-control-label" for=" input-boutique">{{
+                    "PROFIL.Boutique" | translate
+                  }}</label>
                   <input
                     type="text"
                     id="input-boutique"
@@ -132,14 +258,14 @@
               </div>
               <div class="col-lg-4">
                 <div class="form-group">
-                  <label class="form-control-label" for="input-role"
-                    >{{"PROFIL.Rôle"|translate}}</label
-                  >
+                  <label class="form-control-label" for="input-role">{{
+                    "PROFIL.Rôle" | translate
+                  }}</label>
                   <input
                     type="text"
                     id=" input-role"
                     class="form-control form-control-alternative"
-                    [value]=" role"
+                    [value]="role"
                     disabled
                   />
                 </div>
@@ -153,8 +279,8 @@
                   [disabled]="formEditProfile.invalid"
                   (click)="handleOk1()"
                 >
-                <i class="fa-solid fa-spinner fa-spin" *ngIf="loading"></i>
-                {{"BOUTTON.Enregistrer"|translate}}
+                  <i class="fa-solid fa-spinner fa-spin" *ngIf="loading"></i>
+                  {{ "BOUTTON.Enregistrer" | translate }}
                 </button>
               </div>
             </div>
@@ -163,13 +289,17 @@
           <hr class="my-4" />
 
           <!-- Edit mot de passe -->
-          <h6 class="heading-small text-muted mb-4">{{"PROFIL.Mot de Passe"|translate}}</h6>
+          <h6 class="heading-small text-muted mb-4">
+            {{ "PROFIL.Mot de Passe" | translate }}
+          </h6>
           <form class="pl-lg-4" [formGroup]="formEditPassword">
             <div class="row">
               <div class="col-lg-4">
                 <div class="form-group">
-                  <label class="form-control-label" for="input-ancien-password"
-                    >{{"PROFIL.Ancien mot de passe"|translate}}</label
+                  <label
+                    class="form-control-label"
+                    for="input-ancien-password"
+                    >{{ "PROFIL.Ancien mot de passe" | translate }}</label
                   >
                   <input
                     type="password"
@@ -185,15 +315,17 @@
                       true
                     "
                   >
-                    <small class="text-danger">{{"VALIDATION.ErrorMotDePasseErroné"|translate}}</small>
+                    <small class="text-danger">{{
+                      "VALIDATION.ErrorMotDePasseErroné" | translate
+                    }}</small>
                   </div>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-group">
-                  <label class="form-control-label" for="input-new-password"
-                    >{{"PROFIL.Nouveau mot de passe"|translate}}</label
-                  >
+                  <label class="form-control-label" for="input-new-password">{{
+                    "PROFIL.Nouveau mot de passe" | translate
+                  }}</label>
                   <input
                     type="text"
                     id="input-new-password"
@@ -210,7 +342,8 @@
                   "
                 >
                   <small class="text-primary"
-                    ><span class="text-danger">*</span>{{"VALIDATION.ErrorMotDePasseFormat"|translate}}</small
+                    ><span class="text-danger">*</span
+                    >{{ "VALIDATION.ErrorMotDePasseFormat" | translate }}</small
                   >
                 </div>
               </div>
@@ -219,7 +352,7 @@
                   <label
                     class="form-control-label"
                     for="input-confirm-new-password"
-                    >{{"PROFIL.Confirmer mot de passe"|translate}}</label
+                    >{{ "PROFIL.Confirmer mot de passe" | translate }}</label
                   >
                   <input
                     type="text"
@@ -235,9 +368,9 @@
                     formEditPassword.controls['confirmpassword'].touched
                   "
                 >
-                  <small class="text-danger"
-                    >{{"VALIDATION.ErrorMotDePasseFormatConfirmer"|translate}}</small
-                  >
+                  <small class="text-danger">{{
+                    "VALIDATION.ErrorMotDePasseFormatConfirmer" | translate
+                  }}</small>
                 </div>
               </div>
             </div>
@@ -249,8 +382,8 @@
                   [disabled]="formEditPassword.invalid"
                   (click)="handleOk2()"
                 >
-                <i class="fa-solid fa-spinner fa-spin" *ngIf="loading1"></i>
-                {{"BOUTTON.Enregistrer"|translate}}
+                  <i class="fa-solid fa-spinner fa-spin" *ngIf="loading1"></i>
+                  {{ "BOUTTON.Enregistrer" | translate }}
                 </button>
               </div>
             </div>

@@ -1,0 +1,14 @@
+.pp:hover {
+  .changeImage {
+    display: flex;
+  }
+}
+
+.changeImage {
+  display: none;
+  width: 100px;
+  height: 100px;
+  margin: auto;
+  background-color: rgba(61, 61, 61, 0.675);
+  
+}
