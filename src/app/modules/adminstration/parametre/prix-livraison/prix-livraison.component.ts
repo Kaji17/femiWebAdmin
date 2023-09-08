@@ -64,6 +64,7 @@ export class PrixLivraisonComponent implements OnInit {
       size: this.page.size,
     });
     this.getAllZone({
+      boutiqueid: this.infoUser.body.boutique.id,
       pagination: true,
       typezoneid: 2,
       page: this.page.pageNumber,
@@ -120,6 +121,7 @@ export class PrixLivraisonComponent implements OnInit {
                 size: 10,
               });
               this.getAllZone({
+                boutiqueid: this.infoUser.body.boutique.id,
                 pagination: true,
                 typezoneid: 2,
                 page: 0,
@@ -155,6 +157,7 @@ export class PrixLivraisonComponent implements OnInit {
     this.page1.pageNumber = pageInfo.offset;
     console.log("=====pageInfo", this.page1);
     this.getAllZone({
+      boutiqueid: this.infoUser.body.boutique.id,
       pagination: true,
       typezoneid: 2,
       page: this.page1.pageNumber,

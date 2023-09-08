@@ -1,1 +1,94 @@
-<p>gestion-transaction works!</p>
+<div class="header bg-gradient-danger pb-2 pt-0 pt-md-8">
+    <div class="container-fluid">
+      <div class="header-body">
+        <div
+          class="row align-items-center py-md-3 py-sm-5 px-0 justify-content-between"
+        >
+          <div class="col-lg-6 col-xl-5 col-md-4">
+            <div class="row align-items-center">
+              <div class="col-lg-3 col-md-7 col-sm-2 col-xs-2">
+                <h6 class="h2 text-white d-inline-block mb-0 me-1">Transactions</h6>
+              </div>
+              <div class="col-lg-3 col-md-7 col-sm-2 col-xs-2">
+                <button
+                  class="btn btn-primary btn-sm"
+                  (click)="getFichierTransaction()"
+                  type="button"
+                >
+                  <i class="fa fa-file-export text-white"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- TABLEAU -->
+  <div class="container-fluid mt-5">
+    <div class="dataTables_wrapper py-4 card px-4">
+      <ngx-datatable
+        class="bootstrap selection-cell"
+        [columnMode]="'force'"
+        [headerHeight]="50"
+        [footerHeight]="60"
+        [rowHeight]="'auto'"
+        [rows]="temp"
+        [summaryPosition]="'bottom'"
+        [scrollbarH]="'true'"
+        (activate)="onActivate($event)"
+        [loadingIndicator]="'true'"
+        [virtualization]="'false'"
+        [count]="page.totalElements"
+        [offset]="page.pageNumber"
+        [limit]="page.size"
+        [externalPaging]="'false'"
+        (page)="setPage($event)"
+        [selectAllRowsOnPage]="false"
+      >
+        <ngx-datatable-column name="ID Transaction" prop="id"></ngx-datatable-column>
+        <ngx-datatable-column name="ID client" prop="commande.client.nom"></ngx-datatable-column>
+        <ngx-datatable-column name="Code Commande" prop="commande.code"></ngx-datatable-column>
+        <ngx-datatable-column name="Mode de paiement" prop="modepaiement.nom"></ngx-datatable-column>
+        <ngx-datatable-column name="Montant" prop="montant"></ngx-datatable-column>
+        <ngx-datatable-column name="Numéro de paiement" prop="numeropaiement"> 
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                <span *ngIf="!row.contact"> null </span>
+              </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Opérateur" prop="operateur">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                <span *ngIf="!row.operateur"> null </span>
+              </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Statut" prop="statut"></ngx-datatable-column>
+        <ngx-datatable-column name="Adresse" [width]="200">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                <span class="row align-items-center justify-content-center"
+                  ><strong>{{ row.commande.adresse.nom }}</strong></span
+                >
+                <span class="row align-items-center justify-content-center">{{
+                  row.commande.adresse.description
+                }}</span>
+              </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Date de création">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <span>
+              {{ row.datecreation | date : "dd/MM/yyyy HH:mm:ss" }}
+            </span>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Date de paiement">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <span>
+                {{ row.datepaiement | date : "dd/MM/yyyy HH:mm:ss" }}
+              </span>
+            </ng-template>
+          </ngx-datatable-column>
+        
+      </ngx-datatable>
+    </div>
+  </div>
+  

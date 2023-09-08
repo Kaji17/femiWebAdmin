@@ -10,12 +10,14 @@ import { UtilisService } from 'src/app/shared/services/utilis.service';
 export class DetailsCommandeComponent implements OnInit {
 
   @Input() infoDaTa;
+  tempPropduit:any
   constructor(
     public activeModal: NgbActiveModal,
     private utilitisService: UtilisService,
   ) { }
 
   ngOnInit(): void {
+    console.log(this.infoDaTa)
   }
 
     // Fermer le modal

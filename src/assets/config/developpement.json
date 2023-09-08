@@ -1,7 +1,7 @@
 {   
     "HOST_API-DEV": "https://kms02.net:9802",
     "HOST_API-DEV1": "https://kms02.net:9803",
-    "HOST_API-DEV2": "https://kms02.net:9803",
+    "HOST_API-DEV2": "https://kms02.net:9804",
     "HOST:API": "https://kms02.net:9802",
     "API_ENDPOINTS": {
 
@@ -56,7 +56,7 @@
       "MINIBANNIERE_DEL_DEL": "/klaman/v1/user/minibanniere/delete",
 
       "comment ": "------------ OPERATIONS CLIENT---------------",
-      "CLIENT_GETALL_GET": "/klaman/v1/user/client/getall",
+      "CLIENT_GETALL_GET": "/klaman/v1/client/getall",
   
       "comment ": "------------ OPERATIONS ROLE---------------",
       "ROLE_UPD_PUT": "/klaman/v1/user/role/update",
@@ -97,7 +97,10 @@
       "STATISTIQUE_NOMBREVENTES_GET": "/klaman/v1/statistique/nombredeventes",
       "STATISTIQUE_PRODUITPLUSVENDUS_GET": "/klaman/v1/statistique/getproduitsplusvendus",
       "STATISTIQUE_MODEPAIEMENT_GET": "/klaman/v1/statistique/getmodepaimentstats",
-      "STATISTIQUE_CHIFFREAFFAIRE_GET": "/klaman/v1/statistique/chiffreaffaires"
+      "STATISTIQUE_CHIFFREAFFAIRE_GET": "/klaman/v1/statistique/chiffreaffaires",
+
+      "comment ": "------------ OPERATIONS ACHAT ---------------",
+      "ACHAT_GETALL_GET": "/klaman/v1/vente/achat/getall"
     },
     "imgVar": "/var/www/html/",
     "imgHttp": "https://kms02.net/"

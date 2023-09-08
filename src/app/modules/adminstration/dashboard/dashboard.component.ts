@@ -1,4 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import {
+  AfterContentInit,
+  AfterViewInit,
+  Component,
+  OnInit,
+} from "@angular/core";
 
 import {
   parseOptions,
@@ -21,7 +26,8 @@ import { StatistiqueService } from "src/app/shared/services/statistique.service"
 })
 export class DashboardComponent implements OnInit {
   public datasets: any;
-  public data: any;
+  public dataStat: any;
+  // public data: any;
   public labelsWeeksDays: string[];
   public labelsMonth: string[];
   public labelsYears: string[];
@@ -49,6 +55,9 @@ export class DashboardComponent implements OnInit {
   public itemsbreadcrumb: any[];
   public tittelbreadcrumb: string = "Dasboard";
   tempPanierMoyen: any[];
+  tempNombreVentes: any[];
+  tempNombreCommandeProduit: any[];
+  tempNombreModePaiement: any[];
   activeRow: any;
 
   listZone: any[];
@@ -59,12 +68,13 @@ export class DashboardComponent implements OnInit {
     { label: "Année", key: "year" },
   ];
   configZone = {
-    // displayFn:(item: any) => { return item.zone.nom?item.zone.nom:item.nom; },
+    displayFn: (item: any) => {
+      return item.zone.nom;
+    },
     displayKey: "nom", //if objects array passed which key to be displayed defaults to description
     height: "300px", //height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
-    placeholder: "zone", // text to be displayed when no item is selected defaults to Select,
-    search: true,
-    searchOnKey: "nom",
+    placeholder: "Filtrer zone", // text to be displayed when no item is selected defaults to Select,
+    enableSelectAll: true,
   };
   configperiode = {
     displayKey: "label", //if objects array passed which key to be displayed defaults to description
@@ -73,12 +83,24 @@ export class DashboardComponent implements OnInit {
     placeholder: this.listPeriode[0].label,
   };
   zoneselect: any;
+  zoneselectSales: any;
+  zoneselectNbreCmde: any;
+  zoneselectModePaiement: any;
+
   objSearchPanierMoyen: any;
+  objSearchSales: any;
+  objSearchCmde: any;
+  objSearchModePay: any;
+
+
   page = new Page();
   infoUser: any;
   periodeselect: any;
+  periodeselectSales: any;
 
   dataTotalOrders: any;
+  dataTotalChiffreAffaire: any;
+  dataTotalModePaiement: any;
 
   constructor(
     private breadcrumbService: BreadcrumbService,
@@ -90,16 +112,56 @@ export class DashboardComponent implements OnInit {
     this.page.size = 10;
     this.infoUser = JSON.parse(localStorage.getItem("user_info"));
   }
+
   ngOnInit() {
+    this.getStatNombreDeVentes({
+      periode: "month",
+      boutiqueid: this.infoUser.body.boutique.id,
+    });
+
+    this.getStatNombreDeVentesByZone({
+      periode: "day",
+      boutiqueid: this.infoUser.body.boutique.id,
+    });
+
+    this.getStatChiffreAffaire({
+      periode: "month",
+      boutiqueid: this.infoUser.body.boutique.id,
+    });
+
+    this.getStatProduitPlusVendus({
+      boutiqueid: this.infoUser.body.boutique.id,
+    });
+
+    this.getStatModePaiement({
+      boutiqueid: this.infoUser.body.boutique.id,
+
+    })
+    console.log("data order===", this.dataTotalOrders);
     //
     this.getAllZone({
       pagination: false,
+      typezoneid: 2,
     });
 
     this.objSearchPanierMoyen = {
       periode: "day",
       boutiqueid: this.infoUser.body.boutique.id,
     };
+
+    this.objSearchSales = {
+      periode: "day",
+      boutiqueid: this.infoUser.body.boutique.id,
+    };
+    this.objSearchCmde = {
+      boutiqueid: this.infoUser.body.boutique.id,
+    };
+
+    this.objSearchModePay = {
+      boutiqueid: this.infoUser.body.boutique.id,
+    };
+
+
     this.getStatPanierMoyen(this.objSearchPanierMoyen);
     //
     this.chiffreAffaireTotal = 0;
@@ -119,136 +181,54 @@ export class DashboardComponent implements OnInit {
 
     this.updatebBreadcrumb(this.itemsbreadcrumb, this.tittelbreadcrumb);
 
-    this.avis = [
-      {
-        produitName: "test",
-        note: 4,
-        commentaire: 20,
-      },
-      {
-        produitName: "test",
-        note: 2,
-        commentaire: 20,
-      },
-      {
-        produitName: "test",
-        note: 3,
-        commentaire: 20,
-      },
-      {
-        produitName: "test",
-        note: 1,
-        commentaire: 20,
-      },
-      {
-        produitName: "test",
-        note: 5,
-        commentaire: 20,
-      },
-    ];
-    this.commandeByZone = [
-      {
-        periode: "10/01/2023",
-        nombreDeVente: 20,
-      },
-      {
-        periode: "10/01/2023",
-        nombreDeVente: 20,
-      },
-      {
-        periode: "10/01/2023",
-        nombreDeVente: 30,
-      },
-      {
-        periode: "10/01/2023",
-        nombreDeVente: 10,
-      },
-      {
-        periode: "10/01/2023",
-        nombreDeVente: 50,
-      },
-    ];
-    this.datasets = [
-      [0, 20, 10, 30, 15, 40, 20, 60, 60],
-      [0, 20, 5, 25, 10, 30, 15],
-      [100000, 2000000, 2500000, 3000000, 1000000],
-    ];
-    this.data = this.datasets[0];
-    this.labelsMonth = [
-      "Jan",
-      "Feb",
-      "Mars",
-      "Avr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    this.labelsWeeksDays = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
-
-    this.labelsYears = ["2023", "2024", "2025", "2026", "2027"];
-
-    var chartOrders = document.getElementById("chart-orders");
-
     parseOptions(Chart, chartOptions());
 
-    this.ordersChart = new Chart(chartOrders, {
-      type: "bar",
-      options: chartExample2.options,
-      data: this.dataTotalOrders,
-    });
 
-    var chartSales = document.getElementById("chart-sales");
 
-    this.salesChart = new Chart(chartSales, {
-      type: "line",
-      options: chartExample1.options,
-      data: chartExample1.data,
-    });
+    // var chartRevenuProduit = document.getElementById("chart-revenuProduit");
 
-    var chartProduit = document.getElementById("chart-produit");
-
-    this.produitChart = new Chart(chartProduit, {
-      type: "pie",
-      data: chartExample3.data,
-    });
-
-    var chartRevenuProduit = document.getElementById("chart-revenuProduit");
-
-    this.revenuProduitChart = new Chart(chartRevenuProduit, {
-      type: "doughnut",
-      option: chartExample3.options,
-      data: chartExample3.data,
-    });
+    // this.revenuProduitChart = new Chart(chartRevenuProduit, {
+    //   type: "doughnut",
+    //   option: chartExample3.options,
+    //   data: chartExample3.data,
+    // });
   }
 
   public updateOptions(type: number) {
-    this.salesChart.data.datasets[0].data = this.data;
-    this.ordersChart.data.datasets[0].data = this.data;
     switch (type) {
       case 0:
-        this.salesChart.data.labels = this.labelsMonth;
-        this.salesChart.update();
-        this.ordersChart.data.labels = this.labelsMonth;
-        this.ordersChart.update();
+        this.updateData({
+          periode: "month",
+          boutiqueid: this.infoUser.body.boutique.id,
+        });
 
+        this.updateDataChiffreAffaire({
+          periode: "month",
+          boutiqueid: this.infoUser.body.boutique.id,
+        });
         break;
       case 1:
-        this.salesChart.data.labels = this.labelsWeeksDays;
-        this.salesChart.update();
-        this.ordersChart.data.labels = this.labelsWeeksDays;
-        this.ordersChart.update();
+        this.updateData({
+          periode: "day",
+          boutiqueid: this.infoUser.body.boutique.id,
+        });
+
+        this.updateDataChiffreAffaire({
+          periode: "day",
+          boutiqueid: this.infoUser.body.boutique.id,
+        });
         break;
 
       case 2:
-        this.salesChart.data.labels = this.labelsYears;
-        this.salesChart.update();
-        this.ordersChart.data.labels = this.labelsYears;
-        this.ordersChart.update();
+        this.updateData({
+          periode: "year",
+          boutiqueid: this.infoUser.body.boutique.id,
+        });
+
+        this.updateDataChiffreAffaire({
+          periode: "year",
+          boutiqueid: this.infoUser.body.boutique.id,
+        });
         break;
       default:
         break;
@@ -259,26 +239,125 @@ export class DashboardComponent implements OnInit {
     this.breadcrumbService.setData(data, title);
   }
 
-  filterzone() {
-    console.log("zone search", this.zoneselect);
-    if (this.zoneselect.id) {
-      this.objSearchPanierMoyen.zoneid = this.zoneselect.id;
-      this.getStatPanierMoyen(this.objSearchPanierMoyen);
-      console.log("obj search", this.objSearchPanierMoyen);
-    } else {
-      this.objSearchPanierMoyen.zoneid = null;
+  filterzone(tab) {
+    switch (tab) {
+      case "panier":
+        console.log("zone search", this.zoneselect);
+        if (this.zoneselect.zone) {
+          this.objSearchPanierMoyen.zoneid = this.zoneselect.zone.id;
+          this.getStatPanierMoyen(this.objSearchPanierMoyen);
+          console.log("obj search", this.objSearchPanierMoyen);
+        } else {
+          this.objSearchPanierMoyen.zoneid = null;
+          this.objSearchPanierMoyen = {
+            periode: "day",
+            boutiqueid: this.infoUser.body.boutique.id,
+          };
+          this.getStatPanierMoyen(this.objSearchPanierMoyen);
+        }
+        break;
+
+      case "sales":
+        console.log("zone search", this.zoneselectSales);
+        if (this.zoneselectSales.zone) {
+          this.objSearchSales.zoneid = this.zoneselectSales.zone.id;
+          this.getStatNombreDeVentesByZone(this.objSearchSales);
+          console.log("obj search", this.objSearchSales);
+        } else {
+          this.objSearchSales.zoneid = null;
+          this.objSearchSales = {
+            periode: "day",
+            boutiqueid: this.infoUser.body.boutique.id,
+          };
+          this.getStatNombreDeVentesByZone(this.objSearchSales);
+        }
+        break;
+
+      case "commande":
+        console.log("zone search", this.zoneselectNbreCmde);
+        if (this.zoneselectNbreCmde.zone) {
+          this.objSearchCmde.zoneid = this.zoneselectNbreCmde.zone.id;
+          this.getStatProduitPlusVendus(this.objSearchCmde);
+          console.log("obj search", this.objSearchCmde);
+        } else {
+          this.objSearchCmde.zoneid = null;
+          this.objSearchCmde = {
+            boutiqueid: this.infoUser.body.boutique.id,
+          };
+          this.getStatProduitPlusVendus(this.objSearchCmde);
+        }
+        break;
+        case "modePaiement":
+          console.log("zone search", this.zoneselectModePaiement);
+          if (this.zoneselectModePaiement.zone) {
+            this.objSearchModePay.zoneid = this.zoneselectModePaiement.zone.id;
+            this.getStatModePaiement(this.objSearchModePay);
+            console.log("obj search", this.objSearchModePay);
+          } else {
+            this.objSearchModePay.zoneid = null;
+            this.objSearchModePay = {
+              boutiqueid: this.infoUser.body.boutique.id,
+            };
+            this.getStatModePaiement(this.objSearchModePay);
+          }
+          break;
+
+      default:
+        break;
     }
   }
-  filterperiode() {
-    console.log("periode search", this.periodeselect);
-    this.objSearchPanierMoyen.periode = this.periodeselect.key;
-    this.getStatPanierMoyen(this.objSearchPanierMoyen);
-    console.log("obj search", this.objSearchPanierMoyen);
+
+  filterperiode(tab) {
+    switch (tab) {
+      case "panier":
+        if (this.periodeselect.key) {
+          if (this.zoneselect.zone) {
+            console.log("periode search", this.periodeselect);
+            this.objSearchPanierMoyen.periode = this.periodeselect.key;
+            this.getStatPanierMoyen(this.objSearchPanierMoyen);
+            console.log("obj search", this.objSearchPanierMoyen);
+          } else {
+            let obj: any = {
+              periode: this.periodeselect.key,
+              boutiqueid: this.infoUser.body.boutique.id,
+            };
+            this.objSearchPanierMoyen = obj;
+            this.getStatPanierMoyen(this.objSearchPanierMoyen);
+          }
+        } else {
+          this.getStatPanierMoyen(this.objSearchPanierMoyen);
+        }
+        break;
+
+      case "sales":
+        if (this.periodeselectSales.key) {
+          if (this.zoneselect.zone) {
+            console.log("periode search", this.periodeselectSales);
+            this.objSearchSales.periode = this.periodeselectSales.key;
+            this.getStatNombreDeVentesByZone(this.objSearchSales);
+            console.log("obj search", this.objSearchSales);
+          } else {
+            let obj: any = {
+              periode: this.periodeselectSales.key,
+              boutiqueid: this.infoUser.body.boutique.id,
+            };
+            this.objSearchSales = obj;
+            this.getStatNombreDeVentesByZone(this.objSearchSales);
+          }
+        } else {
+          this.getStatNombreDeVentesByZone(this.objSearchSales);
+        }
+        break;
+
+      default:
+        break;
+    }
   }
+
+  // Filtrer
 
   onActivate(event) {
     this.activeRow = event.row;
-    console.log("Je suis active ===", this.activeRow);
   }
 
   /************STATISTIQUE****************/
@@ -309,72 +388,734 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  // Donnée statistique de nombre de vente
-  getStatNombreDeVentes(obj, per) {
+  // Donnée statistique de nombre de vente par  zone
+  getStatNombreDeVentesByZone(obj) {
     this.statistiqueService.nombreVentesStatistique(obj).subscribe({
       next: (data) => {
         this.utilitisService.response(data, (d: any) => {
           console.log(d);
           if (data.status == 200) {
-            this.dataTotalOrders = {
-              labels: [
-                "Jan",
-                "Feb",
-                "Mars",
-                "Avr",
-                "May",
-                "Jun",
-                "Jul",
-                "Aug",
-                "Sep",
-                "Oct",
-                "Nov",
-                "Dec",
-              ],
+            this.tempNombreVentes = [];
+            let lis: any[] = [];
+            lis = d.body;
+            lis.map((el) => {
+              this.tempNombreVentes.push(el);
+            });
+            console.log(
+              "list des stats nombre de ventes ====",
+              this.tempNombreVentes
+            );
+          }
+        });
+      },
+      error: (error) => {
+        this.utilitisService.response(error, (d: any) => {});
+      },
+    });
+  }
+
+  // Donnée statistique de nombre de vente par  zone
+  getStatModePaiement(obj) {
+    this.statistiqueService.modePaiementStatistique(obj).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log(d);
+          if (data.status == 200) {
+            this.dataTotalModePaiement = {
+              labels: [],
               datasets: [
                 {
-                  label: "Commandes",
-                  data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                  maxBarThickness: 12,
+                  labels: [],
+                  data: [],
+                  backgroundColor: [
+                    "rgb(255, 99, 132)",
+                    "rgb(54, 162, 235)",
+                    "rgb(255, 205, 86)",
+                  ],
+                  hoverOffset: 4,
                 },
               ],
             };
+            let tab: [] = d.body;
+            console.log("data orde1===", this.dataTotalModePaiement);
+            tab.map((el: any) => {
+              this.dataTotalModePaiement.labels.push(el.modepaiement);
+              this.dataTotalModePaiement.datasets[0].labels.push(el.modepaiement);
 
-            switch (per) {
-              case "month":
-                d.map((el: any) => {
+              this.dataTotalModePaiement.datasets[0].data.push(el.nombre);
+              console.log("data orde2===", this.dataTotalModePaiement);
+            });
+            console.log("INIT CHART mode paiement=======");
+            var chartProduit = document.getElementById("chart-produit");
+
+            this.produitChart = new Chart(chartProduit, {
+              type: "pie",
+              data: this.dataTotalModePaiement,
+            });
+          }
+        });
+      },
+      error: (error) => {
+        this.utilitisService.response(error, (d: any) => {});
+      },
+    });
+  }
+
+  // Donnée statistique des produit les plus vendus
+  getStatProduitPlusVendus(obj) {
+    this.statistiqueService.produitPlusVendusStatistique(obj).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log(d);
+          if (data.status == 200) {
+            this.tempNombreCommandeProduit = [];
+            let lis: any[] = [];
+            lis = d.body;
+            lis.map((el) => {
+              this.tempNombreCommandeProduit.push(el);
+            });
+            console.log(
+              "list des stats nombre de commande ====",
+              this.tempNombreCommandeProduit
+            );
+          }
+        });
+      },
+      error: (error) => {
+        this.utilitisService.response(error, (d: any) => {});
+      },
+    });
+  }
+
+  // Donnée statistique de nombre de vente
+  getStatNombreDeVentes(obj) {
+    let currentDate = new Date();
+
+    let currentYear = currentDate.getFullYear();
+
+    let curentMonth = currentDate.getMonth();
+
+    this.statistiqueService.nombreVentesStatistique(obj).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log(d);
+          if (data.status == 200) {
+            switch (obj.periode) {
+              case "year":
+                this.dataTotalOrders = {
+                  labels: [],
+                  datasets: [
+                    {
+                      label: "Commandes",
+                      data: [],
+                      maxBarThickness: 12,
+                    },
+                  ],
+                };
+                let tabyear: [] = d.body;
+                console.log("data orde1===", this.dataTotalOrders);
+                tabyear.map((el: any) => {
                   let date = new Date(el.periode);
-                  let moisGet = date.getMonth();
-                  this.dataTotalOrders.datasets[0].data[moisGet] =
-                    el.nombreventes;
+
+                  // Donne les stats de l'année en cours
+                  if (date.getFullYear() == currentYear) {
+                    let yearGet = date.getFullYear();
+                    this.dataTotalOrders.labels.push(`${yearGet}`);
+                    this.dataTotalOrders.datasets[0].data.push(el.nombreventes);
+                    console.log("data orde2===", this.dataTotalOrders);
+                  }
+                });
+                console.log("INIT CHART ORDER=======");
+                var chartOrders = document.getElementById("chart-orders");
+                this.ordersChart = new Chart(chartOrders, {
+                  type: "bar",
+                  options: chartExample2.options,
+                  data: this.dataTotalOrders,
                 });
                 break;
-              case "year":
-                d.map((el: any) => {
+
+              case "day":
+                this.dataTotalOrders = {
+                  labels: [],
+                  datasets: [
+                    {
+                      label: "Commandes",
+                      data: [],
+                      maxBarThickness: 12,
+                    },
+                  ],
+                };
+                let tabD: [] = d.body;
+                console.log("data orde1Day===", this.dataTotalOrders);
+                tabD.map((el: any) => {
+                  // console.log("data date===", el)
                   let date = new Date(el.periode);
-                  let moisGet = date.getMonth();
-                  this.dataTotalOrders.datasets[0].data[moisGet] =
-                    el.nombreventes;
+
+                  if (
+                    date.getMonth() == curentMonth &&
+                    date.getFullYear() == currentYear
+                  ) {
+                    let moisDay = date.getDay();
+                    console.log("day===", moisDay);
+
+                    this.dataTotalOrders.datasets[0].data[moisDay - 1] =
+                      el.nombreventes;
+                    console.log("data orde2Day===", this.dataTotalOrders);
+                    +"/" + curentMonth + 1 + "/" + currentYear;
+                  }
+                });
+
+                console.log("INIT CHART ORDER=======");
+                var chartOrders = document.getElementById("chart-orders");
+                this.ordersChart = new Chart(chartOrders, {
+                  type: "bar",
+                  options: chartExample2.options,
+                  data: this.dataTotalOrders,
                 });
                 break;
 
               default:
+                this.dataTotalOrders = {
+                  labels: [
+                    "Jan" + "-" + currentYear,
+                    "Feb" + "-" + currentYear,
+                    "Mars" + "-" + currentYear,
+                    "Avr" + "-" + currentYear,
+                    "May" + "-" + currentYear,
+                    "Jun" + "-" + currentYear,
+                    "Jul" + "-" + currentYear,
+                    "Aug" + "-" + currentYear,
+                    "Sep" + "-" + currentYear,
+                    "Oct" + "-" + currentYear,
+                    "Nov" + "-" + currentYear,
+                    "Dec" + "-" + currentYear,
+                  ],
+                  datasets: [
+                    {
+                      label: "Commandes",
+                      data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                      maxBarThickness: 12,
+                    },
+                  ],
+                };
+                let tab: [] = d.body;
+                console.log("data orde1===", this.dataTotalOrders);
+                tab.map((el: any) => {
+                  // console.log("data date===", el)
+                  let date = new Date(el.periode);
+
+                  // Donne les stats de l'année en cours
+                  if (date.getFullYear() == currentYear) {
+                    let moisGet = date.getMonth();
+
+                    this.dataTotalOrders.datasets[0].data[moisGet] =
+                      el.nombreventes;
+                    console.log("data orde2===", this.dataTotalOrders);
+                  }
+                });
+
+                console.log("INIT CHART ORDER=======");
+                var chartOrders = document.getElementById("chart-orders");
+                this.ordersChart = new Chart(chartOrders, {
+                  type: "bar",
+                  options: chartExample2.options,
+                  data: this.dataTotalOrders,
+                });
                 break;
             }
 
-            d.map((el: any) => {
-              let date = new Date(el.periode);
-              let moisGet = date.getMonth();
-              if (!(moisGet == 0)) {
-              } else {
-              }
-              this.dataTotalOrders.labels;
-            });
+            // switch (per) {
+            //   case "month":
+            //     d.map((el: any) => {
+            //       let date = new Date(el.periode);
+            //       let moisGet = date.getMonth();
+            //       this.dataTotalOrders.datasets[0].data[moisGet] =
+            //         el.nombreventes;
+            //     });
+            //     break;
+            // case "year":
+            //   d.map((el: any) => {
+            //     let date = new Date(el.periode);
+            //     let moisGet = date.getFullYear();
+            //     this.dataTotalOrders.datasets[0].data[moisGet] =
+            //       el.nombreventes;
+            //   });
+            //   break;
+            //   case "year":
+            //   d.map((el: any) => {
+            //     let date = new Date(el.periode);
+            //     let moisGet = date.getMonth();
+            //     this.dataTotalOrders.datasets[0].data[moisGet] =
+            //       el.nombreventes;
+            //   });
+            //   break;
+
+            //   default:
+            //     break;
+            // }
+
+            // d.map((el: any) => {
+            //   let date = new Date(el.periode);
+            //   let moisGet = date.getMonth();
+            //   if (!(moisGet == 0)) {
+            //   } else {
+            //   }
+            //   this.dataTotalOrders.labels;
+            // });
             // this.dataTotalOrders = d
             console.log(
               "list des stats panier moyen ====",
               this.tempPanierMoyen
             );
+          }
+        });
+      },
+      error: (error) => {
+        this.utilitisService.response(error, (d: any) => {});
+      },
+    });
+  }
+
+  // Modifier Donnée statistique de nombre de vente
+  updateData(obj) {
+    let currentDate = new Date();
+
+    let currentYear = currentDate.getFullYear();
+    let curentMonth = currentDate.getMonth();
+    this.statistiqueService.nombreVentesStatistique(obj).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log(d);
+          if (data.status == 200) {
+            switch (obj.periode) {
+              case "year":
+                this.dataTotalOrders = {
+                  labels: [],
+                  datasets: [
+                    {
+                      label: "Commandes",
+                      data: [],
+                      maxBarThickness: 12,
+                    },
+                  ],
+                };
+                let tabyear: [] = d.body;
+                console.log("data orde1===", this.dataTotalOrders);
+                tabyear.map((el: any) => {
+                  let date = new Date(el.periode);
+
+                  // Donne les stats de l'année en cours
+                  if (date.getFullYear() == currentYear) {
+                    let yearGet = date.getFullYear();
+                    this.dataTotalOrders.labels.push(`${yearGet}`);
+                    this.dataTotalOrders.datasets[0].data.push(el.nombreventes);
+                    console.log("data orde2===", this.dataTotalOrders);
+                  }
+                });
+                this.ordersChart.data.datasets[0].data =
+                  this.dataTotalOrders.datasets[0].data;
+                this.ordersChart.data.labels = this.dataTotalOrders.labels;
+                this.ordersChart.update();
+                break;
+
+              case "day":
+                this.dataTotalOrders = {
+                  labels: [],
+                  datasets: [
+                    {
+                      label: "Commandes",
+                      data: [],
+                      maxBarThickness: 12,
+                    },
+                  ],
+                };
+                let tabD: [] = d.body;
+                console.log("data orde1Day===", this.dataTotalOrders);
+                tabD.map((el: any) => {
+                  // console.log("data date===", el)
+                  let date = new Date(el.periode);
+
+                  if (
+                    date.getMonth() == curentMonth &&
+                    date.getFullYear() == currentYear
+                  ) {
+                    let moisDay = date.getDay();
+                    console.log("day===", moisDay);
+
+                    let objDate: string;
+
+                    objDate = `${date.getDate()}/${
+                      date.getMonth() + 1
+                    }/${date.getFullYear()}`;
+                    this.dataTotalOrders.labels.push(objDate);
+                    this.dataTotalOrders.datasets[0].data.push(el.nombreventes);
+
+                    console.log("data orde2Day===", this.dataTotalOrders);
+                  }
+                });
+                this.ordersChart.data.datasets[0].data =
+                  this.dataTotalOrders.datasets[0].data;
+                this.ordersChart.data.labels = this.dataTotalOrders.labels;
+
+                this.ordersChart.update();
+                break;
+
+              default:
+                this.dataTotalOrders = {
+                  labels: [
+                    "Jan" + "-" + currentYear,
+                    "Feb" + "-" + currentYear,
+                    "Mars" + "-" + currentYear,
+                    "Avr" + "-" + currentYear,
+                    "May" + "-" + currentYear,
+                    "Jun" + "-" + currentYear,
+                    "Jul" + "-" + currentYear,
+                    "Aug" + "-" + currentYear,
+                    "Sep" + "-" + currentYear,
+                    "Oct" + "-" + currentYear,
+                    "Nov" + "-" + currentYear,
+                    "Dec" + "-" + currentYear,
+                  ],
+                  datasets: [
+                    {
+                      label: "Commandes",
+                      data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                      maxBarThickness: 12,
+                    },
+                  ],
+                };
+                let tab: [] = d.body;
+                console.log("data orde1===", this.dataTotalOrders);
+                tab.map((el: any) => {
+                  let date = new Date(el.periode);
+
+                  // Donne les stats de l'année en cours
+                  if (date.getFullYear() == currentYear) {
+                    let moisGet = date.getMonth();
+
+                    this.dataTotalOrders.datasets[0].data[moisGet] =
+                      el.nombreventes;
+                    console.log("data orde2===", this.dataTotalOrders);
+                  }
+                });
+                this.ordersChart.data.datasets[0].data =
+                  this.dataTotalOrders.datasets[0].data;
+                this.ordersChart.data.labels = this.dataTotalOrders.labels;
+                this.ordersChart.update();
+                break;
+            }
+            console.log(
+              "list des stats panier moyen ====",
+              this.tempPanierMoyen
+            );
+          }
+        });
+      },
+      error: (error) => {
+        this.utilitisService.response(error, (d: any) => {});
+      },
+    });
+  }
+
+  // Donnée statistique de chiffre d'affaire
+  getStatChiffreAffaire(obj) {
+    let currentDate = new Date();
+
+    let currentYear = currentDate.getFullYear();
+
+    let curentMonth = currentDate.getMonth();
+
+    this.statistiqueService.chiffreAffaireStatistique(obj).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log(d);
+          if (data.status == 200) {
+            switch (obj.periode) {
+              case "year":
+                this.dataTotalChiffreAffaire = {
+                  labels: [],
+                  datasets: [
+                    {
+                      label: "Performance",
+                      data: [],
+                      maxBarThickness: 12,
+                    },
+                  ],
+                };
+                let tabyear: [] = d.body;
+                console.log(
+                  "data chiffreAffaire===",
+                  this.dataTotalChiffreAffaire
+                );
+                tabyear.map((el: any) => {
+                  let date = new Date(el.periode);
+
+                  // Donne les stats de l'année en cours
+                  if (date.getFullYear() == currentYear) {
+                    let yearGet = date.getFullYear();
+                    this.dataTotalChiffreAffaire.labels.push(`${yearGet}`);
+                    this.dataTotalChiffreAffaire.datasets[0].data.push(
+                      el.chiffre_affaires
+                    );
+                    console.log(
+                      "data chiffre Affaire===",
+                      this.dataTotalChiffreAffaire
+                    );
+                  }
+                });
+                console.log("INIT CHART Chiffre  affaire=======");
+                var chartSales = document.getElementById("chart-sales");
+                this.salesChart = new Chart(chartSales, {
+                  type: "line",
+                  options: chartExample1.options,
+                  data: this.dataTotalChiffreAffaire,
+                });
+                break;
+
+              case "day":
+                this.dataTotalChiffreAffaire = {
+                  labels: [],
+                  datasets: [
+                    {
+                      label: "Performance",
+                      data: [],
+                      maxBarThickness: 12,
+                    },
+                  ],
+                };
+                let tabD: [] = d.body;
+                console.log(
+                  "data chiffre affaire 1Day===",
+                  this.dataTotalChiffreAffaire
+                );
+                tabD.map((el: any) => {
+                  // console.log("data date===", el)
+                  let date = new Date(el.periode);
+
+                  if (
+                    date.getMonth() == curentMonth &&
+                    date.getFullYear() == currentYear
+                  ) {
+                    let moisDay = date.getDay();
+                    console.log("day===", moisDay);
+
+                    this.dataTotalChiffreAffaire.datasets[0].data[moisDay - 1] =
+                      el.chiffre_affaires;
+                    console.log(
+                      "data orde2Day===",
+                      this.dataTotalChiffreAffaire
+                    );
+                    +"/" + curentMonth + 1 + "/" + currentYear;
+                  }
+                });
+
+                console.log("INIT CHART sales=======");
+                var chartSales = document.getElementById("chart-sales");
+                this.salesChart = new Chart(chartSales, {
+                  type: "line",
+                  options: chartExample1.options,
+                  data: this.dataTotalChiffreAffaire,
+                });
+                break;
+
+              default:
+                this.dataTotalChiffreAffaire = {
+                  labels: [
+                    "Jan" + "-" + currentYear,
+                    "Feb" + "-" + currentYear,
+                    "Mars" + "-" + currentYear,
+                    "Avr" + "-" + currentYear,
+                    "May" + "-" + currentYear,
+                    "Jun" + "-" + currentYear,
+                    "Jul" + "-" + currentYear,
+                    "Aug" + "-" + currentYear,
+                    "Sep" + "-" + currentYear,
+                    "Oct" + "-" + currentYear,
+                    "Nov" + "-" + currentYear,
+                    "Dec" + "-" + currentYear,
+                  ],
+                  datasets: [
+                    {
+                      label: "Performance",
+                      data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                      maxBarThickness: 12,
+                    },
+                  ],
+                };
+                let tab: [] = d.body;
+                console.log(
+                  "data chiffe affaire 1===",
+                  this.dataTotalChiffreAffaire
+                );
+                tab.map((el: any) => {
+                  // console.log("data date===", el)
+                  let date = new Date(el.periode);
+
+                  // Donne les stats de l'année en cours
+                  if (date.getFullYear() == currentYear) {
+                    let moisGet = date.getMonth();
+
+                    this.dataTotalChiffreAffaire.datasets[0].data[moisGet] =
+                      el.chiffre_affaires;
+                    console.log("data orde2===", this.dataTotalChiffreAffaire);
+                  }
+                });
+
+                console.log("INIT CHART sales=======");
+                var chartSales = document.getElementById("chart-sales");
+                this.salesChart = new Chart(chartSales, {
+                  type: "line",
+                  options: chartExample1.options,
+                  data: this.dataTotalChiffreAffaire,
+                });
+                break;
+            }
+          }
+        });
+      },
+      error: (error) => {
+        this.utilitisService.response(error, (d: any) => {});
+      },
+    });
+  }
+
+  // Modifier Donnée statistique de chiffre d'affaire
+  updateDataChiffreAffaire(obj) {
+    let currentDate = new Date();
+
+    let currentYear = currentDate.getFullYear();
+    let curentMonth = currentDate.getMonth();
+    this.statistiqueService.chiffreAffaireStatistique(obj).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log(d);
+          if (data.status == 200) {
+            switch (obj.periode) {
+              case "year":
+                this.dataTotalChiffreAffaire = {
+                  labels: [],
+                  datasets: [
+                    {
+                      label: "Performance",
+                      data: [],
+                      maxBarThickness: 12,
+                    },
+                  ],
+                };
+                let tabyear: [] = d.body;
+                console.log("data orde1===", this.dataTotalChiffreAffaire);
+                tabyear.map((el: any) => {
+                  let date = new Date(el.periode);
+
+                  // Donne les stats de l'année en cours
+                  if (date.getFullYear() == currentYear) {
+                    let yearGet = date.getFullYear();
+                    this.dataTotalChiffreAffaire.labels.push(`${yearGet}`);
+                    this.dataTotalChiffreAffaire.datasets[0].data.push(
+                      el.chiffre_affaires
+                    );
+                    console.log("data orde2===", this.dataTotalChiffreAffaire);
+                  }
+                });
+                this.salesChart.data.datasets[0].data =
+                  this.dataTotalChiffreAffaire.datasets[0].data;
+                this.salesChart.data.labels =
+                  this.dataTotalChiffreAffaire.labels;
+                this.salesChart.update();
+                break;
+
+              case "day":
+                this.dataTotalChiffreAffaire = {
+                  labels: [],
+                  datasets: [
+                    {
+                      label: "Performance",
+                      data: [],
+                      maxBarThickness: 12,
+                    },
+                  ],
+                };
+                let tabD: [] = d.body;
+                console.log("data orde1Day===", this.dataTotalChiffreAffaire);
+                tabD.map((el: any) => {
+                  // console.log("data date===", el)
+                  let date = new Date(el.periode);
+
+                  if (
+                    date.getMonth() == curentMonth &&
+                    date.getFullYear() == currentYear
+                  ) {
+                    let moisDay = date.getDay();
+                    console.log("day===", moisDay);
+
+                    let objDate: string;
+
+                    objDate = `${date.getDate()}/${
+                      date.getMonth() + 1
+                    }/${date.getFullYear()}`;
+                    this.dataTotalChiffreAffaire.labels.push(objDate);
+                    this.dataTotalChiffreAffaire.datasets[0].data.push(
+                      el.chiffre_affaires
+                    );
+
+                    console.log(
+                      "data orde2Day===",
+                      this.dataTotalChiffreAffaire
+                    );
+                  }
+                });
+                this.salesChart.data.datasets[0].data =
+                  this.dataTotalChiffreAffaire.datasets[0].data;
+                this.salesChart.data.labels =
+                  this.dataTotalChiffreAffaire.labels;
+                this.salesChart.update();
+                break;
+
+              default:
+                this.dataTotalChiffreAffaire = {
+                  labels: [
+                    "Jan" + "-" + currentYear,
+                    "Feb" + "-" + currentYear,
+                    "Mars" + "-" + currentYear,
+                    "Avr" + "-" + currentYear,
+                    "May" + "-" + currentYear,
+                    "Jun" + "-" + currentYear,
+                    "Jul" + "-" + currentYear,
+                    "Aug" + "-" + currentYear,
+                    "Sep" + "-" + currentYear,
+                    "Oct" + "-" + currentYear,
+                    "Nov" + "-" + currentYear,
+                    "Dec" + "-" + currentYear,
+                  ],
+                  datasets: [
+                    {
+                      label: "Commandes",
+                      data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                      maxBarThickness: 12,
+                    },
+                  ],
+                };
+                let tab: [] = d.body;
+                console.log("data orde1===", this.dataTotalChiffreAffaire);
+                tab.map((el: any) => {
+                  let date = new Date(el.periode);
+
+                  // Donne les stats de l'année en cours
+                  if (date.getFullYear() == currentYear) {
+                    let moisGet = date.getMonth();
+
+                    this.dataTotalChiffreAffaire.datasets[0].data[moisGet] =
+                      el.chiffre_affaires;
+                    console.log("data orde2===", this.dataTotalChiffreAffaire);
+                  }
+                });
+                this.salesChart.data.datasets[0].data =
+                  this.dataTotalChiffreAffaire.datasets[0].data;
+                this.salesChart.data.labels =
+                  this.dataTotalChiffreAffaire.labels;
+                this.salesChart.update();
+                break;
+            }
           }
         });
       },

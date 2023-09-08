@@ -133,7 +133,12 @@ export class GestionCommandeComponent implements OnInit {
   setPage(pageInfo) {
     this.page.pageNumber = pageInfo.offset;
     console.log("=====pageInfo", this.page);
-    this.getAllCommandes(this.objSearch);
+    this.getAllCommandes({
+      pagination: true,
+      page: this.page.pageNumber,
+      size: this.page.size,
+      boutiqueid: this.infoUser.body.boutique.id,
+    });
   }
 
   // OUVRIR MODALS VALIDER COMMANDE
@@ -251,7 +256,7 @@ export class GestionCommandeComponent implements OnInit {
 
   openDetailProduit() {
     const modalRef = this.modalService.open(DetailsCommandeComponent, {
-      windowClass: "modal-default",
+      windowClass: "modal-mini",
       size: "lg",
       // centered: true,
     });

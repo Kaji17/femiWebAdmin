@@ -5,13 +5,13 @@ import { Configurable } from 'src/app/core/config';
 @Injectable({
   providedIn: 'root'
 })
-export class ClientService {
+export class TransactionService {
 
   constructor(private http: HttpClient, private configService: Configurable) { }
 
     // GET ALL PRODUIT
-    public gettAllClient(obj: any) {
-      return this.http.get(this.configService.getApi2("CLIENT_GETALL_GET"), {
+    public gettAllTransaction(obj: any) {
+      return this.http.get(this.configService.getApi1("ACHAT_GETALL_GET"), {
         observe: "response",
         params: obj,
       });

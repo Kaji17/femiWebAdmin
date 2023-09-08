@@ -74,7 +74,7 @@
     "Total Commandes": "Total Orders",
     "Avis produits réçent": "Recent product reviews",
     "Voir tous": "See all",
-    "Commandes par zone": "Commands by zone",
+    "Ventes par zone": "Sales by zone",
     "Meilleurs produits": "Best Products",
     "Panier moyen": "Average basket",
     "Quantité vendue par produit": "Quantity sold by product",
@@ -119,7 +119,7 @@
   "PERIODE":{
     "Année":"Year",
     "Mois":"Month",
-    "Semaine":"Week",
+    "Semaine":"Days",
     "Jour":"Day",
     "A":"Y",
     "M":"M",

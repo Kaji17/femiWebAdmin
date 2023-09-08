@@ -73,7 +73,7 @@
     "Total Commandes": "Total Commandes",
     "Avis produits réçent": "Avis produits réçent",
     "Voir tous": "Voir tous",
-    "Commandes par zone": "Commandes par zone",
+    "Ventes par zone": "Ventes par zone",
     "Meilleurs produits": "Meilleurs produits",
     "Panier moyen": "Panier moyen",
     "Quantité vendue par produit": "Quantité vendue par produit",
@@ -118,7 +118,7 @@
   "PERIODE":{
     "Année":"Année",
     "Mois":"Mois",
-    "Semaine":"Semaine",
+    "Semaine":"Jours",
     "Jour":"Jour",
     "A":"A",
     "M":"M",

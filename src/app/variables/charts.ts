@@ -293,18 +293,23 @@ export const chartExample1 = {
           drawOnChartArea: false
         },
         ticks: {
-          callback: function(value) {
-            if(!(value%1000000)&&value!=0){
-              return + value/1000000+ 'M'
-            }else if(!(value%1000)&&value!=0){
-              return value/1000 + 'K';
-            }else{
-              if(value == 0){
-                return value
-              }
-              return value
-            }
-          }
+          // callback: function(value) {
+          //   if(!(value%1000000)&&value!=0){
+          //     return + value/1000000+ 'M'
+          //   }else if(!(value%1000)&&value!=0){
+          //     return value/1000 + 'K';
+          //   }else{
+          //     if(value == 0){
+          //       return value
+          //     }
+          //     return value
+          //   }
+          // }
+          // callback: function(value) {
+          //   if (!(value % 10)) {
+          //     return value;
+          //   }
+          // }
         }
       }]
     }
@@ -313,7 +318,7 @@ export const chartExample1 = {
     labels: ["Jan","Feb","Mars","Avr","May","Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     datasets: [{
       label: 'Performance',
-      data: [1000, 20000, 1000, 50000, 1500, 4000, 2000, 6000, 6500, 2000, 6000, 6]
+      data: []
     }]
   }
 }
