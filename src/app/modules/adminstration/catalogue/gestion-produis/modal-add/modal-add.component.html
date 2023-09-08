@@ -62,7 +62,7 @@
           <div class="col-md-8">
             <div class="row">
               <div
-                *ngIf="this.fileTabSrc.length < 4"
+                *ngIf="(this.fileTabSrc.length < 1)"
                 (click)="file2.click()"
                 class="rounded border-primary border align-items-center p-1 col-md-3 m-1 row justify-content-center"
                 style="
@@ -75,7 +75,6 @@
               >
                 <span><i class="fa-solid fa-plus"></i> UPLOAD</span>
               </div>
-
               <div
                 *ngFor="let image of fileTabSrc"
                 class="col-md-3 m-1 rounded border align-items-center p-1 m-1 row justify-content-center"
@@ -88,7 +87,7 @@
                   width: 91px !important;
                 "
               >
-                <i
+                <!-- <i
                   (click)="removeImg(image)"
                   class="fa-solid fa-circle-xmark"
                   style="
@@ -98,7 +97,7 @@
                     right: -10px;
                     cursor: pointer;
                   "
-                ></i>
+                ></i> -->
               </div>
             </div>
           </div>

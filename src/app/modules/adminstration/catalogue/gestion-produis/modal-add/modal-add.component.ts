@@ -123,8 +123,8 @@ export class ModalAddComponent implements OnInit {
   }
 
   removeImg(image) {
-    this.fileTabSrc = this.fileTabSrc.filter((chaine) => chaine !== image);
-    console.log("======tab after del", this.fileTabSrc);
+    // this.fileTab = this.fileTab.filter((chaine) => chaine !== image);
+    console.log("======tab after del", this.fileTab);
   }
 
   // AJOUTER UN PRODUIT

@@ -17,23 +17,30 @@
   <div class="modal-body">
     <form class="row">
       <div
-        *ngIf="this.fileTabUpdate.length < 4"
+        *ngIf="(this.fileSrcUpdate.length <= 3)"
         class="form-group row m-0 justify-content-between align-items-center mb-3"
         style="width: 100%"
       >
         <label for="catégorie-produit" class="form-control-label col-md-5"
           >Ajouter Image<span class="text-danger"></span
         ></label>
-        <input
+        <!-- <input
           #file
           type="file"
           style="display: none"
           (change)="loadFileUpdate($event)"
           accept="image/png, image/gif, image/jpeg"
+        /> -->
+        <input
+          #file2
+          type="file"
+          style="display: none"
+          (change)="loadFile($event,'add')"
+          accept="image/png, image/gif, image/jpeg"
         />
         <div class="col-md-7">
           <div
-            (click)="file.click()"
+            (click)="file2.click()"
             class="rounded border-primary border align-items-center p-1 col-md-7 m-1 row justify-content-center"
             style="
               min-height: 100px;
@@ -54,7 +61,7 @@
       >
         <div
           class="col-md-5 m-1 rounded border align-items-center p-1 m-1 row justify-content-center"
-          [style]="'background-image: url(' + image + ')'"
+          [style]="'background-image: url(' +this.getImg(image.url)  + ')'"
           style="
             position: relative;
             background-repeat: no-repeat;
@@ -64,15 +71,22 @@
           "
         ></div>
         <div class="form-control-label row col-md-7">
-          <button class="col-md-16 btn btn-info mb-2">
+          <input
+          #file2
+          type="file"
+          style="display: none"
+          (change)="loadFile($event, 'update')"
+          accept="image/png, image/gif, image/jpeg"
+        />
+          <button class="col-md-16 btn btn-info mb-2" (click)="file2.click()">
             Modifier
-            <input
-              #file5
-              type="file"
-              style="display: none"
-              accept="image/png, image/gif, image/jpeg"
-            /></button
-          ><button class="col-md-16 btn btn-danger mb-2" (click)="onDelete(image)">Supprimer</button>
+           </button
+          ><button
+            class="col-md-16 btn btn-danger mb-2"
+            (click)="onDelete(image.id)"
+          >
+            Supprimer
+          </button>
         </div>
       </div>
     </form>

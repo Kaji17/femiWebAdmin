@@ -10,9 +10,11 @@ export class ImageProduitService {
 
   // UPDATE PRODUIT
   public updateImgProduit(id: number, file: any) {
+    let form = new FormData();
+    form.append("file", file);
     return this.http.put(
       this.configService.getApi1("IMGPRODUIT_UPD_PUT") + "/" + id,
-      file,
+      form,
       {
         observe: "response",
       }

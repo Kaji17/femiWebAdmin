@@ -270,7 +270,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
         this.closeResult = "Dismissed " + this.getDismissReason(reason);
       }
     );
-    modalRef.componentInstance.infoDaTa = infoData;
+    modalRef.componentInstance.infoDaTa = this.activeRow;
   }
 
   // OUVRIR MODALS EDITS IMAGES
@@ -347,7 +347,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
         this.closeResult = "Dismissed " + this.getDismissReason(reason);
       }
     );
-    modalRef.componentInstance.produitSelect = this.selected;
+    modalRef.componentInstance.produitSelect = this.activeRow;
   }
 
   // OUVRIR MODALS POUR ATTRIBUER PROMOTION
