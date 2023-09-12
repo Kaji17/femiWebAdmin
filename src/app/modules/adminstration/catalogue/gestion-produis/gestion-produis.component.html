@@ -155,7 +155,14 @@
         name="Categorie"
         prop="categorie.nom"
       ></ngx-datatable-column>
-      <ngx-datatable-column name="Prix unitaire (FCFA)" prop="prix">
+      <ngx-datatable-column name="Prix unitaire">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <strong>
+            <span>
+              {{ row.prix | number }} FCFA
+            </span>
+          </strong>
+        </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column name="Promotion" prop="promotion">
         <ng-template let-row="row" ngx-datatable-cell-template>
@@ -211,64 +218,77 @@
           </span>
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="Actions">
+      <ngx-datatable-column name="Actions" [minWidth]="200">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <div>
-            <a
+          <div class="row px-1">
+            <button
               *ngIf="crudPerms.update"
-              role="button"
               (click)="openUpdateAffichage(row)"
               data-target="#modal-form"
               data-toggle="modal"
               ngbTooltip="Position affichage"
               placement="bottom"
+              class="btn btn-icon btn-warning btn-sm"
+              type="button"
             >
-              <i class="fa-solid fa-arrow-up-1-9 mr-2 text-orange fs-5"></i>
-            </a>
-            <a
+              <span class="btn-inner--icon"><i class="fa fa-eye"></i></span>
+            </button>
+            <button
               *ngIf="crudPerms.update"
-              role="button"
               (click)="onUpdateRow(row); open(classic1, '', 'sm')"
               data-target="#modal-form"
               data-toggle="modal"
               ngbTooltip="Modifier produit"
               placement="bottom"
+              class="btn btn-icon btn-primary btn-sm"
+              type="button"
             >
-              <i class="fa-solid fa-pen-to-square mr-2 text-primary fs-5"></i>
-            </a>
-            <a
+              <span class="btn-inner--icon"
+                ><i class="fa-solid fa-pen-to-square"></i
+              ></span>
+            </button>
+            <button
               *ngIf="crudPerms.update"
-              role="button"
               (click)="onUpdateImgRow(row); openEditImages(row)"
               data-target="#modal-form"
               data-toggle="modal"
               ngbTooltip="Modifier images"
               placement="bottom"
+              class="btn btn-icon btn-info btn-sm"
+              type="button"
             >
-              <i class="fa-solid fa-image mr-2 text-info fs-5"></i>
-            </a>
-            <a
-              role="button"
+              <span class="btn-inner--icon">
+                <i class="fa-solid fa-image"></i>
+              </span>
+            </button>
+            <button
               (click)="openDetailProduit()"
               data-target="#modal-form"
               data-toggle="modal"
               ngbTooltip="Avis et notes "
               placement="bottom"
+              class="btn btn-icon btn-warning btn-sm"
+              type="button"
             >
-            <i class="fa-solid fa-star mr-2 text-warning fs-5"></i>
-              <!-- <i class="fa-regular fa-eye mr-2 text-warning fs-5"></i> -->
-            </a>
-            <a
+
+            <span class="btn-inner--icon">
+              <i class="fa-solid fa-star"></i>
+            </span>
+            </button>
+            <button
               *ngIf="crudPerms.delete"
-              role="button"
               (click)="onDeleteRow(row.id); open(classic2, 'Notification', '')"
               data-target="#modal-form"
               data-toggle="modal"
               ngbTooltip="Supprimer produit"
               placement="bottom"
+              class="btn btn-icon btn-danger btn-sm"
+              type="button"
             >
-              <i class="fa-solid fa-trash-can text-danger mr-2 fs-5"></i>
-            </a>
+            <span class="btn-inner--icon">
+              <i class="fa-solid fa-trash-can"></i>
+            </span>
+            </button>
           </div>
         </ng-template>
       </ngx-datatable-column>
@@ -432,4 +452,3 @@
     </div>
   </div>
 </ng-template>
-

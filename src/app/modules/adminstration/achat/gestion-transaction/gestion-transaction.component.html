@@ -47,28 +47,53 @@
         (page)="setPage($event)"
         [selectAllRowsOnPage]="false"
       >
-        <ngx-datatable-column name="ID Transaction" prop="id"></ngx-datatable-column>
         <ngx-datatable-column name="ID client" prop="commande.client.nom"></ngx-datatable-column>
         <ngx-datatable-column name="Code Commande" prop="commande.code"></ngx-datatable-column>
         <ngx-datatable-column name="Mode de paiement" prop="modepaiement.nom"></ngx-datatable-column>
-        <ngx-datatable-column name="Montant" prop="montant"></ngx-datatable-column>
-        <ngx-datatable-column name="Numéro de paiement" prop="numeropaiement"> 
+        <ngx-datatable-column name="Montant">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <strong>
+              <span>
+                {{ row.montant | number }} FCFA
+              </span>
+            </strong>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="ID Transaction" prop="numeropaiement"></ngx-datatable-column>
+        <ngx-datatable-column name="Numéro de paiement"> 
             <ng-template let-row="row" ngx-datatable-cell-template>
                 <span *ngIf="!row.contact"> null </span>
+                <span *ngIf="row.contact"> {{row.contact}} </span>
               </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column name="Opérateur" prop="operateur">
+        <ngx-datatable-column name="Opérateur">
             <ng-template let-row="row" ngx-datatable-cell-template>
                 <span *ngIf="!row.operateur"> null </span>
+                <span *ngIf="row.operateur"> {{row.operateur}}  </span>
               </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column name="Statut" prop="statut"></ngx-datatable-column>
+        <ngx-datatable-column name="Statut" prop="statut">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <span
+              class="badge badge-pill badge-md badge-success"
+              *ngIf="row.statut == 'SUCCESS'"
+            >
+              {{ row.statut | uppercase }}
+            </span>
+            <span
+            class="badge badge-pill badge-md badge-danger"
+            *ngIf="row.statut == 'FAILED'"
+          >
+            {{ row.statut | uppercase }}
+          </span>
+          </ng-template>
+        </ngx-datatable-column>
         <ngx-datatable-column name="Adresse" [width]="200">
             <ng-template let-row="row" ngx-datatable-cell-template>
-                <span class="row align-items-center justify-content-center"
-                  ><strong>{{ row.commande.adresse.nom }}</strong></span
+                <span
+                  ><strong>{{ row.commande.adresse.nom }}, </strong></span
                 >
-                <span class="row align-items-center justify-content-center">{{
+                <span>{{
                   row.commande.adresse.description
                 }}</span>
               </ng-template>

@@ -1,10 +1,11 @@
 import { Component, DoCheck, OnInit } from '@angular/core';
+import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { BreadcrumbService } from 'src/app/shared/services/breadcrumb.service';
 
 @Component({
   selector: 'app-admin-layout',
   templateUrl: './admin-layout.component.html',
-  styleUrls: ['./admin-layout.component.scss']
+  styleUrls: ['./admin-layout.component.scss'],
 })
 export class AdminLayoutComponent implements OnInit {
 

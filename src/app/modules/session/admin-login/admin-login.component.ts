@@ -2,11 +2,13 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { AngularFireMessaging } from "@angular/fire/compat/messaging";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
+import { Store } from "@ngrx/store";
 import { ToastrService } from "ngx-toastr";
 import { Subscription } from "rxjs";
 import { AdministrateurService } from "src/app/shared/services/administrateur.service";
 import { AuthService } from "src/app/shared/services/auth.service";
 import { UtilisService } from "src/app/shared/services/utilis.service";
+import { loginAction } from "src/app/state/01-actions";
 
 @Component({
   selector: "app-admin-login",
@@ -28,6 +30,7 @@ export class AdminLoginComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private router: Router,
     private angularFireMessaging:AngularFireMessaging,
+    private store: Store
   ) {}
 
   ngOnDestroy(): void {
@@ -79,7 +82,6 @@ export class AdminLoginComponent implements OnInit, OnDestroy {
     let res = this.loginForm.value;
     res.registrationtoken = this.tokenFirebase;
     this.login(res);
-    console.log("Body for connect", res)
   }
 
   // Notification alerte
@@ -147,6 +149,8 @@ export class AdminLoginComponent implements OnInit, OnDestroy {
             this.authService.setLogged(false)
             this.showNotification("danger");
           } else if (data.status == 200) {
+            // Enregistrer l'admin conecter dans le store
+            this.store.dispatch(loginAction({user: d}))
             localStorage.setItem("user_info", JSON.stringify(d));
             this.authService.setLogged(true)
             this.router.navigate(["administration"]);

@@ -1,17 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
+import { Store } from "@ngrx/store";
+import { initAction } from "./state/01-actions";
 // import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.scss"],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   constructor(
-    // public translate: TranslateService
-  ){
-    // translate.setDefaultLang('fr');
-    // translate.use('en')
+    private store: Store
+  ) {}
+  ngOnInit(): void {
+  //  this.store.dispatch(initAction())
   }
-  title = 'argon-dashboard-angular';
+  title = "argon-dashboard-angular";
+
+
 }

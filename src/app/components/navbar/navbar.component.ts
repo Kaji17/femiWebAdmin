@@ -11,6 +11,8 @@ import { BreadcrumbService } from "src/app/shared/services/breadcrumb.service";
 import { TranslateService } from "@ngx-translate/core";
 import { AngularFireMessaging } from "@angular/fire/compat/messaging";
 import { Configurable } from "src/app/core/config";
+import { Store } from "@ngrx/store";
+import { logoutAction } from "src/app/state/01-actions";
 
 @Component({
   selector: "app-navbar",
@@ -40,6 +42,7 @@ export class NavbarComponent implements OnInit {
     public translate : TranslateService,
     private angularFireMessaging: AngularFireMessaging,
     private configService: Configurable,
+    private store: Store
 
   ) {
     translate.addLangs(['en', 'fr']),
@@ -109,6 +112,7 @@ export class NavbarComponent implements OnInit {
   }
 
   logOut() {
+    this.store.dispatch(logoutAction())
     localStorage.removeItem("user_info");
     localStorage.removeItem("user_email");
   }

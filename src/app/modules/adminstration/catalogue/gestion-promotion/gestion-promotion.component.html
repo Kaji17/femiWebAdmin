@@ -73,7 +73,11 @@
       [externalPaging]="'false'"
       (page)="setPage($event)"
     >
-      <ngx-datatable-column name="Libelle" prop="nom"> </ngx-datatable-column>
+      <ngx-datatable-column name="Libelle"> 
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span>{{ row.nom | uppercase}}</span>
+        </ng-template>
+      </ngx-datatable-column>
       <ngx-datatable-column
         name="Code promo"
         prop="code"
@@ -102,24 +106,34 @@
       <ngx-datatable-column name="Actions">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <div>
-            <a
-              *ngIf="crudPerms.update"
-              role="button"
-              (click)="onUpdateRow(row);open(classic1, '', 'sm')"
-              data-target="#modal-form"
-              data-toggle="modal"
-            >
-              <i class="fa-solid fa-pen-to-square mr-2 text-primary"></i>
-            </a>
-            <a
-              *ngIf="crudPerms.delete"
-              role="button"
-              (click)="onDeleteRow(row.id); open(classic2, 'Notification', '')"
-              data-target="#modal-form"
-              data-toggle="modal"
-            >
-              <i class="fa-solid fa-trash-can text-danger mr-2"></i>
-            </a>
+            <button
+            *ngIf="crudPerms.update"
+            (click)="onUpdateRow(row);open(classic1, '', 'sm')"
+            data-target="#modal-form"
+            data-toggle="modal"
+            ngbTooltip="Modifier"
+            placement="bottom"
+            class="btn btn-icon btn-primary btn-sm"
+            type="button"
+          >
+            <span class="btn-inner--icon"
+              ><i class="fa-solid fa-pen-to-square"></i
+            ></span>
+          </button>
+          <button
+            *ngIf="crudPerms.delete"
+            (click)="onDeleteRow(row.id); open(classic2, 'Notification', '')"
+            data-target="#modal-form"
+            data-toggle="modal"
+            ngbTooltip="Supprimer"
+            placement="bottom"
+            class="btn btn-icon btn-danger btn-sm"
+            type="button"
+          >
+            <span class="btn-inner--icon">
+              <i class="fa-solid fa-trash-can"></i>
+            </span>
+          </button>
           </div>
         </ng-template>
       </ngx-datatable-column>
@@ -159,7 +173,7 @@
             [maxLength]="32"
           />
         </div>
-        <div
+        <!-- <div
           class="form-group row m-0 justify-content-between align-items-center mb-3"
           style="width: 100%"
         >
@@ -173,7 +187,7 @@
             formControlName="code"
             [maxLength]="32"
           />
-        </div>
+        </div> -->
         <div
           class="form-group row m-0 align-items-center mb-3"
           style="width: 100%"
@@ -272,7 +286,6 @@
             type="datetime-local"
             class="form-control col-md-8"
             formControlName="datedebut"
-          
           />
         </div>
         <div
@@ -289,7 +302,7 @@
             formControlName="datefin"
           />
         </div>
-        <div
+        <!-- <div
           class="form-group row m-0 justify-content-between align-items-center mb-3"
           style="width: 100%"
         >
@@ -302,7 +315,7 @@
             rows="3"
             formControlName="description"
           ></textarea>
-        </div>
+        </div> -->
       </form>
     </div>
     <div class="modal-footer">
@@ -404,7 +417,7 @@
             [maxLength]="32"
           />
         </div>
-        <div
+        <!-- <div
           class="form-group row m-0 justify-content-between align-items-center mb-3"
           style="width: 100%"
         >
@@ -418,7 +431,7 @@
             formControlName="code"
             [maxLength]="32"
           />
-        </div>
+        </div> -->
         <div
           class="form-group row m-0 align-items-center mb-3"
           style="width: 100%"
@@ -434,7 +447,7 @@
           ></ngx-select-dropdown>
         </div>
 
-        <div
+        <!-- <div
           class="form-group row m-0 justify-content-between align-items-center mb-3"
           style="width: 100%"
         >
@@ -491,7 +504,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         <div
           class="form-group row m-0 justify-content-between align-items-center mb-3"
           style="width: 100%"
@@ -514,10 +527,11 @@
             >Date début</label
           >
           <input
-            type="datetime-local"
+            type="date"
             class="form-control col-md-8"
             formControlName="datedebut"
-          
+            [(ngModel)]="dateDebutpic"
+            [min]="mindate"
           />
         </div>
         <div
@@ -528,13 +542,14 @@
             >Date fin</label
           >
           <input
-            type="datetime-local"
+            type="date"
             class="form-control col-md-8"
             bsDatepicker
             formControlName="datefin"
+            [min]="dateDebutpic"
           />
         </div>
-        <div
+        <!-- <div
           class="form-group row m-0 justify-content-between align-items-center mb-3"
           style="width: 100%"
         >
@@ -547,7 +562,7 @@
             rows="3"
             formControlName="description"
           ></textarea>
-        </div>
+        </div> -->
       </form>
     </div>
     <div class="modal-footer">

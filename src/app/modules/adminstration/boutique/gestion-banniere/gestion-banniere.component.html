@@ -84,8 +84,10 @@
               (click)="rowSelected(row); positionUp(row.positionaffichage)"
               data-target="#modal-form"
               data-toggle="modal"
+              ngbTooltip="Up"
+              placement="bottom"
               class="btn p-0 m-0"
-              [disabled]="row.positionaffichage==1?'disabled':''"
+              [disabled]="row.positionaffichage == 1 ? 'disabled' : ''"
             >
               <i class="fa-solid fa-arrow-up mr-2"></i>
             </button>
@@ -95,29 +97,42 @@
               (click)="rowSelected(row); positionDown(row.positionaffichage)"
               data-target="#modal-form"
               data-toggle="modal"
+              ngbTooltip="Down"
+              placement="bottom"
               class="btn p-0"
-              [disabled]="row.positionaffichage==last?'disabled':''"
+              [disabled]="row.positionaffichage == last ? 'disabled' : ''"
             >
               <i class="fa-solid fa-arrow-down"></i>
             </button>
-            <a
+
+            <button
               *ngIf="crudPerms.update"
-              role="button"
               (click)="rowSelected(row); loadFile($event, 'u')"
               data-target="#modal-form"
               data-toggle="modal"
+              ngbTooltip="Modifier"
+              placement="bottom"
+              class="btn btn-icon btn-primary btn-sm"
+              type="button"
             >
-              <i class="fa-solid fa-pen-to-square mr-2 text-primary fs-5"></i>
-            </a>
-            <a
+              <span class="btn-inner--icon"
+                ><i class="fa-solid fa-pen-to-square"></i
+              ></span>
+            </button>
+            <button
               *ngIf="crudPerms.delete"
-              role="button"
               (click)="rowSelected(row); open(classic2, 'Notification', '')"
               data-target="#modal-form"
               data-toggle="modal"
+              ngbTooltip="Supprimer"
+              placement="bottom"
+              class="btn btn-icon btn-danger btn-sm"
+              type="button"
             >
-              <i class="fa-solid fa-trash-can text-danger mr-2 fs-5"></i>
-            </a>
+              <span class="btn-inner--icon">
+                <i class="fa-solid fa-trash-can"></i>
+              </span>
+            </button>
           </div>
         </ng-template>
       </ngx-datatable-column>

@@ -18,6 +18,11 @@ import { UtilisService } from "src/app/shared/services/utilis.service";
 import { ZoneService } from "src/app/shared/services/zone.service";
 import { Page } from "src/app/shared/model/paged";
 import { StatistiqueService } from "src/app/shared/services/statistique.service";
+import { ClientService } from "src/app/shared/services/client.service";
+import { ProduitService } from "src/app/shared/services/produit.service";
+import { Store } from "@ngrx/store";
+import { initAction } from "src/app/state/01-actions";
+import { R3SelectorScopeMode } from "@angular/compiler";
 
 @Component({
   selector: "app-dashboard",
@@ -35,6 +40,7 @@ export class DashboardComponent implements OnInit {
   public ordersChart;
   public produitChart;
   public revenuProduitChart;
+  public totalClients:number
 
   public clicked: boolean = true;
   public clicked1: boolean = false;
@@ -106,14 +112,25 @@ export class DashboardComponent implements OnInit {
     private breadcrumbService: BreadcrumbService,
     private utilitisService: UtilisService,
     private zoneService: ZoneService,
-    private statistiqueService: StatistiqueService
+    private statistiqueService: StatistiqueService,
+    private clientService: ClientService,
+    private produitService: ProduitService,
+    private store: Store
   ) {
     this.page.pageNumber = 0;
     this.page.size = 10;
+    // this.store.select((state:any)=> state.root).subscribe(response=>{
+    //   this.infoUser = response.user
+    //   console.log("selecteur: ",this.infoUser)
+    // })
     this.infoUser = JSON.parse(localStorage.getItem("user_info"));
+    this.store.dispatch(initAction())
   }
 
   ngOnInit() {
+
+    this.getClients({pagination:true,page:0,size:1,boutiqueid: this.infoUser.body.boutique.id,})
+    this.getProduits({pagination:true,page:0,size:1,boutiqueid: this.infoUser.body.boutique.id,})
     this.getStatNombreDeVentes({
       periode: "month",
       boutiqueid: this.infoUser.body.boutique.id,
@@ -192,6 +209,36 @@ export class DashboardComponent implements OnInit {
     //   option: chartExample3.options,
     //   data: chartExample3.data,
     // });
+  }
+
+  getClients(data){
+    // this.temp = [];
+    data.pagination = true
+    this.clientService.gettAllClient(data).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d:any) => {
+          console.log('==client==',d)
+          this.totalClients =0
+          this.totalClients=d.body.totalElements
+        });
+      },
+      error: (error) => this.utilitisService.response(error),
+    });
+  }
+
+  getProduits(data){
+    // this.temp = [];
+    data.pagination = true
+    this.produitService.gettAllProduit(data).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d:any) => {
+          console.log('==produits==',d)
+          this.totalNombreProduit = 0
+          this.totalNombreProduit=d.body.totalElements
+        });
+      },
+      error: (error) => this.utilitisService.response(error),
+    });
   }
 
   public updateOptions(type: number) {

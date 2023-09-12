@@ -131,13 +131,17 @@
         name="Code Commande"
         prop="code"
       ></ngx-datatable-column> -->
-      <ngx-datatable-column name="ID Commande" prop="id"></ngx-datatable-column>
+      <ngx-datatable-column name="Code" prop="code"></ngx-datatable-column>
 
-      <ngx-datatable-column
-        name="Montant Total (FCFA)"
-        prop="montanttotal"
-        [cellClass]="getCellClass"
-      ></ngx-datatable-column>
+      <ngx-datatable-column name="Montant Total">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <strong>
+            <span>
+              {{ row.montanttotal | number }} FCFA
+            </span>
+          </strong>
+        </ng-template>
+      </ngx-datatable-column>
 
       <ngx-datatable-column name="Date de création">
         <ng-template let-row="row" ngx-datatable-cell-template>
@@ -197,12 +201,10 @@
         [width]="200"
       >
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <span class="row align-items-center justify-content-center"
-            ><strong>{{ row.adresse.nom }}</strong></span
+          <span class="  "
+            ><strong>{{ row.adresse.nom }}, </strong></span
           >
-          <span class="row align-items-center justify-content-center">{{
-            row.adresse.description
-          }}</span>
+          <span class=" ">{{ row.adresse.description }}</span>
         </ng-template>
       </ngx-datatable-column>
       <!-- <ngx-datatable-column
@@ -213,72 +215,86 @@
         name="Contact Destinataire"
         prop="client.contact"
       ></ngx-datatable-column> -->
-      <ngx-datatable-column name="Actions">
+      <ngx-datatable-column name="Actions" [minWidth]="200">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <div>
-            <a
-              role="button"
+          <div class="row px-1">
+            <button
               (click)="openDetailProduit()"
               data-target="#modal-form"
               data-toggle="modal"
-              ngbTooltip="Détails produit"
+              ngbTooltip="Détails"
               placement="bottom"
+              class="btn btn-icon btn-warning btn-sm"
+              type="button"
             >
-              <i class="fa-regular fa-eye mr-2 text-warning fs-5"></i>
-            </a>
-            <a
+              <span class="btn-inner--icon"><i class="fa fa-eye"></i></span>
+            </button>
+            <button
               *ngIf="
                 crudPerms.update &&
                 (row.statut === 'Validée' || row.statut === 'Annulée')
               "
-              role="button"
               (click)="openEtapeLivraison()"
               data-target="#modal-form"
               data-toggle="modal"
-              ngbTooltip="Etape livraison"
+              ngbTooltip="Etapes livraison"
               placement="bottom"
+              class="btn btn-icon btn-primary btn-sm"
+              type="button"
             >
-              <i class="fa-solid fa-signs-post text-primary mr-2"></i>
-            </a>
-            <a
+              <span class="btn-inner--icon"
+                ><i class="fa-solid fa-signs-post"></i
+              ></span>
+            </button>
+            <button
               *ngIf="crudPerms.update && row.statut === 'Enregistrée'"
-              role="button"
               (click)="openValiderCommande()"
               data-target="#modal-form"
               data-toggle="modal"
-              ngbTooltip="Valider"
+              ngbTooltip="Validé"
               placement="bottom"
+              class="btn btn-icon btn-success btn-sm"
+              type="button"
             >
-              <i class="fa-solid fa-check mr-2 text-success"></i>
-            </a>
-            <a
+              <span class="btn-inner--icon">
+                <i class="fa-solid fa-check"></i>
+              </span>
+            </button>
+            <button
               *ngIf="
                 crudPerms.update &&
-                (row.statut === 'Enregistrée' || row.statut === 'Validée')
+                (row.statut === 'Enregistrée' || row.statut === 'Validée')&&(row.statutpaiement == 'Non Réglée')
               "
-              role="button"
               (click)="openRefuserCommande()"
               data-target="#modal-form"
               data-toggle="modal"
-              ngbTooltip="Réfuser"
+              ngbTooltip="Annulé"
               placement="bottom"
+              class="btn btn-icon btn-danger btn-sm"
+              type="button"
             >
-              <i class="fa-solid fa-circle-xmark text-danger mr-2"></i>
-            </a>
-            <a
+              <span class="btn-inner--icon">
+                <i class="fa-solid fa-circle-xmark"></i>
+              </span>
+            </button>
+            <button
               *ngIf="
                 crudPerms.update &&
-                ((row.statut === 'Enregistrée' || row.statut === 'Validée')&&row.statutpaiement=='Non Réglée')
+                row.statut === 'Validée' &&
+                row.statutpaiement == 'Non Réglée'
               "
-              role="button"
               (click)="openPayementCommande()"
               data-target="#modal-form"
               data-toggle="modal"
-              ngbTooltip="Régler commande"
+              ngbTooltip="Réglé"
               placement="bottom"
+              class="btn btn-icon btn-success btn-sm"
+              type="button"
             >
-            <i class="fa-solid fa-hand-holding-dollar text-success  mr-2"></i>
-            </a>
+              <span class="btn-inner--icon">
+                <i class="fa-solid fa-hand-holding-dollar"></i>
+              </span>
+            </button>
           </div>
         </ng-template>
       </ngx-datatable-column>

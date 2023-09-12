@@ -30,13 +30,17 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
   infoUser: any;
   public formAddPromotion: FormGroup;
   public formUpdatePromotion: FormGroup;
-  rowSelected:any
+  rowSelected: any;
   file: any;
   fileSrc: any = "";
   background: boolean;
   fileTab: any[] = [];
   fileTabSrc: any[] = [];
   listPromotion: any[] = [];
+  mindate: string=this.formatDateForDatePick(new Date());
+  mindateUp: string=this.formatDateForDatePick(new Date());
+
+  dateDebutpic
 
   public crudPerms: any;
   public menuItems: any[];
@@ -74,6 +78,8 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.mindate = this.formatDateForDatePick(new Date());
+    console.log("date", this.formatDateForDatePick(new Date()));
     this.menuItems = this.rolePermission.getMenuPermission();
 
     console.log("Type Promo", this.listPromotion);
@@ -97,8 +103,6 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
   buildForm() {
     this.formAddPromotion = this.fb.group({
       nom: ["", [Validators.required]],
-      code: ["", [Validators.required]],
-      description: [""],
       pourcentage: [0],
       datedebut: ["", [Validators.required]],
       datefin: ["", [Validators.required]],
@@ -113,12 +117,16 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
     data = this.rowSelected;
 
     this.formUpdatePromotion = this.fb.group({
-      nom: [data&&data.nom?data.nom:null, [Validators.required]],
-      code: [data&&data.code?data.code:null, [Validators.required]],
-      description: [data&&data.description?data.description:null],
-      pourcentage: [data&&data.pourcentage?data.pourcentage:null],
-      datedebut: [data&&data.datedebut?data.datedebut:null, [Validators.required]],
-      datefin: [data&&data.datefin?data.datefin:null, [Validators.required]],
+      nom: [data && data.nom ? data.nom : null, [Validators.required]],
+      pourcentage: [data && data.pourcentage ? data.pourcentage : null],
+      datedebut: [
+        data && data.datedebut ? data.datedebut : null,
+        [Validators.required],
+      ],
+      datefin: [
+        data && data.datefin ? data.datefin : null,
+        [Validators.required],
+      ],
       typepromotionid: ["", [Validators.required]],
       boutiqueid: [this.infoUser.body.boutique.id, [Validators.required]],
     });
@@ -320,8 +328,8 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
     });
   }
 
-  updatePromotion(id:number,obj: any, file?:any) {
-    this.promotionService.updatePromotion(id,obj, file).subscribe({
+  updatePromotion(id: number, obj: any, file?: any) {
+    this.promotionService.updatePromotion(id, obj, file).subscribe({
       next: (data) => {
         this.utilitisService.response(data, (d: any) => {
           console.log("======response", d);
@@ -351,7 +359,36 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
     console.log("===== file pour la promo", this.file);
 
     const originalDate = new Date(this.formAddPromotion.value.datedebut);
-    this.formAddPromotion.value.datedebut = `${originalDate.getFullYear()}-${(
+    this.formAddPromotion.value.datedebut = this.formatDate(originalDate)
+
+    const originalDateFin = new Date(this.formAddPromotion.value.datefin);
+    this.formAddPromotion.value.datefin = this.formatDate(originalDateFin)
+
+    console.log("=====Date Debut", this.formAddPromotion.value.datedebut);
+    console.log("=====Date Fin", this.formAddPromotion.value.datefin);
+
+    this.addPromotion(this.formAddPromotion.value);
+    this.getAllPromotion({
+      pagination: true,
+      page: this.page.pageNumber,
+      size: this.page.size,
+      isActive: false,
+      boutiqueid: this.infoUser.body.boutique.id,
+    });
+    this.fileTabSrc = [];
+    this.fileTab = [];
+    this.file = {};
+  }
+
+  // VALIDER AJOUT PRODUIT
+  handleOk1() {
+    this.formUpdatePromotion.value.typepromotionid =
+      this.formUpdatePromotion.value.typepromotionid.id;
+    console.log("========res", this.formUpdatePromotion.value);
+    console.log("===== file pour la promo", this.file);
+
+    const originalDate = new Date(this.formUpdatePromotion.value.datedebut);
+    this.formUpdatePromotion.value.datedebut = `${originalDate.getFullYear()}-${(
       originalDate.getMonth() + 1
     )
       .toString()
@@ -366,8 +403,8 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
       .toString()
       .padStart(3, "0")}`;
 
-    const originalDateFin = new Date(this.formAddPromotion.value.datefin);
-    this.formAddPromotion.value.datefin = `${originalDateFin.getFullYear()}-${(
+    const originalDateFin = new Date(this.formUpdatePromotion.value.datefin);
+    this.formUpdatePromotion.value.datefin = `${originalDateFin.getFullYear()}-${(
       originalDateFin.getMonth() + 1
     )
       .toString()
@@ -382,69 +419,14 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
       .toString()
       .padStart(3, "0")}`;
 
-    console.log("=====Date Debut", this.formAddPromotion.value.datedebut);
-    console.log("=====Date Fin", this.formAddPromotion.value.datefin);
+    console.log("=====Date Debut", this.formUpdatePromotion.value.datedebut);
+    console.log("=====Date Fin", this.formUpdatePromotion.value.datefin);
 
-    this.addPromotion(this.formAddPromotion.value, this.file);
-    this.getAllPromotion({
-      pagination: true,
-      page: this.page.pageNumber,
-      size: this.page.size,
-      isActive: false,
-      boutiqueid: this.infoUser.body.boutique.id,
-    });
+    this.updatePromotion(this.rowSelected.id, this.formUpdatePromotion.value);
     this.fileTabSrc = [];
     this.fileTab = [];
     this.file = {};
   }
-
-    // VALIDER AJOUT PRODUIT
-    handleOk1() {
-      this.formUpdatePromotion.value.typepromotionid =
-        this.formUpdatePromotion.value.typepromotionid.id;
-      console.log("========res", this.formUpdatePromotion.value);
-      console.log("===== file pour la promo", this.file);
-  
-      const originalDate = new Date(this.formUpdatePromotion.value.datedebut);
-      this.formUpdatePromotion.value.datedebut = `${originalDate.getFullYear()}-${(
-        originalDate.getMonth() + 1
-      )
-        .toString()
-        .padStart(2, "0")}-${originalDate
-        .getDate()
-        .toString()
-        .padStart(
-          2,
-          "0"
-        )} ${originalDate.getHours()}:${originalDate.getMinutes()}:${originalDate.getSeconds()}.${originalDate
-        .getMilliseconds()
-        .toString()
-        .padStart(3, "0")}`;
-  
-      const originalDateFin = new Date(this.formUpdatePromotion.value.datefin);
-      this.formUpdatePromotion.value.datefin = `${originalDateFin.getFullYear()}-${(
-        originalDateFin.getMonth() + 1
-      )
-        .toString()
-        .padStart(2, "0")}-${originalDateFin
-        .getDate()
-        .toString()
-        .padStart(
-          2,
-          "0"
-        )} ${originalDateFin.getHours()}:${originalDateFin.getMinutes()}:${originalDateFin.getSeconds()}.${originalDateFin
-        .getMilliseconds()
-        .toString()
-        .padStart(3, "0")}`;
-  
-      console.log("=====Date Debut", this.formUpdatePromotion.value.datedebut);
-      console.log("=====Date Fin", this.formUpdatePromotion.value.datefin);
-  
-      this.updatePromotion(this.rowSelected.id,this.formUpdatePromotion.value, this.file);
-      this.fileTabSrc = [];
-      this.fileTab = [];
-      this.file = {};
-    }
 
   infoSwal(bool: boolean) {
     if (bool) {
@@ -554,11 +536,40 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
     }
   }
 
-    // Recupere Id de la ligne selectionner a supprimer
-    onUpdateRow(row: any) {
-      console.log("=======RowFOrUpdate", row);
-      this.rowSelected = row;
-      // this.getImageByProduitId(n)
-      this.buildFormUpdate();
-    }
+  // Recupere Id de la ligne selectionner a supprimer
+  onUpdateRow(row: any) {
+    console.log("=======RowFOrUpdate", row);
+    this.rowSelected = row;
+    // this.getImageByProduitId(n)
+    this.buildFormUpdate();
+  }
+
+  formatDate(date:any) {
+    return `${date.getFullYear()}-${(date.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}-${date
+      .getDate()
+      .toString()
+      .padStart(
+        2,
+        "0"
+      )} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}.${date
+      .getMilliseconds()
+      .toString()
+      .padStart(3, "0")}`;
+
+  }
+
+  formatDateForDatePick(date:any) {
+    return `${date.getFullYear()}-${(date.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}-${date
+      .getDate()
+      .toString()
+      .padStart(
+        2,
+        "0"
+      )}`;
+
+  }
 }

@@ -119,25 +119,34 @@
       <ngx-datatable-column name="Actions">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <div>
-            <a
+            <button
             *ngIf="crudPerms.update"
-              role="button"
-              (click)="openUpdateAdmin(row)"
-              data-target="#modal-form"
-              data-toggle="modal"
-            >
-              <i class="fa-solid fa-pen-to-square mr-2"></i>
-              <!-- <i class="fa-solid fa-pen"></i> -->
-            </a>
-            <a
+            (click)="openUpdateAdmin(row)"
+            data-target="#modal-form"
+            data-toggle="modal"
+            ngbTooltip="Modifier"
+            placement="bottom"
+            class="btn btn-icon btn-primary btn-sm"
+            type="button"
+          >
+            <span class="btn-inner--icon"
+              ><i class="fa-solid fa-pen-to-square"></i
+            ></span>
+          </button>
+          <button
             *ngIf="crudPerms.delete"
-              role="button"
-              (click)="onDeleteRow(row.id);open(classic2, 'Notification', '')"
-              data-target="#modal-form"
-              data-toggle="modal"
-            >
-              <i class="fa-solid fa-trash-can text-danger mr-2"></i>
-            </a>
+            (click)="onDeleteRow(row.id);open(classic2, 'Notification', '')"
+            data-target="#modal-form"
+            data-toggle="modal"
+            ngbTooltip="Supprimer"
+            placement="bottom"
+            class="btn btn-icon btn-danger btn-sm"
+            type="button"
+          >
+            <span class="btn-inner--icon">
+              <i class="fa-solid fa-trash-can"></i>
+            </span>
+          </button>
           </div>
         </ng-template>
       </ngx-datatable-column>

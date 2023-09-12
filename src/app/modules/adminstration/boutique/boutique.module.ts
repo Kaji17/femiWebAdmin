@@ -9,6 +9,7 @@ import { ComponentsModule } from "src/app/components/components.module";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgxDatatableModule } from "@swimlane/ngx-datatable";
 import { SelectDropDownModule } from "ngx-select-dropdown";
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { SelectDropDownModule } from "ngx-select-dropdown";
     FormsModule,
     ReactiveFormsModule,
     SelectDropDownModule,
+    NgbTooltipModule,
   ],
 })
 export class BoutiqueModule {}

@@ -64,7 +64,7 @@
   },
   "DASHBOARD": {
     "CHIFFRE D'AFFAIRE": "TURNOVER",
-    "NOUVEAUX CLIENTS": "NEW CUSTOMERS",
+    "TOTAL CLIENTS": "TOTAL CUSTOMERS",
     "VENTES": "SALES",
     "TOTAL PRODUITS": "TOTAL PRODUCTS",
     "Depuis le mois dernier": "Since last month",

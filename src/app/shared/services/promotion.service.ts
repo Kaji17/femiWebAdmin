@@ -53,7 +53,9 @@ export class PromotionService {
     let form = new FormData();
 
     form.append("promotionDto", JSON.stringify(promotionDto));
-    form.append("file", file);
+    if(file){
+      form.append("file", file);
+    }
     return this.http.post(
       this.configService.getApi1("PROMOTION_ADD_POST"),
       form,

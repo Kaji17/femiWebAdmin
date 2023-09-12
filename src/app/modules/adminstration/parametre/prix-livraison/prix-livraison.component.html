@@ -64,24 +64,34 @@
       <ngx-datatable-column name="Actions">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <div>
-            <a
-              *ngIf="crudPerms.update"
-              role="button"
-              (click)="openAssignPrixLivraison()"
-              data-target="#modal-form"
-              data-toggle="modal"
-            >
-              <i class="fa-solid fa-location-dot mr-2 text-primary fs-5"></i>
-            </a>
-            <a
-              *ngIf="crudPerms.delete"
-              role="button"
-              (click)="open(classic2, 'Notification', '')"
-              data-target="#modal-form"
-              data-toggle="modal"
-            >
-              <i class="fa-solid fa-trash-can text-danger mr-2 fs-5"></i>
-            </a>
+            <button
+            *ngIf="crudPerms.update"
+            (click)="openAssignPrixLivraison()"
+            data-target="#modal-form"
+            data-toggle="modal"
+            ngbTooltip="Modifier"
+            placement="bottom"
+            class="btn btn-icon btn-primary btn-sm"
+            type="button"
+          >
+            <span class="btn-inner--icon">
+            <i class="fa-solid fa-location-dot"></i>
+          </span>
+          </button>
+          <button
+            *ngIf="crudPerms.delete"
+            (click)="open(classic2, 'Notification', '')"
+            data-target="#modal-form"
+            data-toggle="modal"
+            ngbTooltip="Supprimer"
+            placement="bottom"
+            class="btn btn-icon btn-danger btn-sm"
+            type="button"
+          >
+            <span class="btn-inner--icon">
+              <i class="fa-solid fa-trash-can"></i>
+            </span>
+          </button>
           </div>
         </ng-template>
       </ngx-datatable-column>

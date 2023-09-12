@@ -73,24 +73,34 @@
       <ngx-datatable-column name="Actions" prop="nom">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <div>
-            <a
+            <button
             *ngIf="crudPerms.update&& !(row.nom==='Administrateur')"
-              role="button"
-              (click)="openEditRole(row)"
-              data-target="#modal-form"
-              data-toggle="modal"
-            >
-              <i class="fa-solid fa-pen-to-square mr-2 text-primary"></i>
-            </a>
-            <a
-            *ngIf="crudPerms.delete && !(row.nom==='Administrateur')"
-              role="button"
-              (click)="onDeleteRow(row.id); open(classic2, 'Notification', '')"
-              data-target="#modal-form"
-              data-toggle="modal"
-            >
-              <i class="fa-solid fa-trash-can text-danger mr-2"></i>
-            </a>
+            (click)="openEditRole(row)"
+            data-target="#modal-form"
+            data-toggle="modal"
+            ngbTooltip="Modifier"
+            placement="bottom"
+            class="btn btn-icon btn-primary btn-sm"
+            type="button"
+          >
+            <span class="btn-inner--icon"
+              ><i class="fa-solid fa-pen-to-square"></i
+            ></span>
+          </button>
+          <button
+          *ngIf="crudPerms.delete && !(row.nom==='Administrateur')"
+          (click)="onDeleteRow(row.id); open(classic2, 'Notification', '')"
+            data-target="#modal-form"
+            data-toggle="modal"
+            ngbTooltip="Supprimer"
+            placement="bottom"
+            class="btn btn-icon btn-danger btn-sm"
+            type="button"
+          >
+            <span class="btn-inner--icon">
+              <i class="fa-solid fa-trash-can"></i>
+            </span>
+          </button>
           </div>
         </ng-template>
       </ngx-datatable-column>

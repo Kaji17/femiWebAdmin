@@ -52,11 +52,11 @@
             class="form-group row m-0 justify-content-between align-items-center"
             style="width: 100%"
           >
-            <label for="position-produit" class="form-control-label col-md-4"
+            <label for="position-produit" class="form-control-label col-md-5"
               >Libellé produits</label
             >
 
-            <div class="col-md-8 align-items-center">
+            <div class="col-md-7 align-items-center">
               <span
                 class="badge badge-pill badge-md badge-info m-1"
                 *ngFor="let tag of produitSelect"
@@ -67,7 +67,7 @@
             </div>
           </div>
           <div
-            class="form-group row m-0 justify-content-between align-items-center"
+            class="form-group row m-0 align-items-center"
             style="width: 100%"
           >
             <label for="position-produit" class="form-control-label col-md-5"
@@ -105,190 +105,3 @@
     </div>
   </div>
 </div>
-
-<!-- 
-<form [formGroup]="formAddPromotion">
-    <div
-      class="form-group row m-0 justify-content-between align-items-center"
-      style="width: 100%"
-      *ngIf="itemselected == 1"
-    >
-      <div
-        class="form-group row m-0 justify-content-between align-items-center mb-3"
-        style="width: 100%"
-      >
-        <label for="name-produit" class="form-control-label col-md-4"
-          >Nom <span class="text-danger">*</span></label
-        >
-        <input
-          class="form-control col-md-8"
-          type="text"
-          id="name-produit"
-          formControlName="nom"
-          [maxLength]="32"
-        />
-      </div>
-      <div
-        class="form-group row m-0 justify-content-between align-items-center mb-3"
-        style="width: 100%"
-      >
-        <label for="code-produit" class="form-control-label col-md-4"
-          >Code <span class="text-danger">*</span></label
-        >
-        <input
-          class="form-control col-md-8"
-          type="text"
-          id="code-produit"
-          formControlName="code"
-          [maxLength]="32"
-        />
-      </div>
-      <div
-        class="form-group row m-0 align-items-center mb-3"
-        style="width: 100%"
-      >
-        <label for="catégorie-produit" class="form-control-label col-md-4"
-          >Type promotion <span class="text-danger">*</span></label
-        >
-        <ngx-select-dropdown
-          [config]="config"
-          [options]="listTypePromotion"
-          formControlName="typepromotionid"
-          class="col-md-4 p-0"
-        ></ngx-select-dropdown>
-      </div>
-
-      <div
-        class="form-group row m-0 justify-content-between align-items-center mb-3"
-        style="width: 100%"
-      >
-        <label for="catégorie-produit" class="form-control-label col-md-4"
-          >Image<span class="text-danger"></span
-        ></label>
-        <input
-          #fileProm
-          type="file"
-          style="display: none"
-          (change)="loadFile($event)"
-          accept="image/png, image/gif, image/jpeg"
-        />
-        <div class="col-md-8">
-          <div class="row">
-            <div
-              *ngIf="!this.fileTab.length"
-              (click)="fileProm.click()"
-              class="rounded border-primary border align-items-center p-1 col-md-3 m-1 row justify-content-center"
-              style="
-                min-height: 100px;
-                width: fit-content;
-                border-style: dashed !important;
-                background-color: #dee2e6;
-                cursor: pointer;
-              "
-            >
-              <span><i class="fa-solid fa-plus"></i> UPLOAD</span>
-            </div>
-
-            <div
-              *ngFor="let image of fileTabSrc"
-              class="col-md-3 m-1 rounded border align-items-center p-1 m-1 row justify-content-center"
-              [style]="'background-image: url(' + image + ')'"
-              style="
-                position: relative;
-                background-repeat: no-repeat;
-                background-size: cover;
-                min-height: 100px;
-                width: 91px !important;
-              "
-            >
-              <i
-                (click)="removeImg(image)"
-                class="fa-solid fa-circle-xmark"
-                style="
-                  position: absolute;
-                  color: #c32830;
-                  top: -7px;
-                  right: -10px;
-                  cursor: pointer;
-                "
-              ></i>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="form-group row m-0 justify-content-between align-items-center mb-3"
-        style="width: 100%"
-      >
-        <label for="prix-produit" class="form-control-label col-md-4"
-          >Taux de réduction (%)<span class="text-danger">*</span></label
-        >
-        <input
-          class="form-control col-md-8"
-          type="number"
-          id="prix-produit"
-          formControlName="pourcentage"
-        />
-      </div>
-      <div
-        class="form-group row m-0 align-items-center mb-3"
-        style="width: 100%"
-      >
-        <label for="position-produit" class="form-control-label col-md-4"
-          >Date début</label
-        >
-        <input
-          type="datetime-local"
-          class="form-control col-md-8"
-          formControlName="datedebut"
-        />
-      </div>
-      <div
-        class="form-group row m-0 align-items-center mb-3"
-        style="width: 100%"
-      >
-        <label for="position-produit" class="form-control-label col-md-4"
-          >Date fin</label
-        >
-        <input
-          type="datetime-local"
-          class="form-control col-md-8"
-          bsDatepicker
-          formControlName="datefin"
-        />
-      </div>
-      <div
-        class="form-group row m-0 justify-content-between align-items-center mb-3"
-        style="width: 100%"
-      >
-        <label for="description" class="form-control-label col-md-4"
-          >Description</label
-        >
-        <textarea
-          class="form-control col-md-8"
-          id="description"
-          rows="3"
-          formControlName="description"
-        ></textarea>
-      </div>
-      <div
-        class="modal-footer form-group row m-0 justify-content-between align-items-center"
-      >
-        <button
-          type="button"
-          class="btn btn-link ml-auto"
-          (click)="handleOk(); onAddNewPromotionShow(2)"
-        >
-          Ajouter promotion
-        </button>
-        <button
-          type="button"
-          class="btn btn-link ml-auto text-danger"
-          data-dismiss="modal"
-          (click)="closeModal()"
-        >
-          Annuler
-        </button>
-      </div>
-    </div>
-  </form> -->
