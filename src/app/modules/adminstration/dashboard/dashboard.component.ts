@@ -40,7 +40,7 @@ export class DashboardComponent implements OnInit {
   public ordersChart;
   public produitChart;
   public revenuProduitChart;
-  public totalClients:number
+  public totalClients: number;
 
   public clicked: boolean = true;
   public clicked1: boolean = false;
@@ -98,7 +98,6 @@ export class DashboardComponent implements OnInit {
   objSearchCmde: any;
   objSearchModePay: any;
 
-
   page = new Page();
   infoUser: any;
   periodeselect: any;
@@ -124,13 +123,22 @@ export class DashboardComponent implements OnInit {
     //   console.log("selecteur: ",this.infoUser)
     // })
     this.infoUser = JSON.parse(localStorage.getItem("user_info"));
-    this.store.dispatch(initAction())
+    this.store.dispatch(initAction());
   }
 
   ngOnInit() {
-
-    this.getClients({pagination:true,page:0,size:1,boutiqueid: this.infoUser.body.boutique.id,})
-    this.getProduits({pagination:true,page:0,size:1,boutiqueid: this.infoUser.body.boutique.id,})
+    this.getClients({
+      pagination: true,
+      page: 0,
+      size: 1,
+      boutiqueid: this.infoUser.body.boutique.id,
+    });
+    this.getProduits({
+      pagination: true,
+      page: 0,
+      size: 1,
+      boutiqueid: this.infoUser.body.boutique.id,
+    });
     this.getStatNombreDeVentes({
       periode: "month",
       boutiqueid: this.infoUser.body.boutique.id,
@@ -152,8 +160,7 @@ export class DashboardComponent implements OnInit {
 
     this.getStatModePaiement({
       boutiqueid: this.infoUser.body.boutique.id,
-
-    })
+    });
     console.log("data order===", this.dataTotalOrders);
     //
     this.getAllZone({
@@ -178,7 +185,6 @@ export class DashboardComponent implements OnInit {
       boutiqueid: this.infoUser.body.boutique.id,
     };
 
-
     this.getStatPanierMoyen(this.objSearchPanierMoyen);
     //
     this.chiffreAffaireTotal = 0;
@@ -200,8 +206,6 @@ export class DashboardComponent implements OnInit {
 
     parseOptions(Chart, chartOptions());
 
-
-
     // var chartRevenuProduit = document.getElementById("chart-revenuProduit");
 
     // this.revenuProduitChart = new Chart(chartRevenuProduit, {
@@ -211,30 +215,30 @@ export class DashboardComponent implements OnInit {
     // });
   }
 
-  getClients(data){
+  getClients(data) {
     // this.temp = [];
-    data.pagination = true
+    data.pagination = true;
     this.clientService.gettAllClient(data).subscribe({
       next: (data) => {
-        this.utilitisService.response(data, (d:any) => {
-          console.log('==client==',d)
-          this.totalClients =0
-          this.totalClients=d.body.totalElements
+        this.utilitisService.response(data, (d: any) => {
+          console.log("==client==", d);
+          this.totalClients = 0;
+          this.totalClients = d.body.totalElements;
         });
       },
       error: (error) => this.utilitisService.response(error),
     });
   }
 
-  getProduits(data){
+  getProduits(data) {
     // this.temp = [];
-    data.pagination = true
+    data.pagination = true;
     this.produitService.gettAllProduit(data).subscribe({
       next: (data) => {
-        this.utilitisService.response(data, (d:any) => {
-          console.log('==produits==',d)
-          this.totalNombreProduit = 0
-          this.totalNombreProduit=d.body.totalElements
+        this.utilitisService.response(data, (d: any) => {
+          console.log("==produits==", d);
+          this.totalNombreProduit = 0;
+          this.totalNombreProduit = d.body.totalElements;
         });
       },
       error: (error) => this.utilitisService.response(error),
@@ -334,20 +338,22 @@ export class DashboardComponent implements OnInit {
           this.getStatProduitPlusVendus(this.objSearchCmde);
         }
         break;
-        case "modePaiement":
-          console.log("zone search", this.zoneselectModePaiement);
-          if (this.zoneselectModePaiement.zone) {
-            this.objSearchModePay.zoneid = this.zoneselectModePaiement.zone.id;
-            this.getStatModePaiement(this.objSearchModePay);
-            console.log("obj search", this.objSearchModePay);
-          } else {
-            this.objSearchModePay.zoneid = null;
-            this.objSearchModePay = {
-              boutiqueid: this.infoUser.body.boutique.id,
-            };
-            this.getStatModePaiement(this.objSearchModePay);
-          }
-          break;
+      case "modePaiement":
+        console.log("zone search", this.zoneselectModePaiement);
+        if (this.zoneselectModePaiement.zone) {
+          this.objSearchModePay.zoneid = this.zoneselectModePaiement.zone.id;
+          // this.getStatModePaiement(this.objSearchModePay);
+          this.updateModePaiement(this.objSearchModePay)
+          console.log("obj search", this.objSearchModePay);
+        } else {
+          this.objSearchModePay.zoneid = null;
+          this.objSearchModePay = {
+            boutiqueid: this.infoUser.body.boutique.id,
+          };
+          this.updateModePaiement(this.objSearchModePay)
+          // this.getStatModePaiement(this.objSearchModePay);
+        }
+        break;
 
       default:
         break;
@@ -487,7 +493,9 @@ export class DashboardComponent implements OnInit {
             console.log("data orde1===", this.dataTotalModePaiement);
             tab.map((el: any) => {
               this.dataTotalModePaiement.labels.push(el.modepaiement);
-              this.dataTotalModePaiement.datasets[0].labels.push(el.modepaiement);
+              this.dataTotalModePaiement.datasets[0].labels.push(
+                el.modepaiement
+              );
 
               this.dataTotalModePaiement.datasets[0].data.push(el.nombre);
               console.log("data orde2===", this.dataTotalModePaiement);
@@ -1163,6 +1171,52 @@ export class DashboardComponent implements OnInit {
                 this.salesChart.update();
                 break;
             }
+          }
+        });
+      },
+      error: (error) => {
+        this.utilitisService.response(error, (d: any) => {});
+      },
+    });
+  }
+
+  // Modifier Donnée statistique de chiffre d'affaire
+  updateModePaiement(obj) {
+    this.statistiqueService.modePaiementStatistique(obj).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log(d);
+          if (data.status == 200) {
+            this.dataTotalModePaiement = {
+              labels: [],
+              datasets: [
+                {
+                  labels: [],
+                  data: [],
+                  backgroundColor: [
+                    "rgb(255, 99, 132)",
+                    "rgb(54, 162, 235)",
+                    "rgb(255, 205, 86)",
+                  ],
+                  hoverOffset: 4,
+                },
+              ],
+            };
+            let tab: [] = d.body;
+            console.log("data orde1===", this.dataTotalModePaiement);
+            tab.map((el: any) => {
+              this.dataTotalModePaiement.labels.push(el.modepaiement);
+              this.dataTotalModePaiement.datasets[0].labels.push(
+                el.modepaiement
+              );
+
+              this.dataTotalModePaiement.datasets[0].data.push(el.nombre);
+              console.log("data orde2===", this.dataTotalModePaiement);
+            });
+            this.produitChart.data.datasets[0].data =
+              this.dataTotalModePaiement.datasets[0].data;
+            this.produitChart.data.labels = this.dataTotalModePaiement.labels;
+            this.produitChart.update();
           }
         });
       },
