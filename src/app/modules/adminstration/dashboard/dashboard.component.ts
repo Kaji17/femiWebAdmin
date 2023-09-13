@@ -45,6 +45,7 @@ export class DashboardComponent implements OnInit {
   public clicked: boolean = true;
   public clicked1: boolean = false;
   public clicked2: boolean = false;
+  public clicked3: boolean = false;
 
   // variable 1
   public chiffreAffaireTotal: number;
@@ -216,7 +217,6 @@ export class DashboardComponent implements OnInit {
     // });
   }
 
-
   // Recuprer le nombre de client de la boutique
   getClients(data) {
     // this.temp = [];
@@ -233,7 +233,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  // Recuperer le nombre de produit de la boutique 
+  // Recuperer le nombre de produit de la boutique
   getProduits(data) {
     // this.temp = [];
     data.pagination = true;
@@ -249,20 +249,9 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  // Modification des data des charts des stats de chiffres d'affaire et nombre de commande 
+  // Modification des data des charts des stats de chiffres d'affaire et nombre de commande
   public updateOptions(type: number) {
     switch (type) {
-      case 0:
-        this.updateData({
-          periode: "month",
-          boutiqueid: this.infoUser.body.boutique.id,
-        });
-
-        this.updateDataChiffreAffaire({
-          periode: "month",
-          boutiqueid: this.infoUser.body.boutique.id,
-        });
-        break;
       case 1:
         this.updateData({
           periode: "day",
@@ -286,7 +275,27 @@ export class DashboardComponent implements OnInit {
           boutiqueid: this.infoUser.body.boutique.id,
         });
         break;
+      case 3:
+        this.updateData({
+          periode: "week",
+          boutiqueid: this.infoUser.body.boutique.id,
+        });
+
+        this.updateDataChiffreAffaire({
+          periode: "week",
+          boutiqueid: this.infoUser.body.boutique.id,
+        });
+        break;
       default:
+        this.updateData({
+          periode: "month",
+          boutiqueid: this.infoUser.body.boutique.id,
+        });
+
+        this.updateDataChiffreAffaire({
+          periode: "month",
+          boutiqueid: this.infoUser.body.boutique.id,
+        });
         break;
     }
   }
@@ -629,42 +638,45 @@ export class DashboardComponent implements OnInit {
               default:
                 this.dataTotalOrders = {
                   labels: [
-                    "Jan" + "-" + currentYear,
-                    "Feb" + "-" + currentYear,
-                    "Mars" + "-" + currentYear,
-                    "Avr" + "-" + currentYear,
-                    "May" + "-" + currentYear,
-                    "Jun" + "-" + currentYear,
-                    "Jul" + "-" + currentYear,
-                    "Aug" + "-" + currentYear,
-                    "Sep" + "-" + currentYear,
-                    "Oct" + "-" + currentYear,
-                    "Nov" + "-" + currentYear,
-                    "Dec" + "-" + currentYear,
                   ],
                   datasets: [
                     {
                       label: "Commandes",
-                      data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                      data: [],
                       maxBarThickness: 12,
                     },
                   ],
                 };
+
                 let tab: [] = d.body;
-                console.log("data orde1===", this.dataTotalOrders);
+                console.log(
+                  "data chiffe affaire 1===",
+                  this.dataTotalChiffreAffaire
+                );
+
                 tab.map((el: any) => {
                   // console.log("data date===", el)
                   let date = new Date(el.periode);
 
-                  // Donne les stats de l'année en cours
                   if (date.getFullYear() == currentYear) {
-                    let moisGet = date.getMonth();
-
-                    this.dataTotalOrders.datasets[0].data[moisGet] =
-                      el.nombreventes;
-                    console.log("data orde2===", this.dataTotalOrders);
+                    // let moisGet = date.getMonth();
+                    let objDate: string;
+                    objDate = `${date.getMonth() + 1}/${date.getFullYear()}`;
+                    this.dataTotalOrders.labels.push(objDate);
+                    this.dataTotalOrders.datasets[0].data.push(
+                      el.nombreventes
+                    );
                   }
                 });
+
+                console.log("INIT CHART sales=======");
+                var chartSales = document.getElementById("chart-sales");
+                this.salesChart = new Chart(chartSales, {
+                  type: "line",
+                  options: chartExample1.options,
+                  data: this.dataTotalChiffreAffaire,
+                });
+
 
                 console.log("INIT CHART ORDER=======");
                 var chartOrders = document.getElementById("chart-orders");
@@ -811,27 +823,62 @@ export class DashboardComponent implements OnInit {
 
                 this.ordersChart.update();
                 break;
+                case "week":
+                  this.dataTotalOrders = {
+                    labels: [],
+                    datasets: [
+                      {
+                        label: "Commandes",
+                        data: [],
+                        maxBarThickness: 12,
+                      },
+                    ],
+                  };
+                  let tabW: [] = d.body;
+                  console.log("data orde1Day===", this.dataTotalOrders);
+                  tabW.map((el: any) => {
+                    // console.log("data date===", el)
+                    let date = new Date(el.periode);
+  
+                    if (
+                      date.getMonth() == curentMonth &&
+                      date.getFullYear() == currentYear
+                    ) {
+                      let moisDay = date.getDay();
+                      console.log("day===", moisDay);
+  
+                      let objDate: string;
+  
+                      objDate = `${date.getDate()}/${
+                        date.getMonth() + 1
+                      }/${date.getFullYear()}`;
+                      this.dataTotalOrders.labels.push(objDate);
+                      this.dataTotalOrders.datasets[0].data.push(
+                        el.nombreventes
+                      );
+  
+                      console.log(
+                        "data orde2Day===",
+                        this.dataTotalOrders
+                      );
+                    }
+                  });
+                  this.ordersChart.data.datasets[0].data =
+                    this.dataTotalOrders.datasets[0].data;
+                  this.ordersChart.data.labels =
+                    this.dataTotalOrders.labels;
+                  this.ordersChart.update();
+                  break;
+  
 
               default:
                 this.dataTotalOrders = {
                   labels: [
-                    "Jan" + "-" + currentYear,
-                    "Feb" + "-" + currentYear,
-                    "Mars" + "-" + currentYear,
-                    "Avr" + "-" + currentYear,
-                    "May" + "-" + currentYear,
-                    "Jun" + "-" + currentYear,
-                    "Jul" + "-" + currentYear,
-                    "Aug" + "-" + currentYear,
-                    "Sep" + "-" + currentYear,
-                    "Oct" + "-" + currentYear,
-                    "Nov" + "-" + currentYear,
-                    "Dec" + "-" + currentYear,
                   ],
                   datasets: [
                     {
                       label: "Commandes",
-                      data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                      data: [],
                       maxBarThickness: 12,
                     },
                   ],
@@ -839,16 +886,23 @@ export class DashboardComponent implements OnInit {
                 let tab: [] = d.body;
                 console.log("data orde1===", this.dataTotalOrders);
                 tab.map((el: any) => {
-                  let date = new Date(el.periode);
+                  // let date = new Date(el.periode);
 
                   // Donne les stats de l'année en cours
-                  if (date.getFullYear() == currentYear) {
-                    let moisGet = date.getMonth();
+                  tab.map((el: any) => {
+                    // console.log("data date===", el)
+                    let date = new Date(el.periode);
 
-                    this.dataTotalOrders.datasets[0].data[moisGet] =
-                      el.nombreventes;
-                    console.log("data orde2===", this.dataTotalOrders);
-                  }
+                    if (date.getFullYear() == currentYear) {
+                      // let moisGet = date.getMonth();
+                      let objDate: string;
+                      objDate = `${date.getMonth() + 1}/${date.getFullYear()}`;
+                      this.dataTotalOrders.labels.push(objDate);
+                      this.dataTotalOrders.datasets[0].data.push(
+                        el.nombreventes
+                      );
+                    }
+                  });
                 });
                 this.ordersChart.data.datasets[0].data =
                   this.dataTotalOrders.datasets[0].data;
@@ -972,8 +1026,7 @@ export class DashboardComponent implements OnInit {
 
               default:
                 this.dataTotalChiffreAffaire = {
-                  labels: [
-                  ],
+                  labels: [],
                   datasets: [
                     {
                       label: "Performance",
@@ -988,26 +1041,19 @@ export class DashboardComponent implements OnInit {
                   this.dataTotalChiffreAffaire
                 );
 
-
                 tab.map((el: any) => {
                   // console.log("data date===", el)
                   let date = new Date(el.periode);
 
-
-                  if (
-                    date.getFullYear() == currentYear
-                  ) {
+                  if (date.getFullYear() == currentYear) {
                     // let moisGet = date.getMonth();
                     let objDate: string;
-                      objDate = `${
-                        date.getMonth() + 1
-                      }/${date.getFullYear()}`;
-                      this.dataTotalChiffreAffaire.labels.push(objDate);
-                      this.dataTotalChiffreAffaire.datasets[0].data.push(
-                        el.chiffre_affaires
-                      );
+                    objDate = `${date.getMonth() + 1}/${date.getFullYear()}`;
+                    this.dataTotalChiffreAffaire.labels.push(objDate);
+                    this.dataTotalChiffreAffaire.datasets[0].data.push(
+                      el.chiffre_affaires
+                    );
                   }
-
                 });
 
                 console.log("INIT CHART sales=======");
@@ -1120,10 +1166,56 @@ export class DashboardComponent implements OnInit {
                 this.salesChart.update();
                 break;
 
+              case "week":
+                this.dataTotalChiffreAffaire = {
+                  labels: [],
+                  datasets: [
+                    {
+                      label: "Performance",
+                      data: [],
+                      maxBarThickness: 12,
+                    },
+                  ],
+                };
+                let tabW: [] = d.body;
+                console.log("data orde1Day===", this.dataTotalChiffreAffaire);
+                tabW.map((el: any) => {
+                  // console.log("data date===", el)
+                  let date = new Date(el.periode);
+
+                  if (
+                    date.getMonth() == curentMonth &&
+                    date.getFullYear() == currentYear
+                  ) {
+                    let moisDay = date.getDay();
+                    console.log("day===", moisDay);
+
+                    let objDate: string;
+
+                    objDate = `${date.getDate()}/${
+                      date.getMonth() + 1
+                    }/${date.getFullYear()}`;
+                    this.dataTotalChiffreAffaire.labels.push(objDate);
+                    this.dataTotalChiffreAffaire.datasets[0].data.push(
+                      el.chiffre_affaires
+                    );
+
+                    console.log(
+                      "data orde2Day===",
+                      this.dataTotalChiffreAffaire
+                    );
+                  }
+                });
+                this.salesChart.data.datasets[0].data =
+                  this.dataTotalChiffreAffaire.datasets[0].data;
+                this.salesChart.data.labels =
+                  this.dataTotalChiffreAffaire.labels;
+                this.salesChart.update();
+                break;
+
               default:
                 this.dataTotalChiffreAffaire = {
-                  labels: [
-                  ],
+                  labels: [],
                   datasets: [
                     {
                       label: "Commandes",
@@ -1141,22 +1233,16 @@ export class DashboardComponent implements OnInit {
                   tab.map((el: any) => {
                     // console.log("data date===", el)
                     let date = new Date(el.periode);
-  
-  
-                    if (
-                      date.getFullYear() == currentYear
-                    ) {
+
+                    if (date.getFullYear() == currentYear) {
                       // let moisGet = date.getMonth();
                       let objDate: string;
-                        objDate = `${
-                          date.getMonth() + 1
-                        }/${date.getFullYear()}`;
-                        this.dataTotalChiffreAffaire.labels.push(objDate);
-                        this.dataTotalChiffreAffaire.datasets[0].data.push(
-                          el.chiffre_affaires
-                        );
+                      objDate = `${date.getMonth() + 1}/${date.getFullYear()}`;
+                      this.dataTotalChiffreAffaire.labels.push(objDate);
+                      this.dataTotalChiffreAffaire.datasets[0].data.push(
+                        el.chiffre_affaires
+                      );
                     }
-  
                   });
                 });
                 this.salesChart.data.datasets[0].data =

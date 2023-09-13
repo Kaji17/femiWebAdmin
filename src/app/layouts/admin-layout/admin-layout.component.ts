@@ -11,9 +11,12 @@ export class AdminLayoutComponent implements OnInit {
 
   public itemsbreadcrumb: any[]
   public tittelbreadcrumb:string ='Dasboard'
+  infoUser:any
   constructor(
     private breadcrumbService: BreadcrumbService
-  ) { }
+  ) { 
+    this.infoUser = JSON.parse(localStorage.getItem("user_info"));
+  }
 
   ngOnInit() {
     this.itemsbreadcrumb = this.breadcrumbService.getData()

@@ -119,11 +119,11 @@
   "PERIODE":{
     "Année":"Year",
     "Mois":"Month",
-    "Semaine":"Days",
+    "Semaine":"Week",
     "Jour":"Day",
     "A":"Y",
     "M":"M",
-    "S":"S",
+    "S":"W",
     "J":"D"
   }
 }

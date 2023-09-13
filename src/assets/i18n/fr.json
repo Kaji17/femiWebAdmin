@@ -118,11 +118,11 @@
   "PERIODE":{
     "Année":"Année",
     "Mois":"Mois",
-    "Semaine":"Jours",
+    "Semaine":"Semaine",
     "Jour":"Jour",
     "A":"A",
     "M":"M",
-    "S":"W",
+    "S":"S",
     "J":"J"
   }
 }

@@ -34,6 +34,9 @@ export class NavbarComponent implements OnInit {
   public currentLang;
   message_id: any =0
 
+  @Input() boutiqueName:string
+  @Input() boutiqueLogo:string
+
   constructor(
     location: Location,
     private element: ElementRef,
@@ -61,6 +64,7 @@ export class NavbarComponent implements OnInit {
     this.currentLang= lang
   }
   ngOnInit() {
+    console.log('hjgjfkds', this.boutiqueLogo)
     this.currentLang='fr'
     this.profil = JSON.parse(localStorage.getItem("user_info"));
     this.menuItems = NavConstants;

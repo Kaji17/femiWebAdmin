@@ -2,7 +2,7 @@
 <app-sidebar></app-sidebar>
 <div class="main-content">
   <!-- Top navbar -->
-<app-navbar></app-navbar>
+<app-navbar [boutiqueName]="infoUser.body.boutique.nom" [boutiqueLogo]="infoUser.body.boutique.logo"></app-navbar>
   <!-- Pages -->
   <router-outlet></router-outlet>
   <div class="container-fluid">

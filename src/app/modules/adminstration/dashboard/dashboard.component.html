@@ -1,6 +1,6 @@
 <div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
   <div class="container-fluid">
-    <div class="header-body">
+    <div class="header-body mt-5">
       <!-- Card stats -->
       <div class="row justify-content-center">
         <!-- <div class="col-xl-3 col-lg-6">
@@ -26,7 +26,7 @@
             </div>
           </div>
         </div> -->
-        <div class="col-xl-3 col-lg-3">
+        <div class="col-xl-3 col-lg-6">
           <div class="card card-stats mb-4 mb-xl-0">
             <div class="card-body">
               <div class="row">
@@ -89,7 +89,7 @@
             </div>
           </div>
         </div> -->
-        <div class="col-xl-3 col-lg-3">
+        <div class="col-xl-3 col-lg-6">
           <div class="card card-stats mb-4 mb-xl-0">
             <div class="card-body">
               <div class="row">
@@ -140,7 +140,7 @@
       <div class="card bg-gradient-default shadow">
         <div class="card-header bg-transparent">
           <div class="row align-items-center">
-            <div class="col">
+            <div class="col-12 col-lg-4">
               <h6 class="text-uppercase text-light ls-1 mb-1">
                 {{ "DASHBOARD.APPERÇU" | translate }}
               </h6>
@@ -148,20 +148,20 @@
                 {{ "DASHBOARD.Chiffres d'affaire" | translate }}
               </h2>
             </div>
-            <div class="col">
-              <ul class="nav nav-pills justify-content-end">
+            <div class="col-12 col-lg-8 mt-4 mt-lg-0">
+              <ul class="row nav nav-pills justify-content-end">
                 <li
-                  class="nav-item"
+                  class="col nav-item"
                   data-toggle="chart"
                   data-target="#chart-sales"
                   (click)="updateOptions(2)"
                 >
                   <a
                     href="javascript:void(0)"
-                    class="nav-link py-2 px-3"
+                    class="nav-link py-2 px-3 text-center"
                     [ngClass]="{ active: clicked2 === true }"
                     data-toggle="tab"
-                    (click)="clicked1 = false; clicked = false; clicked2 = true"
+                    (click)="clicked1 = false;clicked3 = false; clicked = false; clicked2 = true"
                   >
                     <span class="d-none d-md-block">{{
                       "PERIODE.Année" | translate
@@ -170,17 +170,17 @@
                   </a>
                 </li>
                 <li
-                  class="nav-item mr-2 mr-md-0"
+                  class="col nav-item mr-2 mr-md-0"
                   data-toggle="chart"
                   data-target="#chart-sales"
                   (click)="updateOptions(0)"
                 >
                   <a
                     href="javascript:void(0)"
-                    class="nav-link py-2 px-3"
+                    class="nav-link py-2 px-3 text-center"
                     [ngClass]="{ active: clicked === true }"
                     data-toggle="tab"
-                    (click)="clicked = true; clicked1 = false; clicked2 = false"
+                    (click)="clicked = true; clicked1 = false; clicked2 = false;clicked3 = false"
                   >
                     <span class="d-none d-md-block">{{
                       "PERIODE.Mois" | translate
@@ -188,23 +188,43 @@
                     <span class="d-md-none">{{ "PERIODE.M" | translate }}</span>
                   </a>
                 </li>
+
                 <li
-                  class="nav-item"
+                class="col nav-item mr-2 mr-md-0"
+                data-toggle="chart"
+                data-target="#chart-sales"
+                (click)="updateOptions(3)"
+              >
+                <a
+                  href="javascript:void(0)"
+                  class="nav-link py-2 px-3 text-center"
+                  [ngClass]="{ active: clicked3 === true }"
+                  data-toggle="tab"
+                  (click)="clicked = false; clicked1 = false; clicked2 = false;clicked3 = true"
+                >
+                  <span class="d-none d-md-block">{{
+                    "PERIODE.Semaine" | translate
+                  }}</span>
+                  <span class="d-md-none">{{ "PERIODE.S" | translate }}</span>
+                </a>
+              </li>
+                <li
+                  class="col nav-item"
                   data-toggle="chart"
                   data-target="#chart-sales"
                   (click)="updateOptions(1)"
                 >
                   <a
                     href="javascript:void(0)"
-                    class="nav-link py-2 px-3"
+                    class="nav-link py-2 px-3 text-center"
                     [ngClass]="{ active: clicked1 === true }"
                     data-toggle="tab"
-                    (click)="clicked = false; clicked2 = false; clicked1 = true"
+                    (click)="clicked3 = false;clicked = false; clicked2 = false; clicked1 = true"
                   >
                     <span class="d-none d-md-block">{{
-                      "PERIODE.Semaine" | translate
+                      "PERIODE.Jour" | translate
                     }}</span>
-                    <span class="d-md-none">{{ "PERIODE.S" | translate }}</span>
+                    <span class="d-md-none">{{ "PERIODE.J" | translate }}</span>
                   </a>
                 </li>
               </ul>

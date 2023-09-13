@@ -3,18 +3,28 @@
     <!-- Brand -->
     <!-- <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" routerLinkActive="active" [routerLink]="['/administration/dasboard']">{{getTitle()}}</a>-->
 
-    <div class="col-lg-6 col-7">
-      <h6 class="h2 text-white d-inline-block mb-0">
-        {{ titlebreadcrumb | titlecase }}
-      </h6>
-      <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
-        <ol class="breadcrumb breadcrumb-links breadcrumb-dark bg-transparent">
-          <li class="breadcrumb-item" *ngFor="let item of itemsbreadcrumb">
-            <a style="color: white; font-size: 14px">{{ item.name }}</a>
-          </li>
-          <!-- <li class="breadcrumb-item active" aria-current="page" style="color:#dee2e6">Data</li> -->
-        </ol>
-      </nav>
+    <div class="col-lg-6 col-7 ">
+      <!-- <h6 class="h2 text-white d-inline-block mb-0 align-items-center text-center">
+      </h6> -->
+
+      <div class="media align-items-center">
+        <span
+        class="avatar avatar-sm rounded-circle"
+        *ngIf="boutiqueLogo"
+        [style]="
+          'background-image: url(' + getImg(boutiqueLogo) + ')'
+        "
+        style="
+          margin: auto;
+          background-size: cover;
+          background-repeat: no-repeat;
+        "
+      ></span>
+
+        <div class="media-body ml-2">
+          <span class="mb-0 text-white">{{ boutiqueName | uppercase }}</span>
+        </div>
+      </div>
     </div>
 
     <!-- Form -->
