@@ -96,7 +96,8 @@
           <input
             class="form-control w-auto"
             [(ngModel)]="commandeId"
-            placeholder="Search"
+            (input)="onsearchCommande($event)"
+            placeholder="Rechercher par id"
             type="text"
             (focus)="focus = true"
             (blur)="focus = false"
@@ -263,7 +264,7 @@
             <button
               *ngIf="
                 crudPerms.update &&
-                (row.statut === 'Enregistrée' || row.statut === 'Validée')&&(row.statutpaiement == 'Non Réglée')
+                (row.statut === 'Enregistrée' || row.statut === 'Validée')&&(row.modepaiement.nom == 'Cash')
               "
               (click)="openRefuserCommande()"
               data-target="#modal-form"
@@ -280,8 +281,8 @@
             <button
               *ngIf="
                 crudPerms.update &&
-                row.statut === 'Validée' &&
-                row.statutpaiement == 'Non Réglée'
+(                row.statut === 'Validée' &&
+                row.statutpaiement == 'Non Réglée')&&row.statut === 'Validée'
               "
               (click)="openPayementCommande()"
               data-target="#modal-form"

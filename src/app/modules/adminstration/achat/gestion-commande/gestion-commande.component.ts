@@ -55,7 +55,7 @@ export class GestionCommandeComponent implements OnInit {
   listZone: any[];
   configZone = {
     displayFn: (item: any) => {
-      return item.zone.zone.nom + ", " + item.zone.nom;
+      return item.zone.nom + ", " + item.zone.zone.nom;
     },
     displayKey: "nom", //if objects array passed which key to be displayed defaults to description
     height: "300px", //height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
@@ -68,7 +68,7 @@ export class GestionCommandeComponent implements OnInit {
     placeholder: "Filtrer statut pai...", // text to be displayed when no item is selected defaults to Select,
   };
 
-  listStatut: any[] = ["Réglée", "Non Réglée"];
+  listStatut: any[] = ["Enregistrée", "Validée", "Annulée", "En attente"];
   configStatut = {
     height: "auto", //height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
     placeholder: "Filtrer statut", // text to be displayed when no item is selected defaults to Select,
@@ -133,12 +133,11 @@ export class GestionCommandeComponent implements OnInit {
   setPage(pageInfo) {
     this.page.pageNumber = pageInfo.offset;
     console.log("=====pageInfo", this.page);
-    this.getAllCommandes({
-      pagination: true,
-      page: this.page.pageNumber,
-      size: this.page.size,
-      boutiqueid: this.infoUser.body.boutique.id,
-    });
+    // this.objSearch.page=pageInfo.offset
+    // this.objSearch.size=pageInfo.size
+    this.objSearch.page = this.page.pageNumber;
+    this.objSearch.size = this.page.size;
+    this.getAllCommandes(this.objSearch);
   }
 
   // OUVRIR MODALS VALIDER COMMANDE
@@ -512,4 +511,15 @@ export class GestionCommandeComponent implements OnInit {
       },
     });
   }
+
+    // Rechercher le nom du produit avec le input
+    onsearchCommande(event){
+      if (!event) {
+        this.objSearch.achatid=null
+        this.getAllCommandes(this.objSearch)
+      }else{
+        this.objSearch.achatid=this.commandeId
+        this.getAllCommandes(this.objSearch)
+      }
+    }
 }
