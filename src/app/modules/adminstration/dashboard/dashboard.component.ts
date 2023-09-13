@@ -79,7 +79,7 @@ export class DashboardComponent implements OnInit {
     },
     displayKey: "nom", //if objects array passed which key to be displayed defaults to description
     height: "300px", //height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
-    placeholder: "Filtrer zone", // text to be displayed when no item is selected defaults to Select,
+    placeholder: "zone", // text to be displayed when no item is selected defaults to Select,
     enableSelectAll: true,
   };
   configperiode = {
@@ -87,6 +87,7 @@ export class DashboardComponent implements OnInit {
     height: "auto", //height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
     // text to be displayed when no item is selected defaults to Select,
     placeholder: this.listPeriode[0].label,
+    enableSelectAll: true,
   };
   zoneselect: any;
   zoneselectSales: any;
@@ -343,14 +344,14 @@ export class DashboardComponent implements OnInit {
         if (this.zoneselectModePaiement.zone) {
           this.objSearchModePay.zoneid = this.zoneselectModePaiement.zone.id;
           // this.getStatModePaiement(this.objSearchModePay);
-          this.updateModePaiement(this.objSearchModePay)
+          this.updateModePaiement(this.objSearchModePay);
           console.log("obj search", this.objSearchModePay);
         } else {
           this.objSearchModePay.zoneid = null;
           this.objSearchModePay = {
             boutiqueid: this.infoUser.body.boutique.id,
           };
-          this.updateModePaiement(this.objSearchModePay)
+          this.updateModePaiement(this.objSearchModePay);
           // this.getStatModePaiement(this.objSearchModePay);
         }
         break;
@@ -364,40 +365,32 @@ export class DashboardComponent implements OnInit {
     switch (tab) {
       case "panier":
         if (this.periodeselect.key) {
-          if (this.zoneselect.zone) {
-            console.log("periode search", this.periodeselect);
-            this.objSearchPanierMoyen.periode = this.periodeselect.key;
-            this.getStatPanierMoyen(this.objSearchPanierMoyen);
-            console.log("obj search", this.objSearchPanierMoyen);
-          } else {
-            let obj: any = {
-              periode: this.periodeselect.key,
-              boutiqueid: this.infoUser.body.boutique.id,
-            };
-            this.objSearchPanierMoyen = obj;
-            this.getStatPanierMoyen(this.objSearchPanierMoyen);
-          }
+          console.log("periode search", this.periodeselect);
+          this.objSearchPanierMoyen.periode = this.periodeselect.key;
+          this.getStatPanierMoyen(this.objSearchPanierMoyen);
+          console.log("obj search", this.objSearchPanierMoyen);
         } else {
+          let obj: any = {
+            periode: "day",
+            boutiqueid: this.infoUser.body.boutique.id,
+          };
+          this.objSearchPanierMoyen = obj;
           this.getStatPanierMoyen(this.objSearchPanierMoyen);
         }
         break;
 
       case "sales":
         if (this.periodeselectSales.key) {
-          if (this.zoneselect.zone) {
-            console.log("periode search", this.periodeselectSales);
-            this.objSearchSales.periode = this.periodeselectSales.key;
-            this.getStatNombreDeVentesByZone(this.objSearchSales);
-            console.log("obj search", this.objSearchSales);
-          } else {
-            let obj: any = {
-              periode: this.periodeselectSales.key,
-              boutiqueid: this.infoUser.body.boutique.id,
-            };
-            this.objSearchSales = obj;
-            this.getStatNombreDeVentesByZone(this.objSearchSales);
-          }
+          console.log("periode search", this.periodeselectSales);
+          this.objSearchSales.periode = this.periodeselectSales.key;
+          this.getStatNombreDeVentesByZone(this.objSearchSales);
+          console.log("obj search", this.objSearchSales);
         } else {
+          let obj: any = {
+            periode: "day",
+            boutiqueid: this.infoUser.body.boutique.id,
+          };
+          this.objSearchSales = obj;
           this.getStatNombreDeVentesByZone(this.objSearchSales);
         }
         break;
