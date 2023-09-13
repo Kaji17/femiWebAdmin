@@ -22,7 +22,6 @@ import { CreateProduitComponent } from "./gestion-produis/create-produit/create-
 import { ModalUpdatePositionAffichageComponent } from './gestion-produis/modal-update-position-affichage/modal-update-position-affichage.component';
 import { NgbRatingModule, NgbTooltipModule } from "@ng-bootstrap/ng-bootstrap";
 import { DetailsProduitComponent } from './gestion-produis/details-produit/details-produit.component';
-
 // import { DateTimeModule } from 'nxt-pick-datetime'
 // import { NativeDateTimeModule } from 'nxt-pick-datetime/native-adapter'
 
@@ -54,7 +53,8 @@ import { DetailsProduitComponent } from './gestion-produis/details-produit/detai
     ReactiveFormsModule,
     SelectDropDownModule,
     NgbTooltipModule,
-    NgbRatingModule
+    NgbRatingModule,
+    
     // DateTimeModule,
     // NativeDateTimeModule
   ],
