@@ -21,6 +21,10 @@ export class AdminResetComponent implements OnInit, OnDestroy {
   public password1: string;
   public password2: string;
   public responseReset: Boolean = true;
+  passVar:boolean=false
+  passVar1:boolean=false
+
+
 
   constructor(
     private adminservice: AdministrateurService,
@@ -33,66 +37,51 @@ export class AdminResetComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.builForm()
+    this.builForm();
   }
 
   builForm() {
     this.formResetPassword = this.fb.group({
-      otp: [
-        "",
-        [Validators.required],
-      ],
-      newpassword: [
-        "",
-        [
-          Validators.required,
-          Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/),
-        ],
-      ],
-      newpassword1: [
-        "",
-        [
-          Validators.required,
-          Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/),
-        ],
-      ],
+      otp: ["", [Validators.required]],
+      newpassword: ["", [Validators.required]],
+      newpassword1: ["", [Validators.required]],
     });
   }
 
   infoSwal(bool: boolean) {
-    if(bool){
+    if (bool) {
       swal({
         title: "Success",
         text: "Votre mot de passe à été réinitialiser avec succès",
         type: "success",
         buttonsStyling: false,
         confirmButtonClass: "btn btn-success",
-        onClose : ()=>{
+        onClose: () => {
           this.router.navigate([""]);
-        }
+        },
       });
-    }else{
+    } else {
       swal({
-        title: 'Attention',
+        title: "Attention",
         text: "OTP saisie incorrecte",
-        type: 'warning',
+        type: "warning",
         buttonsStyling: false,
-        confirmButtonClass: 'btn btn-warning',
-        onClose : ()=>{
-          this.builForm()
-        }
+        confirmButtonClass: "btn btn-warning",
+        onClose: () => {
+          this.builForm();
+        },
       });
     }
   }
 
   // Validation du formulaire
   handleOk() {
-    let res :any={};
-    let o = JSON.parse(localStorage.getItem("user_email"))
-    res.username = o.email
-    res.otp = this.formResetPassword.value.otp
+    let res: any = {};
+    let o = JSON.parse(localStorage.getItem("user_email"));
+    res.username = o.email;
+    res.otp = this.formResetPassword.value.otp;
     res.newpasswd = this.formResetPassword.value.newpassword;
-    console.log("+++++=+++++=Res+++++=++++++", this.formResetPassword)
+    console.log("+++++=+++++=Res+++++=++++++", this.formResetPassword);
     this.resetPassword(res);
   }
 
@@ -106,10 +95,10 @@ export class AdminResetComponent implements OnInit, OnDestroy {
             this.loading = false;
             console.log(d);
             if (data.status == 204) {
-              this.responseReset = false
-              this.infoSwal(false)
+              this.responseReset = false;
+              this.infoSwal(false);
             } else {
-              this.infoSwal(true)
+              this.infoSwal(true);
             }
           });
         },
@@ -120,4 +109,12 @@ export class AdminResetComponent implements OnInit, OnDestroy {
         },
       });
   }
+
+  clicPass(){
+    this.passVar=!this.passVar
+  }
+  clicPass1(){
+    this.passVar1=!this.passVar1
+  }
+
 }

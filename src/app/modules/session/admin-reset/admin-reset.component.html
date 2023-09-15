@@ -40,10 +40,13 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                   </div>
-                  <input class="form-control" placeholder="Nouveau mot de passe" type="password" [(ngModel)]="password1" formControlName="newpassword">
-                </div>
-                <div  *ngIf="formResetPassword.controls['newpassword'].status=='INVALID' &&formResetPassword.controls['newpassword'].touched">
-                  <small class="text-primary"><span class="text-danger">*</span>Le mot de passe doit contenir au moins une lettre majuscule, un symbole , un nombre et minimum 8 caractères</small>
+                  <input class="form-control" placeholder="Nouveau mot de passe"                   [type]="passVar1 ? 'text' : 'password'"
+                  [(ngModel)]="password1" formControlName="newpassword">
+                  <div class="input-group-append">
+                    <button class="btn btn-icon  btn-primary btn-sm" type="button" (click)="clicPass1()">
+                      <span class="btn-inner--icon"><i [class]="passVar1 ? 'fa fa-eye' : 'fa fa-eye-slash'"></i></span>
+                    </button>
+                  </div>
                 </div>
               </div>
               <div class="form-group">
@@ -51,7 +54,13 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                       </div>
-                  <input class="form-control" [(ngModel)]="password2" placeholder="Confirmer mot de passe" type="password" formControlName="newpassword1">
+                  <input class="form-control" [(ngModel)]="password2" placeholder="Confirmer mot de passe"                   [type]="passVar ? 'text' : 'password'"
+                  formControlName="newpassword1">
+                  <div class="input-group-append">
+                    <button class="btn btn-icon  btn-primary btn-sm" type="button" (click)="clicPass()">
+                      <span class="btn-inner--icon"><i [class]="passVar ? 'fa fa-eye' : 'fa fa-eye-slash'"></i></span>
+                    </button>
+                  </div>
                 </div>
                 <div  *ngIf="!(password1===password2) &&formResetPassword.controls['newpassword1'].touched">
                   <small class="text-danger">Les mots de passe saisis ne correspondent pas. Veuillez vous assurer de saisir le même mot de passe dans les deux champs.</small>

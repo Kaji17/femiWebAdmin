@@ -21,6 +21,8 @@ export class AdminLoginComponent implements OnInit, OnDestroy {
   public loading: boolean = false;
   public tokenFirebase: any;
   public suscriptionLogin: Subscription;
+  passVar:boolean=false
+
 
   constructor(
     private toastr: ToastrService,
@@ -167,5 +169,9 @@ export class AdminLoginComponent implements OnInit, OnDestroy {
         this.showNotification("danger");
       },
     });
+  }
+
+  clicPass(){
+    this.passVar=!this.passVar
   }
 }

@@ -58,10 +58,15 @@
                 <input
                   class="form-control"
                   placeholder="Password"
-                  type="password"
                   formControlName="password"
                   autocomplete="off"
+                  [type]="passVar ? 'text' : 'password'"
                 />
+                <div class="input-group-append">
+                  <button class="btn btn-icon  btn-primary btn-sm" type="button" (click)="clicPass()">
+                    <span class="btn-inner--icon"><i [class]="passVar ? 'fa fa-eye' : 'fa fa-eye-slash'"></i></span>
+                  </button>
+                </div>
               </div>
             </div>
             <div class="text-center">
