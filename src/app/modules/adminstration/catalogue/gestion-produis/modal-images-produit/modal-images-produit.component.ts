@@ -79,7 +79,7 @@ export class ModalImagesProduitComponent implements OnInit, AfterContentInit {
   //   console.log("La table que j'envoie pour l'ajout", this.fileTabUpdate);
   // }
 
-  loadFile(event: any, action?: string) {
+  loadFile(event: any, action?: string, image?:any) {
     // let id = this.rowSelected.id;
     let reader = new FileReader();
     console.log("KK", reader);
@@ -101,7 +101,7 @@ export class ModalImagesProduitComponent implements OnInit, AfterContentInit {
         break;
       case "update":
         console.log("update produit");
-        this.updateImageProduit(this.infoDaTa.id, this.file)
+        this.updateImageProduit(image.id, this.file)
         break;
 
       default:
@@ -222,7 +222,7 @@ export class ModalImagesProduitComponent implements OnInit, AfterContentInit {
     }
     if (type === "success") {
       this.toastr.show(
-        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">Ngx Toastr</span> <span data-notify="message">L\'image a été avec succès</span></div>',
+        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> L\'image a été avec succès</span></div>',
         "",
         {
           timeOut: 3000,

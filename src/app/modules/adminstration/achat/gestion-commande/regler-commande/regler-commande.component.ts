@@ -86,7 +86,7 @@ export class ReglerCommandeComponent implements OnInit {
       }
       if (type === "success") {
         this.toastr.show(
-          '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">Ngx Toastr</span> <span data-notify="message">Validation de la commande avec sucèss</span></div>',
+          '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> Validation de la commande avec sucèss</span></div>',
           "",
           {
             timeOut: 3000,

@@ -103,11 +103,6 @@
             formAddAdmin.controls['motdepasse'].touched
           "
         >
-          <small class="text-primary"
-            ><span class="text-danger">*</span>Le mot de passe doit contenir au
-            moins une lettre majuscule, un symbole , un nombre et minimum 8
-            caractères</small
-          >
         </div>
       </div>
       <div
@@ -177,7 +172,7 @@
       type="button"
       class="btn btn-primary"
       [disabled]="formAddAdmin.invalid"
-      (click)="handleOk();closeModalOk()"
+      (click)="handleOk()"
     >
       Ajouter
     </button>

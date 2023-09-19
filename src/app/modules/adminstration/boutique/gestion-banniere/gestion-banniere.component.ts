@@ -301,7 +301,7 @@ export class GestionBanniereComponent implements OnInit {
     if (bool) {
       swal({
         title: "Success",
-        text: "Mini-Bannière ajoutée avec succès",
+        text: "Bannière ajoutée avec succès",
         type: "success",
         buttonsStyling: false,
         confirmButtonClass: "btn btn-success",
@@ -309,7 +309,7 @@ export class GestionBanniereComponent implements OnInit {
     } else {
       swal({
         title: "Error",
-        text: "Un problème est survenu lors de la mini-bannière",
+        text: "Un problème est survenu lors de l'ajout de la bannière",
         type: "warning",
         buttonsStyling: false,
         confirmButtonClass: "btn btn-warning",
@@ -321,7 +321,7 @@ export class GestionBanniereComponent implements OnInit {
     if (bool) {
       swal({
         title: "Success",
-        text: "Mini-Bannière Modifié avec succès",
+        text: "Position Modifié avec succès",
         type: "success",
         buttonsStyling: false,
         confirmButtonClass: "btn btn-success",
@@ -329,7 +329,7 @@ export class GestionBanniereComponent implements OnInit {
     } else {
       swal({
         title: "Error",
-        text: "Un problème est survenu lors de la modification de la mini-bannière",
+        text: "Un problème est survenu lors de la modification de position de la bannière",
         type: "warning",
         buttonsStyling: false,
         confirmButtonClass: "btn btn-warning",

@@ -15,6 +15,7 @@ import { RefuserCommandeComponent } from "./refuser-commande/refuser-commande.co
 import { EtapeLivraisonComponent } from "./etape-livraison/etape-livraison.component";
 import { ReglerCommandeComponent } from "./regler-commande/regler-commande.component";
 import { DetailsCommandeComponent } from "./details-commande/details-commande.component";
+import { ClientService } from "src/app/shared/services/client.service";
 
 @Component({
   selector: "app-gestion-commande",
@@ -34,6 +35,7 @@ export class GestionCommandeComponent implements OnInit {
   etapes: [];
   modepaiementselect: any;
   statutselect: any;
+  clientselect: any;
   statutpaiementselect: any;
   commandeId: any;
   entries: number = 10;
@@ -55,11 +57,23 @@ export class GestionCommandeComponent implements OnInit {
   listZone: any[];
   configZone = {
     displayFn: (item: any) => {
-      return item.zone.nom + ", " + item.zone.zone.nom;
+      return item.nom;
     },
     displayKey: "nom", //if objects array passed which key to be displayed defaults to description
     height: "300px", //height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
     placeholder: "Filtrer zone", // text to be displayed when no item is selected defaults to Select,
+    search: true,
+  };
+
+  listClient: any[];
+  configClient = {
+    displayFn: (item: any) => {
+      return item.nom;
+    },
+    displayKey: "nom", //if objects array passed which key to be displayed defaults to description
+    height: "300px", //height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
+    placeholder: "Filtrer client", // text to be displayed when no item is selected defaults to Select,
+    search: true,
   };
 
   listStatutPaiement: any[] = ["Réglée", "Non Réglée"];
@@ -82,7 +96,8 @@ export class GestionCommandeComponent implements OnInit {
     private utilitisService: UtilisService,
     private modalService: NgbModal,
     private modepaiementService: ModePaiementService,
-    private zoneService: ZoneService
+    private zoneService: ZoneService,
+    private clientService: ClientService
   ) {
     this.page.pageNumber = 0;
     this.page.size = 10;
@@ -90,6 +105,11 @@ export class GestionCommandeComponent implements OnInit {
     this.getAllModePaiement();
     this.getAllZone({
       pagination: false,
+      typezoneid: 2,
+    });
+    this.getAllClient({
+      pagination: false,
+      boutiqueid: this.infoUser.body.boutique.id,
     });
     this.rolePermission.setPermission(this.infoUser);
   }
@@ -307,9 +327,7 @@ export class GestionCommandeComponent implements OnInit {
             let lis: any[] = [];
             lis = d.body;
             lis.map((el) => {
-              if (el.zone && el.zone.zone) {
-                this.listZone.push(el);
-              }
+              this.listZone.push(el.zone);
             });
             console.log("list des zones ====", this.listZone);
           }
@@ -374,11 +392,145 @@ export class GestionCommandeComponent implements OnInit {
       ledata = this.tempExport;
       console.log("data", this.tempExport);
       let dataEnv = [];
+      let cpt = 1;
       // let cpt = 1
       //     for(let i = 0;i<ledata.length;i++){
       //       ledata[i].nomproprietaire=ledata[i].nomproprietaire.nom
       //       ledata[i]=this.changeKeysName(ledata[i],'nomproprietaire','Nom')
       //     }
+
+      // for (let i = 0; i < ledata.length; i++) {
+      //   ledata[i] = this.changeKeysName(
+      //     ledata[i],
+      //     "id",
+      //     "ID"
+      //   );
+      //   ledata[i] = this.changeKeysName(
+      //     ledata[i],
+      //     "code",
+      //     "Code"
+      //   );
+      //   ledata[i] = this.changeKeysName(ledata[i], "montant", "Montant");
+      //   ledata[i] = this.changeKeysName(ledata[i], "montantlivraison", "Montant livraison");
+      //   ledata[i] = this.changeKeysName(ledata[i], "montanttotal", "Montant total");
+      //   ledata[i] = this.changeKeysName(ledata[i], "tauxcodepromo", "Taux code promo");
+      //   ledata[i] = this.changeKeysName(ledata[i], "datecreation", "Date de création");
+      //   ledata[i] = this.changeKeysName(ledata[i], "statut", "Statut");
+      //   ledata[i].contact = "+225" + ledata[i].contact;
+      //   ledata[i] = this.changeKeysName(ledata[i], "contact", "Contact");
+      //   ledata[i] = this.changeKeysName(
+      //     ledata[i],
+      //     "statutpaiement",
+      //     "Statut de paiement"
+      //   );
+      //   ledata[i] = this.changeKeysName(ledata[i], "operateur", "Opérateur");
+      //   var leclient= ledata[i].adresse
+      //   ledata[i]=leclient.nom
+      //   // var leadresse= ledata[i].adresse
+      //   // ledata[i]=leadresse.nom
+
+      //   var lepanierObjet = ledata[i].panierObjectList;
+      //   // var letypecuisine = ledata[i].typescuisines;
+      //   if (lepanierObjet && lepanierObjet.length) {
+      //     for (let e = 0; e < lepanierObjet.length; e++) {
+      //       ledata[i].produit = lepanierObjet[e].produit.nom;
+      //       // ledata[i].salaire = lepanierObjet[e].salaire;
+      //       ledata[i] = this.changeKeysName(
+      //         ledata[i],
+      //         "metier",
+      //         "Metier " + cpt
+      //       );
+      //       // ledata[i] = this.changeKeysName(
+      //       //   ledata[i],
+      //       //   "salaire",
+      //       //   "Salaire " + cpt
+      //       // );
+      //       cpt++;
+      //     }
+      //     // for (let s = 0; s < letypecuisine.length; s++) {
+      //     //   var cpt2 = s + 1;
+      //     //   ledata[i].typecuisine = letypecuisine[s];
+      //     //   ledata[i] = this.changeKeysName(
+      //     //     ledata[i],
+      //     //     "typecuisine",
+      //     //     "Type cuisine " + cpt2
+      //     //   );
+      //     //   cpt++;
+      //     // }
+      //   }
+
+      //   cpt = 1;
+
+      //   // delete ledata[i].metiers;
+      //   // delete ledata[i].typescuisines;
+      // }
+
+      let produits: string = "";
+      for (let i = 0; i < ledata.length; i++) {
+        ledata[i] = this.changeKeysName(ledata[i], "id", "ID");
+        ledata[i].client = ledata[i].client.nom;
+        ledata[i] = this.changeKeysName(ledata[i], "client", "Client");
+        ledata[i] = this.changeKeysName(ledata[i], "code", "Code");
+        ledata[i] = this.changeKeysName(ledata[i], "montant", "Montant");
+        ledata[i] = this.changeKeysName(
+          ledata[i],
+          "montantlivraison",
+          "Montant livraison"
+        );
+        ledata[i] = this.changeKeysName(
+          ledata[i],
+          "montanttotal",
+          "Montant total"
+        );
+        ledata[i] = this.changeKeysName(ledata[i], "statut", "Statut");
+        ledata[i] = this.changeKeysName(
+          ledata[i],
+          "statutpaiement",
+          "Statut paiement"
+        );
+        ledata[i] = this.changeKeysName(
+          ledata[i],
+          "tauxcodepromo",
+          "Taux code promo"
+        );
+        ledata[i].adresse =
+          ledata[i].adresse.nom + ", " + ledata[i].adresse.description;
+        var lepanierObjet = ledata[i].panierObjectList;
+        // var letypecuisine = ledata[i].typescuisines;
+        if (lepanierObjet && lepanierObjet.length) {
+          produits = "";
+          for (let e = 0; e < lepanierObjet.length; e++) {
+            produits = produits + lepanierObjet[e].produit.nom + "; ";
+          }
+        }
+        ledata[i].panierObjectList = produits;
+        ledata[i] = this.changeKeysName(
+          ledata[i],
+          "panierObjectList",
+          "Panier"
+        );
+        ledata[i] = this.changeKeysName(ledata[i], "adresse", "Adresse");
+        ledata[i] = this.changeKeysName(
+          ledata[i],
+          "datecreation",
+          "Date création"
+        );
+        ledata[i] = this.changeKeysName(
+          ledata[i],
+          "datelivraison",
+          "Date livraison"
+        );
+        ledata[i] = this.changeKeysName(
+          ledata[i],
+          "modepaiement",
+          "Mode paiement"
+        );
+        ledata[i] = this.changeKeysName(ledata[i], "operateur", "Opératreur");
+        ledata[i] = this.changeKeysName(ledata[i], "contact", "Contact");
+        ledata[i].etape = ledata[i].etape.nom;
+        ledata[i] = this.changeKeysName(ledata[i], "etape", "Étape");
+        ledata[i] = this.changeKeysName(ledata[i], "promotion", "Promotion");
+      }
 
       const worksheet = xlsx.utils.json_to_sheet(ledata);
       const workbook = { Sheets: { data: worksheet }, SheetNames: ["data"] };
@@ -422,7 +574,8 @@ export class GestionCommandeComponent implements OnInit {
       this.getAllCommandes(this.objSearch);
       console.log("obj search", this.objSearch);
     } else {
-      this.objSearch.zoneid = null;
+      this.objSearch.zoneid = "";
+      this.getAllCommandes(this.objSearch);
     }
   }
   filterModePaiement() {
@@ -432,7 +585,8 @@ export class GestionCommandeComponent implements OnInit {
       console.log("obj search", this.objSearch);
       this.getAllCommandes(this.objSearch);
     } else {
-      this.objSearch.modepaiementid = null;
+      this.objSearch.modepaiementid = "";
+      this.getAllCommandes(this.objSearch);
       console.log("obj search", this.objSearch);
     }
   }
@@ -443,7 +597,21 @@ export class GestionCommandeComponent implements OnInit {
       console.log("obj search", this.objSearch);
       this.getAllCommandes(this.objSearch);
     } else {
-      this.objSearch.statutpaiement = null;
+      this.objSearch.statutpaiement = "";
+      this.getAllCommandes(this.objSearch);
+      console.log("obj search", this.objSearch);
+    }
+  }
+
+  filterClient() {
+    console.log("client", this.clientselect);
+    if (this.clientselect.length != 0 && this.clientselect != undefined) {
+      this.objSearch.clientid = this.clientselect.id;
+      console.log("obj search", this.objSearch);
+      this.getAllCommandes(this.objSearch);
+    } else {
+      this.objSearch.clientid = "";
+      this.getAllCommandes(this.objSearch);
       console.log("obj search", this.objSearch);
     }
   }
@@ -455,7 +623,8 @@ export class GestionCommandeComponent implements OnInit {
       console.log("obj search", this.objSearch);
       this.getAllCommandes(this.objSearch);
     } else {
-      this.objSearch.statut = null;
+      this.objSearch.statut = "";
+      this.getAllCommandes(this.objSearch);
       console.log("obj search", this.objSearch);
     }
   }
@@ -512,14 +681,127 @@ export class GestionCommandeComponent implements OnInit {
     });
   }
 
-    // Rechercher le nom du produit avec le input
-    onsearchCommande(event){
-      if (!event) {
-        this.objSearch.achatid=null
-        this.getAllCommandes(this.objSearch)
-      }else{
-        this.objSearch.achatid=this.commandeId
-        this.getAllCommandes(this.objSearch)
-      }
+  // Rechercher le nom du produit avec le input
+  onsearchCommande(event) {
+    if (!event) {
+      this.objSearch.achatid = null;
+      this.getAllCommandes(this.objSearch);
+    } else {
+      this.objSearch.achatid = this.commandeId;
+      this.getAllCommandes(this.objSearch);
     }
+  }
+
+  // exportExcel() {
+  //   import("xlsx").then((xlsx) => {
+  //     let ledata = this.listExport;
+  //     let dataEnv = [];
+  //     let cpt = 1;
+  //     for (let i = 0; i < ledata.length; i++) {
+  //       ledata[i] = this.changeKeysName(
+  //         ledata[i],
+  //         "numeromatricule",
+  //         "Numero matricule"
+  //       );
+  //       ledata[i] = this.changeKeysName(ledata[i], "nom", "Nom");
+  //       ledata[i] = this.changeKeysName(ledata[i], "prenoms", "Prenoms");
+  //       ledata[i] = this.changeKeysName(ledata[i], "genre", "Genre");
+  //       ledata[i].contact = "+" + ledata[i].contact;
+  //       ledata[i] = this.changeKeysName(ledata[i], "contact", "Contact");
+  //       ledata[i] = this.changeKeysName(
+  //         ledata[i],
+  //         "lieuhabitation",
+  //         "Lieu habitation"
+  //       );
+  //       ledata[i] = this.changeKeysName(ledata[i], "email", "Email");
+  //       ledata[i] = this.changeKeysName(ledata[i], "ethnie", "Ethnie");
+  //       ledata[i] = this.changeKeysName(
+  //         ledata[i],
+  //         "niveauetude",
+  //         "Niveau etude"
+  //       );
+
+  //       var lemetier = ledata[i].metiers;
+  //       var letypecuisine = ledata[i].typescuisines;
+  //       if (lemetier && lemetier.length) {
+  //         for (let e = 0; e < lemetier.length; e++) {
+  //           ledata[i].metier = lemetier[e].metier;
+  //           ledata[i].salaire = lemetier[e].salaire;
+  //           ledata[i] = this.changeKeysName(
+  //             ledata[i],
+  //             "metier",
+  //             "Metier " + cpt
+  //           );
+  //           ledata[i] = this.changeKeysName(
+  //             ledata[i],
+  //             "salaire",
+  //             "Salaire " + cpt
+  //           );
+  //           cpt++;
+  //         }
+  //         for (let s = 0; s < letypecuisine.length; s++) {
+  //           var cpt2 = s + 1;
+  //           ledata[i].typecuisine = letypecuisine[s];
+  //           ledata[i] = this.changeKeysName(
+  //             ledata[i],
+  //             "typecuisine",
+  //             "Type cuisine " + cpt2
+  //           );
+  //           cpt++;
+  //         }
+  //       }
+
+  //       cpt = 1;
+
+  //       delete ledata[i].metiers;
+  //       delete ledata[i].typescuisines;
+  //     }
+
+  //     const worksheet = xlsx.utils.json_to_sheet(ledata);
+  //     const workbook = { Sheets: { data: worksheet }, SheetNames: ["data"] };
+  //     const excelBuffer: any = xlsx.write(workbook, {
+  //       bookType: "xlsx",
+  //       type: "array",
+  //     });
+  //     this.saveAsExcelFile(excelBuffer, "rapport_agents");
+  //     this.getExport();
+  //   });
+  // }
+
+  selectionChanged(event) {
+    // console.log('event',event.value)
+  }
+
+  searchChange(event) {
+    // console.log('event',event)
+    // this.listZone=this.listZone.filter(item=>{
+    //   return item.zone.nom.toLowerCase().indexOf(event)!==-1
+    // })
+    // this.getAllZone({
+    //   nom: event,
+    //   pagination: false,
+    // })
+  }
+
+  getAllClient(obj) {
+    this.clientService.gettAllClient(obj).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log(d);
+          if (data.status == 200) {
+            this.listClient = [];
+            let lis: any[] = [];
+            lis = d.body;
+            lis.map((el) => {
+              this.listClient.push(el);
+            });
+            console.log("list des clients ====", this.listClient);
+          }
+        });
+      },
+      error: (error) => {
+        this.utilitisService.response(error, (d: any) => {});
+      },
+    });
+  }
 }

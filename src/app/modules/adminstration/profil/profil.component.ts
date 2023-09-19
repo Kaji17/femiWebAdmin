@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
-import { Subscription, window } from "rxjs";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+import { ModalDismissReasons, NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { Subscription } from "rxjs";
+import { Configurable } from "src/app/core/config";
 import { AdministrateurService } from "src/app/shared/services/administrateur.service";
 import { UtilisService } from "src/app/shared/services/utilis.service";
 import swal from "sweetalert2";
 import { ModalPhotoProfilComponent } from "./modal-photo-profil/modal-photo-profil.component";
-import { Configurable } from "src/app/core/config";
-import { Router } from "@angular/router";
 
 @Component({
   selector: "app-profil",
@@ -36,6 +36,9 @@ export class ProfilComponent implements OnInit, OnDestroy {
   background: boolean;
   fileTab: any[] = [];
   fileTabSrc: any[] = [];
+  passVar:boolean=false
+  passVar1:boolean=false
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -88,22 +91,27 @@ export class ProfilComponent implements OnInit, OnDestroy {
       newpassord: [
         "",
         [
-          Validators.required,
-          Validators.pattern(
-            /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
-          ),
+          Validators.required
         ],
       ],
       confirmpassword: [
-        "",
+        null,
         [
-          Validators.required,
-          Validators.pattern(
-            /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
-          ),
+          Validators.required
         ],
       ],
     });
+  }
+
+  passwordMatchValidator(form: FormGroup) {
+    const password = form.get('newpassord').value;
+    const confirmPassword = form.get('confirmpassword').value;
+
+    if (password === confirmPassword) {
+      return null; // Les mots de passe correspondent, la validation réussit.
+    } else {
+      return { passwordMismatch: true }; // Les mots de passe ne correspondent pas, la validation échoue.
+    }
   }
 
   handleOk1() {
@@ -111,6 +119,7 @@ export class ProfilComponent implements OnInit, OnDestroy {
     console.log("+++++=+++++=Res+++++=++++++", this.formEditProfile.value);
     let res: any = {};
     res = this.formEditProfile.value;
+    console.log('fgfgf', this.profil.body.id)
     this.updateAdminInfo(res, this.profil.body.id);
   }
 
@@ -131,7 +140,30 @@ export class ProfilComponent implements OnInit, OnDestroy {
     if (bool) {
       swal({
         title: "Success",
-        text: "Votre mot de passe à été modifier avec succès",
+        text: "Vos informations ont été modifier avec succès",
+        type: "success",
+        buttonsStyling: false,
+        confirmButtonClass: "btn btn-success",
+        onClose: () => {
+          this.buildForm();
+          location.reload();
+        },
+      });
+    } else {
+      swal({
+        title: "Attention",
+        text: "Erreur de modification de vos informations de profil",
+        type: "warning",
+        buttonsStyling: false,
+        confirmButtonClass: "btn btn-warning",
+      });
+    }
+  }
+  infoSwal1(bool: boolean) {
+    if (bool) {
+      swal({
+        title: "Success",
+        text: "Votre mot de passe été modifier avec succès",
         type: "success",
         buttonsStyling: false,
         confirmButtonClass: "btn btn-success",
@@ -164,7 +196,7 @@ export class ProfilComponent implements OnInit, OnDestroy {
             if (data.status == 401) {
               this.infoSwal(false);
             } else {
-              this.infoSwal(true);
+              this.infoSwal1(true);
               this.loading1 = false;
             }
           });
@@ -174,7 +206,7 @@ export class ProfilComponent implements OnInit, OnDestroy {
             this.loading1 = false;
             console.log(d);
             if (d.status == 401) {
-              this.infoSwal(false);
+              this.infoSwal1(false);
             }
           });
         },
@@ -185,16 +217,17 @@ export class ProfilComponent implements OnInit, OnDestroy {
   updateAdminInfo(obj, id) {
     this.loading = true;
     this.suscriptionUpdateAdminInfo = this.adminservice
-      .updateAdmin(obj, id)
+      .updateAdmin(id,obj)
       .subscribe({
         next: (data) => {
           console.log(data);
           this.utilitisService.response(data, (d: any) => {
-            this.loading = false;
+            
             console.log(d);
             if (data.status == 204) {
-              this.infoSwal(false);
+              this.infoSwal1(false);
             } else {
+              this.loading=false
               this.infoSwal(true);
               localStorage.setItem("user_info", JSON.stringify(d));
             }
@@ -291,18 +324,6 @@ export class ProfilComponent implements OnInit, OnDestroy {
             this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
               this.router.navigate(["administration/profil"]);
             });
-            // this.router.navigate([]);
-            
-            // this.location.reload()
-             // window.location.reload()
-            // this.getAllAdmin({
-            //   boutiqueid: this.profil.body.boutique.id,
-            //   pagination: false,
-            //   page: 0,
-            //   size: 1,
-            //   id: this.profil.body.id,
-            // });
-            // this.infoSwal(true);
           } else {
             // this.infoSwal(false);
           }
@@ -327,5 +348,18 @@ export class ProfilComponent implements OnInit, OnDestroy {
         });
       },
     });
+  }
+
+  submitForm(){
+    if(this.formEditPassword.valid&&(this.password1=this.password2)){
+      this.handleOk2()
+    }
+  }
+
+  clicPass(){
+    this.passVar=!this.passVar
+  }
+  clicPass1(){
+    this.passVar1=!this.passVar1
   }
 }

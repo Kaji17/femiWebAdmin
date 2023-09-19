@@ -22,31 +22,6 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-6 col-xl-5 col-md-6 row justify-content-end px-0">
-          <form
-            class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto"
-          >
-            <div
-              class="form-group mb-0"
-              [ngClass]="{ focused: focus === true }"
-            >
-              <div class="input-group input-group-alternative">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"
-                    ><i class="fas fa-search"></i
-                  ></span>
-                </div>
-                <input
-                  class="form-control w-auto"
-                  placeholder="Search"
-                  type="text"
-                  (focus)="focus = true"
-                  (blur)="focus = false"
-                />
-              </div>
-            </div>
-          </form>
-        </div>
       </div>
     </div>
   </div>
@@ -73,33 +48,38 @@
       [externalPaging]="'false'"
       (page)="setPage($event)"
     >
-      <ngx-datatable-column name="Libelle"> 
+      <ngx-datatable-column name="Libelle">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <span>{{ row.nom | uppercase}}</span>
+          <span>{{ row.nom | uppercase }}</span>
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column
+      <!-- <ngx-datatable-column
         name="Code promo"
         prop="code"
-      ></ngx-datatable-column>
-      <ngx-datatable-column
-        name="Réduction"
-        prop="pourcentage"
-      ></ngx-datatable-column>
+      ></ngx-datatable-column> -->
+      <ngx-datatable-column name="Réduction">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span><strong>{{ row.pourcentage}}%</strong></span>
+        </ng-template></ngx-datatable-column
+      >
       <ngx-datatable-column name="Début" prop="datedebut">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <span>{{ row.datedebut | date : "dd/MM/yyyy HH:mm:ss" }}</span>
+          <span>{{ row.datedebut | date : "dd/MM/yyyy" }}</span>
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column name="Fin" prop="datefin">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <span>{{ row.datefin | date : "dd/MM/yyyy HH:mm:ss" }}</span>
+          <span>{{ row.datefin | date : "dd/MM/yyyy" }}</span>
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="Statut" prop="statut"></ngx-datatable-column>
+      <ngx-datatable-column name="Statut">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span [class]="row.statut | color">{{ row.statut }}</span>
+        </ng-template>
+      </ngx-datatable-column>
       <ngx-datatable-column name="Date création">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <span>{{ row.datecreation | date : "dd/MM/yyyy HH:mm:ss" }}</span>
+          <span>{{ row.datecreation | date : "dd/MM/yyyy" }}</span>
         </ng-template>
       </ngx-datatable-column>
 
@@ -107,33 +87,33 @@
         <ng-template let-row="row" ngx-datatable-cell-template>
           <div>
             <button
-            *ngIf="crudPerms.update"
-            (click)="onUpdateRow(row);open(classic1, '', 'sm')"
-            data-target="#modal-form"
-            data-toggle="modal"
-            ngbTooltip="Modifier"
-            placement="bottom"
-            class="btn btn-icon btn-primary btn-sm"
-            type="button"
-          >
-            <span class="btn-inner--icon"
-              ><i class="fa-solid fa-pen-to-square"></i
-            ></span>
-          </button>
-          <button
-            *ngIf="crudPerms.delete"
-            (click)="onDeleteRow(row.id); open(classic2, 'Notification', '')"
-            data-target="#modal-form"
-            data-toggle="modal"
-            ngbTooltip="Supprimer"
-            placement="bottom"
-            class="btn btn-icon btn-danger btn-sm"
-            type="button"
-          >
-            <span class="btn-inner--icon">
-              <i class="fa-solid fa-trash-can"></i>
-            </span>
-          </button>
+              *ngIf="crudPerms.update"
+              (click)="onUpdateRow(row); open(classic1, '', 'sm')"
+              data-target="#modal-form"
+              data-toggle="modal"
+              ngbTooltip="Modifier"
+              placement="left"
+              class="btn btn-icon btn-primary btn-sm"
+              type="button"
+            >
+              <span class="btn-inner--icon"
+                ><i class="fa-solid fa-pen-to-square"></i
+              ></span>
+            </button>
+            <button
+              *ngIf="crudPerms.delete"
+              (click)="onDeleteRow(row.id); open(classic2, 'Notification', '')"
+              data-target="#modal-form"
+              data-toggle="modal"
+              ngbTooltip="Supprimer"
+              placement="right"
+              class="btn btn-icon btn-danger btn-sm"
+              type="button"
+            >
+              <span class="btn-inner--icon">
+                <i class="fa-solid fa-trash-can"></i>
+              </span>
+            </button>
           </div>
         </ng-template>
       </ngx-datatable-column>
@@ -144,7 +124,9 @@
 <ng-template #classic1 let-c="close" let-d="dismiss">
   <div class="modal-content">
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-title-default">Modifier promotion {{idPromotionSelect}}</h4>
+      <h4 class="modal-title" id="modal-title-default">
+        Modifier promotion {{ idPromotionSelect }}
+      </h4>
       <hr class="my-4" />
       <button
         type="button"
@@ -195,12 +177,25 @@
           <label for="catégorie-produit" class="form-control-label col-md-4"
             >Type promotion <span class="text-danger">*</span></label
           >
-          <ngx-select-dropdown
+          <!-- <ngx-select-dropdown
             formControlName="typepromotionid"
             [config]="config"
             [options]="listPromotion"
             class="col-md-4 p-0"
-          ></ngx-select-dropdown>
+          ></ngx-select-dropdown> -->
+          <ngx-select-dropdown
+            formControlName="typepromotionid"
+            (change)="selectionChanged($event)"
+            [config]="config"
+            [optionItemTemplate]="optionTemplate"
+            [selectedItemTemplate]="optionTemplate"
+            [options]="listPromotion"
+            class="col-md-8 p-0"
+          >
+          </ngx-select-dropdown>
+          <ng-template #optionTemplate let-item="item" let-config="config">
+            {{ item.nom }}
+          </ng-template>
         </div>
 
         <!-- <div
@@ -283,9 +278,11 @@
             >Date début</label
           >
           <input
-            type="datetime-local"
+            type="date"
             class="form-control col-md-8"
             formControlName="datedebut"
+            [(ngModel)]="dateDebutUpdate"
+            [min]="mindate"
           />
         </div>
         <div
@@ -296,10 +293,11 @@
             >Date fin</label
           >
           <input
-            type="datetime-local"
+            type="date"
             class="form-control col-md-8"
             bsDatepicker
             formControlName="datefin"
+            [min]="dateDebutUpdate"
           />
         </div>
         <!-- <div
@@ -324,8 +322,9 @@
         (click)="handleOk1(); c('Close click')"
         class="btn btn-primary"
         data-dismiss="modal"
+        [disabled]="formUpdatePromotion.invalid"
       >
-        Ajouter
+        Modifier
       </button>
       <button
         type="button"
@@ -360,7 +359,8 @@
       <div class="py-3 text-center">
         <i class="ni ni-bell-55 ni-3x"></i>
         <h4 class="heading mt-4">
-          Voulez-vous supprimer promotion <strong>#{{ idPromotionSelect }}</strong>
+          Voulez-vous supprimer promotion
+          <strong>#{{ idPromotionSelect }}</strong>
         </h4>
       </div>
     </div>
@@ -571,6 +571,7 @@
         (click)="handleOk(); c('Close click')"
         class="btn btn-primary"
         data-dismiss="modal"
+        [disabled]="formAddPromotion.invalid"
       >
         Ajouter
       </button>

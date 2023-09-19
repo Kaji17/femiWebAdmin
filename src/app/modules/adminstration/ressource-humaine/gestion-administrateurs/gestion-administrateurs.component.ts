@@ -39,8 +39,19 @@ export class GestionAdministrateursComponent implements OnInit {
   closeResult: string;
   infoUser: any;
   idAdminSelect: any;
+  listRole:any[]
   public crudPerms: any;
   public menuItems: any[];
+  objSearch: any;
+
+
+  roleselect:any
+  config:any = {
+    search:true,
+    height: '250px',
+    displayKey:"nom",
+    placeholder: 'Flitrer rôle'
+  }
 
   SelectionType = SelectionType;
   constructor(
@@ -49,7 +60,7 @@ export class GestionAdministrateursComponent implements OnInit {
     private utilitisService: UtilisService,
     private toastr: ToastrService,
     private rolePermission: RolePermissionsService,
-    private configService: Configurable
+    private configService: Configurable,
 
   ) {
     this.page.pageNumber = 0;
@@ -68,7 +79,17 @@ export class GestionAdministrateursComponent implements OnInit {
 
   ngOnInit(): void {
     this.menuItems = this.rolePermission.getMenuPermission();
+    this.objSearch = {
+      pagination: true,
+      page: this.page.pageNumber,
+      size: this.page.size,
+      boutiqueid: this.infoUser.body.boutique.id,
+    };
 
+    this.getAllRole({
+      boutiqueid: this.infoUser.body.boutique.id,
+      pagination: false,
+    })
     this.crudPerms = {
       create: this.menuItems[5].items[1].create,
       update: this.menuItems[5].items[1].update,
@@ -254,12 +275,15 @@ export class GestionAdministrateursComponent implements OnInit {
         this.closeResult = "Closed with: " + result;
         console.log("yaaaa", this.closeResult);
         if (result == "ok") {
-          this.getAllAdministrateur({
-            boutiqueid: this.infoUser.body.boutique.id,
-            pagination: true,
-            page: 0,
-            size: 10,
-          });
+          setTimeout(() => {
+            this.getAllAdministrateur({
+              boutiqueid: this.infoUser.body.boutique.id,
+              pagination: true,
+              page: this.page.pageNumber,
+              size: 10,
+            });
+            this.selected = [];
+          }, 1500);
         }
       },
       (reason) => {
@@ -270,6 +294,19 @@ export class GestionAdministrateursComponent implements OnInit {
   }
   close() {
     this.modalService.dismissAll(this.closeResult);
+  }
+
+
+  getAllRole(obj: any) {
+    this.rolePermission.getAllRole(obj).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          this.listRole=[]
+          this.listRole = d.body;
+          console.log("======CONTENT list des role", d);
+        });
+      },
+    });
   }
 
   ontet() {
@@ -370,7 +407,7 @@ export class GestionAdministrateursComponent implements OnInit {
     }
     if (type === "success") {
       this.toastr.show(
-        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">Ngx Toastr</span> <span data-notify="message">L\'administrateur à été supprimer avec succès</span></div>',
+        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> L\'administrateur à été supprimer avec succès</span></div>',
         "",
         {
           timeOut: 3000,
@@ -403,6 +440,21 @@ export class GestionAdministrateursComponent implements OnInit {
         buttonsStyling: false,
         confirmButtonClass: "btn btn-warning",
       });
+    }
+  }
+
+
+  filterRole() {
+    console.log("statut", this.roleselect);
+    if (this.roleselect.length!=0&&this.roleselect!=undefined) {
+      this.objSearch.roleid = this.roleselect.id
+      console.log("obj search select", this.objSearch);
+      this.getAllAdministrateur(this.objSearch);
+    } else {
+      console.log('twysryryrasdfakjb')
+      this.objSearch.roleid =""
+      console.log("obj search", this.objSearch);
+      this.getAllAdministrateur(this.objSearch);
     }
   }
 }

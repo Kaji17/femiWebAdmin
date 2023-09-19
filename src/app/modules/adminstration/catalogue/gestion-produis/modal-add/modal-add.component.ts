@@ -20,14 +20,13 @@ export class ModalAddComponent implements OnInit {
   background: boolean;
   fileTab: any[] = [];
   fileTabSrc: any[] = [];
-  loading: boolean  = false
-
-  config = {
-    // displayFn:(item: any) => { return item.hello.world; }, //to support flexible text displaying for each item
-    displayKey: "nom", //if objects array passed which key to be displayed defaults to description
-    height: "auto", //height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
-    placeholder: "Select catégorie", // text to be displayed when no item is selected defaults to Select,
-  };
+  loading: boolean = false;
+  catSelected:any
+  config:any = {
+    search:true,
+    height: '250px',
+    displayKey:"nom",
+  }
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -35,13 +34,13 @@ export class ModalAddComponent implements OnInit {
     private categorieService: CategorieService,
     private utilitisService: UtilisService,
     private toastr: ToastrService,
-    private produitService: ProduitService,
+    private produitService: ProduitService
   ) {
     this.infoUser = JSON.parse(localStorage.getItem("user_info"));
   }
 
   ngOnInit(): void {
-    this.getAllCategorie()
+    this.getAllCategorie();
     this.buildForm();
   }
 
@@ -51,7 +50,7 @@ export class ModalAddComponent implements OnInit {
   }
   // Fermer le modal
   closeModalOk() {
-    if(this.loading){
+    if (this.loading) {
       this.activeModal.close("ok");
     }
   }
@@ -59,9 +58,9 @@ export class ModalAddComponent implements OnInit {
   buildForm() {
     this.formAddProduit = this.fb.group({
       nom: ["", [Validators.required]],
-      caracteristique: ["", [Validators.required]],
+      caracteristique: [""],
       description: ["", [Validators.required]],
-      prix: [1000, [Validators.required]],
+      prix: ["", [Validators.required, Validators.pattern("^[1-9][0-9]*$")]],
       quantite: [1],
       categorieid: ["", [Validators.required]],
       boutiqueid: [this.infoUser.body.boutique.id, [Validators.required]],
@@ -72,6 +71,7 @@ export class ModalAddComponent implements OnInit {
   handleOk() {
     this.formAddProduit.value.categorieid =
       this.formAddProduit.value.categorieid.id;
+    this.formAddProduit.value.prix = parseInt(this.formAddProduit.value.prix);
     console.log("========res", this.formAddProduit.value);
     console.log("=====tab de file", this.fileTab);
     this.addproduit(this.formAddProduit.value, this.fileTab);
@@ -87,7 +87,7 @@ export class ModalAddComponent implements OnInit {
           console.log(d);
           if (data.status == 200) {
             // this.listCategorie = data.body
-            this.listCategorie = []
+            this.listCategorie = [];
             let lis: any[] = [];
             lis = d.body;
             lis.map((el) => {
@@ -111,6 +111,7 @@ export class ModalAddComponent implements OnInit {
     this.file = event.target.files[0];
 
     this.fileTab.push(this.file);
+    // this.tabEmpty=false
     reader.readAsDataURL(this.file);
     reader.onload = (e) => {
       this.fileSrc = reader.result as string;
@@ -129,37 +130,36 @@ export class ModalAddComponent implements OnInit {
 
   // AJOUTER UN PRODUIT
   addproduit(obj, file?: any[]) {
-    this.loading = true
-    this.produitService
-      .addProduit(obj, file)
-      .subscribe({
-        next: (data) => {
-          this.utilitisService.response(data, (d: any) => {
-            console.log(d);
-            if (d.status == 201) {
-              this.showNotification("success");
-              this.buildForm();
-              this.fileTab = [];
-
-              // this.getAllProduit({
-              //   pagination: true,
-              //   page: 0,
-              //   size: 10,
-              // });
-            }
-          });
-        },
-        error: (error) => {
-          this.utilitisService.response(error, (d: any) => {
-            console.log(d);
-            if (d.status == 400) {
-              this.showNotification("danger");
-            } else {
-              this.showNotification("danger");
-            }
-          });
-        },
-      });
+    this.loading = true;
+    this.produitService.addProduit(obj, file).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log(d);
+          if (d.status == 201) {
+            this.loading = false;
+            this.showNotification("success");
+            this.buildForm();
+            this.fileTab = [];
+            this.activeModal.close("ok");
+            // this.getAllProduit({
+            //   pagination: true,
+            //   page: 0,
+            //   size: 10,
+            // });
+          }
+        });
+      },
+      error: (error) => {
+        this.utilitisService.response(error, (d: any) => {
+          console.log(d);
+          if (d.status == 400) {
+            this.showNotification("danger");
+          } else {
+            this.showNotification("danger");
+          }
+        });
+      },
+    });
   }
 
   // Notification alerte
@@ -198,7 +198,7 @@ export class ModalAddComponent implements OnInit {
     }
     if (type === "success") {
       this.toastr.show(
-        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">Ngx Toastr</span> <span data-notify="message">Le Produit à été créer avec succès</span></div>',
+        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> Le Produit à été créer avec succès</span></div>',
         "",
         {
           timeOut: 3000,
@@ -213,4 +213,10 @@ export class ModalAddComponent implements OnInit {
       );
     }
   }
+  selectionChanged(event){
+    console.log(event)
+    console.log(this.catSelected.length)
+    // console.log(this.boutSelected.length)
+  }
+
 }

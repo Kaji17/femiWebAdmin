@@ -1,0 +1,26 @@
+<div class="card shadow" style="height: 100%">
+    <div class="card-header bg-transparent">
+      <div class="row align-items-center">
+        <div class="col">
+          <h2 class="mb-0">Mode de paiement</h2>
+        </div>
+        <div class="col-lg-5">
+          <ngx-select-dropdown
+            [instanceId]="'instance1'"
+            [config]="configZone"
+            [options]="listZone"
+            [(ngModel)]="zoneselectModePaiement"
+            (change)="filterzone()"
+            class="col-md-2 mr-2"
+          >
+          </ngx-select-dropdown>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <!-- Chart -->
+      <div class="chart">
+        <canvas id="chart-produit" class="chart-canvas"></canvas>
+      </div>
+    </div>
+  </div>

@@ -63,19 +63,26 @@
                   class="dropdown-menu-arrow dropdown-menu-right"
                   ngbDropdownMenu
                 >
-                <input
-                #fileUPDATEPP
-                type="file"
-                style="display: none"
-                (change)="loadFile($event)"
-                accept="image/png, image/gif, image/jpeg"
-              />
+                  <input
+                    #fileUPDATEPP
+                    type="file"
+                    style="display: none"
+                    (change)="loadFile($event)"
+                    accept="image/png, image/gif, image/jpeg"
+                  />
                   <a class="dropdown-item" role="button" (click)="openPhoto()">
-                    <span>afficher la photo</span>
+                    <span>Afficher la photo</span>
                   </a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" role="button" (click)="fileUPDATEPP.click()">
+                  <a
+                    class="dropdown-item"
+                    role="button"
+                    (click)="fileUPDATEPP.click()"
+                  >
                     <span>Importer une photo</span>
+                  </a>
+                  <a class="dropdown-item" role="button">
+                    <span>Supprimer photo</span>
                   </a>
                 </div>
               </div>
@@ -94,7 +101,9 @@
               "
               class="rounded-circle mb-2 pp border bg-gradient-danger position-relative"
             >
-              <span class="position-fixed">{{getFisrtLetter(profil.body.nom)| uppercase}}</span>
+              <span class="position-fixed">{{
+                getFisrtLetter(profil.body.nom) | uppercase
+              }}</span>
               <div
                 class="changeImage rounded-circle position-relative"
                 role="button"
@@ -124,13 +133,17 @@
                   </a> -->
                   <div class="dropdown-divider"></div>
                   <input
-                  #fileUPDATEPP
-                  type="file"
-                  style="display: none"
-                  (change)="loadFile($event)"
-                  accept="image/png, image/gif, image/jpeg"
-                />
-                  <a class="dropdown-item" role="button" (click)="fileUPDATEPP.click()">
+                    #fileUPDATEPP
+                    type="file"
+                    style="display: none"
+                    (change)="loadFile($event)"
+                    accept="image/png, image/gif, image/jpeg"
+                  />
+                  <a
+                    class="dropdown-item"
+                    role="button"
+                    (click)="fileUPDATEPP.click()"
+                  >
                     <span>Importer une photo</span>
                   </a>
                 </div>
@@ -151,12 +164,12 @@
             <div class="row align-items-center justify-content-center">
               {{ profil.body.role.boutique.nom | titlecase }}
             </div>
-            <hr class="my-4 row align-items-center justify-content-center" />
+            <!-- <hr class="my-4 row align-items-center justify-content-center" />
             <a
               class="row align-items-center justify-content-center"
               href="javascript:void(0)"
               >{{ "PROFIL.Voir plus" | translate }}</a
-            >
+            > -->
           </div>
         </div>
       </div>
@@ -292,7 +305,11 @@
           <h6 class="heading-small text-muted mb-4">
             {{ "PROFIL.Mot de Passe" | translate }}
           </h6>
-          <form class="pl-lg-4" [formGroup]="formEditPassword">
+          <form
+            class="pl-lg-4"
+            [formGroup]="formEditPassword"
+            (ngSubmit)="submitForm()"
+          >
             <div class="row">
               <div class="col-lg-4">
                 <div class="form-group">
@@ -301,12 +318,27 @@
                     for="input-ancien-password"
                     >{{ "PROFIL.Ancien mot de passe" | translate }}</label
                   >
-                  <input
-                    type="password"
-                    id="input-ancien-password"
-                    class="form-control form-control-alternative"
-                    formControlName="currentpassword"
-                  />
+                  <div class="input-group input-group-alternative">
+                    <input
+                      [type]="passVar ? 'text' : 'password'"
+                      id="input-ancien-password"
+                      class="form-control form-control-alternative"
+                      formControlName="currentpassword"
+                    />
+                    <div class="input-group-append">
+                      <button
+                        class="btn btn-icon btn-primary btn-sm"
+                        type="button"
+                        (click)="clicPass()"
+                      >
+                        <span class="btn-inner--icon"
+                          ><i
+                            [class]="passVar ? 'fa fa-eye' : 'fa fa-eye-slash'"
+                          ></i
+                        ></span>
+                      </button>
+                    </div>
+                  </div>
                   <div
                     *ngIf="
                       formEditPassword.controls['currentpassword'].status ==
@@ -326,13 +358,29 @@
                   <label class="form-control-label" for="input-new-password">{{
                     "PROFIL.Nouveau mot de passe" | translate
                   }}</label>
-                  <input
-                    type="text"
+
+                  <div class="input-group input-group-alternative">
+                    <input
+                    [type]="passVar1 ? 'text' : 'password'"
                     id="input-new-password"
                     class="form-control form-control-alternative"
                     formControlName="newpassord"
                     [(ngModel)]="password1"
-                  />
+                    />
+                    <div class="input-group-append">
+                      <button
+                        class="btn btn-icon btn-primary btn-sm"
+                        type="button"
+                        (click)="clicPass1()"
+                      >
+                        <span class="btn-inner--icon"
+                          ><i
+                            [class]="passVar1 ? 'fa fa-eye' : 'fa fa-eye-slash'"
+                          ></i
+                        ></span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
                 <div
                   *ngIf="
@@ -340,12 +388,7 @@
                       'INVALID' &&
                     formEditPassword.controls['newpassord'].touched
                   "
-                >
-                  <small class="text-primary"
-                    ><span class="text-danger">*</span
-                    >{{ "VALIDATION.ErrorMotDePasseFormat" | translate }}</small
-                  >
-                </div>
+                ></div>
               </div>
               <div class="col-lg-4">
                 <div class="form-group">
@@ -355,7 +398,7 @@
                     >{{ "PROFIL.Confirmer mot de passe" | translate }}</label
                   >
                   <input
-                    type="text"
+                    type="password"
                     id="input-confirm-new-password"
                     class="form-control form-control-alternative"
                     formControlName="confirmpassword"
@@ -379,8 +422,8 @@
               <div class="col-lg-4">
                 <button
                   class="btn btn-info"
+                  type="submit"
                   [disabled]="formEditPassword.invalid"
-                  (click)="handleOk2()"
                 >
                   <i class="fa-solid fa-spinner fa-spin" *ngIf="loading1"></i>
                   {{ "BOUTTON.Enregistrer" | translate }}

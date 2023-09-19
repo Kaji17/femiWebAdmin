@@ -25,6 +25,7 @@
           class="btn btn-info btn-sm"
           (click)="getFichierCommande()"
           type="button"
+          [disabled]="!(page.totalElements>0)"
         >
           <i class="fa-solid fa-download"></i>
           Exporter commandes
@@ -42,21 +43,18 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-7 mb-md-2 mb-3 col-lg-5 mb-lg-2 col-xl-3">
+      <div class="col-md-6 mb-md-2 mb-3 col-lg-5 mb-lg-2 col-xl-3">
         <ngx-select-dropdown
           [instanceId]="'instance1'"
           [config]="configZone"
           [options]="listZone"
           [(ngModel)]="zoneselect"
-          [selectedItemTemplate]="optionTemplate"
           (change)="filterzone()"
           class="col-md-2 p-0"
         >
         </ngx-select-dropdown>
-        <ng-template #optionTemplate let-item="item" let-config="config">
-        </ng-template>
       </div>
-      <div class="col-md-5 mb-md-2 mb-3 col-lg-3 mb-lg-2 col-xl-2">
+      <div class="col-md-6 mb-md-2 mb-3 col-lg-4 mb-lg-2 col-xl">
         <ngx-select-dropdown
           [config]="configModePaiement"
           [(ngModel)]="modepaiementselect"
@@ -65,7 +63,7 @@
           class="col-md-2 p-0"
         ></ngx-select-dropdown>
       </div>
-      <div class="col-md-6 mb-md-2 mb-3 col-lg-4 col-xl-2">
+      <div class="col-md-6 mb-md-2 mb-3 col-lg-3 col-xl">
         <ngx-select-dropdown
           [instanceId]="'instance3'"
           [(ngModel)]="statutpaiementselect"
@@ -75,7 +73,7 @@
           class="col-md-2 p-0"
         ></ngx-select-dropdown>
       </div>
-      <div class="col-md-6 mb-md-2 mb-3 col-lg-4 col-xl-2">
+      <div class="col-md-6 mb-md-2 mb-3 col-lg-6 col-xl">
         <ngx-select-dropdown
           [instanceId]="'instance3'"
           [(ngModel)]="statutselect"
@@ -84,8 +82,20 @@
           [options]="listStatut"
           class="col-md-2 p-0"
         ></ngx-select-dropdown>
+        
       </div>
-      <div
+      <div class="col-md-6 mb-md-2 mb-3 col-lg-6 col-xl">
+        <ngx-select-dropdown
+        [instanceId]="'instance4'"
+        [(ngModel)]="clientselect"
+        (change)="filterClient()"
+        [config]="configClient"
+        [options]="listClient"
+        class="col-md-2 p-0"
+      ></ngx-select-dropdown>
+      </div>
+
+      <!-- <div
         class="form-group mb-0 mb-3 col-md-12 col-lg-5 col-xl-3"
         [ngClass]="{ focused: focus === true }"
       >
@@ -103,7 +113,7 @@
             (blur)="focus = false"
           />
         </div>
-      </div>
+      </div> -->
     </div>
     <ngx-datatable
       class="bootstrap selection-cell"
@@ -155,54 +165,61 @@
       <ngx-datatable-column name="Statut" prop="statut">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <span
-            class="badge badge-pill badge-md badge-success"
-            *ngIf="row.statut == 'Validée'"
-          >
-            {{ row.statut | uppercase }}
-          </span>
-          <span
-            class="badge badge-pill badge-md badge-danger"
-            *ngIf="row.statut == 'Annulée'"
-          >
-            {{ row.statut | uppercase }}
-          </span>
-          <span
-            class="badge badge-pill badge-md badge-info"
-            *ngIf="row.statut == 'En attente'"
-          >
-            {{ row.statut | uppercase }}
-          </span>
-          <span
-            class="badge badge-pill badge-md badge-warning"
-            *ngIf="row.statut == 'Enregistrée'"
-          >
-            {{ row.statut | uppercase }}
-          </span>
+          class="badge badge-pill badge-md badge-success"
+          *ngIf="row.statut == 'Validée'"
+        >
+          {{ row.statut | uppercase }}
+        </span>
+        <span
+          class="badge badge-pill badge-md badge-danger"
+          *ngIf="row.statut == 'Annulée'"
+        >
+          {{ row.statut | uppercase }}
+        </span>
+        <span
+          class="badge badge-pill badge-md badge-info"
+          *ngIf="row.statut == 'En attente'"
+        >
+          {{ row.statut | uppercase }}
+        </span>
+        <span
+        class="badge badge-pill badge-md badge-warning"
+        *ngIf="row.statut == 'Enregistrée'"
+      >
+        {{ row.statut | uppercase }}
+      </span>
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column
         name="Statut du paiement"
-        prop="statutpaiement"
-      ></ngx-datatable-column>
+        >
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span
+          class="badge badge-pill badge-md badge-info"
+          *ngIf="row.statutpaiement == 'Réglée'"
+        >
+          {{ row.statutpaiement | uppercase }}
+        </span>
+        <span
+          class="badge badge-pill badge-md badge-danger"
+          *ngIf="row.statutpaiement == 'Non Réglée'"
+        >
+          {{ row.statutpaiement | uppercase }}
+        </span>
+        </ng-template></ngx-datatable-column>
       <ngx-datatable-column name="Mode de paiement" prop="modepaiement.nom">
       </ngx-datatable-column>
-      <ngx-datatable-column name="Opérateur" prop="operateur">
-        <ng-template let-row="row" ngx-datatable-cell-template>
-          <span *ngIf="!row.operateur"> null </span>
-        </ng-template>
+      <!-- <ngx-datatable-column name="Opérateur" prop="operateur">
       </ngx-datatable-column>
       <ngx-datatable-column name="Numéro de paiement" prop="contact">
-        <ng-template let-row="row" ngx-datatable-cell-template>
-          <span *ngIf="!row.contact"> null </span>
-        </ng-template>
-      </ngx-datatable-column>
+      </ngx-datatable-column> -->
       <ngx-datatable-column
         name="Adresse de livraison"
         prop="adresse"
         [width]="200"
       >
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <span class="  "
+          <span class=""
             ><strong>{{ row.adresse.nom }}, </strong></span
           >
           <span class=" ">{{ row.adresse.description }}</span>

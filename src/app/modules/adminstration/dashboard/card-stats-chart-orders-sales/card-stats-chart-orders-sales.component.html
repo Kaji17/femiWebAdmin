@@ -1,0 +1,146 @@
+<div class="col-xl-8 mb-5 mb-xl-0">
+    <div class="card bg-gradient-default shadow">
+      <div class="card-header bg-transparent">
+        <div class="row align-items-center">
+          <div class="col-12 col-lg-3">
+            <h6 class="text-uppercase text-light ls-1 mb-1">
+              {{ "DASHBOARD.APERÇU" | translate }}
+            </h6>
+            <h2 class="text-white mb-0">
+              {{ "DASHBOARD.Chiffres d'affaire" | translate }}
+            </h2>
+          </div>
+          <div class="col-12 col-lg-9 mt-4 mt-lg-0">
+            <ul class="row nav nav-pills justify-content-end">
+              <li
+                class="col nav-item"
+                data-toggle="chart"
+                data-target="#chart-sales"
+                (click)="updateOptions(2)"
+              >
+                <a
+                  href="javascript:void(0)"
+                  class="nav-link py-2 px-3 text-center"
+                  [ngClass]="{ active: clicked2 === true }"
+                  data-toggle="tab"
+                  (click)="
+                    clicked1 = false;
+                    clicked3 = false;
+                    clicked = false;
+                    clicked2 = true
+                  "
+                >
+                  <span class="d-none d-md-block">{{
+                    "PERIODE.Année" | translate
+                  }}</span>
+                  <span class="d-md-none">{{ "PERIODE.A" | translate }}</span>
+                </a>
+              </li>
+              <li
+                class="col nav-item mr-2 mr-md-0"
+                data-toggle="chart"
+                data-target="#chart-sales"
+                (click)="updateOptions(0)"
+              >
+                <a
+                  href="javascript:void(0)"
+                  class="nav-link py-2 px-3 text-center"
+                  [ngClass]="{ active: clicked === true }"
+                  data-toggle="tab"
+                  (click)="
+                    clicked = true;
+                    clicked1 = false;
+                    clicked2 = false;
+                    clicked3 = false
+                  "
+                >
+                  <span class="d-none d-md-block">{{
+                    "PERIODE.Mois" | translate
+                  }}</span>
+                  <span class="d-md-none">{{ "PERIODE.M" | translate }}</span>
+                </a>
+              </li>
+
+              <li
+                class="col nav-item mr-2 mr-md-0"
+                data-toggle="chart"
+                data-target="#chart-sales"
+                (click)="updateOptions(3)"
+              >
+                <a
+                  href="javascript:void(0)"
+                  class="nav-link py-2 px-3 text-center"
+                  [ngClass]="{ active: clicked3 === true }"
+                  data-toggle="tab"
+                  (click)="
+                    clicked = false;
+                    clicked1 = false;
+                    clicked2 = false;
+                    clicked3 = true
+                  "
+                >
+                  <span class="d-none d-md-block">{{
+                    "PERIODE.Semaine" | translate
+                  }}</span>
+                  <span class="d-md-none">{{ "PERIODE.S" | translate }}</span>
+                </a>
+              </li>
+              <li
+                class="col nav-item"
+                data-toggle="chart"
+                data-target="#chart-sales"
+                (click)="updateOptions(1)"
+              >
+                <a
+                  href="javascript:void(0)"
+                  class="nav-link py-2 px-3 text-center"
+                  [ngClass]="{ active: clicked1 === true }"
+                  data-toggle="tab"
+                  (click)="
+                    clicked3 = false;
+                    clicked = false;
+                    clicked2 = false;
+                    clicked1 = true
+                  "
+                >
+                  <span class="d-none d-md-block">{{
+                    "PERIODE.Jour" | translate
+                  }}</span>
+                  <span class="d-md-none">{{ "PERIODE.J" | translate }}</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <!-- Chart -->
+        <div class="chart">
+          <!-- Chart wrapper -->
+          <canvas id="chart-sales" class="chart-canvas"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-4">
+    <div class="card shadow">
+      <div class="card-header bg-transparent">
+        <div class="row align-items-center">
+          <div class="col">
+            <h6 class="text-uppercase text-muted ls-1 mb-1">
+              {{ "DASHBOARD.PERFORMANCE" | translate }}
+            </h6>
+            <h2 class="mb-0">
+              {{ "DASHBOARD.Total Commandes" | translate }}
+            </h2>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <!-- Chart -->
+        <div class="chart">
+          <canvas id="chart-orders" class="chart-canvas"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>

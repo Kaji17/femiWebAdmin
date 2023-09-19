@@ -122,7 +122,7 @@ export class AdminLoginComponent implements OnInit, OnDestroy {
     }
     if (type === "success") {
       this.toastr.show(
-        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">Ngx Toastr</span> <span data-notify="message">Turning standard Bootstrap alerts into awesome notifications</span></div>',
+        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> Turning standard Bootstrap alerts into awesome notifications</span></div>',
         "",
         {
           timeOut: 3000,

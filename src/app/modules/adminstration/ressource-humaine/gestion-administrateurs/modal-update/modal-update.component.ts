@@ -18,12 +18,12 @@ export class ModalUpdateComponent implements OnInit {
   infoUser: any;
   listRole: any[] = [];
 
-  config = {
-    // displayFn:(item: any) => { return item.hello.world; }, //to support flexible text displaying for each item
-    displayKey: "nom", //if objects array passed which key to be displayed defaults to description
-    height: "auto", //height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
-    placeholder: this.listRole[0], // text to be displayed when no item is selected defaults to Select,
-  };
+  config:any = {
+    search:true,
+    height: '250px',
+    displayKey:"nom",
+  }
+
   constructor(
     public activeModal: NgbActiveModal,
     private utilitisService: UtilisService,
@@ -84,7 +84,7 @@ export class ModalUpdateComponent implements OnInit {
         Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,100}$")],
       ],
       contact: [fv&&fv.contact?fv.contact:null, [Validators.required, Validators.pattern(/^\w{10}$/)]],
-      role: ["", [Validators.required]],
+      role: [fv&&fv.role.nom?fv.role.nom:null, [Validators.required]],
       boutique: [this.infoUser.body.boutique],
     });
   }
@@ -115,6 +115,10 @@ export class ModalUpdateComponent implements OnInit {
           if (data.status == 200) {
             console.log("======Modification Success", d);
             this.showNotification("success");
+            this.getAllRole({
+              boutiqueid: this.infoUser.body.boutique.id,
+              pagination: false,
+            })
           }
           // this.allRole = JSON.parse(atob(d.body.content.description))
         });
@@ -158,7 +162,7 @@ export class ModalUpdateComponent implements OnInit {
     }
     if (type === "success") {
       this.toastr.show(
-        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">Ngx Toastr</span> <span data-notify="message">L\'administrateur à été modifié avec succès</span></div>',
+        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> L\'administrateur à été modifié avec succès</span></div>',
         "",
         {
           timeOut: 3000,
@@ -172,6 +176,11 @@ export class ModalUpdateComponent implements OnInit {
         }
       );
     }
+  }
+
+  selectionChanged(event){
+    console.log(event)
+    // this.getRoles(event.value.id)
   }
 
 }

@@ -152,7 +152,7 @@ export class RoleUpdateModalComponent implements OnInit {
     }
     if (type === "success") {
       this.toastr.show(
-        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">Ngx Toastr</span> <span data-notify="message">Rôle Ajouter avec succès</span></div>',
+        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> Rôle Ajouter avec succès</span></div>',
         "",
         {
           timeOut: 3000,

@@ -8,7 +8,7 @@
           <div class="row align-items-center">
             <div class="col-lg-7 col-md-7 col-sm-2 col-xs-2">
               <h6 class="h2 text-white d-inline-block mb-0 me-1">
-                Mini-bannière
+                Bannière
               </h6>
             </div>
           </div>
@@ -34,8 +34,9 @@
           class="btn btn-success btn-sm"
           (click)="fileBanAdd.click()"
           type="button"
+          *ngIf="page.totalElements<3"
         >
-          Ajouter une mini-bannière
+          Ajouter une bannière
         </button>
       </div>
     </div>
@@ -105,7 +106,7 @@
               <i class="fa-solid fa-arrow-down"></i>
             </button>
 
-            <button
+            <!-- <button
               *ngIf="crudPerms.update"
               (click)="rowSelected(row); loadFile($event, 'u')"
               data-target="#modal-form"
@@ -118,7 +119,7 @@
               <span class="btn-inner--icon"
                 ><i class="fa-solid fa-pen-to-square"></i
               ></span>
-            </button>
+            </button> -->
             <button
               *ngIf="crudPerms.delete"
               (click)="rowSelected(row); open(classic2, 'Notification', '')"
@@ -161,7 +162,7 @@
       <div class="py-3 text-center">
         <i class="ni ni-bell-55 ni-3x"></i>
         <h4 class="heading mt-4">
-          Voulez-vous supprimer mini bannière
+          Voulez-vous supprimer bannière
           <strong>#{{ idMiniBannSelect.id }}</strong>
         </h4>
       </div>

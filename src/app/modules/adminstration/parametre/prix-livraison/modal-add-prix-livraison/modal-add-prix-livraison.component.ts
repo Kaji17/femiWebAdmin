@@ -89,6 +89,7 @@ export class ModalAddPrixLivraisonComponent implements OnInit {
           console.log("======Liste des role", this.listRole);
         });
       },
+
     });
   }
 
@@ -100,10 +101,17 @@ export class ModalAddPrixLivraisonComponent implements OnInit {
           if (data.status == 200||data.status==201) {
             console.log("======Ajout Success", d);
             this.showNotification("success");
-          } else if (data.status == 409) {
+          } else {
             console.log("======Ajout failled", d);
             this.showNotification("danger");
           }
+          
+        });
+        
+      },
+      error: (error) => {
+        this.utilitisService.response(error, (d: any) => {
+          this.showNotification("danger");
         });
       },
     });
@@ -129,7 +137,7 @@ export class ModalAddPrixLivraisonComponent implements OnInit {
     }
     if (type === "danger") {
       this.toastr.show(
-        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">Désolé email existe déja réessayer avec une autre adresse mail</span></div>',
+        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">Désolé ce prix de livraison existe déja</span></div>',
         "",
         {
           timeOut: 3000,
@@ -145,7 +153,7 @@ export class ModalAddPrixLivraisonComponent implements OnInit {
     }
     if (type === "success") {
       this.toastr.show(
-        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">Ngx Toastr</span> <span data-notify="message">Le prix de livraison à été ajouter avec succès</span></div>',
+        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> Le prix de livraison à été ajouter avec succès</span></div>',
         "",
         {
           timeOut: 3000,

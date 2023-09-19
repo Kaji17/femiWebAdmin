@@ -1,200 +1,88 @@
 <div class="modal-content">
   <div class="modal-header">
-    <h2 class="modal-title" id="modal-title-default">
-      Commentaires des participants
-    </h2>
-    <hr class="my-4" />
+    <div class="row">
+      <h2 class="modal-title ml-4 mr-2" id="modal-title-default">
+        {{ produitSelect?.nom }}
+      </h2>
+      <span [class]="produitSelect.statut | color">{{
+        produitSelect.statut
+      }}</span>
+    </div>
     <button
       type="button"
       class="close"
-      data-dismiss="modal"
-      aria-label="Close"
-      (click)="closeModal()"
+      (click)="activeModal.dismiss('Cross click')"
     >
       <span aria-hidden="true">×</span>
     </button>
   </div>
   <div class="modal-body">
-    <div class="row align-items-center justify-content-center">
-      <div class="col align-items-center justify-content-center text-center">
-        <div class="row align-items-center" style="width: 100%;">
-          <p class="text-warning mb-0" style="font-size: 3rem !important">
-            {{produitSelect.notemoyenne}}/5
-          </p>
-        </div>
-        <div class="row">
-          <app-star-rating
-            [note]="produitSelect.notemoyenne"
-            [color]="'text-warning'"
-          ></app-star-rating>
-        </div>
-        <div class="row">
-          <h6 class="text-warning" *ngIf="!produitSelect.notecounter">aucun avis</h6>
-          <h6 class="text-warning" *ngIf="produitSelect.notecounter">{{produitSelect.notecounter}} avis</h6>
-        </div>
-      </div>
-      <div class="col-lg-8 col-md-6 col-8 align-items-center justify-content-end text-right">
-        <img
-        *ngIf="produitSelect.imageproduits.length"
-        [src]="getImg(produitSelect.imageproduits[0].url)"
-        alt="{{produitSelect.nom}}"
-        style=" max-width: 200px"
-        class="border rounded"
-      />
-      <img
-        *ngIf="!produitSelect.imageproduits.length"
-        src="assets/img/brand/undraw_Images_re_0kll.png"
-        alt="Image par defaut"
-        style="max-width: 100px"
-        class="border rounded"
-      />
-      </div>
-      <!-- <div class="col-lg-8 col-md-6 col-8">
-        <div class="progress-wrapper pt-0">
-          <div class="progress mt-2">
-            <div
-              class="progress-bar bg-warning"
-              role="progressbar"
-              aria-valuenow="60"
-              aria-valuemin="0"
-              aria-valuemax="100"
-              style="width: 60%"
-            ></div>
-          </div>
-        </div>
-        <div class="progress-wrapper pt-0">
-          <div class="progress">
-            <div
-              class="progress-bar bg-warning"
-              role="progressbar"
-              aria-valuenow="40"
-              aria-valuemin="0"
-              aria-valuemax="100"
-              style="width: 40%"
-            ></div>
-          </div>
-        </div>
-        <div class="progress-wrapper pt-0">
-          <div class="progress">
-            <div
-              class="progress-bar bg-warning"
-              role="progressbar"
-              aria-valuenow="10"
-              aria-valuemin="0"
-              aria-valuemax="100"
-              style="width: 10%"
-            ></div>
-          </div>
-        </div>
-        <div class="progress-wrapper pt-0">
-          <div class="progress">
-            <div
-              class="progress-bar bg-warning"
-              role="progressbar"
-              aria-valuenow="70"
-              aria-valuemin="0"
-              aria-valuemax="100"
-              style="width: 20%"
-            ></div>
-          </div>
-        </div>
-        <div class="progress-wrapper pt-0">
-          <div class="progress mb-0">
-            <div
-              class="progress-bar bg-warning"
-              role="progressbar"
-              aria-valuenow="60"
-              aria-valuemin="0"
-              aria-valuemax="100"
-              style="width: 2%"
-            ></div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-2 col-md-3 col-4">
-        <div class="row">
-          <app-star-rating
-            [note]="5"
-            [color]="'text-warning'"
-          ></app-star-rating>
-          (10)
-        </div>
-        <div class="row">
-          <app-star-rating
-            [note]="4"
-            [color]="'text-warning'"
-          ></app-star-rating>
-          (1)
-        </div>
-        <div class="row">
-          <app-star-rating
-            [note]="3"
-            [color]="'text-warning'"
-          ></app-star-rating>
-          (1)
-        </div>
-        <div class="row">
-          <app-star-rating
-            [note]="2"
-            [color]="'text-warning'"
-          ></app-star-rating>
-          (1)
-        </div>
-        <div class="row">
-          <app-star-rating
-            [note]="1"
-            [color]="'text-warning'"
-          ></app-star-rating>
-          (1)
-        </div>
-      </div> -->
-      <!-- <div class="col">
-        <span><strong>Nom: </strong>{{produitSelect.nom}}</span>
-      </div> -->
-    </div>
+    <!-- app.component.html -->
+    <div class="row">
+      <div class="col-md-6">
+        <!-- image produit -->
 
-    <div class="row align-content-center justify-content-between mt-3">
-      <div class="col-12 dataTables_wrapper py-4 card px-4">
-        <ngx-datatable
-          class="material"
-          [rows]="rows"
-          [columns]="columns"
-          [columnMode]="ColumnMode.force"
-          [headerHeight]="50"
-          [footerHeight]="50"
-          [limit]="5"
-          rowHeight="auto"
-        >
-        </ngx-datatable>
-
-        <ng-template #hdrTpl let-column="column">
-          <strong>Avis</strong>
-        </ng-template>
-
-        <ng-template #editTmpl let-row="row" let-value="value">
-          <p><strong> {{row.client.nom}}</strong></p>
-          <div class="row">
-            <app-star-rating
-              class="col-lg-2 col-md-3"
-              [note]="row.note"
-              [color]="'text-yellow'"
-            ></app-star-rating>
-            <div class="col-md-4">{{row.datecreationavis|date: 'dd/MM/yyyy'}}</div>
+        <div class="col" [style.marginBottom]="'40px'">
+          <div
+            [style]="
+              produitSelect?.imageproduits.length
+                ? 'background-image: url(' + getImg(lurl) + ')'
+                : 'background-image: url(assets/img/undraw_Images_re_0kll.png)'
+            "
+            class="imgLogo"
+          ></div>
+          <div *ngIf="produitSelect?.imageproduits.length" class="row mt-2">
+            <div *ngFor="let item of produitSelect?.imageproduits">
+              <div
+                (click)="clicSurImg(item.url)"
+                [style]="'background-image: url(' + getImg(item.url) + ')'"
+                class="imgLogo2 mr-1"
+              ></div>
+            </div>
           </div>
-          <p>
-            {{row.avis}}
-          </p>
-        </ng-template>
+          <h3 class="mt-2">{{ produitSelect?.prix }} FCFA</h3>
+        </div>
+
+        <!--  -->
+      </div>
+      <div class="col-md-6">
+        <!-- <div class="row justify-content-between px-3" [style.marginBottom]="'30px'">
+              <h2>{{produitSelect?.nom}}</h2>
+              <h3 class="">{{produitSelect?.prix}}</h3>
+          </div> -->
+
+        <div [style.marginBottom]="'30px'">
+          <h5>Boutique</h5>
+          <p [style.fontSize]="'0.7rem'">{{ produitSelect?.boutique.nom }}</p>
+        </div>
+
+        <div [style.marginBottom]="'30px'">
+          <h5>Categorie</h5>
+          <p [style.fontSize]="'0.7rem'">{{ produitSelect?.categorie.nom }}</p>
+        </div>
+
+        <div class="" [style.marginBottom]="'30px'">
+          <h5>Description</h5>
+          <p [style.fontSize]="'0.7rem'">{{ produitSelect?.description }}</p>
+        </div>
+
+        <div class="" [style.marginBottom]="'30px'">
+          <h5>Caracreristique</h5>
+          <p [style.fontSize]="'0.7rem'">{{ produitSelect?.caracteristique }}</p>
+        </div>
+
+        <div class="mb-10">
+          <h5>Date de création</h5>
+          <p [style.fontSize]="'0.7rem'">{{ produitSelect?.datecreation|date:'dd-MM-yyyy HH:mm' }}</p>
+        </div>
       </div>
     </div>
-    <!--  -->
   </div>
   <div class="modal-footer">
     <button
       type="button"
-      class="btn btn-link ml-auto"
-      data-dismiss="modal"
-      (click)="closeModal()"
+      class="btn btn-primary"
+      (click)="activeModal.dismiss('Cross click')"
     >
       Fermer
     </button>

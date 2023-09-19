@@ -3,521 +3,73 @@
     <div class="header-body mt-5">
       <!-- Card stats -->
       <div class="row justify-content-center">
-        <!-- <div class="col-xl-3 col-lg-6">
-          <div class="card card-stats mb-4 mb-xl-0">
-            <div class="card-body">
-              <div class="row">
-                <div class="col">
-                  <h5 class="card-title text-uppercase text-muted mb-0">
-                    {{ "DASHBOARD.CHIFFRE D'AFFAIRE" | translate }}
-                  </h5>
-                  <span class="h2 font-weight-bold mb-0"
-                    >{{ chiffreAffaireTotal | number }} FCFA</span
-                  >
-                </div>
-                <div class="col-auto">
-                  <div
-                    class="icon icon-shape bg-danger text-white rounded-circle shadow"
-                  >
-                    <i class="fas fa-chart-bar"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
-        <div class="col-xl-3 col-lg-6">
-          <div class="card card-stats mb-4 mb-xl-0">
-            <div class="card-body">
-              <div class="row">
-                <div class="col">
-                  <h5 class="card-title text-uppercase text-muted mb-0">
-                    {{ "DASHBOARD.TOTAL CLIENTS" | translate }}
-                  </h5>
-                  <span class="h2 font-weight-bold mb-0">{{
-                    totalClients
-                  }}</span>
-                </div>
-                <div class="col-auto">
-                  <div
-                    class="icon icon-shape bg-warning text-white rounded-circle shadow"
-                  >
-                    <i class="fas fa-users"></i>
-                  </div>
-                </div>
-              </div>
-              <!-- <p class="mt-3 mb-0 text-muted text-sm">
-                <span
-                  class="text-success mr-2"
-                  *ngIf="tauxCroissancetotalNewUser >= 0"
-                  ><i class="fa fa-arrow-up"></i
-                  >{{ tauxCroissancetotalNewUser }}%</span
-                >
-                <span
-                  class="text-danger mr-2"
-                  *ngIf="tauxCroissancetotalNewUser < 0"
-                  ><i class="fa fa-arrow-down"></i
-                  >{{ tauxCroissancetotalNewUser }}%</span
-                >
-                <span class="text-nowrap">{{
-                  "DASHBOARD.Depuis le mois dernier" | translate
-                }}</span>
-              </p> -->
-            </div>
-          </div>
-        </div>
-        <!-- <div class="col-xl-3 col-lg-6">
-          <div class="card card-stats mb-4 mb-xl-0">
-            <div class="card-body">
-              <div class="row">
-                <div class="col">
-                  <h5 class="card-title text-uppercase text-muted mb-0">
-                    {{ "DASHBOARD.VENTES" | translate }}
-                  </h5>
-                  <span class="h2 font-weight-bold mb-0"
-                    >{{ totalVentes | number }} FCFA</span
-                  >
-                </div>
-                <div class="col-auto">
-                  <div
-                    class="icon icon-shape bg-yellow text-white rounded-circle shadow"
-                  >
-                    <i class="fas fa-chart-pie"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
-        <div class="col-xl-3 col-lg-6">
-          <div class="card card-stats mb-4 mb-xl-0">
-            <div class="card-body">
-              <div class="row">
-                <div class="col">
-                  <h5 class="card-title text-uppercase text-muted mb-0">
-                    {{ "DASHBOARD.TOTAL PRODUITS" | translate }}
-                  </h5>
-                  <span class="h2 font-weight-bold mb-0">{{
-                    totalNombreProduit
-                  }}</span>
-                </div>
-                <div class="col-auto">
-                  <div
-                    class="icon icon-shape bg-info text-white rounded-circle shadow"
-                  >
-                    <i class="fas fa-percent"></i>
-                  </div>
-                </div>
-              </div>
-              <!-- <p class="mt-3 mb-0 text-muted text-sm">
-                <span
-                  class="text-success mr-2"
-                  *ngIf="tauxCroissancetotalNombreProduit >= 0"
-                  ><i class="fa fa-arrow-up"></i
-                  >{{ tauxCroissancetotalNombreProduit }}%</span
-                >
-                <span
-                  class="text-danger mr-2"
-                  *ngIf="tauxCroissancetotalNombreProduit < 0"
-                  ><i class="fa fa-arrow-down"></i
-                  >{{ tauxCroissancetotalNombreProduit }}%</span
-                >
+        <!-- Card Nombre Client -->
+        <app-card-stats-resume
+          class="col-xl-3 col-lg-6"
+          [total]="totalClients"
+          [icon]="'fas fa-users'"
+          [title]="'TOTAL CLIENT'"
+          [iconClass]="
+            'icon icon-shape bg-warning text-white rounded-circle shadow'
+          "
+        ></app-card-stats-resume>
 
-                <span class="text-nowrap">{{
-                  "DASHBOARD.Depuis le mois dernier" | translate
-                }}</span>
-              </p> -->
-            </div>
-          </div>
-        </div>
+        <!-- Card Nombre Total Produit  -->
+        <app-card-stats-resume
+          class="col-xl-3 col-lg-6"
+          [total]="totalProd"
+          [icon]="'fas fa-percent'"
+          [title]="'TOTAL PRODUITS'"
+          [iconClass]="
+            'icon icon-shape bg-info text-white rounded-circle shadow'
+          "
+        ></app-card-stats-resume>
       </div>
     </div>
   </div>
 </div>
 <div class="container-fluid mt--7">
-  <div class="row">
-    <div class="col-xl-8 mb-5 mb-xl-0">
-      <div class="card bg-gradient-default shadow">
-        <div class="card-header bg-transparent">
-          <div class="row align-items-center">
-            <div class="col-12 col-lg-3">
-              <h6 class="text-uppercase text-light ls-1 mb-1">
-                {{ "DASHBOARD.APPERÇU" | translate }}
-              </h6>
-              <h2 class="text-white mb-0">
-                {{ "DASHBOARD.Chiffres d'affaire" | translate }}
-              </h2>
-            </div>
-            <div class="col-12 col-lg-9 mt-4 mt-lg-0">
-              <ul class="row nav nav-pills justify-content-end">
-                <li
-                  class="col nav-item"
-                  data-toggle="chart"
-                  data-target="#chart-sales"
-                  (click)="updateOptions(2)"
-                >
-                  <a
-                    href="javascript:void(0)"
-                    class="nav-link py-2 px-3 text-center"
-                    [ngClass]="{ active: clicked2 === true }"
-                    data-toggle="tab"
-                    (click)="clicked1 = false;clicked3 = false; clicked = false; clicked2 = true"
-                  >
-                    <span class="d-none d-md-block">{{
-                      "PERIODE.Année" | translate
-                    }}</span>
-                    <span class="d-md-none">{{ "PERIODE.A" | translate }}</span>
-                  </a>
-                </li>
-                <li
-                  class="col nav-item mr-2 mr-md-0"
-                  data-toggle="chart"
-                  data-target="#chart-sales"
-                  (click)="updateOptions(0)"
-                >
-                  <a
-                    href="javascript:void(0)"
-                    class="nav-link py-2 px-3 text-center"
-                    [ngClass]="{ active: clicked === true }"
-                    data-toggle="tab"
-                    (click)="clicked = true; clicked1 = false; clicked2 = false;clicked3 = false"
-                  >
-                    <span class="d-none d-md-block">{{
-                      "PERIODE.Mois" | translate
-                    }}</span>
-                    <span class="d-md-none">{{ "PERIODE.M" | translate }}</span>
-                  </a>
-                </li>
-
-                <li
-                class="col nav-item mr-2 mr-md-0"
-                data-toggle="chart"
-                data-target="#chart-sales"
-                (click)="updateOptions(3)"
-              >
-                <a
-                  href="javascript:void(0)"
-                  class="nav-link py-2 px-3 text-center"
-                  [ngClass]="{ active: clicked3 === true }"
-                  data-toggle="tab"
-                  (click)="clicked = false; clicked1 = false; clicked2 = false;clicked3 = true"
-                >
-                  <span class="d-none d-md-block">{{
-                    "PERIODE.Semaine" | translate
-                  }}</span>
-                  <span class="d-md-none">{{ "PERIODE.S" | translate }}</span>
-                </a>
-              </li>
-                <li
-                  class="col nav-item"
-                  data-toggle="chart"
-                  data-target="#chart-sales"
-                  (click)="updateOptions(1)"
-                >
-                  <a
-                    href="javascript:void(0)"
-                    class="nav-link py-2 px-3 text-center"
-                    [ngClass]="{ active: clicked1 === true }"
-                    data-toggle="tab"
-                    (click)="clicked3 = false;clicked = false; clicked2 = false; clicked1 = true"
-                  >
-                    <span class="d-none d-md-block">{{
-                      "PERIODE.Jour" | translate
-                    }}</span>
-                    <span class="d-md-none">{{ "PERIODE.J" | translate }}</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <!-- Chart -->
-          <div class="chart">
-            <!-- Chart wrapper -->
-            <canvas id="chart-sales" class="chart-canvas"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-xl-4">
-      <div class="card shadow">
-        <div class="card-header bg-transparent">
-          <div class="row align-items-center">
-            <div class="col">
-              <h6 class="text-uppercase text-muted ls-1 mb-1">
-                {{ "DASHBOARD.PERFORMANCE" | translate }}
-              </h6>
-              <h2 class="mb-0">
-                {{ "DASHBOARD.Total Commandes" | translate }}
-              </h2>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <!-- Chart -->
-          <div class="chart">
-            <canvas id="chart-orders" class="chart-canvas"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Card Graphique du chiffre d'affaire et total des commandes -->
+  <app-card-stats-chart-orders-sales
+    class="row"
+  ></app-card-stats-chart-orders-sales>
   <div class="row mt-5">
-    <!-- AVIS PRODUIT -->
-    <!-- <div class="col-xl-4 mb-5 mb-xl-0">
-      <div class="card shadow" style="min-height: 100%">
-        <div class="card-header border-0">
-          <div class="row align-items-center">
-            <div class="col">
-              <h3 class="mb-0">{{"DASHBOARD.Avis produits réçent"|translate}}</h3>
-            </div>
-            <div class="col text-right">
-              <a
-                [routerLink]="['/administration/catalogue/produits']"
-                class="btn btn-sm btn-primary"
-                >{{"DASHBOARD.Voir tous"|translate}}</a
-              >
-            </div>
-          </div>
-        </div>
-        <div class="table-responsive">
-          <table class="table align-items-center table-flush">
-            <thead class="thead-light">
-              <tr>
-                <th scope="col">{{"DASHBOARD.PRODUITS"|translate}}</th>
-                <th scope="col">{{"DASHBOARD.NOTES"|translate}}</th>
-                <th scope="col">{{"DASHBOARD.NOMBRE D'AVIS"|translate}}</th>
-                <th scope="col">{{"DASHBOARD.DETAILS"|translate}}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let avi of avis">
-                <th scope="row">{{ avi.produitName }}</th>
-                <td>
-                  <app-star-rating [note]="avi.note"></app-star-rating>
-                </td>
-                <td>{{ avi.commentaire }}</td>
-                <td>
-                  <i class="ni ni-zoom-split-in"></i>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div> -->
-    <div class="col-xl-6 mb-5 mb-xl-0">
-      <div class="card shadow"style='height:100%'>
-        <div class="card-header border-0">
-          <div class="row align-items-center">
-            <div class="col-sm-12 col-12">
-              <h3 class="mb-0">
-                {{ "DASHBOARD.Ventes par zone" | translate }}
-              </h3>
-            </div>
-            <div class="col-12 col-sm-6">
-              <ngx-select-dropdown
-                [options]="listPeriode"
-                [(ngModel)]="periodeselectSales"
-                [config]="configperiode"
-                (change)="filterperiode('sales')"
-                class="col-md-2 mr-2"
-              >
-              </ngx-select-dropdown>
-            </div>
-            <div class="col-12 col-sm-6">
-              <ngx-select-dropdown
-                [instanceId]="'instance1'"
-                [config]="configZone"
-                [options]="listZone"
-                [(ngModel)]="zoneselectSales"
-                (change)="filterzone('sales')"
-                class="col-md-2 p-0"
-              >
-              </ngx-select-dropdown>
-            </div>
-          </div>
-        </div>
-        <ngx-datatable
-            class="bootstrap selection-cell"
-            [columnMode]="'force'"
-            [headerHeight]="50"
-            [footerHeight]="50"
-            [rowHeight]="'auto'"
-            [rows]="tempNombreVentes"
-            [summaryPosition]="'bottom'"
-            (sortable)="(false)"
-            [limit]="6"
-          >
-            <ngx-datatable-column name="Période" prop="periode">
-              <ng-template let-row="row" ngx-datatable-cell-template>
-                <span>
-                  {{ row.periode | date : "dd/MM/yyyy" }}
-                </span>
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column
-              name="Nombre de vente"
-              prop="nombreventes"
-            >
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <strong>
-                <span>
-                  {{ row.nombreventes | number }}
-                </span>
-              </strong>
-            </ng-template></ngx-datatable-column>
-          </ngx-datatable>
-      </div>
-    </div>
-    <div class="col-xl-6 mb-5 mb-xl-0">
-      <div class="card shadow" style='height:100%'>
-        <div class="card-header border-0">
-          <div class="row align-items-center">
-            <div class="col">
-              <h3 class="mb-0">Meilleurs produits</h3>
-            </div>
+    <!-- Tableau vente par zone et boutique -->
+    <app-card-stats-sales-by-zone
+      [listPeriode]="listPeriode"
+      [listZone]="listZone"
+      [configZone]="configZone"
+      [configperiode]="configperiode"
+      class="col-xl-6 mb-5 mb-xl-0"
+    ></app-card-stats-sales-by-zone>
 
-            <!-- <a class="btn btn-sm btn-primary">Jour</a> -->
-            <div class="col-lg-5">
-              <ngx-select-dropdown
-                [instanceId]="'instance1'"
-                [config]="configZone"
-                [options]="listZone"
-                [(ngModel)]="zoneselectNbreCmde"
-                (change)="filterzone('commande')"
-                class="col-md-2 mr-2"
-              >
-              </ngx-select-dropdown>
-            </div>
-          </div>
-        </div>
-        <ngx-datatable
-          class="bootstrap selection-cell"
-          [columnMode]="'force'"
-          [headerHeight]="50"
-          [footerHeight]="50"
-          [rowHeight]="'auto'"
-          [rows]="tempNombreCommandeProduit"
-          [summaryPosition]="'bottom'"
-          (sortable)="(false)"
-          [limit]="6"
-        >
-          <ngx-datatable-column name="Produit" prop="produitnom">
-          </ngx-datatable-column>
-          <ngx-datatable-column
-            name="Nombre de commande"
-            prop="nbre_commande"
-          >
-          <ng-template let-row="row" ngx-datatable-cell-template>
-            <strong>
-              <span>
-                {{ row.nbre_commande | number }}
-              </span>
-            </strong>
-          </ng-template></ngx-datatable-column>
-        </ngx-datatable>
-      </div>
-    </div>
+    <!-- Tableau produit les plus vendu par zone et boutique -->
+    <app-card-stats-best-product
+      [listZone]="listZone"
+      [configZone]="configZone"
+      class="col-xl-6 mb-5 mb-xl-0"
+    >
+    </app-card-stats-best-product>
   </div>
 
   <div class="row mt-5">
     <!-- PANIER MOYEN -->
-    <div class="col-xl-6 mb-5 mb-xl-0">
-      <div class="card shadow"  style='height:100%'>
-        <div class="card-header border-0">
-          <div class="row align-items-center">
-            <div class="col-sm-12 col-12">
-              <h3 class="mb-0">Panier moyen</h3>
-            </div>
-
-            <!-- <a class="btn btn-sm btn-primary">Jour</a> -->
-            <div class="col-sm-6 col-12">
-              <ngx-select-dropdown
-                [options]="listPeriode"
-                [(ngModel)]="periodeselect"
-                [config]="configperiode"
-                (change)="filterperiode('panier')"
-                class="col-md-2 mr-2"
-              >
-              </ngx-select-dropdown>
-            </div>
-            <div class="col-sm-6 col-12">
-              <ngx-select-dropdown
-                [instanceId]="'instance1'"
-                [config]="configZone"
-                [options]="listZone"
-                [(ngModel)]="zoneselect"
-                (change)="filterzone('panier')"
-                class="col-md-2 p-0"
-              >
-              </ngx-select-dropdown>
-            </div>
-          </div>
-        </div>
-        <ngx-datatable
-          class="bootstrap selection-cell"
-          [columnMode]="'force'"
-          [headerHeight]="50"
-          [footerHeight]="50"
-          [rowHeight]="'auto'"
-          [rows]="tempPanierMoyen"
-          [summaryPosition]="'bottom'"
-          (sortable)="(false)"
-          [limit]="6"
-        >
-          <ngx-datatable-column name="Période" prop="periode">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <span>
-                {{ row.periode | date : "dd/MM/yyyy" }}
-              </span>
-            </ng-template>
-          </ngx-datatable-column>
-          <ngx-datatable-column
-            name="Panier moyen"
-
-          >
-          <ng-template let-row="row" ngx-datatable-cell-template>
-            <strong>
-              <span>
-                {{ row.panier_moyen | number }} FCFA
-              </span>
-            </strong>
-          </ng-template></ngx-datatable-column>
-        </ngx-datatable>
-      </div>
-    </div>
+    <app-card-stats-average-cart
+      [listPeriode]="listPeriode"
+      [listZone]="listZone"
+      [configZone]="configZone"
+      [configperiode]="configperiode"
+      class="col-xl-6 mb-5 mb-xl-0"
+    >
+    </app-card-stats-average-cart>
 
     <!-- NOMBRE DE PRODUIT VENDU -->
-    <div class="col-xl-6">
-      <div class="card shadow" style='height:100%'>
-        <div class="card-header bg-transparent">
-          <div class="row align-items-center">
-            <div class="col">
-              <h2 class="mb-0">Mode de paiement</h2>
-            </div>
-            <div class="col-lg-5">
-              <ngx-select-dropdown
-                [instanceId]="'instance1'"
-                [config]="configZone"
-                [options]="listZone"
-                [(ngModel)]="zoneselectModePaiement"
-                (change)="filterzone('modePaiement')"
-                class="col-md-2 mr-2"
-              >
-              </ngx-select-dropdown>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <!-- Chart -->
-          <div class="chart">
-            <canvas id="chart-produit" class="chart-canvas"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
+    <app-card-stats-pay-means
+      [listZone]="listZone"
+      [configZone]="configZone"
+      class="col-xl-6"
+    >
+    </app-card-stats-pay-means>
   </div>
 
   <!-- VALEUR DES VENTES PAR PRODUITS -->

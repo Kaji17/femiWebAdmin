@@ -68,19 +68,13 @@ export class ModalAddComponent implements OnInit {
       motdepasse: [
         "",
         [
-          Validators.required,
-          Validators.pattern(
-            /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
-          ),
+          Validators.required
         ],
       ],
       confirmepassword: [
         "",
         [
-          Validators.required,
-          Validators.pattern(
-            /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
-          ),
+          Validators.required
         ],
       ],
       role: ["", [Validators.required]],
@@ -114,6 +108,8 @@ export class ModalAddComponent implements OnInit {
           if (data.status == 200) {
             console.log("======Ajout Success", d);
             this.showNotification("success");
+            this.activeModal.close('ok');
+            
           } else if (data.status == 409) {
             console.log("======Ajout failled", d);
             this.showNotification("danger");
@@ -159,7 +155,7 @@ export class ModalAddComponent implements OnInit {
     }
     if (type === "success") {
       this.toastr.show(
-        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">Ngx Toastr</span> <span data-notify="message">L\'administrateur à été créer avec succès</span></div>',
+        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> L\'administrateur à été créer avec succès</span></div>',
         "",
         {
           timeOut: 3000,

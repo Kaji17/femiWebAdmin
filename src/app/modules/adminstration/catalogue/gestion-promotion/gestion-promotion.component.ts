@@ -38,7 +38,8 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
   fileTabSrc: any[] = [];
   listPromotion: any[] = [];
   mindate: string=this.formatDateForDatePick(new Date());
-  mindateUp: string=this.formatDateForDatePick(new Date());
+  mindateUp: string;
+  dateDebutUp:any
 
   dateDebutpic
 
@@ -47,14 +48,14 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
 
   closeResult: string;
 
-  config = {
-    // displayFn:(item: any) => { return item.hello.world; }, //to support flexible text displaying for each item
-    displayKey: "nom", //if objects array passed which key to be displayed defaults to description
-    height: "auto", //height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
-    placeholder: this.listPromotion[0], // text to be displayed when no item is selected defaults to Select,
-  };
+  config:any = {
+    search:true,
+    height: '250px',
+    displayKey:"nom",
+  }
 
   idPromotionSelect: any;
+  dateDebutUpdate
 
   SelectionType = SelectionType;
   constructor(
@@ -79,6 +80,7 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.mindate = this.formatDateForDatePick(new Date());
+    // this.mindateUp=this.formatDateForDatePick(new Date(this.rowSelected.datedebut))
     console.log("date", this.formatDateForDatePick(new Date()));
     this.menuItems = this.rolePermission.getMenuPermission();
 
@@ -103,7 +105,7 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
   buildForm() {
     this.formAddPromotion = this.fb.group({
       nom: ["", [Validators.required]],
-      pourcentage: [0],
+      pourcentage: [[Validators.required]],
       datedebut: ["", [Validators.required]],
       datefin: ["", [Validators.required]],
       typepromotionid: ["", [Validators.required]],
@@ -118,16 +120,16 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
 
     this.formUpdatePromotion = this.fb.group({
       nom: [data && data.nom ? data.nom : null, [Validators.required]],
-      pourcentage: [data && data.pourcentage ? data.pourcentage : null],
+      pourcentage: [data && data.pourcentage ? data.pourcentage : null,[Validators.required]],
       datedebut: [
-        data && data.datedebut ? data.datedebut : null,
+        data && data.datedebut ? this.formatDateForDatePick(new Date(data.datedebut)) : null,
         [Validators.required],
       ],
       datefin: [
-        data && data.datefin ? data.datefin : null,
+        data && data.datefin ? this.formatDateForDatePick(new Date(data.datefin)) : null,
         [Validators.required],
       ],
-      typepromotionid: ["", [Validators.required]],
+      typepromotionid: [data && data.typepromotion.nom ? data.typepromotion.nom : "", [Validators.required]],
       boutiqueid: [this.infoUser.body.boutique.id, [Validators.required]],
     });
   }
@@ -342,9 +344,9 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
               isActive: false,
               boutiqueid: this.infoUser.body.boutique.id,
             });
-            this.infoSwal(true);
+            this.infoSwal1(true);
           } else {
-            this.infoSwal(false);
+            this.infoSwal1(false);
           }
         });
       },
@@ -440,7 +442,29 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
     } else {
       swal({
         title: "Error",
-        text: "Un problème estsurvenu lors de l'ajout de la promotion",
+        text: "Un problème est survenu lors de l'ajout de la promotion",
+        type: "warning",
+        buttonsStyling: false,
+        confirmButtonClass: "btn btn-warning",
+        onClose: () => {
+          this.buildForm();
+        },
+      });
+    }
+  }
+  infoSwal1(bool: boolean) {
+    if (bool) {
+      swal({
+        title: "Success",
+        text: "Promotion modifier avec succès",
+        type: "success",
+        buttonsStyling: false,
+        confirmButtonClass: "btn btn-success",
+      });
+    } else {
+      swal({
+        title: "Error",
+        text: "Un problème est survenu lors de la modification de la promotion",
         type: "warning",
         buttonsStyling: false,
         confirmButtonClass: "btn btn-warning",
@@ -520,7 +544,7 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
     }
     if (type === "success") {
       this.toastr.show(
-        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">Ngx Toastr</span> <span data-notify="message">La promotion à été supprimer avec succès</span></div>',
+        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> La promotion à été supprimer avec succès</span></div>',
         "",
         {
           timeOut: 3000,
@@ -571,5 +595,10 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
         "0"
       )}`;
 
+  }
+
+  selectionChanged(event){
+    console.log(event)
+    // this.getRoles(event.value.id)
   }
 }

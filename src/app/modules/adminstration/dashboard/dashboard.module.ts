@@ -9,12 +9,24 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { TranslateModule } from '@ngx-translate/core';
+import { CardStatsSalesByZoneComponent } from './card-stats-sales-by-zone/card-stats-sales-by-zone.component';
+import { CardStatsBestProductComponent } from './card-stats-best-product/card-stats-best-product.component';
+import { CardStatsAverageCartComponent } from './card-stats-average-cart/card-stats-average-cart.component';
+import { CardStatsPayMeansComponent } from './card-stats-pay-means/card-stats-pay-means.component';
+import { CardStatsChartOrdersSalesComponent } from './card-stats-chart-orders-sales/card-stats-chart-orders-sales.component';
+import { CardStatsResumeComponent } from './card-stats-resume/card-stats-resume.component';
 
 
 
 @NgModule({
   declarations: [
-    DashboardComponent
+    DashboardComponent,
+    CardStatsSalesByZoneComponent,
+    CardStatsBestProductComponent,
+    CardStatsAverageCartComponent,
+    CardStatsPayMeansComponent,
+    CardStatsChartOrdersSalesComponent,
+    CardStatsResumeComponent
   ],
   imports: [
     CommonModule,

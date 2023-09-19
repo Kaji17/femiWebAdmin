@@ -1,0 +1,45 @@
+<div class="card shadow" style="height: 100%">
+    <div class="card-header border-0">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="mb-0">Meilleurs produits</h3>
+        </div>
+
+        <!-- <a class="btn btn-sm btn-primary">Jour</a> -->
+        <div class="col-lg-5">
+          <ngx-select-dropdown
+            [instanceId]="'instance1'"
+            [config]="configZone"
+            [options]="listZone"
+            [(ngModel)]="zoneselectNbreCmde"
+            (change)="filterzone()"
+            class="col-md-2 mr-2"
+          >
+          </ngx-select-dropdown>
+        </div>
+      </div>
+    </div>
+    <ngx-datatable
+      class="bootstrap selection-cell"
+      [columnMode]="'force'"
+      [headerHeight]="50"
+      [footerHeight]="50"
+      [rowHeight]="'auto'"
+      [rows]="tempNombreCommandeProduit"
+      [summaryPosition]="'bottom'"
+      (sortable)="(false)"
+      [limit]="6"
+    >
+      <ngx-datatable-column name="Produit" prop="produitnom">
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Nombre de commande" prop="nbre_commande">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <strong>
+            <span>
+              {{ row.nbre_commande | number }}
+            </span>
+          </strong>
+        </ng-template></ngx-datatable-column
+      >
+    </ngx-datatable>
+  </div>

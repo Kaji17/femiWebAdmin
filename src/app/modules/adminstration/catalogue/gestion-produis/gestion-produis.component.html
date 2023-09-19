@@ -28,26 +28,30 @@
 <!-- TABLEAU -->
 <div class="container-fluid mt-5">
   <div class="dataTables_wrapper py-4 card px-4">
-    <div class="row">
-      <div class="col-md-2 mb-2" *ngIf="selected.length && crudPerms.update">
+    <div class="row justify-content-start">
+      <div class="col-6 mb-2" *ngIf="crudPerms.update">
         <button
           class="btn btn-success btn-sm"
           (click)="openAssignPromotion()"
           type="button"
+          ngbTooltip="Selectionner un ou plusieurs produit"
+          placement="top"
+          [disabled]="!(selected.length && !verifiyItemPromed)"
         >
           Attribuer promotions
         </button>
+        
       </div>
-      <div
-        class="col-md-2 mb-2"
-        *ngIf="selected.length == 1 && crudPerms.delete && verifiyItemPromed"
-      >
-        <button
-          class="btn btn-danger btn-sm"
-          (click)="openRemovePromotion()"
+
+      <div class="col-4 mb-2" *ngIf="crudPerms.delete">
+          <button
+          class="btn btn-info btn-sm"
+          (click)="getFichierProduit()"
           type="button"
+          [disabled]="!(page.totalElements>0)"
         >
-          Rétirer promotions
+          <i class="fa-solid fa-download"></i>
+          Exporter produits
         </button>
       </div>
     </div>
@@ -70,7 +74,6 @@
           [config]="config"
           [options]="listCategorie"
           class="col-md-4 p-0"
-          disabled
         ></ngx-select-dropdown>
       </div>
       <div
@@ -158,9 +161,7 @@
       <ngx-datatable-column name="Prix unitaire">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <strong>
-            <span>
-              {{ row.prix | number }} FCFA
-            </span>
+            <span> {{ row.prix | number }} FCFA </span>
           </strong>
         </ng-template>
       </ngx-datatable-column>
@@ -183,44 +184,30 @@
           ></app-star-rating>
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="Création" prop="datecreation">
-        <ng-template let-row="row" ngx-datatable-cell-template>
-          <span>
-            {{ row.datecreation | date : "dd/MM/yyyy HH:mm:ss" }}
-          </span>
-        </ng-template>
-      </ngx-datatable-column>
       <ngx-datatable-column name="Statut" prop="statut">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <span
-            class="badge badge-pill badge-md badge-success"
-            *ngIf="row.statut == 'Accepté'"
-          >
-            {{ row.statut | uppercase }}
-          </span>
-          <span
-            class="badge badge-pill badge-md badge-danger"
-            *ngIf="row.statut == 'Refusé'"
-          >
-            {{ row.statut | uppercase }}
-          </span>
-          <span
-            class="badge badge-pill badge-md badge-warning"
-            *ngIf="row.statut == 'En attente'"
-          >
-            {{ row.statut | uppercase }}
-          </span>
-          <span
-            class="badge badge-pill badge-md badge-info"
-            *ngIf="row.statut == 'Modifié'"
+          [class]="row.statut | color"
           >
             {{ row.statut | uppercase }}
           </span>
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="Actions" [minWidth]="200">
+      <ngx-datatable-column name="Actions" [minWidth]="300">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <div class="row px-1">
+            <button
+              *ngIf="crudPerms.update"
+              (click)="openDetailProduit()"
+              data-target="#modal-form"
+              data-toggle="modal"
+              ngbTooltip="Position affichage"
+              placement="bottom"
+              class="btn btn-icon btn-primary btn-sm"
+              type="button"
+            >
+              <span class="btn-inner--icon"><i class="fa fa-eye"></i></span>
+            </button>
             <button
               *ngIf="crudPerms.update"
               (click)="openUpdateAffichage(row)"
@@ -231,7 +218,9 @@
               class="btn btn-icon btn-warning btn-sm"
               type="button"
             >
-              <span class="btn-inner--icon"><i class="fa fa-eye"></i></span>
+              <span class="btn-inner--icon"
+                ><i class="fa fa-crosshairs"></i
+              ></span>
             </button>
             <button
               *ngIf="crudPerms.update"
@@ -247,12 +236,34 @@
                 ><i class="fa-solid fa-pen-to-square"></i
               ></span>
             </button>
+
+            <button
+              class="btn btn-icon btn-success btn-sm"
+              type="button"
+              *ngIf="!row.promotion"
+              (click)="onSelect1(row); openAssignPromotion()"
+              ngbTooltip="Attrinuer promotion"
+              placement="bottom"
+            >
+              <span class="btn-inner--icon"><i class="fa fa-share"></i></span>
+            </button>
+            <button
+              *ngIf="row.promotion"
+              class="btn btn-icon btn-danger btn-sm"
+              type="button"
+              ngbTooltip="Retirer promotion"
+              placement="bottom"
+              (click)="onSelect1(row); openRemovePromotion()"
+            >
+              <span class="btn-inner--icon"><i class="fa fa-reply"></i></span>
+            </button>
+
             <button
               *ngIf="crudPerms.update"
               (click)="onUpdateImgRow(row); openEditImages(row)"
               data-target="#modal-form"
               data-toggle="modal"
-              ngbTooltip="Modifier images"
+              ngbTooltip="Images"
               placement="bottom"
               class="btn btn-icon btn-info btn-sm"
               type="button"
@@ -262,7 +273,7 @@
               </span>
             </button>
             <button
-              (click)="openDetailProduit()"
+              (click)="openCommentaireProduit()"
               data-target="#modal-form"
               data-toggle="modal"
               ngbTooltip="Avis et notes "
@@ -270,10 +281,9 @@
               class="btn btn-icon btn-warning btn-sm"
               type="button"
             >
-
-            <span class="btn-inner--icon">
-              <i class="fa-solid fa-star"></i>
-            </span>
+              <span class="btn-inner--icon">
+                <i class="fa-solid fa-star"></i>
+              </span>
             </button>
             <button
               *ngIf="crudPerms.delete"
@@ -285,9 +295,9 @@
               class="btn btn-icon btn-danger btn-sm"
               type="button"
             >
-            <span class="btn-inner--icon">
-              <i class="fa-solid fa-trash-can"></i>
-            </span>
+              <span class="btn-inner--icon">
+                <i class="fa-solid fa-trash-can"></i>
+              </span>
             </button>
           </div>
         </ng-template>
@@ -359,6 +369,35 @@
     <div class="modal-body">
       <form class="row" [formGroup]="formUpdate">
         <div
+          class="form-group row m-0 align-items-center mb-3"
+          style="width: 100%"
+        >
+          <label for="catégorie-produit" class="form-control-label col-md-4"
+            >Catégorie <span class="text-danger">*</span></label
+          >
+          <!-- <ngx-select-dropdown
+            formControlName="categorieid"
+            [config]="config"
+            [options]="listCategorie"
+            (change)="selectionChanged()"
+            class="col-md-4 p-0"
+          ></ngx-select-dropdown> -->
+
+          <ngx-select-dropdown
+            formControlName="categorieid"
+            (change)="selectionChanged($event)"
+            [config]="config"
+            [optionItemTemplate]="optionTemplate"
+            [selectedItemTemplate]="optionTemplate"
+            [options]="listCategorie"
+            class="col-md-4 p-0"
+          >
+          </ngx-select-dropdown>
+          <ng-template #optionTemplate let-item="item" let-config="config">
+            <span>{{ item.nom }}</span>
+          </ng-template>
+        </div>
+        <div
           class="form-group row m-0 justify-content-between align-items-center mb-3"
           style="width: 100%"
         >
@@ -373,20 +412,7 @@
             [maxLength]="32"
           />
         </div>
-        <div
-          class="form-group row m-0 align-items-center mb-3"
-          style="width: 100%"
-        >
-          <label for="catégorie-produit" class="form-control-label col-md-4"
-            >Catégorie <span class="text-danger">*</span></label
-          >
-          <ngx-select-dropdown
-            formControlName="categorieid"
-            [config]="config"
-            [options]="listCategorie"
-            class="col-md-4 p-0"
-          ></ngx-select-dropdown>
-        </div>
+
         <div
           class="form-group row m-0 justify-content-between align-items-center mb-3"
           style="width: 100%"
@@ -396,7 +422,7 @@
           >
           <input
             class="form-control col-md-8"
-            type="number"
+            type="text"
             id="prix-produit"
             formControlName="prix"
           />
@@ -420,8 +446,8 @@
           style="width: 100%"
         >
           <label for="caratéristiques" class="form-control-label col-md-4"
-            >Caractéristique <span class="text-danger">*</span></label
-          >
+            >Caractéristique <span class="text-danger"></span
+          ></label>
           <textarea
             class="form-control col-md-8"
             id="caratéristiques"

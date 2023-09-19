@@ -29,6 +29,8 @@ import { ModalRemovePromotionComponent } from "./modal-remove-promotion/modal-re
 import { ModalUpdatePositionAffichageComponent } from "./modal-update-position-affichage/modal-update-position-affichage.component";
 import { DetailsProduitComponent } from "./details-produit/details-produit.component";
 import { ModalAddComponent } from "./modal-add/modal-add.component";
+import { CommentaireProduitComponent } from "./commentaire-produit/commentaire-produit.component";
+import * as FileSaver from "file-saver";
 
 @Component({
   selector: "app-gestion-produis",
@@ -43,9 +45,9 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   activeRow: any;
   rows: any[];
   closeResult: string;
-  statutselect:any
-  objSearch:any
-  nomProduit:  string
+  statutselect: any;
+  objSearch: any;
+  nomProduit: string;
 
   SelectionType = SelectionType;
 
@@ -65,7 +67,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   fileTabChange: any[] = [];
   fileTabSrcChange: any[] = [];
 
-  categorieselect: any
+  categorieselect: any;
 
   // formAddProduit: FormGroup;
   dropdownOptions: string[] = ["Savon", "Savon", "Savon"];
@@ -91,19 +93,21 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
 
   rowSelected: any;
 
-  config = {
+  catSelected: any;
+  config: any = {
+    search: true,
+    height: "350px",
+    displayKey: "nom",
+    placeholder: "Flitrer catégorie",
+  };
+  config1 = {
     // displayFn:(item: any) => { return item.hello.world; }, //to support flexible text displaying for each item
     displayKey: "nom", //if objects array passed which key to be displayed defaults to description
     height: "auto", //height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
-    placeholder: "Fliter catégorie" // text to be displayed when no item is selected defaults to Select,
+    placeholder: "Flitrer catégorie", // text to be displayed when no item is selected defaults to Select,
   };
 
-  listStatut: any[] = [
-    'En attente',
-    'Accepté',
-    'Refusé',
-    'Modifié'
-  ]
+  listStatut: any[] = ["En attente", "Accepté", "Refusé", "Modifié"];
   configStatut = {
     height: "auto", //height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
     placeholder: "Filtrer statut", // text to be displayed when no item is selected defaults to Select,
@@ -113,6 +117,8 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   souscriptionAddproduit: Subscription;
   souscriptionDelproduit: any;
   souscriptionGetAllPromotion: any;
+  tempExport: [];
+
   constructor(
     private modalService: NgbModal,
     private produitService: ProduitService,
@@ -155,7 +161,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
       page: this.page.pageNumber,
       size: this.page.size,
       boutiqueid: this.infoUser.body.boutique.id,
-    }
+    };
     this.getAllProduit(this.objSearch);
     this.crudPerms = {
       create: this.menuItems[3].items[1].create,
@@ -163,7 +169,6 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
       delete: this.menuItems[3].items[1].delete,
     };
   }
-
 
   buildFormUpdate() {
     let data: any = {};
@@ -174,10 +179,16 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
       caracteristique: [
         data && data.caracteristique ? data.caracteristique : "",
       ],
-      description: [data && data.description ? data.description : ""],
+      description: [
+        data && data.description ? data.description : "",
+        [Validators.required],
+      ],
       prix: [data && data.prix ? data.prix : 0, [Validators.required]],
       quantite: [data && data.quantite ? data.quantite : 1],
-      categorieid: ["", [Validators.required]],
+      categorieid: [
+        data && data.categorie.nom ? data.categorie.nom : "",
+        [Validators.required],
+      ],
       boutiqueid: [this.infoUser.body.boutique.id, [Validators.required]],
     });
 
@@ -216,12 +227,9 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   setPage(pageInfo) {
     this.page.pageNumber = pageInfo.offset;
     console.log("=====pageInfo", this.page);
-    this.getAllProduit({
-      pagination: true,
-      page: this.page.pageNumber,
-      size: this.page.size,
-      boutiqueid: this.infoUser.body.boutique.id,
-    });
+    this.objSearch.page = this.page.pageNumber;
+    this.objSearch.size = this.page.size;
+    this.getAllProduit(this.objSearch);
   }
 
   getImage(): string[] {
@@ -238,6 +246,17 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
       ? (this.verifiyItemPromed = true)
       : (this.verifiyItemPromed = false);
     console.log("verify", this.verifiyItemPromed);
+  }
+
+  onSelect1(e) {
+    console.log("Select Event", e, this.selected);
+    this.selected.splice(0, this.selected.length);
+    this.selected.push(e);
+    // console.log("hhh", this.selected);
+    // e[0].promotion
+    //   ? (this.verifiyItemPromed = true)
+    //   : (this.verifiyItemPromed = false);
+    // console.log("verify", this.verifiyItemPromed);
   }
 
   displayCheck(row) {
@@ -272,7 +291,6 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     );
     modalRef.componentInstance.infoDaTa = this.activeRow;
   }
-
   // OUVRIR MODALS EDITS IMAGES
   openUpdateAffichage(infoData: any) {
     const modalRef = this.modalService.open(
@@ -288,7 +306,12 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
         console.log("yaaaa", this.closeResult);
         if (result == "ok") {
           setTimeout(() => {
-            this.getAllProduit({ pagination: true, page: 0, size: 10 });
+            this.getAllProduit({
+              pagination: true,
+              page: 0,
+              size: 10,
+              boutiqueid: this.infoUser.body.boutique.id,
+            });
             this.selected = [];
           }, 1500);
         }
@@ -301,7 +324,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   }
 
   // OUVRIR MODALS POUR ATTRIBUER PROMOTION
-  openAssignPromotion() {
+  openAssignPromotion(e?: any) {
     const modalRef = this.modalService.open(ModalAssignPromotionComponent, {
       windowClass: "modal-mini",
       size: "lg",
@@ -318,7 +341,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
               page: 0,
               size: 10,
               boutiqueid: this.infoUser.body.boutique.id,
-            }
+            };
             this.getAllProduit(this.objSearch);
             this.selected = [];
           }, 1500);
@@ -328,7 +351,32 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
         this.closeResult = "Dismissed " + this.getDismissReason(reason);
       }
     );
-    modalRef.componentInstance.produitSelect = this.selected;
+    if (e) {
+      console.log("yoyo", e);
+      // this.selected.push(this.activeRow)
+      modalRef.componentInstance.produitSelect = this.selected;
+    } else {
+      modalRef.componentInstance.produitSelect = this.selected;
+    }
+  }
+
+  // OUVRIR MODALS POUR ATTRIBUER PROMOTION
+  openCommentaireProduit() {
+    const modalRef = this.modalService.open(CommentaireProduitComponent, {
+      windowClass: "modal-mini",
+      size: "lg",
+      centered: true,
+    });
+    modalRef.result.then(
+      (result) => {
+        this.closeResult = "Closed with: " + result;
+        console.log("yaaaa", this.closeResult);
+      },
+      (reason) => {
+        this.closeResult = "Dismissed " + this.getDismissReason(reason);
+      }
+    );
+    modalRef.componentInstance.produitSelect = this.activeRow;
   }
 
   // OUVRIR MODALS POUR ATTRIBUER PROMOTION
@@ -368,7 +416,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
               page: 0,
               size: 10,
               boutiqueid: this.infoUser.body.boutique.id,
-            }
+            };
             this.getAllProduit(this.objSearch);
             this.selected = [];
           }, 1500);
@@ -393,7 +441,12 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
         console.log("yaaaa", this.closeResult);
         if (result == "ok") {
           setTimeout(() => {
-            this.getAllProduit({ pagination: true, page: 0, size: 10 });
+            this.getAllProduit({
+              pagination: true,
+              page: 0,
+              size: 10,
+              boutiqueid: this.infoUser.body.boutique.id,
+            });
             this.selected = [];
           }, 1500);
         }
@@ -468,7 +521,12 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
               console.log("produits supprimer");
               console.log(data);
               this.showNotification("success");
-              this.getAllProduit({ pagination: true, page: 0, size: 10 });
+              this.getAllProduit({
+                pagination: true,
+                page: 0,
+                size: 10,
+                boutiqueid: this.infoUser.body.boutique.id,
+              });
             }
           });
         },
@@ -557,7 +615,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
           this.utilitisService.response(data, (d: any) => {
             console.log(d);
             if (data.status == 200) {
-              this.listCategorie = []
+              this.listCategorie = [];
               let lis: any[] = [];
               lis = d.body;
               lis.map((el) => {
@@ -582,11 +640,6 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
       produitDto: this.formUpdate.value,
     };
     this.updateProduit(this.rowSelected.id, this.formUpdate.value);
-    this.getAllProduit({
-      pagination: true,
-      page: 0,
-      size: 10,
-    });
   }
 
   getProduitById(id) {
@@ -629,7 +682,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     }
     if (type === "success") {
       this.toastr.show(
-        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">Ngx Toastr</span> <span data-notify="message">Le Produit à été créer avec succès</span></div>',
+        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> Le Produit à été créer avec succès</span></div>',
         "",
         {
           timeOut: 3000,
@@ -684,6 +737,7 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
 
   // GET ALL PRODUIT
   getAllProduit(obj: any) {
+    console.log("Obgjet to search", obj);
     this.SuscribeAllData = this.produitService.gettAllProduit(obj).subscribe({
       next: (data) => {
         this.utilitisService.response(data, (d: any) => {
@@ -804,16 +858,19 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
   }
 
   updateProduit(id: number, obj: any) {
+    this.loadingupdate = true;
     this.produitService.updateProduit(id, obj).subscribe({
       next: (data) => {
         this.utilitisService.response(data, (d: any) => {
           console.log("======response ImgProduit", d);
           if (d.status == 200) {
             console.log(d.body);
+            this.loadingupdate = false;
             this.getAllProduit({
               pagination: true,
               page: this.page.pageNumber,
               size: this.page.size,
+              boutiqueid: this.infoUser.body.boutique.id,
             });
           }
         });
@@ -821,38 +878,189 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
     });
   }
 
-
-  filterStatut(){
-    console.log('statut',this.statutselect)
+  filterStatut() {
+    console.log("statut", this.statutselect);
     if (this.statutselect) {
-      this.objSearch.statut = this.statutselect
-    console.log('obj search',this.objSearch)
-    this.getAllProduit(this.objSearch);
-    }else{
-      this.objSearch.statut = null
-    console.log('obj search',this.objSearch)
-    } 
+      this.objSearch.statut = this.statutselect;
+      console.log("obj search select", this.objSearch);
+      this.getAllProduit(this.objSearch);
+    } else {
+      this.objSearch.statut = null;
+      this.getAllProduit(this.objSearch);
+      console.log("obj search", this.objSearch);
+    }
   }
-  filterCategorie(){
-    console.log('statut',this.categorieselect)
-    if (this.categorieselect) {
-      this.objSearch.categorieid = this.categorieselect.id
-    console.log('obj search',this.objSearch)
-    this.getAllProduit(this.objSearch);
-    }else{
-      this.objSearch.categorieid
-    console.log('obj search',this.objSearch)
-    } 
+  filterCategorie() {
+    console.log("statut", this.categorieselect);
+    if (this.categorieselect.length != 0 && this.categorieselect != undefined) {
+      this.objSearch.categorieid = this.categorieselect.id;
+      console.log("obj search select", this.objSearch);
+      this.getAllProduit(this.objSearch);
+    } else {
+      console.log("twysryryrasdfakjb");
+      this.objSearch.categorieid = "";
+      console.log("obj search", this.objSearch);
+      this.getAllProduit(this.objSearch);
+    }
   }
 
   // Rechercher le nom du produit avec le input
-  onsearchproduit(event){
+  onsearchproduit(event) {
     if (!event) {
-      this.objSearch.nom=null
-      this.getAllProduit(this.objSearch)
-    }else{
-      this.objSearch.nom=this.nomProduit
-      this.getAllProduit(this.objSearch)
+      this.objSearch.nom = null;
+      this.getAllProduit(this.objSearch);
+    } else {
+      this.objSearch.nom = this.nomProduit;
+      this.getAllProduit(this.objSearch);
     }
+  }
+
+  selectionChanged(event) {
+    console.log(event);
+    // this.getRoles(event.value.id)
+  }
+
+  getFichierProduit() {
+    this.objSearch.pagination = false;
+    this.produitService.gettAllProduit(this.objSearch).subscribe({
+      next: (data) => {
+        this.utilitisService.response(data, (d: any) => {
+          console.log(d);
+          if (data.status == 200) {
+            this.tempExport = [];
+            this.tempExport = d.body;
+            console.log("======CONTENT commandes paginé", d);
+            this.exportExcel();
+            this.objSearch.pagination = true;
+            this.getAllProduit(this.objSearch);
+          }
+        });
+      },
+      error: (error) => {
+        this.utilitisService.response(error, (d: any) => {});
+      },
+    });
+  }
+
+  //EXPORTATION LISTE EN FICHIER EXCEL
+  exportExcel() {
+    import("xlsx").then((xlsx) => {
+      // Liste
+      let ledata = [];
+      ledata = this.tempExport;
+      console.log("data", this.tempExport);
+      let dataEnv = [];
+      let cpt = 1;
+
+      let produits: string = "";
+      for (let i = 0; i < ledata.length; i++) {
+        ledata[i] = this.changeKeysName(ledata[i], "id", "ID");
+        ledata[i] = this.changeKeysName(ledata[i], "prix", "Prix");
+        ledata[i] = this.changeKeysName(
+          ledata[i],
+          "caracteristique",
+          "Caracteristique"
+        );
+        ledata[i] = this.changeKeysName(
+          ledata[i],
+          "datecreation",
+          "Date création"
+        );
+        ledata[i] = this.changeKeysName(
+          ledata[i],
+          "datevalidation",
+          "Date validation"
+        );
+        ledata[i] = this.changeKeysName(
+          ledata[i],
+          "description",
+          "Description"
+        );
+        ledata[i] = this.changeKeysName(ledata[i], "statut", "Statut");
+        ledata[i] = this.changeKeysName(ledata[i], "nom", "Nom");
+        ledata[i] = this.changeKeysName(
+          ledata[i],
+          "notemoyenne",
+          "Note moyenne"
+        );
+        var lesimages = ledata[i].imageproduits;
+        // var letypecuisine = ledata[i].typescuisines;
+        if (lesimages && lesimages.length) {
+          produits = "";
+          for (let e = 0; e < lesimages.length; e++) {
+            produits = produits + this.getImg(lesimages[e].url) + "; ";
+          }
+        }
+        ledata[i].imageproduits = produits;
+        ledata[i] = this.changeKeysName(
+          ledata[i],
+          "imageproduits",
+          "Images produits"
+        );
+        ledata[i] = this.changeKeysName(ledata[i], "adresse", "Adresse");
+        ledata[i] = this.changeKeysName(
+          ledata[i],
+          "isrecommended",
+          "Récommander"
+        );
+        ledata[i] = this.changeKeysName(
+          ledata[i],
+          "positionrecommandation",
+          "Position recommandation"
+        );
+        ledata[i] = this.changeKeysName(ledata[i], "statut", "Statut");
+        ledata[i] = this.changeKeysName(ledata[i], "motifrefus", "Motif réfus");
+        ledata[i].boutique = ledata[i].boutique.nom;
+        ledata[i] = this.changeKeysName(ledata[i], "boutique", "Boutique");
+        if (ledata[i].promotion) {
+          ledata[i].promotion = ledata[i].promotion.pourcentage;
+          ledata[i] = this.changeKeysName(ledata[i], "promotion", "Réduction");
+        }
+
+        if (ledata[i].typepromotion) {
+          ledata[i].typepromotion = ledata[i].typepromotion.nom;
+          ledata[i] = this.changeKeysName(
+            ledata[i],
+            "typepromotion",
+            "Type promotion"
+          );
+        }
+        ledata[i].categorie = ledata[i].categorie.nom;
+        ledata[i] = this.changeKeysName(ledata[i], "categorie", "Categorie");
+      }
+
+      const worksheet = xlsx.utils.json_to_sheet(ledata);
+      const workbook = { Sheets: { data: worksheet }, SheetNames: ["data"] };
+      const excelBuffer: any = xlsx.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+      });
+      this.saveAsExcelFile(excelBuffer, "liste_produit");
+      // this.getExport()
+    });
+  }
+
+  saveAsExcelFile(buffer: any, fileName: string): void {
+    let EXCEL_TYPE =
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+    let EXCEL_EXTENSION = ".xlsx";
+    const data: Blob = new Blob([buffer], {
+      type: EXCEL_TYPE,
+    });
+    FileSaver.saveAs(
+      data,
+      fileName + "_export_" + new Date().getTime() + EXCEL_EXTENSION
+    );
+  }
+
+  changeKeysName(test: any, OLD_KEY: any, NEW_KEY: any) {
+    const { [OLD_KEY]: replaceByKey, ...rest } = test;
+    const new_obj = {
+      ...rest,
+      [NEW_KEY]: replaceByKey,
+    };
+
+    console.log("LA LISTE TEST", new_obj);
+    return new_obj;
   }
 }

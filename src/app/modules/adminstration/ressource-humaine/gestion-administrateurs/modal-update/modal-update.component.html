@@ -87,12 +87,25 @@
           <label for="position-produit" class="form-control-label col-md-4"
             >Rôle <span class="text-danger">*</span></label
           >
-          <ngx-select-dropdown
+          <!-- <ngx-select-dropdown
             formControlName="role"
             [config]="config"
             [options]="listRole"
             class="col-md-4 p-0"
-          ></ngx-select-dropdown>
+          ></ngx-select-dropdown> -->
+          <ngx-select-dropdown
+          formControlName="role"
+          (change)="selectionChanged($event)"
+          [config]="config"
+          [optionItemTemplate]="optionTemplate"
+          [selectedItemTemplate]="optionTemplate"
+          [options]="listRole"
+          class="col-md-4 p-0"
+        >
+        </ngx-select-dropdown>
+        <ng-template #optionTemplate let-item="item" let-config="config">
+          {{ item.nom }}
+        </ng-template>
           <div
             *ngIf="
               formUpdateAdmin.controls['role'].status == 'INVALID' &&
@@ -118,6 +131,7 @@
       <button
         type="button"
         class="btn btn-primary"
+        [disabled]="formUpdateAdmin.invalid"
         (click)="handleOk(); closeModalOk()"
       >
         Modifier

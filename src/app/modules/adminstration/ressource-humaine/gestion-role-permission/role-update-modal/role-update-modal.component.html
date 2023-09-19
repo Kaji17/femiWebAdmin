@@ -177,6 +177,8 @@
       (click)="handleOk(); closeModalOk()"
       class="btn btn-primary"
       data-dismiss="modal"
+      [disabled]="(libelle=='')"
+
     >
       Modifier
     </button>

@@ -1,0 +1,58 @@
+<div class="card shadow" style="height: 100%">
+    <div class="card-header border-0">
+      <div class="row align-items-center">
+        <div class="col-sm-12 col-12">
+          <h3 class="mb-0">Panier moyen</h3>
+        </div>
+
+        <!-- <a class="btn btn-sm btn-primary">Jour</a> -->
+        <div class="col-sm-6 col-12">
+          <ngx-select-dropdown
+            [options]="listPeriode"
+            [(ngModel)]="periodeselect"
+            [config]="configperiode"
+            (change)="filterperiode()"
+            class="col-md-2 mr-2"
+          >
+          </ngx-select-dropdown>
+        </div>
+        <div class="col-sm-6 col-12">
+          <ngx-select-dropdown
+            [instanceId]="'instance1'"
+            [config]="configZone"
+            [options]="listZone"
+            [(ngModel)]="zoneselect"
+            (change)="filterzone()"
+            class="col-md-2 p-0"
+          >
+          </ngx-select-dropdown>
+        </div>
+      </div>
+    </div>
+    <ngx-datatable
+      class="bootstrap selection-cell"
+      [columnMode]="'force'"
+      [headerHeight]="50"
+      [footerHeight]="50"
+      [rowHeight]="'auto'"
+      [rows]="tempPanierMoyen"
+      [summaryPosition]="'bottom'"
+      (sortable)="(false)"
+      [limit]="6"
+    >
+      <ngx-datatable-column name="Période" prop="periode">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span>
+            {{ row.periode | date : "dd/MM/yyyy" }}
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Panier moyen">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <strong>
+            <span> {{ row.panier_moyen | number }} FCFA </span>
+          </strong>
+        </ng-template></ngx-datatable-column
+      >
+    </ngx-datatable>
+  </div>

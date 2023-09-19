@@ -1,6 +1,6 @@
 <div class="modal-content bg-gradient-danger text-white">
     <div class="modal-header">
-      <h6 class="modal-title" id="modal-title-notification">
+      <h6 class="modal-title text-white" id="modal-title-notification">
         Votre attention est réquise
       </h6>
       <button
@@ -17,7 +17,7 @@
       <div class="py-3 text-center">
         <i class="ni ni-bell-55 ni-3x"></i>
         <h4 class="heading mt-4 text-white">
-          Voulez-vous refuser la commande : <strong>#{{ infoDaTa.code }}</strong>
+          Voulez-vous annuler la commande : <strong>#{{ infoDaTa.code }}</strong>
         </h4>
       </div>
     </div>
@@ -27,7 +27,7 @@
         class="btn btn-white"
         (click)="onRefuserCommande(); closeModalOk()"
       >
-        Oui, refuser
+        Oui, annuler
       </button>
       <button
         type="button"
@@ -35,7 +35,7 @@
         data-dismiss="modal"
         (click)="closeModal()"
       >
-        Annuler
+        Fermer
       </button>
     </div>
   </div>

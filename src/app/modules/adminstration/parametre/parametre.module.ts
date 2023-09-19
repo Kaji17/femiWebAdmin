@@ -9,6 +9,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { ModalAddPrixLivraisonComponent } from './prix-livraison/modal-add-prix-livraison/modal-add-prix-livraison.component';
 import { ModalAssignZoneComponent } from './prix-livraison/modal-assign-zone/modal-assign-zone.component';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -25,7 +26,9 @@ import { ModalAssignZoneComponent } from './prix-livraison/modal-assign-zone/mod
     NgxDatatableModule,
     FormsModule,
     ReactiveFormsModule,
-    SelectDropDownModule
+    SelectDropDownModule,
+    NgbTooltipModule,
+
     ]
 })
 export class ParametreModule { }

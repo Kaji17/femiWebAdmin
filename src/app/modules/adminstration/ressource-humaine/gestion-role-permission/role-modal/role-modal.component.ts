@@ -13,12 +13,14 @@ import { UtilisService } from "src/app/shared/services/utilis.service";
 })
 export class RoleModalComponent implements OnInit {
   rows = [];
-  libelle: string;
+  libelle: string='rôle';
   infoUser: any;
   loading: boolean = false;
 
   ColumnMode = ColumnMode;
   menu: any;
+
+  newMenu: any;
   constructor(
     public activeModal: NgbActiveModal,
     private rolePerms: RolePermissionsService,
@@ -30,8 +32,64 @@ export class RoleModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.menu = this.rolePerms.getMenuPermission();
+
+    this.newMenu = NavConstants;
+
+    console.log("Menu De root", this.menu);
+
+    // console.log("Menu Nouveau", this.newMenu);
+
+    let lisTitle:string[]=[]
+    this.menu.map((el) => {
+      if (el.display) {
+        lisTitle.push(el)
+        // this.newMenu.push(el)  
+      }
+    });
+
+    let newList:any[]=[]
+    lisTitle.map((el:any)=>{
+      if (el.display) {
+        newList.push(el.title)
+      }
+    })
+
+    let defMenu:any[]=[]
+    this.newMenu.map((el)=>{
+      newList.map((el1)=>{
+        if (el.title==el1){
+          defMenu.push(el)
+        }
+      })
+      
+    })
+
+    this.newMenu=defMenu
+    console.log("New List ======",defMenu)
+    // this.newMenu= newList
+
+    // console.log("list",lisTitle)
+
+    // this.newMenu.map((el)=>{
+    //   el.create = false;
+    //   el.display = true;
+    //   el.update = false;
+    //   el.delete = false;
+    //   el.other = false;
+    //   el.isEpandedd = false;
+    //   el.isEpandedd2 = false;
+    //   el.items.map((el) => {
+    //     el.create = false;
+    //     el.display = true;
+    //     el.update = false;
+    //     el.delete = false;
+    //     el.other = false;
+    //   });
+    // })
+    console.log('newMenu',this.newMenu);
+
     // this.menu = NavConstants;
-    this.rows = this.menu;
+    this.rows = this.newMenu;
   }
 
   checkValue(event, item, module, parent?) {
@@ -80,7 +138,7 @@ export class RoleModalComponent implements OnInit {
         return value;
       };
     };
-    res.description = btoa(JSON.stringify(this.menu, getCircularReplacer()));
+    res.description = btoa(JSON.stringify(this.newMenu, getCircularReplacer()));
     console.log("======content", res);
     this.addRole(res);
   }
@@ -121,7 +179,7 @@ export class RoleModalComponent implements OnInit {
     }
     if (type === "success") {
       this.toastr.show(
-        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">Ngx Toastr</span> <span data-notify="message">Rôle Ajouter avec succès</span></div>',
+        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> Rôle Ajouter avec succès</span></div>',
         "",
         {
           timeOut: 3000,
