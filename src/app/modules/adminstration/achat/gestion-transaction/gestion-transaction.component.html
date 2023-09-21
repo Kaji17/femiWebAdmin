@@ -62,13 +62,11 @@
         <ngx-datatable-column name="ID Transaction" prop="numeropaiement"></ngx-datatable-column>
         <ngx-datatable-column name="Numéro de paiement"> 
             <ng-template let-row="row" ngx-datatable-cell-template>
-                <span *ngIf="!row.contact"> null </span>
                 <span *ngIf="row.contact"> {{row.contact}} </span>
               </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column name="Opérateur">
             <ng-template let-row="row" ngx-datatable-cell-template>
-                <span *ngIf="!row.operateur"> null </span>
                 <span *ngIf="row.operateur"> {{row.operateur}}  </span>
               </ng-template>
         </ngx-datatable-column>

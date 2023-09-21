@@ -97,15 +97,11 @@
           formControlName="role"
           (change)="selectionChanged($event)"
           [config]="config"
-          [optionItemTemplate]="optionTemplate"
-          [selectedItemTemplate]="optionTemplate"
           [options]="listRole"
           class="col-md-4 p-0"
         >
         </ngx-select-dropdown>
-        <ng-template #optionTemplate let-item="item" let-config="config">
-          {{ item.nom }}
-        </ng-template>
+
           <div
             *ngIf="
               formUpdateAdmin.controls['role'].status == 'INVALID' &&

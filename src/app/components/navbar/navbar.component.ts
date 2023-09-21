@@ -51,12 +51,6 @@ export class NavbarComponent implements OnInit {
     translate.addLangs(['en', 'fr']),
     translate.setDefaultLang('fr')
     this.location = location;
-    // window.addEventListener('storage', (event) => {
-    //   if (event.key === 'user_info') {
-    //     this.profil = event.newValue; // Mettez à jour l'image
-    //     this.cdr.detectChanges(); // Forcer la mise à jour du composant
-    //   }
-    // });
   }
 
   switchLang(lang:string){

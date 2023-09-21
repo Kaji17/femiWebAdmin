@@ -387,15 +387,10 @@
             formControlName="categorieid"
             (change)="selectionChanged($event)"
             [config]="config"
-            [optionItemTemplate]="optionTemplate"
-            [selectedItemTemplate]="optionTemplate"
             [options]="listCategorie"
             class="col-md-4 p-0"
           >
           </ngx-select-dropdown>
-          <ng-template #optionTemplate let-item="item" let-config="config">
-            <span>{{ item.nom }}</span>
-          </ng-template>
         </div>
         <div
           class="form-group row m-0 justify-content-between align-items-center mb-3"
