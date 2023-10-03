@@ -39,13 +39,11 @@ export class Configurable {
 
   getApi2(key: string): string {
     let a = ApiUrls['API_ENDPOINTS']
- 
-    // 
-    
-    // 
-    // 
-
-    // 
     return `${ApiUrls['HOST_API-DEV2']}${a[key as keyof typeof a]}`;
+  }
+
+  getApi3(key: string): string {
+    let a = ApiUrls['API_ENDPOINTS']
+    return `${ApiUrls['HOST_API-DEV3']}${a[key as keyof typeof a]}`;
   }
 }

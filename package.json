@@ -59,6 +59,7 @@
     "ngx-toastr": "14.2.2",
     "nouislider": "15.5.1",
     "nxt-pick-datetime": "^16.2.0",
+    "popper.js": "^1.16.1",
     "postcss-loader": "^3.0.0",
     "primeicons": "^6.0.1",
     "primeng": "^16.2.0",

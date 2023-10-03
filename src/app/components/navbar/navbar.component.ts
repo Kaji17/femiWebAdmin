@@ -13,6 +13,9 @@ import { AngularFireMessaging } from "@angular/fire/compat/messaging";
 import { Configurable } from "src/app/core/config";
 import { Store } from "@ngrx/store";
 import { logoutAction } from "src/app/state/01-actions";
+import { HttpClient } from "@angular/common/http";
+import { NotificationService } from "src/app/shared/services/notification.service";
+import { UtilisService } from "src/app/shared/services/utilis.service";
 
 @Component({
   selector: "app-navbar",
@@ -36,6 +39,7 @@ export class NavbarComponent implements OnInit {
 
   @Input() boutiqueName:string
   @Input() boutiqueLogo:string
+  user: any;
 
   constructor(
     location: Location,
@@ -45,7 +49,10 @@ export class NavbarComponent implements OnInit {
     public translate : TranslateService,
     private angularFireMessaging: AngularFireMessaging,
     private configService: Configurable,
-    private store: Store
+    private store: Store,
+    public utilisService: UtilisService,
+    private http: HttpClient,
+    public notificationService: NotificationService,
 
   ) {
     translate.addLangs(['en', 'fr']),
@@ -58,12 +65,15 @@ export class NavbarComponent implements OnInit {
     this.currentLang= lang
   }
   ngOnInit() {
+    this.user= JSON.parse(localStorage.getItem("user_info")).body
+    console.log('LE USER',this.user)
     console.log('hjgjfkds', this.boutiqueLogo)
     this.currentLang='fr'
     this.profil = JSON.parse(localStorage.getItem("user_info"));
     this.menuItems = NavConstants;
     this.currentRoute = this.route.snapshot.url.join("/");
     console.log("url", this.currentRoute);
+    this.getNotifications({page:0,size:10,administrateurid:this.user.id,isnotread:true,date:this.user.datederniereconnexion.split(' ')[0]})
 
     this.angularFireMessaging.messages.subscribe((payload) => {
       console.log('nouveau message ', payload);
@@ -73,14 +83,14 @@ export class NavbarComponent implements OnInit {
       if (localStorage.getItem('nouveauMessage')) {
         let a = JSON.parse(localStorage.getItem('nouveauMessage') as string);
         notifObj = {
-          id: this.message_id,
-          title: payload?.notification?.title,
-          body: payload?.notification?.body,
-          data: payload?.data,
-          lue: false,
+          // id: this.message_id,
+          titre: payload?.notification?.title,
+          texte: payload?.notification?.body,
+          // data: payload?.data,
+          // lue: false,
         };
-        this.message_id = this.message_id+1
-        localStorage.setItem('messageId', JSON.stringify(this.message_id))
+        // this.message_id = this.message_id+1
+        // localStorage.setItem('messageId', JSON.stringify(this.message_id))
         a.push(notifObj);
         this.notifs = a
         localStorage.setItem('nouveauMessage', JSON.stringify(a));
@@ -95,6 +105,37 @@ export class NavbarComponent implements OnInit {
       // });
     });
   }
+
+  seeNotif(){
+    this.router.navigate(['administration/parametre/notifications'])
+  }
+
+  getNotifications(data?){
+    // this.temp = [];
+    console.log('==NOTIF==');
+    data.pagination = true
+    // data.rootid = this.user.id
+    // if(this.etat!=null){
+    //   data.isnotread=this.etat
+    // }
+    this.notificationService.getAll(data).subscribe({
+      next: (data) => {
+        this.utilisService.response(data, (d:any) => {
+          console.log('notifications',d.body)
+          // this.temp=d.content;
+          localStorage.setItem('nouveauMessage', JSON.stringify(d.body.content))
+          this.notifs = d.body.content;
+          // this.page.pageNumber = d.number;
+          // this.page.size = d.size;
+          // this.page.totalElements = d.totalElements;
+          // this.page.totalPages = d.totalPages;
+        });
+      },
+      error: (error) => this.utilisService.response(error),
+    });
+  }
+
+
   getTitle() {
     var titlee = this.location.prepareExternalUrl(this.location.path());
     if (titlee.charAt(0) === "#") {

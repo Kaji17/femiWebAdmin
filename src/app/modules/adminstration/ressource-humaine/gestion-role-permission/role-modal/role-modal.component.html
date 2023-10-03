@@ -104,7 +104,7 @@
       </button>
       <button
         type="button"
-        [disabled]="(libelle=='')"
+        [disabled]="libelle=='' ? true : false"
 
         (click)="handleOk();closeModalOk()"
         class="btn btn-primary"

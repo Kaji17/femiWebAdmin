@@ -281,8 +281,8 @@
             type="date"
             class="form-control col-md-8"
             formControlName="datedebut"
-            [(ngModel)]="dateDebutUpdate"
-            [min]="mindate"
+            
+            [max]="fValue.datefin"
           />
         </div>
         <div
@@ -296,8 +296,9 @@
             type="date"
             class="form-control col-md-8"
             bsDatepicker
+            
             formControlName="datefin"
-            [min]="dateDebutUpdate"
+            [min]="fValue.datedebut"
           />
         </div>
         <!-- <div
@@ -531,7 +532,8 @@
             class="form-control col-md-8"
             formControlName="datedebut"
             [(ngModel)]="dateDebutpic"
-            [min]="mindate"
+            
+            [max]="dateFinpic"
           />
         </div>
         <div
@@ -546,6 +548,7 @@
             class="form-control col-md-8"
             bsDatepicker
             formControlName="datefin"
+            [(ngModel)]="dateFinpic"
             [min]="dateDebutpic"
           />
         </div>

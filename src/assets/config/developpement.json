@@ -2,6 +2,7 @@
     "HOST_API-DEV": "https://kms02.net:9802",
     "HOST_API-DEV1": "https://kms02.net:9803",
     "HOST_API-DEV2": "https://kms02.net:9804",
+    "HOST_API-DEV3": "https://kms02.net:9805",
     "HOST:API": "https://kms02.net:9802",
     "API_ENDPOINTS": {
 
@@ -98,6 +99,10 @@
       "STATISTIQUE_PRODUITPLUSVENDUS_GET": "/klaman/v1/statistique/getproduitsplusvendus",
       "STATISTIQUE_MODEPAIEMENT_GET": "/klaman/v1/statistique/getmodepaimentstats",
       "STATISTIQUE_CHIFFREAFFAIRE_GET": "/klaman/v1/statistique/chiffreaffaires",
+
+      "comment ": "------------ OPERATIONS NOTIFICATIONS---------------",
+      "NOTIFICATION_GET": "/klaman/v1/notification/getall",
+      "NOTIFICATION_READ": "/klaman/v1/notification/read",
 
       "comment ": "------------ OPERATIONS ACHAT ---------------",
       "ACHAT_GETALL_GET": "/klaman/v1/vente/achat/getall"

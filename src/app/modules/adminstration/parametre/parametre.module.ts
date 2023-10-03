@@ -10,6 +10,7 @@ import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { ModalAddPrixLivraisonComponent } from './prix-livraison/modal-add-prix-livraison/modal-add-prix-livraison.component';
 import { ModalAssignZoneComponent } from './prix-livraison/modal-assign-zone/modal-assign-zone.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
     PrixLivraisonComponent,
     GestionZoneComponent,
     ModalAddPrixLivraisonComponent,
-    ModalAssignZoneComponent
+    ModalAssignZoneComponent,
+    NotificationsComponent
   ],
   imports: [
     CommonModule,

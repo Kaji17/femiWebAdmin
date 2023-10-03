@@ -162,7 +162,7 @@
       (click)="handleOk()"
       class="btn btn-primary"
       data-dismiss="modal"
-      [disabled]="formAddProduit.invalid"
+      [disabled]="formAddProduit.invalid || !this.fileTabSrc.length"
     >
       <i class="fa-solid fa-spinner fa-spin" *ngIf="loading"></i>
       Ajouter

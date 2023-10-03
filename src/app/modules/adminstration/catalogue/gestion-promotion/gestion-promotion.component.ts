@@ -40,8 +40,10 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
   mindate: string=this.formatDateForDatePick(new Date());
   mindateUp: string;
   dateDebutUp:any
+  dateFinUp:any
 
-  dateDebutpic
+  dateDebutpic:any
+  dateFinpic:any
 
   public crudPerms: any;
   public menuItems: any[];
@@ -132,6 +134,10 @@ export class GestionPromotionComponent implements OnInit, OnDestroy {
       typepromotionid: [data && data.typepromotion.nom ? data.typepromotion.nom : "", [Validators.required]],
       boutiqueid: [this.infoUser.body.boutique.id, [Validators.required]],
     });
+  }
+
+  get fValue(){
+    return this.formUpdatePromotion.value
   }
 
   // Charger les images

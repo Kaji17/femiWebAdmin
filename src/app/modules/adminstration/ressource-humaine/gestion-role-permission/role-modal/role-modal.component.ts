@@ -13,7 +13,7 @@ import { UtilisService } from "src/app/shared/services/utilis.service";
 })
 export class RoleModalComponent implements OnInit {
   rows = [];
-  libelle: string='rôle';
+  libelle: string='';
   infoUser: any;
   loading: boolean = false;
 

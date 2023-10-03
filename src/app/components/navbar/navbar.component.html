@@ -67,11 +67,15 @@
           ngbDropdownMenu
         >
           <div class="px-3 py-3">
-            <h6 class="text-sm text-muted m-0">
-              {{ "NOTIFICATION.Vous avez" | translate }}
-              <strong class="text-primary">{{ notifs.length }} </strong>
-              {{ "NOTIFICATION.notification(s)" | translate }}.
-            </h6>
+            <div class="px-3 py-3 d-flex justify-content-between">
+              <h6 class="text-sm text-muted m-0">
+                {{ "NOTIFICATION.Vous avez" | translate }}
+                <strong class="text-primary">{{ notifs.length }} </strong>
+                {{ "NOTIFICATION.notification(s)" | translate }}.
+              </h6>
+              <h5 class="cursor-pointer uneiC" (click)="seeNotif()">Voir tout</h5>
+            </div>
+           
           </div>
           <div class="list-group list-group-flush" *ngFor="let notif of notifs">
             <a class="list-group-item list-group-item-action">
@@ -85,7 +89,7 @@
                   >
                     <div>
                       <h4 class="mb-0 text-sm">
-                        {{ notif.title }}
+                        {{ notif.titre }}
                       </h4>
                     </div>
                     <div
@@ -106,7 +110,7 @@
                     </div>
                   </div>
                   <p class="text-sm mb-0" [routerLink]="['/administration/achat/commandes']">
-                    {{ notif.body }}
+                    {{ notif.texte }}
                   </p>
                 </div>
               </div>
