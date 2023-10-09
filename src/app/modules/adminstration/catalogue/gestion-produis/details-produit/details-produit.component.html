@@ -31,6 +31,10 @@
             "
             class="imgLogo"
           ></div>
+          <!-- <lib-ngx-image-zoom
+          [thumbImage]="myThumbnail"
+            [fullImage]="getImg(lurl)"
+          ></lib-ngx-image-zoom> -->
           <div *ngIf="produitSelect?.imageproduits.length" class="row mt-2">
             <div *ngFor="let item of produitSelect?.imageproduits">
               <div
@@ -68,12 +72,16 @@
 
         <div class="" [style.marginBottom]="'30px'">
           <h5>Caractéristiques</h5>
-          <p [style.fontSize]="'0.7rem'">{{ produitSelect?.caracteristique }}</p>
+          <p [style.fontSize]="'0.7rem'">
+            {{ produitSelect?.caracteristique }}
+          </p>
         </div>
 
         <div class="mb-10">
           <h5>Date de création</h5>
-          <p [style.fontSize]="'0.7rem'">{{ produitSelect?.datecreation|date:'dd-MM-yyyy HH:mm' }}</p>
+          <p [style.fontSize]="'0.7rem'">
+            {{ produitSelect?.datecreation | date : "dd-MM-yyyy HH:mm" }}
+          </p>
         </div>
       </div>
     </div>

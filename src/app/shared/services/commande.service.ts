@@ -26,6 +26,16 @@ export class CommandeService {
     );
   }
 
+    // VALIDER COMMANDE
+    public validerProduitCommande(commandeid: any, produitid:any, boutiqueid:any, estdisponible:boolean) {
+      return this.http.get(
+        this.configService.getApi1("COMMANDE_MODIFIERDISPONIBILTERPRODUIT_GET") + "/" + commandeid+ "/" + produitid+ "/" + boutiqueid+ "/" + estdisponible,
+        {
+          observe: "response",
+        }
+      );
+    }
+
   // REGLER COMMANDE
   public reglerCommande(id: any) {
     return this.http.get(

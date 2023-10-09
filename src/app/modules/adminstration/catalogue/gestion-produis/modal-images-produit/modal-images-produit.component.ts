@@ -85,30 +85,50 @@ export class ModalImagesProduitComponent implements OnInit, AfterContentInit {
     console.log("KK", reader);
     this.file = event.target.files[0];
 
-    this.fileTab.push(this.file);
-    reader.readAsDataURL(this.file);
-    reader.onload = (e) => {
-      this.fileSrc = reader.result as string;
-      this.background = true;
-      this.fileTabSrc.push(this.fileSrc);
-      console.log("file", this.file);
-    };
+    let exist: boolean = false
+    this.fileTab.map((el)=>{
+      console.log("nom du fichier", this.file.name)
+      if(el.name == this.file.name){
+        exist = true
+      }
+    })
+    if(exist){
+      console.log("fichier existe déja")
+      this.showNotification("dangerExiste");
+      
+    }else{
+    
+      if (this.file.size > 51200) {
+        console.log("l'image doit être < 50 Ko ");
+        this.showNotification("dangerSize");
+        this.file = null;
+      } else {
+        this.fileTab.push(this.file);
+        reader.readAsDataURL(this.file);
+        reader.onload = (e) => {
+          this.fileSrc = reader.result as string;
+          this.background = true;
+          this.fileTabSrc.push(this.fileSrc);
+          console.log("file", this.file);
+        };
+        switch (action) {
+          case "add":
+            console.log("add produit");
+            this.addImageProduit(this.infoDaTa.id, this.fileTab)
+            break;
+          case "update":
+            console.log("update produit");
+            this.updateImageProduit(image.id, this.file)
+            break;
+    
+          default:
+            break;
+        }
+        console.log("La table src", this.fileTab);
+        console.log("La table", this.fileSrc);
+      }}
 
-    switch (action) {
-      case "add":
-        console.log("add produit");
-        this.addImageProduit(this.infoDaTa.id, this.fileTab)
-        break;
-      case "update":
-        console.log("update produit");
-        this.updateImageProduit(image.id, this.file)
-        break;
-
-      default:
-        break;
-    }
-    console.log("La table src", this.fileTab);
-    console.log("La table", this.fileSrc);
+    
   }
 
   getImageByProduitId(id: any) {
@@ -207,6 +227,38 @@ export class ModalImagesProduitComponent implements OnInit, AfterContentInit {
     if (type === "danger") {
       this.toastr.show(
         '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">Désolé nous ne pouvons pas créer ce produit vérifier les données</span></div>',
+        "",
+        {
+          timeOut: 3000,
+          closeButton: true,
+          enableHtml: true,
+          tapToDismiss: false,
+          titleClass: "alert-title",
+          positionClass: "toast-top-center",
+          toastClass:
+            "ngx-toastr alert alert-dismissible alert-danger alert-notify",
+        }
+      );
+    }
+    if (type === "dangerSize") {
+      this.toastr.show(
+        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">La taille de l\'image est suppérieur à 50 Ko</span></div>',
+        "",
+        {
+          timeOut: 3000,
+          closeButton: true,
+          enableHtml: true,
+          tapToDismiss: false,
+          titleClass: "alert-title",
+          positionClass: "toast-top-center",
+          toastClass:
+            "ngx-toastr alert alert-dismissible alert-danger alert-notify",
+        }
+      );
+    }
+    if (type === "dangerExiste") {
+      this.toastr.show(
+        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">L\'image a été déja chargé</span></div>',
         "",
         {
           timeOut: 3000,

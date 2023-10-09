@@ -91,16 +91,31 @@
             </div>
             <div
               *ngFor="let image of fileTabSrc"
-              class="col-md-3 m-1 rounded border align-items-center p-1 m-1 row justify-content-center"
-              [style]="'background-image: url(' + image + ')'"
-              style="
-                position: relative;
-                background-repeat: no-repeat;
-                background-size: cover;
-                min-height: 100px;
-                width: 91px !important;
-              "
-            ></div>
+              class="relative col-md-3 m-1 rounded border align-items-center p-1 m-1 row justify-content-center"
+              style="width: 91px !important;position: relative;"
+            >
+              <img
+                class="relative"
+                [src]="image.data"
+                style="position: relative;width: 100% !important; height: 100px !important"
+                [alt]="image.name"
+              />
+              <div class="absolute" style="position: absolute; top: -10px; right:-7px; cursor: pointer;"
+              (click)="removeImg(image.name)">
+                <i class="fa-solid fa-circle-xmark text-danger"
+                ></i>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <small class=""
+                >Taille maximale de l'image <= 50 Ko,
+                <a href="https://compressjpeg.com/fr/" target="_blank"
+                  >réduire l'image</a
+                >
+              </small>
+            </div>
           </div>
         </div>
       </div>

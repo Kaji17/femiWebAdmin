@@ -26,6 +26,7 @@ export class DetailsProduitComponent implements OnInit {
   dataRecover: any = {};
   loading: boolean;
   @Input() produitSelect;
+  myThumbnail:string = 'assets/img/undraw_Images_re_0kll.png'
   lurl: any;
   constructor(
     public activeModal: NgbActiveModal,

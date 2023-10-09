@@ -76,7 +76,7 @@
           [headerHeight]="50"
           [footerHeight]="50"
           [rowHeight]="'auto'"
-          [rows]="infoDaTa.panierObjectList"
+          [rows]="row"
           [summaryPosition]="'bottom'"
           (sortable)="(false)"
           [limit]="20"
@@ -95,13 +95,19 @@
             name="Quantité"
             prop="quantite"
           ></ngx-datatable-column>
-          <ngx-datatable-column name="Réduction">
+          <ngx-datatable-column name="Disponible">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <span
-                class="badge badge-pill badge-md badge-danger"
-                *ngIf="row.tauxpromotion"
+                *ngIf="row.estdisponible"
+                class="badge badge-pill badge-md badge-success"
               >
-                -{{ row.tauxpromotion }}%
+                Oui
+              </span>
+              <span
+                *ngIf="row.estdisponible==false"
+                class="badge badge-pill badge-md badge-danger"
+              >
+                Non
               </span>
             </ng-template></ngx-datatable-column
           >
@@ -109,7 +115,40 @@
             name="Montant"
             prop="montant"
           ></ngx-datatable-column>
+          <ngx-datatable-column name="Actions">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div class="row px-1">
+                <button
+                  *ngIf="crudPerms.update &&(row.estdisponible==null)"
+                  (click)="validerProduit(row.produit.id, true); closeModalOk()"
+                  ngbTooltip="Validé"
+                  placement="top"
+                  class="btn btn-icon btn-success btn-sm"
+                  type="button"
+                >
+                  <span class="btn-inner--icon">
+                    <i class="fa-solid fa-check"></i>
+                  </span>
+                </button>
+                <button
+                  *ngIf="
+                    crudPerms.update&&(row.estdisponible==null)
+                  "
+                  (click)="validerProduit(row.produit.id, false); closeModalOk()"
+                  ngbTooltip="Refusé"
+                  placement="bottom"
+                  class="btn btn-icon btn-danger btn-sm"
+                  type="button"
+                >
+                  <span class="btn-inner--icon">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                  </span>
+                </button>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
         </ngx-datatable>
+
       </div>
     </div>
 

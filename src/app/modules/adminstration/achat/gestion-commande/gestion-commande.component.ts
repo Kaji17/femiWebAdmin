@@ -283,6 +283,16 @@ export class GestionCommandeComponent implements OnInit {
       (result) => {
         this.closeResult = "Closed with: " + result;
         console.log("yaaaa", this.closeResult);
+        if (result == "ok") {
+          setTimeout(() => {
+            this.getAllCommandes({
+              boutiqueid: this.infoUser.body.boutique.id,
+              pagination: true,
+              page: 0,
+              size: 10,
+            });
+          }, 1500);
+        }
       },
       (reason) => {
         this.closeResult = "Dismissed " + this.getDismissReason(reason);

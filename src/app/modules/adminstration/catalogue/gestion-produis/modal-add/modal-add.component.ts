@@ -1,7 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
+import { Subscription } from "rxjs";
 import { CategorieService } from "src/app/shared/services/categorie.service";
 import { ProduitService } from "src/app/shared/services/produit.service";
 import { UtilisService } from "src/app/shared/services/utilis.service";
@@ -11,7 +12,7 @@ import { UtilisService } from "src/app/shared/services/utilis.service";
   templateUrl: "./modal-add.component.html",
   styleUrls: ["./modal-add.component.scss"],
 })
-export class ModalAddComponent implements OnInit {
+export class ModalAddComponent implements OnInit, OnDestroy {
   formAddProduit: FormGroup;
   infoUser: any;
   listCategorie: any[];
@@ -21,12 +22,16 @@ export class ModalAddComponent implements OnInit {
   fileTab: any[] = [];
   fileTabSrc: any[] = [];
   loading: boolean = false;
-  catSelected:any
-  config:any = {
-    search:true,
-    height: '250px',
-    displayKey:"nom",
-  }
+  catSelected: any;
+  config: any = {
+    search: true,
+    height: "250px",
+    displayKey: "nom",
+  };
+  suscriptionCategorie: Subscription
+  suscriptionAddProduct: Subscription
+  suscriptionAddProductbool: boolean = false
+
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -37,6 +42,11 @@ export class ModalAddComponent implements OnInit {
     private produitService: ProduitService
   ) {
     this.infoUser = JSON.parse(localStorage.getItem("user_info"));
+  }
+  ngOnDestroy(): void {
+    this.suscriptionCategorie.unsubscribe()
+    this.suscriptionAddProductbool?this.suscriptionAddProduct.unsubscribe():''
+    
   }
 
   ngOnInit(): void {
@@ -81,7 +91,7 @@ export class ModalAddComponent implements OnInit {
 
   // RECUPERER TOUTE LES CATEGORIE
   getAllCategorie() {
-    this.categorieService.getAllCategorie(false).subscribe({
+    this.suscriptionCategorie= this.categorieService.getAllCategorie(false).subscribe({
       next: (data) => {
         this.utilitisService.response(data, (d: any) => {
           console.log(d);
@@ -101,6 +111,7 @@ export class ModalAddComponent implements OnInit {
         this.utilitisService.response(error, (d: any) => {});
       },
     });
+    
   }
 
   // Charger les images
@@ -110,27 +121,64 @@ export class ModalAddComponent implements OnInit {
     console.log("KK", reader);
     this.file = event.target.files[0];
 
-    this.fileTab.push(this.file);
+    let exist: boolean = false
+    this.fileTab.map((el)=>{
+      console.log("nom du fichier", this.file.name)
+      if(el.name == this.file.name){
+        exist = true
+      }
+    })
+    if(exist){
+      console.log("fichier existe déja")
+      this.showNotification("dangerExiste");
+      
+    }else{
+    
+    if (this.file.size > 51200) {
+      console.log("l'image doit être < 50 Ko ");
+      this.showNotification("dangerSize");
+      this.file = null;
+    } else {
+      this.fileTab.push(this.file);
+      reader.readAsDataURL(this.file);
+      reader.onload = (e) => {
+        this.fileSrc = reader.result as string;
+        this.background = true;
+        if (e.total > 51200) {
+        } else {
+          let obj:any={
+            name: this.file.name,
+            data: this.fileSrc
+          }
+          this.fileTabSrc.push(obj);
+        }
+
+        console.log("e", e);
+      };
+      console.log("La table src", this.fileTab);
+      console.log("La table", this.fileSrc);
+    }}
     // this.tabEmpty=false
-    reader.readAsDataURL(this.file);
-    reader.onload = (e) => {
-      this.fileSrc = reader.result as string;
-      this.background = true;
-      this.fileTabSrc.push(this.fileSrc);
-      console.log("e", e);
-    };
-    console.log("La table src", this.fileTab);
-    console.log("La table", this.fileSrc);
   }
 
   removeImg(image) {
     // this.fileTab = this.fileTab.filter((chaine) => chaine !== image);
-    console.log("======tab after del", this.fileTab);
+    let i= this.fileTab.indexOf(image)
+    this.fileTab.map((el)=>{
+      if(el.name ==image){
+        console.log('index',i)
+        this.fileTab.splice(i,1)
+        this.fileTabSrc.splice(i,1)
+      }
+    })
+    console.log("======tab after del", image);
   }
 
   // AJOUTER UN PRODUIT
   addproduit(obj, file?: any[]) {
     this.loading = true;
+    this.suscriptionAddProductbool = true
+    this.suscriptionAddProduct= 
     this.produitService.addProduit(obj, file).subscribe({
       next: (data) => {
         this.utilitisService.response(data, (d: any) => {
@@ -146,6 +194,12 @@ export class ModalAddComponent implements OnInit {
             //   page: 0,
             //   size: 10,
             // });
+          }else{
+            this.loading = false;
+            this.showNotification("danger");
+            this.buildForm();
+            this.fileTab = [];
+            this.fileTabSrc = []
           }
         });
       },
@@ -196,6 +250,38 @@ export class ModalAddComponent implements OnInit {
         }
       );
     }
+    if (type === "dangerSize") {
+      this.toastr.show(
+        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">La taille de l\'image est suppérieur à 50 Ko</span></div>',
+        "",
+        {
+          timeOut: 3000,
+          closeButton: true,
+          enableHtml: true,
+          tapToDismiss: false,
+          titleClass: "alert-title",
+          positionClass: "toast-top-center",
+          toastClass:
+            "ngx-toastr alert alert-dismissible alert-danger alert-notify",
+        }
+      );
+    }
+    if (type === "dangerExiste") {
+      this.toastr.show(
+        '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> <span class="alert-title" data-notify="title">L\'image a été déja chargé</span></div>',
+        "",
+        {
+          timeOut: 3000,
+          closeButton: true,
+          enableHtml: true,
+          tapToDismiss: false,
+          titleClass: "alert-title",
+          positionClass: "toast-top-center",
+          toastClass:
+            "ngx-toastr alert alert-dismissible alert-danger alert-notify",
+        }
+      );
+    }
     if (type === "success") {
       this.toastr.show(
         '<span class="alert-icon ni ni-bell-55" data-notify="icon"></span> <div class="alert-text"</div> Le Produit à été créer avec succès</span></div>',
@@ -213,10 +299,9 @@ export class ModalAddComponent implements OnInit {
       );
     }
   }
-  selectionChanged(event){
-    console.log(event)
-    console.log(this.catSelected.length)
+  selectionChanged(event) {
+    console.log(event);
+    console.log(this.catSelected.length);
     // console.log(this.boutSelected.length)
   }
-
 }

@@ -24,6 +24,8 @@ import { NgbRatingModule, NgbTooltipModule } from "@ng-bootstrap/ng-bootstrap";
 import { DetailsProduitComponent } from './gestion-produis/details-produit/details-produit.component';
 import { CommentaireProduitComponent } from './gestion-produis/commentaire-produit/commentaire-produit.component';
 import { SharedModule } from "src/app/shared/shared.module";
+import { NgxImageZoomModule } from 'ngx-image-zoom';
+
 // import { DateTimeModule } from 'nxt-pick-datetime'
 // import { NativeDateTimeModule } from 'nxt-pick-datetime/native-adapter'
 
@@ -57,7 +59,8 @@ import { SharedModule } from "src/app/shared/shared.module";
     SelectDropDownModule,
     NgbTooltipModule,
     NgbRatingModule,
-SharedModule    
+SharedModule    ,
+NgxImageZoomModule
     // DateTimeModule,
     // NativeDateTimeModule
   ],

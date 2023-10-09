@@ -1,7 +1,8 @@
 <div class="modal-content">
   <div class="modal-header">
     <h4 class="modal-title" id="modal-title-default">
-      Modifier Images Produit
+      Modifier Images :
+      <span class="badge badge-pill badge-warning">{{ infoDaTa.nom }}</span>
     </h4>
     <hr class="my-4" />
     <button
@@ -17,7 +18,7 @@
   <div class="modal-body">
     <form class="row">
       <div
-        *ngIf="(this.fileSrcUpdate.length <= 3)"
+        *ngIf="this.fileSrcUpdate.length <= 3"
         class="form-group row m-0 justify-content-between align-items-center mb-3"
         style="width: 100%"
       >
@@ -35,7 +36,7 @@
           #file2
           type="file"
           style="display: none"
-          (change)="loadFile($event,'add')"
+          (change)="loadFile($event, 'add')"
           accept="image/png, image/gif, image/jpeg"
         />
         <div class="col-md-7">
@@ -53,34 +54,53 @@
             <span><i class="fa-solid fa-plus"></i> UPLOAD</span>
           </div>
         </div>
+        <div class="col">
+          <div>
+            <small class=""
+              >Taille maximale de l'image <= 50 Ko,
+              <a href="https://compressjpeg.com/fr/" target="_blank"
+                >réduire l'image</a
+              >
+            </small>
+          </div>
+        </div>
       </div>
+
       <div
         *ngFor="let image of fileSrcUpdate"
         class="form-group row m-0 align-items-center mb-3"
         style="width: 100%"
       >
-        <div
-          class="col-md-5 m-1 rounded border align-items-center p-1 m-1 row justify-content-center"
-          [style]="'background-image: url(' +this.getImg(image.url)  + ')'"
-          style="
-            position: relative;
-            background-repeat: no-repeat;
-            background-size: cover;
-            min-height: 100px;
-            width: 91px !important;
+      <img [src]="this.getImg(image.url)" 
+      class="col-md-5 m-1 rounded border align-items-center p-1 m-1 row justify-content-center"
+      style="
+            width: 100%!important;
+            height: 120px !important;
+
           "
-        ></div>
+      [alt]="image.nom">
+        <!-- <div
+          class="col-md-5 m-1 rounded border align-items-center p-1 m-1 row justify-content-center"
+          [style]="'background-image: url(' + this.getImg(image.url) + ')'"
+          style="
+            position: relative !important;
+            background-repeat: no-repeat !important;
+            background-size: contain!important;
+            width: 100%!important;
+            min-height: 100px !important;
+
+          "
+        ></div> -->
         <div class="form-control-label row col-md-7">
           <input
-          #file2
-          type="file"
-          style="display: none"
-          (change)="loadFile($event, 'update', image)"
-          accept="image/png, image/gif, image/jpeg"
-        />
+            #file2
+            type="file"
+            style="display: none"
+            (change)="loadFile($event, 'update', image)"
+            accept="image/png, image/gif, image/jpeg"
+          />
           <button class="col-md-16 btn btn-info mb-2" (click)="file2.click()">
-            Modifier
-           </button
+            Modifier</button
           ><button
             class="col-md-16 btn btn-danger mb-2"
             (click)="onDelete(image.id)"

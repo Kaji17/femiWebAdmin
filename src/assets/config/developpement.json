@@ -92,6 +92,8 @@
       "COMMANDE_MODIFIERETAPE_GET": "/klaman/v1/vente/commande/etape",
       "COMMANDE_GETETAPE_GET": "/klaman/v1/vente/commande/etape/consulter",
       "COMMANDE_ANNULER_GET": "/klaman/v1/vente/commande/annuler",
+      "COMMANDE_MODIFIERDISPONIBILTERPRODUIT_GET": "/klaman/v1/vente/commande/produit-panier/update/availability",
+
 
       "comment ": "----------- OPERATIONS SATISTIQUES ---------------",
       "STATISTIQUE_PANIERMOYEN_GET": "/klaman/v1/statistique/paniermoyen",
