@@ -151,7 +151,7 @@ export class CardStatsChartOrdersSalesComponent implements OnInit {
                   let date = new Date(el.periode);
 
                   if (
-                    date.getMonth() == curentMonth &&
+                    
                     date.getFullYear() == currentYear
                   ) {
                     let moisDay = date.getDay();
@@ -192,7 +192,7 @@ export class CardStatsChartOrdersSalesComponent implements OnInit {
                   let date = new Date(el.periode);
 
                   if (
-                    date.getMonth() == curentMonth &&
+                    
                     date.getFullYear() == currentYear
                   ) {
                     let moisDay = date.getDay();
@@ -228,7 +228,6 @@ export class CardStatsChartOrdersSalesComponent implements OnInit {
                 };
                 let tab: [] = d.body;
                 console.log("data orde1===", this.dataTotalOrders);
-                tab.map((el: any) => {
                   // let date = new Date(el.periode);
 
                   // Donne les stats de l'année en cours
@@ -246,12 +245,12 @@ export class CardStatsChartOrdersSalesComponent implements OnInit {
                       );
                     }
                   });
-                });
-                this.ordersChart.data.datasets[0].data =
+                  this.ordersChart.data.datasets[0].data =
                   this.dataTotalOrders.datasets[0].data;
                 this.ordersChart.data.labels = this.dataTotalOrders.labels;
                 this.ordersChart.update();
                 break;
+                
             }
             console.log(
               "list des stats panier moyen ====",
@@ -295,7 +294,7 @@ export class CardStatsChartOrdersSalesComponent implements OnInit {
                   let date = new Date(el.periode);
 
                   // Donne les stats de l'année en cours
-                  if (date.getFullYear() == currentYear) {
+                  if (date.getFullYear()) {
                     let yearGet = date.getFullYear();
                     this.dataTotalChiffreAffaire.labels.push(`${yearGet}`);
                     this.dataTotalChiffreAffaire.datasets[0].data.push(
@@ -304,6 +303,7 @@ export class CardStatsChartOrdersSalesComponent implements OnInit {
                     console.log("data orde2===", this.dataTotalChiffreAffaire);
                   }
                 });
+                console.log("check===");
                 this.salesChart.data.datasets[0].data =
                   this.dataTotalChiffreAffaire.datasets[0].data;
                 this.salesChart.data.labels =
@@ -329,7 +329,7 @@ export class CardStatsChartOrdersSalesComponent implements OnInit {
                   let date = new Date(el.periode);
 
                   if (
-                    date.getMonth() == curentMonth &&
+                    
                     date.getFullYear() == currentYear
                   ) {
                     let moisDay = date.getDay();
@@ -376,7 +376,6 @@ export class CardStatsChartOrdersSalesComponent implements OnInit {
                   let date = new Date(el.periode);
 
                   if (
-                    date.getMonth() == curentMonth &&
                     date.getFullYear() == currentYear
                   ) {
                     let moisDay = date.getDay();
@@ -418,7 +417,7 @@ export class CardStatsChartOrdersSalesComponent implements OnInit {
                 };
                 let tab: [] = d.body;
                 console.log("data orde1===", this.dataTotalChiffreAffaire);
-                tab.map((el: any) => {
+
                   // let date = new Date(el.periode);
 
                   // Donne les stats de l'année en cours
@@ -436,7 +435,6 @@ export class CardStatsChartOrdersSalesComponent implements OnInit {
                       );
                     }
                   });
-                });
                 this.salesChart.data.datasets[0].data =
                   this.dataTotalChiffreAffaire.datasets[0].data;
                 this.salesChart.data.labels =
@@ -585,7 +583,6 @@ export class CardStatsChartOrdersSalesComponent implements OnInit {
                     );
                   }
                 });
-
                 console.log("INIT CHART sales=======");
                 var chartSales = document.getElementById("chart-sales");
                 this.salesChart = new Chart(chartSales, {
@@ -720,14 +717,6 @@ export class CardStatsChartOrdersSalesComponent implements OnInit {
                     this.dataTotalOrders.labels.push(objDate);
                     this.dataTotalOrders.datasets[0].data.push(el.nombreventes);
                   }
-                });
-
-                console.log("INIT CHART sales=======");
-                var chartSales = document.getElementById("chart-sales");
-                this.salesChart = new Chart(chartSales, {
-                  type: "line",
-                  options: chartExample1.options,
-                  data: this.dataTotalChiffreAffaire,
                 });
 
                 console.log("INIT CHART ORDER=======");
