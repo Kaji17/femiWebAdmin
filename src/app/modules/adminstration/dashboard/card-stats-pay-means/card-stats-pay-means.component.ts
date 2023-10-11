@@ -143,7 +143,7 @@ export class CardStatsPayMeansComponent implements OnInit {
     } else {
       this.objSearchModePay.zoneid = null;
       this.objSearchModePay = {
-        //
+        boutiqueid: this.infoUser.body.boutique.id,
       };
       this.updateModePaiement(this.objSearchModePay);
     }

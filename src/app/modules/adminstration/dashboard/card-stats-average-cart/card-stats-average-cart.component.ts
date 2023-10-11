@@ -70,6 +70,7 @@ export class CardStatsAverageCartComponent implements OnInit {
       this.objSearchPanierMoyen.zoneid = null;
       this.objSearchPanierMoyen = {
         periode: "day",
+        boutiqueid: this.infoUser.body.boutique.id,
       };
       this.getStatPanierMoyen(this.objSearchPanierMoyen);
     }
@@ -85,6 +86,7 @@ export class CardStatsAverageCartComponent implements OnInit {
     } else {
       let obj: any = {
         periode: "day",
+        boutiqueid: this.infoUser.body.boutique.id,
       };
       this.objSearchPanierMoyen = obj;
       this.getStatPanierMoyen(this.objSearchPanierMoyen);

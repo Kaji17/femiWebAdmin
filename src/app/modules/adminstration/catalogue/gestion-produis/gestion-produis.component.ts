@@ -284,6 +284,17 @@ export class GestionProduisComponent implements OnInit, OnDestroy {
       (result) => {
         this.closeResult = "Closed with: " + result;
         console.log("yaaaa", this.closeResult);
+        if (result == "ok") {
+          setTimeout(() => {
+            this.getAllProduit({
+              pagination: true,
+              page: 0,
+              size: 10,
+              boutiqueid: this.infoUser.body.boutique.id,
+            });
+            this.selected = [];
+          }, 1500);
+        }
       },
       (reason) => {
         this.closeResult = "Dismissed " + this.getDismissReason(reason);

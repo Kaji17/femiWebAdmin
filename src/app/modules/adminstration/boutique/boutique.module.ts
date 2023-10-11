@@ -10,6 +10,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgxDatatableModule } from "@swimlane/ngx-datatable";
 import { SelectDropDownModule } from "ngx-select-dropdown";
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { ImageCropperModule } from 'ngx-image-cropper';
+import { ModalCropperImageComponent } from './gestion-banniere/modal-cropper-image/modal-cropper-image.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
     GestionDispositionComponent,
     GestionAstuceConseilComponent,
     GestionTypeAstuceConseilComponent,
+    ModalCropperImageComponent,
   ],
   imports: [
     CommonModule,
@@ -27,6 +30,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
     ReactiveFormsModule,
     SelectDropDownModule,
     NgbTooltipModule,
+    ImageCropperModule
   ],
 })
 export class BoutiqueModule {}

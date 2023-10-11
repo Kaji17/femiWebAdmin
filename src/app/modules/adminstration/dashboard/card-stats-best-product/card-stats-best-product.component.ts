@@ -59,14 +59,15 @@ export class CardStatsBestProductComponent implements OnInit {
     }
 
     filterzone() {
-      console.log("zone search", this.boutiqueNbreCmdeSelect);
-      if (this.boutiqueNbreCmdeSelect.length != 0 && this.boutiqueNbreCmdeSelect != undefined) {
-        this.objSearchCmde.zoneid = this.boutiqueNbreCmdeSelect.id;
+      console.log("zone search", this.zoneselectNbreCmde);
+      if (this.zoneselectNbreCmde.length != 0 && this.zoneselectNbreCmde != undefined) {
+        this.objSearchCmde.zoneid = this.zoneselectNbreCmde.id;
         this.getStatProduitPlusVendus(this.objSearchCmde);
         console.log("obj search", this.objSearchCmde);
       } else {
         this.objSearchCmde.zoneid = null;
         this.objSearchCmde = {
+          boutiqueid: this.infoUser.body.boutique.id,
           periode: "day",
         };
         this.getStatProduitPlusVendus(this.objSearchCmde);

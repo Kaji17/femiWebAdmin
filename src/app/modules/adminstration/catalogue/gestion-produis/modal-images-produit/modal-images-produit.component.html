@@ -69,44 +69,41 @@
       <div
         *ngFor="let image of fileSrcUpdate"
         class="form-group row m-0 align-items-center mb-3"
-        style="width: 100%"
+        style="width: 100%; position: relative"
       >
-      <img [src]="this.getImg(image.url)" 
-      class="col-md-5 m-1 rounded border align-items-center p-1 m-1 row justify-content-center"
-      style="
-            width: 100%!important;
-            height: 120px !important;
-
-          "
-      [alt]="image.nom">
-        <!-- <div
-          class="col-md-5 m-1 rounded border align-items-center p-1 m-1 row justify-content-center"
-          [style]="'background-image: url(' + this.getImg(image.url) + ')'"
-          style="
-            position: relative !important;
-            background-repeat: no-repeat !important;
-            background-size: contain!important;
-            width: 100%!important;
-            min-height: 100px !important;
-
-          "
-        ></div> -->
-        <div class="form-control-label row col-md-7">
+        <div style="width: 100%; position: relative" class="col-6 col-md-5">
+          <img
+            [src]="this.getImg(image.url)"
+            class="m-1 rounded border align-items-center p-1 m-1 row justify-content-center"
+            style="
+              width: 100% !important;
+              height: 120px !important;
+              position: relative;
+            "
+            [alt]="image.nom"
+          />
           <input
             #file2
             type="file"
             style="display: none"
             (change)="loadFile($event, 'update', image)"
-            accept="image/png, image/gif, image/jpeg"
+            accept="image/png, image/jpeg, image/jpg"
           />
-          <button class="col-md-16 btn btn-info mb-2" (click)="file2.click()">
-            Modifier</button
-          ><button
-            class="col-md-16 btn btn-danger mb-2"
+          <div
+            class="absolute"
+            style="position: absolute; top: 10px; right: -7px; cursor: pointer"
+            (click)="file2.click()"
+          >
+            <i class="fa-solid fa-pen-to-square text-primary" style="font-size: 17px;"></i>
+          </div>
+          <div
+          *ngIf="fileTab.length>1"
+            class="absolute"
+            style="position: absolute; top: -20px; right: -7px; cursor: pointer"
             (click)="onDelete(image.id)"
           >
-            Supprimer
-          </button>
+            <i class="fa-solid fa-circle-xmark text-danger" style="font-size: 17px;"></i>
+          </div>
         </div>
       </div>
     </form>
@@ -114,11 +111,11 @@
   <div class="modal-footer">
     <button
       type="button"
-      (click)="closeModal()"
+      (click)="closeModalOk()"
       class="btn btn-primary"
       data-dismiss="modal"
     >
-      Ok
+      Appliquer
     </button>
   </div>
 </div>

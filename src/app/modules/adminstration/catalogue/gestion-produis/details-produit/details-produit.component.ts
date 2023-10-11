@@ -1,18 +1,11 @@
 import {
-  AfterViewInit,
   Component,
   Input,
-  OnInit,
-  TemplateRef,
-  ViewChild,
+  OnInit
 } from "@angular/core";
 import {
-  NgbActiveModal,
-  NgbModal,
-  NgbRatingConfig,
+  NgbActiveModal
 } from "@ng-bootstrap/ng-bootstrap";
-import { ColumnMode } from "@swimlane/ngx-datatable";
-import { ToastrService } from "ngx-toastr";
 import { Configurable } from "src/app/core/config";
 import { ProduitService } from "src/app/shared/services/produit.service";
 import { UtilisService } from "src/app/shared/services/utilis.service";

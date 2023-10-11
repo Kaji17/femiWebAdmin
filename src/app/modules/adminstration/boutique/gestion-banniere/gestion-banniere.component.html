@@ -3,10 +3,12 @@
     <div class="header-body">
       <div
         class="row align-items-center py-md-3 py-sm-5 px-0 justify-content-between"
+        style="    padding: 23px 0;
+        "
       >
         <div class="col-lg-6 col-xl-5 col-md-4">
           <div class="row align-items-center">
-            <div class="col-lg-7 col-md-7 col-sm-2 col-xs-2">
+            <div class="col-lg-7 col-md-7 col-sm-2 col">
               <h6 class="h2 text-white d-inline-block mb-0 me-1">
                 Bannière
               </h6>
@@ -23,22 +25,25 @@
   <div class="dataTables_wrapper py-4 card px-4">
     <div class="row">
       <div class="col-md-6" *ngIf="crudPerms.create">
-        <input
-          #fileBanAdd
-          type="file"
-          style="display: none"
-          (change)="loadFile($event)"
-          accept="image/png, image/gif, image/jpeg"
-        />
         <button
           class="btn btn-success btn-sm"
-          (click)="fileBanAdd.click()"
+          (click)="openPhoto()"
           type="button"
-          *ngIf="page.totalElements<3"
         >
           Ajouter une bannière
         </button>
+        <div>
+          <small class="ms-2"
+            >Assurez-vous que la taille des images soit <= 50 Ko,
+            <a href="https://compressjpeg.com/fr/" target="_blank"
+              >réduire l'image</a
+            >
+          </small>
+        </div>
       </div>
+      <!-- <div class="col">
+        
+      </div> -->
     </div>
     <ngx-datatable
       class="bootstrap selection-cell"

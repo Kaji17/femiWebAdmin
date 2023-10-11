@@ -21,7 +21,14 @@ bootstrap table theme
     background: #fff!important;
     color: #2c2c2c!important;
     margin-top: -1px;
+    .datatable-footer-inner{
+      .page-count{
+        line-height: -2!important;
+        padding-right: 0!important;
+      }
+    }
     .datatable-pager {
+      margin: 0!important;
       ul {
         li {
           &:not(.disabled) {
@@ -69,5 +76,14 @@ bootstrap table theme
     }
   }
 }
-
+@media screen and (max-width:375px) {
+  .ngx-datatable.bootstrap {
+  .datatable-footer {
+    .datatable-footer-inner{
+      height: 72px!important;
+      .page-count{
+        line-height: 1!important;
+      }
+    }}}
+}
 

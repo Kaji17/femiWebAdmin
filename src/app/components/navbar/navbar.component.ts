@@ -58,6 +58,7 @@ export class NavbarComponent implements OnInit {
     translate.addLangs(['en', 'fr']),
     translate.setDefaultLang('fr')
     this.location = location;
+    
   }
 
   switchLang(lang:string){

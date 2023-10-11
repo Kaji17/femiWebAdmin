@@ -47,6 +47,7 @@ export class CardStatsSalesByZoneComponent implements OnInit {
       this.objSearchSales.zoneid = null;
       this.objSearchSales = {
         periode: "day",
+        boutiqueid: this.infoUser.body.boutique.id,
       };
       this.getStatNombreDeVentesByZone(this.objSearchSales);
     }
@@ -62,6 +63,7 @@ export class CardStatsSalesByZoneComponent implements OnInit {
     } else {
       let obj: any = {
         periode: "day",
+        boutiqueid: this.infoUser.body.boutique.id,
       };
       this.objSearchSales = obj;
       this.getStatNombreDeVentesByZone(this.objSearchSales);

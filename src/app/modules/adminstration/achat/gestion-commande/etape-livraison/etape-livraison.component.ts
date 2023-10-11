@@ -51,6 +51,10 @@ export class EtapeLivraisonComponent implements OnInit, AfterViewInit {
                 this.islivrer=true
               }
             })
+            this.etapes.sort(function(a:any,b:any){
+              return a.etape.niveau-b.etape.niveau
+            })
+            console.log("etape2", this.etapes);
           } else {
             console.log("======la commande n'a pas pu être valider", d);
           }

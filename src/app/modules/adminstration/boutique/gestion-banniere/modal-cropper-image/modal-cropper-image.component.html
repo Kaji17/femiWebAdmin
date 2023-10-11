@@ -1,0 +1,52 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="row">
+      <h2 class="modal-title ml-4 mr-2" id="modal-title-default">
+        <input
+          #file2
+          type="file"
+          style="display: none"
+          (change)="fileChangeEvent($event)"
+          accept="image/png, image/jpg, image/jpeg"
+        />
+        <button
+          class="btn btn-info btn-sm"
+          (click)="file2.click()"
+          type="button"
+        >
+          <i class="fa-solid fa-download"></i>
+          Charger l'image
+        </button>
+      </h2>
+    </div>
+    <button type="button" class="close" (click)="closeModal()">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <!-- app.component.html -->
+    <div class="row justify-content-center">
+      <div class="border p-1 border-primary" style="max-width:700px; max-height:700px">
+        <image-cropper
+          [imageChangedEvent]="imageChangedEvent"
+          format="png"
+
+          (imageCropped)="imageCropped($event)"
+          (imageLoaded)="imageLoaded($event)"
+          (cropperReady)="cropperReady()"
+          (loadImageFailed)="loadImageFailed()"
+          [cropperStaticWidth]="600"
+          [cropperStaticHeight]="600"
+
+        ></image-cropper>
+      </div>
+
+      <!-- <img [src]="croppedImage" /> -->
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="closeModal()">
+      Fermer
+    </button>
+  </div>
+</div>

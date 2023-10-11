@@ -4,6 +4,7 @@ import {
 } from "@angular/core";
 
 import { Store } from "@ngrx/store";
+import { TranslateService } from "@ngx-translate/core";
 import Chart from "chart.js";
 import { Page } from "src/app/shared/model/paged";
 import { BreadcrumbService } from "src/app/shared/services/breadcrumb.service";
@@ -67,22 +68,26 @@ export class DashboardComponent implements OnInit {
 
   page = new Page();
   infoUser: any;
-
+lang:string
   constructor(
     private breadcrumbService: BreadcrumbService,
     private zoneService: ZoneService,
     private utilitisService: UtilisService,
     private clientService: ClientService,
     private produitService: ProduitService,
-    private store: Store
+    private store: Store,
+    public translate : TranslateService,
   ) {
     this.page.pageNumber = 0;
     this.page.size = 10;
     this.infoUser = JSON.parse(localStorage.getItem("user_info"));
     this.store.dispatch(initAction());
+    this.lang=translate.getBrowserLang()
   }
 
   ngOnInit() {
+    console.log("lang active", this.lang);
+    
     this.getClients({
       pagination: true,
       page: 0,

@@ -31,6 +31,10 @@ export class ModalImagesProduitComponent implements OnInit, AfterContentInit {
   ngAfterContentInit(): void {
     // this.getImageByProduitId(this.infoDaTa);
   }
+    // Fermer le modal
+    closeModalOk() {
+      this.activeModal.close("ok");
+    }
 
   @Input() infoDaTa: any;
   id: number;
